@@ -1,0 +1,153 @@
+Breakpoint 1 at 0x429f86: file /home/felix/build/awesome-git/src/awesome-build/objects/client.c, line 608.
+Continuing.
+
+Breakpoint 1, client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+608	{
+$1 = {x = 0, y = 28, width = 1584, height = 856}
+#0  client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+#1  0x000000000042ab0c in client_resize (c=c@entry=0x1490f78, geometry=..., geometry@entry=...)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:749
+#2  0x000000000042addf in luaA_client_geometry (L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:1510
+#3  0x00007faea539511a in ?? () from /usr/lib/liblua.so.5.2
+#4  0x00007faea53a0624 in ?? () from /usr/lib/liblua.so.5.2
+#5  0x00007faea5395369 in ?? () from /usr/lib/liblua.so.5.2
+#6  0x00007faea53949ab in ?? () from /usr/lib/liblua.so.5.2
+#7  0x00007faea5395595 in ?? () from /usr/lib/liblua.so.5.2
+#8  0x00007faea53915df in lua_pcallk () from /usr/lib/liblua.so.5.2
+#9  0x00000000004248ed in luaA_dofunction (nret=0, nargs=1, L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/common/lualib.h:76
+#10 signal_object_emit (L=L@entry=0x111da70, arr=<optimized out>, name=name@entry=0x43a263 "focus", 
+    nargs=nargs@entry=1) at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:236
+#11 0x0000000000423a81 in luaA_class_emit_signal (L=L@entry=0x111da70, lua_class=<optimized out>, 
+    name=name@entry=0x43a263 "focus", nargs=nargs@entry=1)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaclass.c:294
+#12 0x0000000000424ca4 in luaA_object_emit_signal (L=0x111da70, oud=oud@entry=-1, name=name@entry=
+    0x43a263 "focus", nargs=nargs@entry=0)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:291
+#13 0x0000000000429370 in client_focus_update (c=c@entry=0x1490f78)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:316
+#14 0x00000000004293c6 in client_focus (c=0x1490f78)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:333
+#15 0x0000000000429422 in luaA_client_module_newindex (L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:1946
+#16 0x00007faea539511a in ?? () from /usr/lib/liblua.so.5.2
+#17 0x00007faea5395308 in ?? () from /usr/lib/liblua.so.5.2
+#18 0x00007faea539f356 in ?? () from /usr/lib/liblua.so.5.2
+#19 0x00007faea539f840 in ?? () from /usr/lib/liblua.so.5.2
+#20 0x00007faea53a0985 in ?? () from /usr/lib/liblua.so.5.2
+#21 0x00007faea5395369 in ?? () from /usr/lib/liblua.so.5.2
+#22 0x00007faea53949ab in ?? () from /usr/lib/liblua.so.5.2
+#23 0x00007faea5395595 in ?? () from /usr/lib/liblua.so.5.2
+#24 0x00007faea53915df in lua_pcallk () from /usr/lib/liblua.so.5.2
+#25 0x00000000004248ed in luaA_dofunction (nret=0, nargs=2, L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/common/lualib.h:76
+#26 signal_object_emit (L=L@entry=0x111da70, arr=<optimized out>, name=name@entry=0x440642 "tagged", 
+    nargs=nargs@entry=2) at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:236
+#27 0x0000000000423a81 in luaA_class_emit_signal (L=L@entry=0x111da70, lua_class=<optimized out>, 
+    name=name@entry=0x440642 "tagged", nargs=nargs@entry=2)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaclass.c:294
+#28 0x0000000000424ca4 in luaA_object_emit_signal (L=L@entry=0x111da70, oud=oud@entry=-2, name=name@entry=
+    0x440642 "tagged", nargs=nargs@entry=1)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:291
+#29 0x0000000000435468 in tag_client_emit_signal (L=0x111da70, t=t@entry=0x121ebc8, c=c@entry=0x1490f78, 
+    signame=signame@entry=0x440642 "tagged") at /home/felix/build/awesome-git/src/awesome-build/objects/tag.c:86
+#30 0x0000000000436088 in tag_client (c=c@entry=0x1490f78)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/tag.c:115
+#31 0x0000000000427cb5 in luaA_client_tags (L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:1273
+#32 0x00007faea539511a in ?? () from /usr/lib/liblua.so.5.2
+#33 0x00007faea53a0624 in ?? () from /usr/lib/liblua.so.5.2
+#34 0x00007faea5395369 in ?? () from /usr/lib/liblua.so.5.2
+#35 0x00007faea53949ab in ?? () from /usr/lib/liblua.so.5.2
+#36 0x00007faea5395595 in ?? () from /usr/lib/liblua.so.5.2
+#37 0x00007faea53915df in lua_pcallk () from /usr/lib/liblua.so.5.2
+#38 0x00000000004248ed in luaA_dofunction (nret=0, nargs=2, L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/common/lualib.h:76
+#39 signal_object_emit (L=L@entry=0x111da70, arr=<optimized out>, name=name@entry=0x43a26b "manage", 
+    nargs=nargs@entry=2) at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:236
+#40 0x0000000000423a81 in luaA_class_emit_signal (L=L@entry=0x111da70, lua_class=<optimized out>, 
+    name=name@entry=0x43a26b "manage", nargs=nargs@entry=2)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaclass.c:294
+#41 0x0000000000424ca4 in luaA_object_emit_signal (L=0x111da70, oud=oud@entry=-2, name=name@entry=
+    0x43a26b "manage", nargs=nargs@entry=1)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:291
+#42 0x0000000000429e91 in client_manage (w=<optimized out>, wgeom=wgeom@entry=0x1433390, startup=startup@entry=
+    false) at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:583
+#43 0x0000000000411cbe in event_handle_maprequest (ev=0x13ccc90)
+    at /home/felix/build/awesome-git/src/awesome-build/event.c:641
+#44 event_handle (event=event@entry=0x13ccc90) at /home/felix/build/awesome-git/src/awesome-build/event.c:832
+#45 0x000000000040d18a in a_xcb_check () at /home/felix/build/awesome-git/src/awesome-build/awesome.c:193
+#46 a_glib_poll (ufds=<optimized out>, nfsd=<optimized out>, timeout=<optimized out>)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:222
+#47 0x00007faea747ab14 in ?? () from /usr/lib/libglib-2.0.so.0
+#48 0x00007faea747af72 in g_main_loop_run () from /usr/lib/libglib-2.0.so.0
+#49 0x000000000040db24 in main (argc=1, argv=0x7fffa4235dc8)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:533
+Continuing.
+
+Breakpoint 1, client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+608	{
+$2 = {x = 0, y = 28, width = 1582, height = 838}
+#0  client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+#1  0x000000000042ab0c in client_resize (c=c@entry=0x1490f78, geometry=..., geometry@entry=...)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:749
+#2  0x0000000000411261 in event_handle_configurerequest (ev=0x1496f60)
+    at /home/felix/build/awesome-git/src/awesome-build/event.c:341
+#3  event_handle (event=event@entry=0x1496f60) at /home/felix/build/awesome-git/src/awesome-build/event.c:821
+#4  0x000000000040d18a in a_xcb_check () at /home/felix/build/awesome-git/src/awesome-build/awesome.c:193
+#5  a_glib_poll (ufds=<optimized out>, nfsd=<optimized out>, timeout=<optimized out>)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:222
+#6  0x00007faea747ab14 in ?? () from /usr/lib/libglib-2.0.so.0
+#7  0x00007faea747af72 in g_main_loop_run () from /usr/lib/libglib-2.0.so.0
+#8  0x000000000040db24 in main (argc=1, argv=0x7fffa4235dc8)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:533
+Continuing.
+
+Breakpoint 1, client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+608	{
+$3 = {x = 0, y = 28, width = 1584, height = 856}
+#0  client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=false)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:608
+#1  0x000000000042ab0c in client_resize (c=c@entry=0x1490f78, geometry=..., geometry@entry=...)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:749
+#2  0x000000000042addf in luaA_client_geometry (L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:1510
+#3  0x00007faea539511a in ?? () from /usr/lib/liblua.so.5.2
+#4  0x00007faea53a0624 in ?? () from /usr/lib/liblua.so.5.2
+#5  0x00007faea5395369 in ?? () from /usr/lib/liblua.so.5.2
+#6  0x00007faea53949ab in ?? () from /usr/lib/liblua.so.5.2
+#7  0x00007faea5395595 in ?? () from /usr/lib/liblua.so.5.2
+#8  0x00007faea53915df in lua_pcallk () from /usr/lib/liblua.so.5.2
+#9  0x00000000004248ed in luaA_dofunction (nret=0, nargs=1, L=0x111da70)
+    at /home/felix/build/awesome-git/src/awesome-build/common/lualib.h:76
+#10 signal_object_emit (L=L@entry=0x111da70, arr=<optimized out>, name=name@entry=0x4405a1 "property::geometry", 
+    nargs=nargs@entry=1) at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:236
+#11 0x0000000000423a81 in luaA_class_emit_signal (L=L@entry=0x111da70, lua_class=<optimized out>, 
+    name=name@entry=0x4405a1 "property::geometry", nargs=nargs@entry=1)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaclass.c:294
+#12 0x0000000000424ca4 in luaA_object_emit_signal (L=0x111da70, oud=oud@entry=-1, name=name@entry=
+    0x4405a1 "property::geometry", nargs=nargs@entry=0)
+    at /home/felix/build/awesome-git/src/awesome-build/common/luaobject.c:291
+#13 0x000000000042a211 in client_resize_do (c=c@entry=0x1490f78, geometry=..., force_notice=force_notice@entry=
+    false) at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:661
+#14 0x000000000042ab0c in client_resize (c=c@entry=0x1490f78, geometry=..., geometry@entry=...)
+    at /home/felix/build/awesome-git/src/awesome-build/objects/client.c:749
+#15 0x0000000000411261 in event_handle_configurerequest (ev=0x1496f60)
+    at /home/felix/build/awesome-git/src/awesome-build/event.c:341
+#16 event_handle (event=event@entry=0x1496f60) at /home/felix/build/awesome-git/src/awesome-build/event.c:821
+#17 0x000000000040d18a in a_xcb_check () at /home/felix/build/awesome-git/src/awesome-build/awesome.c:193
+#18 a_glib_poll (ufds=<optimized out>, nfsd=<optimized out>, timeout=<optimized out>)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:222
+#19 0x00007faea747ab14 in ?? () from /usr/lib/libglib-2.0.so.0
+#20 0x00007faea747af72 in g_main_loop_run () from /usr/lib/libglib-2.0.so.0
+#21 0x000000000040db24 in main (argc=1, argv=0x7fffa4235dc8)
+    at /home/felix/build/awesome-git/src/awesome-build/awesome.c:533
+Continuing.
+[Thread 0x7faea1862700 (LWP 6422) exited]
+[Inferior 1 (process 6421) exited normally]

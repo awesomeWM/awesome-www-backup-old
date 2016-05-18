@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Fichier de configuration d’awesome 2 - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<meta name="robots" content="noindex,follow" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Awesomerc/fr&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Awesomerc/fr&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Awesomerc/fr" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;printable=1&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Awesomerc/fr","wgTitle":"Awesomerc/fr","wgCurRevisionId":3339,"wgRevisionId":3339,"wgArticleId":441,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Awesome2"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Awesomerc/fr","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Awesomerc_fr skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Fichier de configuration d’awesome 2</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><a href="/wiki/Awesomerc" title="Awesomerc">English</a></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="fr"><strong class="selflink">français</strong></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="it"><a href="/wiki/Awesomerc/it" title="Awesomerc/it">italiano</a></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p>Voici un fichier <b>.awesomerc</b> avec commentaires. C’était le fichier de configuration par défaut pour la version 2 d’awesome. Depuis la version 3, le <a href="/wiki/Awesome_3_configuration/fr" title="Awesome 3 configuration/fr">fichier de configuration</a> par défaut est codé en Lua et son nom est <b>rc.lua</b>.
+</p><p><br />
+</p>
+<pre># Fichier de configuration d’awesome 2
+#
+# Premier écran physique
+screen 0
+{
+    general
+    {
+        # Taille des bordures de fenêtres, en pixels
+        border = 1
+        # Nombre de pixels avant de coller la bordure d’une fenêtre avec la bordure de l’écran
+        snap = 8
+        # Respecter la géométrie minimale des fenêtres ?
+        resize_hints = true
+        # Transparence des fenêtres qui ne sont pas au premier plan (avec xcompmgr)
+        opacity_unfocused = 100
+        # La mise au premier plan doit-elle suivre la souris ?
+        focus_move_pointer = false
+        # Les fenêtres flottantes doivent-elles être sous les autres ?
+        allow_lower_floats = false
+        # Fonte de la barre de statut (Xft)
+        font = "Inconsolata-8"
+    }#end general
+    
+    colors
+    {
+        # Couleur de bordure standard
+        normal_border = "#111111"
+        # Couleur de fond standard (barre de statut)
+        normal_bg = "#111111"
+        # Couleur d’avant-plan standard (barre de statut)
+        normal_fg = "#eeeeee"
+        # Couleur de bordure d’une fenêtre au premier plan
+        focus_border = "#6666ff"
+        # Couleur de fond au premier plan (barre de statut)
+        focus_bg = "#6666ff"
+        # Couleur d’avant plan au premier plan (barre de statut
+        focus_fg = "#ffffff"
+    }#end colors
+    
+    #top, left, bottom, right
+    statusbar{position = "top"}
+    
+    #Ce qui suit est ce qui est réellement affiché sur la barre de statut.
+    #Ici par exemple, « 1:console » est affiché au lieu du « one » par défaut
+    tags { 
+        tag 1:console {layout = "tile" mwfact = .5}
+        tag 2:net {layout = "floating"} 
+        tag 3:vim {layout = "tile"}
+        tag 4:fichiers {layout = "tile"}
+        tag five {layout = "tile"}
+        tag six {layout = "tile"}
+    }#end tags
+    
+    layouts {
+        layout tile {symbol = "[]="}
+        layout tileleft {symbol = "=[]"}
+        layout max {symbol = "[ ]"}
+        layout floating {symbol = "&gt;&lt;&gt;"}
+    }#end layouts
+}#end screen 0
+
+#Cette section définit dans quel onglet un programme s’ouvre et s’il est en mosaïque, maximisé ou flottant.
+rules {
+    rule {name = "Gimp" tags = "six" float = true}
+    rule {name = "MPlayer" float = true}
+    rule {name = "Acroread" float = true}
+    rule {name = "pinentry" float = true}
+    rule {name = "urxvt" float = true tags = "1:console"}
+    rule {name = "Swiftfox" float = true tags = "2:net"}
+    rule {name = "wifi-radar" float = true tags = "2:net"}
+    rule {name = "gvim" float = true tags = "3:vim"}
+    rule {name = "emelfm" float = true tags = "4:fichiers"}
+    rule {name = "mc" float = true tags = "4:fichiers"}
+
+}#end rules
+## Remarque&#160;: « Mod1 » est en général la touche [Alt] et « Mod4 » est [Super] ou [Windows]
+# Actions avec les boutons de la souris
+mouse {
+    # En cliquant sur un onglet
+    tag {button = "1" command = "tag_view"}
+    tag {button = "1" modkey = {"Mod4"} command = "client_tag"}
+    tag {button = "3" command = "tag_toggleview"}
+    tag {button = "3" modkey = {"Mod4"} command = "client_toggletag"}
+    tag {button = "4" command = "tag_viewnext"}
+    tag {button = "5" command = "tag_viewprev"}
+    
+    # En cliquant sur le symbole de disposition
+    layout {button = "1" command = "tag_setlayout" arg = "+1"}
+    layout {button = "4" command = "tag_setlayout" arg = "+1"}
+    layout {button = "3" command = "tag_setlayout" arg = "-1"}
+    layout {button = "5" command = "tag_setlayout" arg = "-1"}
+    
+    # En cliquant sur la fenêtre root
+    root {button = "3" command = "spawn" arg = "exec urxvt"}
+    root {button = "4" command = "tag_viewnext"}
+    root {button = "5" command = "tag_viewprev"}
+
+    # En cliquant sur les clients
+    client {modkey = {"Mod4"} button = "1" command = "client_movemouse"}
+    client {modkey = {"Mod4"} button = "2" command = "client_zoom"}
+    client {modkey = {"Mod4"} button = "3" command = "client_resizemouse"}
+}#end mouse
+
+# Raccourcis claviers
+keys {
+ 
+    #C’est là que vous définissez vos raccourcis clavier pour lancer des programmes.
+    #Vous pouvez voir que j’ai ajouté « sudo » à certains&#160;; cette méthode marchera aussi pour d’autres commandes.
+    key {modkey = {"Mod4", "Control"} key = "Return" command = "spawn" arg = "exec urxvt"}
+    key {modkey = {"Mod4"} key = "r"                 command = "spawn" arg = "exec sudo wifi-radar"}
+    key {modkey = {"Mod4"} key = "n"                 command = "spawn" arg = "exec swiftfox"}
+    key {modkey = {"Mod4"} key = "v"                 command = "spawn" arg = "exec sudo gvim"}
+    key {modkey = {"Mod4"} key = "f"                 command = "spawn" arg = "exec sudo emelfm"}
+    key {modkey = {"Mod4"} key = "Return"            command = "spawn" arg = "exec gmrun"}  
+    ###############################################################################
+ 
+    #Raccourcis pour générer les fenêtres individuelles dans chaque onglet.
+    key { modkey = {"Mod4"} key = "j"                command = "client_focusnext" }
+    key { modkey = {"Mod4"} key = "k"                command = "client_focusprev" }
+    key { modkey = {"Mod4", "Control"} key = "j"     command = "client_swapnext" }
+    key { modkey = {"Mod4", "Control"} key = "k"     command = "client_swapprev" }
+    key { modkey = {"Mod4"} key = "c"                command = "client_kill" }
+    key { modkey = {"Mod4"} key = "m"                command = "client_togglemax" }
+    key { modkey = {"Mod4", "Shift"} key = "m"       command = "client_toggleverticalmax" }
+    key { modkey = {"Mod4", "Control"} key = "m"     command = "client_togglehorizontalmax" }
+    key { modkey = {"Mod4"} key = "f"                command = "client_togglefloating" }
+ 
+    #Raccourcis pour se déplacer entre les onglets
+    key { modkey = {"Mod4"} key = "Right"            command = "tag_viewnext" }
+    key { modkey = {"Mod4"} key = "Left"             command = "tag_viewprev" }
+    key { modkey = {"Mod4"} key = 1                  command = "tag_view" arg = 1 }
+    key { modkey = {"Mod4"} key = 2                  command = "tag_view" arg = 2 }
+    key { modkey = {"Mod4"} key = 3                  command = "tag_view" arg = 3 }
+    key { modkey = {"Mod4"} key = 4                  command = "tag_view" arg = 4 }
+    key { modkey = {"Mod4"} key = 5                  command = "tag_view" arg = 5 }
+    key { modkey = {"Mod4"} key = 6                  command = "tag_view" arg = 6 }
+
+    #Voir plusieurs onglets dans l’onglet actuel
+    key {modkey = {"Shift", "Control"} key = 1       command = "tag_toggleview" arg = 1}
+    key {modkey = {"Shift", "Control"} key = 2       command = "tag_toggleview" arg = 2}
+    key {modkey = {"Shift", "Control"} key = 3       command = "tag_toggleview" arg = 3}
+    key {modkey = {"Shift", "Control"} key = 4       command = "tag_toggleview" arg = 4}
+    key {modkey = {"Shift", "Control"} key = 5       command = "tag_toggleview" arg = 5}
+    key {modkey = {"Shift", "Control"} key = 6       command = "tag_toggleview" arg = 6}
+
+##################################################################################################################
+ ###Voici des raccourcis supplémentaires que je n’utilise pas.
+ ###Peut-être que quelqu’un d’autre veut les utiliser ?
+ #key { modkey = {"Mod1", "Control"} key = "h"       command = "tag_setnmaster" arg = "+1" }
+ #key { modkey = {"Mod1", "Control"} key = "l"       command = "tag_setnmaster" arg = "-1" }
+ #awesome
+ #key { modkey = {"Mod1", "Control"} key = "r"       command = "exec" arg = "/usr/local/bin/awesome" }
+ #key { modkey = {"Mod1", "Control"} key = "q"       command = "quit" }
+ #key { modkey = {"Mod1", "Control"} key = "b"       command = "statusbar_toggle" }
+ 
+ #voir l’onglet supplémentaire « num »&#160;: Mod1 + Maj + Numéro
+ #augmenter ou réduire le nombre de colonnes
+ #key { modkey = {"Mod1", "Shift"} key = "h"         command = "tag_setncol" arg = "-1" }
+ #key { modkey = {"Mod1", "Shift"} key = "l"         command = "tag_setncol" arg = "+1" }
+ #nombre de clients maîtres
+ #key { modkey = {"Mod1", "Control"} key = "j"       command = "screen_focusnext" }
+ #key { modkey = {"Mod1", "Control"} key = "k"       command = "screen_focusprev" }
+ #key { modkey = {"Mod1",} key = "t"                 command = "client_settrans" arg = "+0.10" }
+ #key { modkey = {"Mod1"} key = "t"                  command = "client_settrans" arg = "-0.10" }
+ #key { modkey = {"Mod1", "Shift"} key = "Return"    command = "client_zoom" arg="-0.10" }
+ } #end keys
+</pre>
+<!-- 
+NewPP limit report
+CPU time usage: 0.108 seconds
+Real time usage: 0.129 seconds
+Preprocessor visited node count: 618/1000000
+Preprocessor generated node count: 1334/1000000
+Post‐expand include size: 3223/2097152 bytes
+Template argument size: 1494/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 48/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:441-0!*!0!*!*!5!* and timestamp 20160515171845 and revision id 3339
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Awesomerc/fr&amp;oldid=3339">https://awesomewm.org/w/index.php?title=Awesomerc/fr&amp;oldid=3339</a>"</div>
+					<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/wiki/Category:Awesome2" title="Category:Awesome2">Awesome2</a></li></ul></div></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Awesomerc/fr" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Awesomerc/fr&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Awesomerc/fr&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Awesomerc/fr&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Awesomerc%2Ffr&amp;returntoquery=printable%3Dyes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Awesomerc/fr" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Awesomerc/fr" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Awesomerc/fr&amp;oldid=3339" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Awesomerc/fr&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 15 July 2009, at 20:37.</li>
+									<li id="viewcount">This page has been accessed 2,471 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;printable=1\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":105});
+}</script></body></html>

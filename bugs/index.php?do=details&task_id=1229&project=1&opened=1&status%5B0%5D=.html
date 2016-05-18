@@ -1,0 +1,489 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1229 : Tag &quot;index&quot; is not handled properly</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1229&amp;project=1&amp;opened=1&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1234&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Restore &quot;raise&quot; for new clients | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1225&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Fixed | SEGFAULT in spawn() (git-master) | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1229 - Tag &quot;index&quot; is not handled properly  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Thursday, 13 March 2014, 02:46 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 07 November 2014, 21:04 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> (2014-03-13)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">In the current awful.widget.taglist implementation, everything is reloaded when something changes. This in itself solve a lot of issue, but has some limitations. My Blind library relied on a ton or very dirty hacks to keep track of states and display the correct content. These days, I use a new Radical based implementation. It is much easier to extend and even a little faster because of the lower rate of reloads.<br />
+<br />
+The problem is that capi.tag/awful.tag implementation of tag indexes is currently broken. See<br />
+<br />
+tag.connect_signal(&quot;property::index&quot;,function(t,i)<br />
+  print(&quot;A tag index changed&quot;,t,awful.tag.getidx(t),t.name)<br />
+end)<br />
+print(&quot;deleting a tag&quot;)<br />
+awful.tag.delete(awful.tag.gettags(1)[1])<br />
+<br />
+When adding/removing/moving tags, the signal is not called. This, in turn, cause my implementation to just fail to reflect the current order, so both tags &quot;number&quot; (aka: &quot;(1) Term&quot;) is wrong and the keyboard keys wont select the tag you expect them to select.<br />
+<br />
+I could solve that by keeping track of the indexes myself, but that would suck. The current way indexes are managed is just wrong. It is both slow and buggy. What do you think would be the best way to handle this?<br />
+<br />
+The &quot;cheap way&quot; to fix this is add <br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Friday, 07 November 2014, 21:04 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+45ad4459f2e6bab737e4e93009fd4dff9f4a546b
+<br />
+Author: Emmanuel Lepage Vallee
+&lt;elv1313@gmail.com&gt;<br />
+Date:   Sat Nov 1 18:46:06 2014 -0400<br
+/>
+<br />
+    tag: Improve tag property::index
+support (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1229&amp;proje
+ct=1&amp;opened=1&amp;status%5B0%5D="
+title="Fixed | Tag &quot;index&quot; is
+not handled properly | 100%"  class =
+"closedtasklink">FS#1229</a>&#160;</del>
+)<br />
+    <br />
+    * Move the &quot;index&quot; setting
+burden to individual functions<br />
+      instead of gettags().<br />
+    <br />
+    * Add some properties earlier so the
+signal hooks will be called<br />
+      with valid data.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3881" id="comment3881"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment3881">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 13 March 2014, 03:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">While looking at awful.tag.gettags() to do a quick fix to my problem. I came to think that the way the tags are stored is the main problem here. First, selecting a tag is O(n) instead of O(1), but then there is this dual concept of index. One is stored in the property, but all function referring to idx use the gettags()[] index. Gettags is also called way too many time, making tags switching exponentially slow relative to _both_ the number of tags _and_ the number of screens.<br />
+<br />
+I think a capi.tag object should have a read only index, that the C core should keep a list of tags per screen (and a global one, because we still need it). The screen should also be kept and managed in the C side and clients should have their screen match the tag screen on the C side too. Doing it in the &quot;upper levels&quot; of the API such as awful is the source of about 10 known bugs, including 2 that Tyrannical &quot;monkey patch&quot; at runtime. As you said, what Tyrannical is doing is deeply wrong, but is better than having the bugs.<br />
+<br />
+We should have a way to get the index without being O(N^2) (looping to create the index map, then looping to find the tag index).</div></div>
+
+  
+    <em>
+    <a name="comment3884" id="comment3884"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment3884">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 13 March 2014, 08:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The bug report ends in the middle of a sentence.<br />
+<br />
+I can&#039;t see the point of a *read-only* index property that is managed in C.<br />
+<br />
+Are you asking for changes to awful.widget.taglist? Not reload everything all the time?<br />
+<br />
+Do you just want some code in lua that &quot;updates&quot; a tag&#039;s index when it get deactivated?<br />
+<br />
+If you want to reintroduce t.screen, what should happen to clients which are on different screen than their tag? What if a client has three tags which all belong to different screens and only one of them has the same screen than the client? What if a tag has three clients that all have different tags? How would all of this work?<br />
+<br />
+Oh and how would we map tags to _NET_WM_DESKTOPS? First all tags of the first screen, then the second screen etc?<br />
+<br />
+Part of the point of removing t.screen and moving it to lua was an attempt at getting rid of all of those problems... (Although it didn&#039;t really work out, I confess)<br />
+<br />
+(Won&#039;t comment about the complexity)<br />
+<br />
+TL;DR: All I can see clearly is &quot;Tag &#039;index&#039; is broken&quot;, everything more is confusing...</div></div>
+
+  
+    <em>
+    <a name="comment3889" id="comment3889"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment3889">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 13 March 2014, 13:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; If you want to reintroduce t.screen, what should happen to clients which are on different screen than their tag? <br />
+Print a big fat red error, this can only be a bug, it already produce unwanted (and unwantable) behavior when it happen.<br />
+<br />
+&gt; Oh and how would we map tags to _NET_WM_DESKTOPS? First all tags of the first screen, then the second screen etc?<br />
+Well, it will never map 1-1, so I guess it would use the _NET_WM_DESKTOPS as index for the client screen<br />
+<br />
+&gt; Part of the point of removing t.screen and moving it to lua was an attempt at getting rid of all of those problems... (Although it didn&#039;t really work out, I confess)<br />
+I understand that, I usually advocate the &quot;all in lua&quot; dogma, but in this case, I don&#039;t see how we can fix _all_ the issues if the code is not centralized. Then, it wont ever cover all use case, some people want shifty-like relative indexes too<br />
+<br /><a href="
+https://github.com/Elv13/tyrannical/issues/10">
+https://github.com/Elv13/tyrannical/issues/10</a><br />
+<br />
+It also wont really cover the filtered taglist use case...<br />
+<br />
+&gt; I can&#039;t see the point of a *read-only* index property that is managed in C.<br />
+<br />
+Maybe the lua side should be able to keep &quot;persistent&quot; filtered taglist. Maybe it is just a better idea than what this issue propose. Feel free to close it if you agree, if you do, I will write the &quot;persistent filtered tag list&quot; to feed whatever widgets will be in front of it. The bug is real, but I forgot about the filtered tag list use case and a global index wont cover it. Better dropping the whole index thing instead of fixing it. <br />
+<br />
+This also apply to awful.tag.byidx and the likes, they also don&#039;t cover the filtered list use case, so they should be deprecated and eventually renamed to something else. The users should query that persistent list entity instead of the global one.</div></div>
+
+  
+    <em>
+    <a name="comment3890" id="comment3890"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment3890">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 13 March 2014, 13:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; &gt; If you want to reintroduce t.screen, what should happen to clients which are on different screen than their tag? <br />
+&gt; Print a big fat red error, this can only be a bug, it already produce unwanted (and unwantable) behavior when it happen.<br />
+<br />
+Do you know how we move clients to another screen? Something assigns a new value to c.screen, this emits property::screen and awful.tag has its withcurrent connected to that signal. From the C code&#039;s POV, we would have to print a big red warning when c.screen gets set and before lua cleans things up.<br />
+<br />
+So this doesn&#039;t really work.<br />
+<br />
+&gt; &gt; I can&#039;t see the point of a *read-only* index property that is managed in C.<br />
+&gt; <br />
+&gt; Maybe the lua side should be able to keep &quot;persistent&quot; filtered taglist. Maybe it is just a better idea than what this issue propose. Feel free to close it if you agree, if you do, I will write the &quot;persistent filtered tag list&quot; to feed whatever widgets will be in front of it. The bug is real, but I forgot about the filtered tag list use case and a global index wont cover it. Better dropping the whole index thing instead of fixing it. <br />
+&gt; <br />
+&gt; This also apply to awful.tag.byidx and the likes, they also don&#039;t cover the filtered list use case, so they should be deprecated and eventually renamed to something else. The users should query that persistent list entity instead of the global one.<br />
+<br />
+I am still not really sure what this issue proposes, so I can&#039;t really say what a persistent(?) filtered(?) taglist would do differently.<br />
+<br />
+The reason we have this index thing is so that lua can change the order of tags. The C code will always return tags in the order in which they were created. For clients we have c:swap() to change their order, but that is equally ugly...</div></div>
+
+  
+    <em>
+    <a name="comment3891" id="comment3891"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment3891">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 13 March 2014, 14:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I think the problem is that we are coupling concepts that are incompatible. My original proposition was to merge index back into the core, but that wont work.<br />
+<br />
+Keeping it as a global magic into awful.tag also wont work, because it doesn&#039;t support filter functions.<br />
+<br />
+So, if we can&#039;t use the core and can&#039;t use awful.tag to fix this issue, we have to introduce a new way of keeping a tag list (as in a list of tags, not the widget called taglist). So I propose an object that will keep track of a list of tag. An object that will take care of setting properties like &quot;urgent&quot; that are currently very ugly and have an accessor function that will return the index _relative it itself_. It could use the tag property table to cache it or use a weak table.</div></div>
+
+  
+    <em>
+    <a name="comment4063" id="comment4063"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#comment4063">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Wednesday, 21 May 2014, 19:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The &quot;screen&quot; property have simmilar issues. Some signal are emited before it is set, creating a zone where the tag is manipulated by callback, but have no screen. Maybe hacking tag.add to make sure tag is set first (and to something else than nil) will ne necessary.<br />
+<br />
+Some other people want tags to have no screen (xmonad / ion3 users) and move from screen to screen as needed. I am not sure if it is such a good idea. I prefer a &quot;frame&quot; concept instead.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1229#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1229" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

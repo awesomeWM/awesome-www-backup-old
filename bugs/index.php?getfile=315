@@ -1,0 +1,304 @@
+From: Julien Danjou <julien@danjou.info>
+To: awesome-devel@naquadah.org
+Cc: Julien Danjou <julien@danjou.info>
+Subject: [PATCH] Store widgets references as wibox items
+Date: Tue, 25 May 2010 15:46:30 +0200
+Message-Id: <1274795190-546-1-git-send-email-julien@danjou.info>
+X-Mailer: git-send-email 1.7.1
+
+This will store the widgets references that the wibox have inside their
+environment table, and not in the global registry, avoiding memory leaks.
+This should fix FS#771.
+
+Signed-off-by: Julien Danjou <julien@danjou.info>
+---
+ event.c  |   70 ++++++++++++++++++++++++++++++++++++++++++++++---------------
+ wibox.c  |   14 ++++++++++++
+ wibox.h  |    1 +
+ widget.c |   39 ++++++++++++++++------------------
+ widget.h |    4 +--
+ 5 files changed, 87 insertions(+), 41 deletions(-)
+
+diff --git a/event.c b/event.c
+index bda0cc5..6e9af0b 100644
+--- a/event.c
++++ b/event.c
+@@ -160,7 +160,11 @@ event_handle_button(void *data, xcb_connection_t *connection, xcb_button_press_e
+             ev->event_y -= wibox->geometry.y;
+         }
+ 
++        /* Push the wibox */
+         luaA_object_push(globalconf.L, wibox);
++        /* Duplicate the wibox */
++        lua_pushvalue(globalconf.L, -1);
++        /* Handle the button event on it */
+         event_button_callback(ev, &wibox->buttons, -1, 1, NULL);
+ 
+         /* then try to match a widget binding */
+@@ -170,10 +174,16 @@ event_handle_button(void *data, xcb_connection_t *connection, xcb_button_press_e
+                                          &ev->event_x, &ev->event_y);
+         if(w)
+         {
+-            luaA_object_push(globalconf.L, w);
+-            luaA_object_push(globalconf.L, wibox);
++            /* Push widget (the wibox is already on stack) */
++            luaA_object_push_item(globalconf.L, -1, w);
++            /* Move widget before wibox */
++            lua_insert(globalconf.L, -2);
+             event_button_callback(ev, &w->buttons, -2, 2, NULL);
+         }
++        else
++            /* Remove the wibox, we did not use it */
++            lua_pop(globalconf.L, 1);
++
+     }
+     else if((c = client_getbywin(ev->event)))
+     {
+@@ -342,12 +352,12 @@ event_handle_destroynotify(void *data __attribute__ ((unused)),
+ }
+ 
+ /** Handle a motion notify over widgets.
+- * \param object The object.
++ * \param wibox The wibox.
+  * \param mouse_over The pointer to the registered mouse over widget.
+  * \param widget The new widget the mouse is over.
+  */
+ static void
+-event_handle_widget_motionnotify(void *object,
++event_handle_widget_motionnotify(wibox_t *wibox,
+                                  widget_t **mouse_over,
+                                  widget_t *widget)
+ {
+@@ -355,25 +365,46 @@ event_handle_widget_motionnotify(void *object,
+     {
+         if(*mouse_over)
+         {
+-            /* call mouse leave function on old widget */
+-            luaA_object_push(globalconf.L, *mouse_over);
+-            luaA_object_emit_signal(globalconf.L, -1, "mouse::leave", 0);
++            /* Emit mouse leave signal on old widget:
++             * - Push wibox.*/
++            luaA_object_push(globalconf.L, wibox);
++            /* - Push the widget the mouse was on */
++            luaA_object_push_item(globalconf.L, -1, *mouse_over);
++            /* - Emit the signal mouse::leave with the wibox as argument */
++            luaA_object_emit_signal(globalconf.L, -2, "mouse::leave", 1);
++            /* - Remove the widget */
+             lua_pop(globalconf.L, 1);
+ 
+-            luaA_object_unref(globalconf.L, *mouse_over);
++            /* Re-push wibox */
++            luaA_object_push(globalconf.L, wibox);
++            luaA_object_unref_item(globalconf.L, -1, *mouse_over);
+             *mouse_over = NULL;
++            /* Remove the wibox */
++            lua_pop(globalconf.L, 1);
+         }
+         if(widget)
+         {
+             /* Get a ref on this widget so that it can't be unref'd from
+-             * underneath us (-> invalid pointer dereference). */
+-            luaA_object_push(globalconf.L, widget);
+-            luaA_object_ref(globalconf.L, -1);
++             * underneath us (-> invalid pointer dereference):
++             * - Push the wibox */
++            luaA_object_push(globalconf.L, wibox);
++            /* - Push the widget */
++            luaA_object_push_item(globalconf.L, -1, widget);
++            /* - Reference the widget into the wibox */
++            luaA_object_ref_item(globalconf.L, -2, -1);
++
++            /* Store that this widget was the one with the mouse over */
+             *mouse_over = widget;
+ 
+-            /* emit mouse::enter signal on new widget */
+-            luaA_object_push(globalconf.L, widget);
+-            luaA_object_emit_signal(globalconf.L, -1, "mouse::enter", 0);
++            /* Emit mouse::enter signal on new widget:
++             * - Push the widget */
++            luaA_object_push_item(globalconf.L, -1, widget);
++            /* - Move the widget before the wibox we pushed just above */
++            lua_insert(globalconf.L, -2);
++            /* - Emit the signal with the wibox as argument */
++
++            luaA_object_emit_signal(globalconf.L, -2, "mouse::enter", 1);
++            /* - Remove the widget from the stack */
+             lua_pop(globalconf.L, 1);
+         }
+     }
+@@ -439,9 +470,14 @@ event_handle_leavenotify(void *data __attribute__ ((unused)),
+     {
+         if(wibox->mouse_over)
+         {
+-            luaA_object_push(globalconf.L, wibox->mouse_over);
+-            /* emit mouse::leave signal on widget the mouse was over */
+-            luaA_object_emit_signal(globalconf.L, -1, "mouse::leave", 0);
++            /* Push the wibox */
++            luaA_object_push(globalconf.L, wibox);
++            /* Push the widget the mouse is over in this wibox */
++            luaA_object_push_item(globalconf.L, -1, wibox->mouse_over);
++            /* Emit mouse::leave signal on widget the mouse was over with
++             * its wibox as argument */
++            luaA_object_emit_signal(globalconf.L, -2, "mouse::leave", 1);
++            /* Remove the widget from the stack */
+             lua_pop(globalconf.L, 1);
+             wibox_clear_mouse_over(wibox);
+         }
+diff --git a/objects/wibox.c b/objects/wibox.c
+index 689c81f..e72690f 100644
+--- a/objects/wibox.c
++++ b/objects/wibox.c
+@@ -49,6 +49,20 @@ luaA_wibox_gc(lua_State *L)
+     return luaA_object_gc(L);
+ }
+ 
++/** Wipe an array of widget_node. Release references to widgets.
++ * \param L The Lua VM state.
++ * \param idx The index of the wibox on the stack.
++ */
++void
++wibox_widget_node_array_wipe(lua_State *L, int idx)
++{
++    wibox_t *wibox = luaA_checkudata(L, idx, &wibox_class);
++    foreach(widget_node, wibox->widgets)
++        luaA_object_unref_item(globalconf.L, idx, widget_node);
++    widget_node_array_wipe(&wibox->widgets);
++}
++
++
+ void
+ wibox_unref_simplified(wibox_t **item)
+ {
+diff --git a/objects/wibox.h b/objects/wibox.h
+index f642ac6..67035c2 100644
+--- a/objects/wibox.h
++++ b/wobjects/ibox.h
+@@ -99,6 +99,7 @@ struct wibox_t
+ void wibox_unref_simplified(wibox_t **);
+ 
+ ARRAY_FUNCS(wibox_t *, wibox, wibox_unref_simplified)
++void wibox_widget_node_array_wipe(lua_State *, int);
+ 
+ void wibox_refresh(void);
+ 
+diff --git a/objects/widget.c b/objects/widget.c
+index 4c0d293..282e3c9 100644
+--- a/objects/widget.c
++++ b/objects/widget.c
+@@ -49,15 +49,6 @@ luaA_widget_gc(lua_State *L)
+     return luaA_object_gc(L);
+ }
+ 
+-/** Delete a widget node structure.
+- * \param node The node to destroy.
+- */
+-void
+-widget_node_delete(widget_node_t *node)
+-{
+-    luaA_object_unref(globalconf.L, node->widget);
+-}
+-
+ /** Get a widget node from a wibox by coords.
+  * \param orientation Wibox orientation.
+  * \param widgets The widget list.
+@@ -100,16 +91,18 @@ widget_getbycoords(orientation_t orientation, widget_node_array_t *widgets,
+ 
+ /** Convert a Lua table to a list of widget nodes.
+  * \param L The Lua VM state.
++ * \param idx Index of the table where to store the widgets references.
+  * \param widgets The linked list of widget node.
+  */
+ static void
+-luaA_table2widgets(lua_State *L, widget_node_array_t *widgets)
++luaA_table2widgets(lua_State *L, int idx, widget_node_array_t *widgets)
+ {
+     if(lua_istable(L, -1))
+     {
++        int table_idx = luaA_absindex(L, idx);
+         lua_pushnil(L);
+         while(luaA_next(L, -2))
+-            luaA_table2widgets(L, widgets);
++            luaA_table2widgets(L, table_idx, widgets);
+         /* remove the table */
+         lua_pop(L, 1);
+     }
+@@ -120,7 +113,7 @@ luaA_table2widgets(lua_State *L, widget_node_array_t *widgets)
+         {
+             widget_node_t w;
+             p_clear(&w, 1);
+-            w.widget = luaA_object_ref(L, -1);
++            w.widget = luaA_object_ref_item(L, idx, -1);
+             widget_node_array_append(widgets, w);
+         }
+         else
+@@ -197,17 +190,19 @@ widget_geometries(wibox_t *wibox)
+          * or the wibox size, depending on which is less.
+          */
+ 
++        /* push wibox */
++        luaA_object_push(globalconf.L, wibox);
++
+         widget_node_array_t *widgets = &wibox->widgets;
+-        widget_node_array_wipe(widgets);
++        wibox_widget_node_array_wipe(globalconf.L, -1);
+         widget_node_array_init(widgets);
+ 
+-        /* push wibox */
+-        luaA_object_push(globalconf.L, wibox);
+         /* push widgets table */
+         luaA_object_push_item(globalconf.L, -1, wibox->widgets_table);
++        /* Convert widgets table */
++        luaA_table2widgets(globalconf.L, -2, widgets);
+         /* remove wibox */
+-        lua_remove(globalconf.L, -2);
+-        luaA_table2widgets(globalconf.L, widgets);
++        lua_remove(globalconf.L, -1);
+ 
+         lua_newtable(globalconf.L);
+         for(int i = 0; i < widgets->len; i++)
+@@ -297,15 +292,17 @@ widget_render(wibox_t *wibox)
+ 
+     widget_node_array_t *widgets = &wibox->widgets;
+ 
+-    widget_node_array_wipe(widgets);
+-    widget_node_array_init(widgets);
+     /* push wibox */
+     luaA_object_push(globalconf.L, wibox);
++
++    wibox_widget_node_array_wipe(globalconf.L, -1);
++    widget_node_array_init(widgets);
++
+     /* push widgets table */
+     luaA_object_push_item(globalconf.L, -1, wibox->widgets_table);
++    luaA_table2widgets(L, -2, widgets);
+     /* remove wibox */
+-    lua_remove(globalconf.L, -2);
+-    luaA_table2widgets(L, widgets);
++    lua_remove(globalconf.L, -1);
+ 
+     /* get computed geometries */
+     for(unsigned int i = 0; i < lua_objlen(L, -1); i++)
+diff --git a/objects/widget.h b/objects/widget.h
+index 0f13b29..0c4afac 100644
+--- a/objects/widget.h
++++ b/objects/widget.h
+@@ -54,8 +54,6 @@ struct widget_t
+     bool isvisible;
+ };
+ 
+-void widget_node_delete(widget_node_t *);
+-
+ struct widget_node
+ {
+     /** The widget object */
+@@ -63,7 +61,7 @@ struct widget_node
+     /** The geometry where the widget was drawn */
+     area_t geometry;
+ };
+-DO_ARRAY(widget_node_t, widget_node, widget_node_delete)
++DO_ARRAY(widget_node_t, widget_node, DO_NOTHING)
+ 
+ widget_t *widget_getbycoords(orientation_t, widget_node_array_t *, int, int, int16_t *, int16_t *);
+ void widget_render(wibox_t *);
+-- 
+1.7.1

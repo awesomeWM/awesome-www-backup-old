@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#733 : wmctrl raise/focus window in max layout inncomplete </title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=733&amp;project=1&amp;opened=446&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=446&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#733 - wmctrl raise/focus window in max layout inncomplete   </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=446">will foran (will.foran)</a>     	 - Tuesday, 23 February 2010, 05:59 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.3</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">when trying to focus a window with wmctrl while awesome is in the layout &quot;awful.layout.suit.max&quot; the window title on the bar is changed to selected (highlighted) but the client window is not visible. The old should-be-unfocused client remains.<br />
+<br />
+To reproduce, open a few xterms in the max layout and run: wmctrl -R `wmctrl -l | cut -d &#039; &#039; -f 5-  | dmenu`       in one.<br />
+This works as expected in other layout modes.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (8)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1780" id="comment1780"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1780">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 26 February 2010, 17:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, either I didn&#039;t test this correctly or it works as expected here. Any hints?</div></div>
+
+  
+    <em>
+    <a name="comment1781" id="comment1781"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1781">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=446">will foran (will.foran)</a> -
+    Monday, 01 March 2010, 18:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tried this on another computer with the same results. Both use archlinux with the current awesome package (awesome-3.4.3-2). <br />
+<br />
+This might be a better explination.<br />
+I have uzbl and xterm both in tag 1 with max layout. Xterm is focused.<br />
+I do the following<br />
+<br />
+[will@MSIXP ~]$ wmctrl -l<br />
+0x0120000d  0 MSIXP will@MSIXP:~<br />
+0x00e00003  0 MSIXP <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733&amp;project=1&amp;opened=446&amp;status%5B0%5D=" title="Unconfirmed | wmctrl raise/focus window in max layout inncomplete  | 0%" >FS#733</a> : wmctrl raise/focus window in max layout inncomplete - Uzbl browser &lt;14680067&gt;<br />
+[will@MSIXP ~]$ wmctrl -a Uzbl<br />
+<br />
+My screen still displays xterm. However, uzbl does have focus. Keystrokes are received by uzbl, not xterm.<br />
+<br />
+This happens in max and max.fullscreen.<br />
+Changing focus and raising appears to work as expected in other modes, including magnifier.<br />
+<br />
+I&#039;ll try awesome from git and see if the problem persists. <br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment1782" id="comment1782"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1782">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=446">will foran (will.foran)</a> -
+    Monday, 01 March 2010, 18:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I compiled from git and noticed the max layout icon has changed. wmctrl still doesn&#039;t raise the window in this mode.</div></div>
+
+  
+    <em>
+    <a name="comment1783" id="comment1783"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1783">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 01 March 2010, 18:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just wondered why the window would be raised at all...<br />
+<br />
+Does the same happen with the floating layout? All the other layouts cant generate overlapping windows...</div></div>
+
+  
+    <em>
+    <a name="comment1784" id="comment1784"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1784">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=446">will foran (will.foran)</a> -
+    Monday, 01 March 2010, 20:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I may have misunderstood the function of wmctrl or the design of awesome, but the behavior with wmctrl when awesome is in magnifier mode is what I expected in max modes as well. When wmctrl is executed, the client is focused and place front and center (&quot;raised&quot;?). <br />
+<br />
+from wmctrl&#039;s man page:<br />
+-a &lt;WIN&gt;<br />
+              Switch to the desktop containing the window &lt;WIN&gt;, raise the window, and give it focus.<br />
+-R &lt;WIN&gt;<br />
+              Move the window &lt;WIN&gt; to the current desktop, raise the window, and give it focus.<br />
+<br />
+Looking this up inspired exploring more cases.<br />
+<br />
+&quot;wmctrl -R Uzbl&quot; only changes the focus of the window (does not raise/display)  if the window is on the same tag/workspace. If Uzbl is on tag 2 and wmctrl is run on tag 1, everything works as expected. Uzbl is brought to tag 1, focused, and all I see.<br />
+<br />
+Similiarly, &quot;wmctrl -a Uzbl&quot; works as expected when Uzbl is not on the tag from which the command is run. I am moved to the tag Uzbl is on, Uzbl is focused, and all I see.<br />
+<br />
+The client is not raised if it is on the same tag as where wmctrl is executed; the client is raised if coming from another tag. This seems to be true in the max and floating layouts.<br />
+<br />
+As you pointed out, this is not an issue in titling layouts; clients don&#039;t overlap.<br /></div></div>
+
+  
+    <em>
+    <a name="comment1785" id="comment1785"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment1785">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 03 March 2010, 09:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">xtrace on awesome while wmctrl -R does its job (no idea where that lua error comes from):<br />
+<br />
+78.033 006:&gt;:02fe: Event (generated) ClientMessage(33) format=0x20 window=0x00600025 type=0xf4(&quot;_NET_WM_DESKTOP&quot;) data=0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00;<br />
+78.034 006:&gt;:02fe: Event (generated) ClientMessage(33) format=0x20 window=0x00600025 type=0xed(&quot;_NET_ACTIVE_WINDOW&quot;) data=0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00;<br />
+78.034 006:&gt;:02fe: Event ConfigureRequest(23) parent=0x00000111 window=0x00600025 value-mask=stack-mode stack-mode=Above(0x00) sibling=None(0x00000000) x=0 y=156 width=324 height=342 border-width=1<br />
+W: awesome: luaA_dofunction:108: error while running function<br />
+stack traceback:<br />
+	[C]: ?<br />
+	./awesomerc.lua:332: in function &lt;./awesomerc.lua:332&gt;<br />
+error: ./awesomerc.lua:332: bad argument #-1 to &#039;?&#039; (string expected, got nil)<br />
+W: awesome: luaA_dofunction:108: error while running function<br />
+stack traceback:<br />
+	[C]: ?<br />
+	./awesomerc.lua:331: in function &lt;./awesomerc.lua:331&gt;<br />
+error: ./awesomerc.lua:331: bad argument #-1 to &#039;?&#039; (string expected, got nil)<br />
+78.041 006:&lt;:02ff: 28: Request(18): ChangeProperty mode=Replace(0x00) window=0x00000111 property=0xed(&quot;_NET_ACTIVE_WINDOW&quot;) type=0x21(&quot;WINDOW&quot;) data=0x00000000;<br />
+78.041 006:&lt;:0300: 28: Request(18): ChangeProperty mode=Replace(0x00) window=0x00000111 property=0xed(&quot;_NET_ACTIVE_WINDOW&quot;) type=0x21(&quot;WINDOW&quot;) data=0x00600025;<br />
+78.041 006:&lt;:0301: 12: Request(42): SetInputFocus revert-to=Parent(0x02) focus=0x00600025 time=CurrentTime(0x00000000)<br />
+78.041 006:&lt;:0302: 44: Request(25): SendEvent propagate=false(0x00) destination=0x00600025 event-mask=StructureNotify ConfigureNotify(22) event=0x00600025 window=0x00600025 above-sibling=None(0x00000000) x=0 y=156 width=324 height=342 border-width=1 override-redirect=false(0x00)<br />
+78.041 006:&gt;:0302: Event PropertyNotify(28) window=0x00000111 atom=0xed(&quot;_NET_ACTIVE_WINDOW&quot;) time=0x004fd65b state=NewValue(0x00)<br />
+78.041 006:&gt;:0302: Event PropertyNotify(28) window=0x00000111 atom=0xed(&quot;_NET_ACTIVE_WINDOW&quot;) time=0x004fd65b state=NewValue(0x00)<br />
+78.041 006:&gt;:0302: Event FocusOut(10) detail=Nonlinear(0x03) event=0x0040000d mode=Normal(0x00)<br />
+78.041 006:&gt;:0302: Event FocusIn(9) detail=Nonlinear(0x03) event=0x00600025 mode=Normal(0x00)<br />
+78.041 006:&gt;:0302: Event (generated) ConfigureNotify(22) event=0x00600025 window=0x00600025 above-sibling=None(0x00000000) x=0 y=156 width=324 height=342 border-width=1 override-redirect=false(0x00)<br />
+<br />
+<br />
+So awesome gets a ConfigureRequest which wants to raise the window above all others.<br />
+event.c line 273 reacts like this:<br />
+<br />
+        /* Clients are not allowed to directly mess with stacking parameters. */<br />
+        ev-&gt;value_mask &amp;= ~(XCB_CONFIG_WINDOW_SIBLING | XCB_CONFIG_WINDOW_STACK_MODE);<br />
+<br />
+That request is just ignored. :(<br />
+<br />
+(The rest of the xtrace seems to be the focus change)</div></div>
+
+  
+    <em>
+    <a name="comment2772" id="comment2772"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment2772">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=122">Kanru Chen (kanru)</a> -
+    Tuesday, 22 November 2011, 02:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I add<br />
+<br />
+  client.add_signal(&quot;focus&quot;, function(c) c:raise() end)<br />
+<br />
+to my rc.lua and it seems to work. Maybe we can add something similar to the max layout?</div></div>
+
+  
+    <em>
+    <a name="comment4108" id="comment4108"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#comment4108">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=993">zak (y2kbugger)</a> -
+    Sunday, 20 July 2014, 19:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Just confirming that this bug still exists and is alleviated in 3.5.5 by<br />
+client.connect_signal(&quot;focus&quot;, function(c) c:raise() end)</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="733" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,838 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1155 : Windows not managed after changing resolution through RandR in 3.5.1</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1155&amp;project=1&amp;pagenum=1" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;pagenum=1">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#1155 - Windows not managed after changing resolution through RandR in 3.5.1  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a>     	 - Friday, 07 June 2013, 06:38 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a>	 - Friday, 09 January 2015, 09:55 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5.1</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.2			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">4 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> (2014-03-29)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=945">Patrick (fusgho)</a> (2014-02-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> (2014-01-22)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> (2013-10-04)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">After upgrading from Awesome 3.4.15 to 3.5.1, I have a strange issue when using two monitors with RandR. At the beginning, everything is fine, then when I change the resolution (for example through ``xrandr --output VGA1 --mode 1920x1080 --above LVDS1&#039;&#039;), Awesome restarts but some windows (such as urxvt or Firefox) are not managed anymore (they are mapped but not displayed in the titlebar anymore). Moreover, when I try to change tag on the first screen (LVDS1) using the mouse, these windows are mapped/unmapped on the tag of the second screen (VGA1).<br />
+<br />
+Killing Awesome while using the same X server process exhibits the same issue so I&#039;m guessing this is coming from Window properties. The only difference between &quot;normal&quot; and these windows seems to be the Map State as it is IsUnmapped for its frame and IsUnviewable for the window itself.<br />
+<br />
+I tried to investigate by trying Awesome at different revisions while leaving the X server running. It seems to come from 1e418cb..8348d4, before 1e418cb, everything works well. I must admit that I don&#039;t know the LUA code at all so I got stuck there.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a><br />
+      Friday, 09 January 2015, 09:55 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (21)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/2)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3599" id="comment3599"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3599">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 07 June 2013, 08:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, the first two commits look trivially correct (just some refactoring and a minor cleanup), so this must be commit 8348d4.<br />
+<br />
+Could you attach your config?<br />
+Also, the following code might help, does it print the client that you are having problems with? (If yes, then c.screen is different from the screen that the client&#039;s tag belongs to)<br />
+<br />
+$ echo &#039;local res={} ; for k, c in pairs(client.get()) do local tags = c:tags() ; for j, t in pairs(tags) do if require(&quot;awful.tag&quot;).getscreen(t) ~= c.screen then res[c.name] = true end end end ; return require(&quot;gears.debug&quot;).dump_return(res)&#039; | awesome-client</div></div>
+
+  
+    <em>
+    <a name="comment3600" id="comment3600"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3600">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Friday, 07 June 2013, 08:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I used the default Awesome configuration from the Git repository and there is no errors in my logs.<br />
+<br />
+Indeed, the script you provided show (only) the clients I&#039;m having problems with. Thanks for the quick reply!</div></div>
+
+  
+    <em>
+    <a name="comment3601" id="comment3601"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3601">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 07 June 2013, 14:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, just the default config, no changes? Then how does the client end up on the wrong screen? :-/<br />
+Which program is this?</div></div>
+
+  
+    <em>
+    <a name="comment3602" id="comment3602"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3602">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Saturday, 08 June 2013, 12:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, just the default config, no changes at all. It happens with Firefox, urxvt and xterm at least so I don&#039;t think this is related to a particular program. Can you reproduce the issue?</div></div>
+
+  
+    <em>
+    <a name="comment3615" id="comment3615"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3615">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 13 June 2013, 13:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Possible duplicate: <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1157&amp;project=1&amp;pagenum=1" title="Duplicate | Clients messed up after adding another monitor | 100%"  class = "closedtasklink">FS#1157</a>&#160;</del> (At least I thought &quot;Ah, that might explain arnau&#039;s problem&quot; when I read the report)</div></div>
+
+  
+    <em>
+    <a name="comment3700" id="comment3700"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3700">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 05 October 2013, 11:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The attached (quite untested, sorry!) patch should help in 70% of cases with this bug report. It saves a client&#039;s screen (and full list of tags) in a property on the client and restored them on startup.<br />
+<br />
+Downsides:<br />
+- When screens move around, clients will get forced to follow around. This will destroy the relative layout of floating clients<br />
+- When a screen is added or removed in the middle, things go downhill since &quot;screen 1&quot; can now suddenly refer to a different CRTC<br />
+- When a screen is removed, the property on all clients on the last screen is ignored, because it does not refer to a valid screen<br />
+<br />
+In other words: Does anyone have any better ideas on how to this?<br />
+Perhaps in lua: On &quot;manage&quot; with startup==true, check that the client&#039;s tags and screen belong together and do $SOMETHING if they don&#039;t. (What should be done? Move client to the screen of its tags? What if the tags refer to more than one screen? Perhaps it would be best to just ignore the saved tags and just tag this client with the &quot;current&quot; tag on whatever screen the client ended up being on.)<br />
+<br />
+<br />
+Now that I have written the above, I think that the AWESOME_CLIENT_SCREEN property is a bad idea and that AWESOME_CLIENT_TAGS is a neat idea, but doesn&#039;t actually help this bug...<br />
+Other suggestions/ideas?</div></div>
+
+      <div class="attachments">
+          <a title="preserve-screen-and-tags.patch" href="?getfile=645" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            preserve-screen-and-tags.patch
+                  </a>
+                  (4.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3701" id="comment3701"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3701">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Saturday, 05 October 2013, 13:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Just my two cents and lots of rambling. What about awesome getting the info about the screen layout from randr? At least xrandr can give me the EDID of the screen, which should be pretty unique (if I understand what EDID is for correctly) and then awesome would be able to make more clever decisions.<br />
+<br />
+Also, IMO, we should store AWESOME_CLIENT_SCREEN **and** AWESOME_CLIENT_TAGS, make awesome aware of dynamic tag creation and deletion during restarts (e.g. if I add/delete some tags, they remain deleted after the Awesome restart). Then we can use the properties to unambiguously tag the clients correctly.<br />
+<br />
+The downsides should disappear in this way:<br />
+- If the screens move arround, then Awesome would be aware of that and it would adjust the AWESOME_CLIENT_SCREEN according the the screen layout.<br />
+- If the screen is added/removed, then Awesome will know that it has happened (new/missing EDID from the list).<br />
+- When the screen is removed, then Awesome can put the leftover clients according to the awful.rules or to the primary screen current tag (or even create a new tag there, so that it&#039;s up to the user to clean things up and remove the tag afterwards).<br />
+<br />
+Is there anything useful out of this brain dump?</div></div>
+
+  
+    <em>
+    <a name="comment3702" id="comment3702"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3702">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 05 October 2013, 20:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here is a new patch which uses the RANDR CRTC &quot;number&quot; instead of awesome&#039;s screen number (I guess that&#039;s the closest to &quot;EDID of the screen&quot; which actually works).<br />
+<br />
+However, this doesn&#039;t really help with the problems. A tag&#039;s screen only exists in lua and is nothing that the C code knows about. So the 10 tags on the first screen are tags 0 to 9 to awesome, the 10 tags on the second screen are tags 10 to 19 etc. So if after restart, the C code sees that a client gets tagged with tag 4, it will happily do so, even though the client&#039;s position is on screen 2 (which is the problem that we have).</div></div>
+
+      <div class="attachments">
+          <a title="preserve-screen-and-tags.patch" href="?getfile=646" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            preserve-screen-and-tags.patch
+                  </a>
+                  (5.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3703" id="comment3703"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3703">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 05 October 2013, 21:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">How about just changing awful.tag.withcurrent and removing the &quot;if startup ~= true then&quot; check? Doesn&#039;t that then just pretty much do the right thing? (At least it is a lot better than the current situation is)</div></div>
+
+  
+    <em>
+    <a name="comment3714" id="comment3714"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3714">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 08 October 2013, 20:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just committed a &quot;cheat&quot; patch for this to git. I wonder if the AWESOME_CLIENT_SCREEN and AWESOME_CLIENT_TAGS properties should still be added...</div></div>
+
+  
+    <em>
+    <a name="comment3791" id="comment3791"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3791">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Wednesday, 22 January 2014, 05:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m reopening this bug as I still have the same issue with Debian package for 3.5.2 which includes your commit. Sorry about the lag...</div></div>
+
+  
+    <em>
+    <a name="comment3799" id="comment3799"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3799">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 06 February 2014, 23:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext"><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1209&amp;project=1&amp;pagenum=1" title="Duplicate | Wrong window placement after changing display setup with xrandr  | 100%"  class = "closedtasklink">FS#1209</a>&#160;</del> is a duplicate of this (and is quite an interesting read containing some technical information)</div></div>
+
+  
+    <em>
+    <a name="comment3801" id="comment3801"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3801">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=945">Patrick (fusgho)</a> -
+    Tuesday, 11 February 2014, 13:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Besides my remarks mentioned in <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1209&amp;project=1&amp;pagenum=1" title="Duplicate | Wrong window placement after changing display setup with xrandr  | 100%"  class = "closedtasklink">FS#1209</a>&#160;</del>, today I found the following behaviour:<br />
+<br />
+As described earlier after adding monitors via xrandr the windowplacement was wrong. I killed awesomewm and started it again. The result was still wrong window placement.<br />
+But:<br />
+After placing the windows on the right screens/tags and killing+starting awesomewm the windows are still placed on their right positions.<br />
+<br />
+So something get messed up when using xrandr and I&#039;m not sure if it&#039;s inside aswesomewm.<br />
+Maybe awesomewm is relying on wrong asumptions of information it uses from the X system?</div></div>
+
+  
+    <em>
+    <a name="comment3805" id="comment3805"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3805">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 13 February 2014, 22:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Possible duplicate: <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1101&amp;project=1&amp;pagenum=1" title="Unconfirmed | Some apps spawn on screen 2 but are placed in the tasklist panel | 0%" >FS#1101</a> (oh and that one is even older than this bug!)</div></div>
+
+  
+    <em>
+    <a name="comment3956" id="comment3956"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment3956">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Saturday, 29 March 2014, 18:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uli asked me to leave this here.<br />
+<br />
+This is what I am using to detect wrongly tagged clients.<br />
+<br />
+    local tag_screen_debug = function(c, t)<br />
+        local t = t or c:tags()[1]<br />
+        if not t then return end<br />
+        if c.screen == awful.tag.getscreen(t) then return end<br />
+        local msg = debug.traceback(&quot;Client got tagged with wrong tag:\n&quot;<br />
+            .. &quot;c.screen: &quot; .. c.screen<br />
+            .. &quot;, c.transient_for.screen: &quot; .. (c.transient_for and c.transient_for.screen or &quot;not transient&quot;)<br />
+            .. &quot;, awful.tag.getscreen(t): &quot; .. awful.tag.getscreen(t)<br />
+            .. &quot;, c &quot; .. tostring(c)<br />
+            .. &quot;, c.name &quot; .. c.name<br />
+            .. &quot;, t.name &quot; .. t.name<br />
+            .. &quot;, t &quot; .. tostring(t)<br />
+        )<br />
+        naughty.notify({text = msg, timeout=0})<br />
+    end<br />
+    client.connect_signal(&quot;tagged&quot;, tag_screen_debug)<br />
+    client.connect_signal(&quot;property::screen&quot;, tag_screen_debug)<br /></div></div>
+
+  
+    <em>
+    <a name="comment4141" id="comment4141"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4141">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Thursday, 25 September 2014, 06:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Any fix at all for this bug? As of Debian, Awesome 3.5 is still in experimental because of this and the freeze is drawing near...</div></div>
+
+  
+    <em>
+    <a name="comment4142" id="comment4142"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4142">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 25 September 2014, 08:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Nope, no idea and no time</div></div>
+
+  
+    <em>
+    <a name="comment4143" id="comment4143"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4143">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Thursday, 25 September 2014, 15:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Arnaud, there have been some fixes in this regard.<br />
+<br />
+Can you still reproduce it using master and/or the latest release?<br />
+Can you add the debug code I&#039;ve posted to your config, which might help with debugging this.<br />
+<br />
+Regarding bisecting, you&#039;ve said that it was introduced by 1e418cb (or rather &quot;1e418cb..8348d4&quot;), which is very old already.</div></div>
+
+  
+    <em>
+    <a name="comment4145" id="comment4145"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4145">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Monday, 29 September 2014, 05:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for your comment. The problem I initially reported can be reproduced on 3.5.5. I have just tested with current master (57b6433) and even if it seems much better than before, I still have the following issue:<br />
+<br />
+1. Start Awesome using default configuration. Both LVDS1 and DP1 are active and layout is float.<br />
+2. Open one xterm on LVDS1 (xterm-LVDS1) and another on DP1 (xterm-DP1).<br />
+3. Run ``xrandr --output DP1 --off&#039;&#039;.<br />
+<br />
+xterm-DP1 is properly displayed in the titlebar and now visible on LVDS1. However, xterm-LVDS1 is *not* visible anymore on LVDS1 but it is displayed in the titlebar of LVDS1 and according to xwininfo, its MapState is &#039;IsViewable&#039; (and so is its parent). Clicking on xterm-LVDS1 title in the titlebar has no effect but switching to another layout finally display it.<br />
+<br />
+Adding what you suggested in default configuration just after the required() seems to have no effect...<br />
+<br />
+Here are the output of xwininfo and xprop (xterm-LVDS1 is 0xc0000d and xterm-DP1 is 0x80000d):<br />
+<br />
+xwininfo: Window id: 0xae (the root window) (has no name)<br />
+<br />
+$ xwininfo -root -tree<br />
+  Root window id: 0xae (the root window) (has no name)<br />
+  Parent window id: 0x0 (none)<br />
+     6 children:<br />
+     0x200013 (has no name): ()  796x849+280+-83  +280+-83<br />
+        1 child:<br />
+        0x80000d &quot;arnau@miyumi: ~&quot;: (&quot;xterm&quot; &quot;XTerm&quot;)  796x849+0+0  +281+-82<br />
+           1 child:<br />
+           0x800018 (has no name): ()  796x849+0+0  +281+-82<br />
+     0x200014 (has no name): ()  670x563+1+1100  +1+1100<br />
+        1 child:<br />
+        0xc0000d &quot;arnau@miyumi: ~&quot;: (&quot;xterm&quot; &quot;XTerm&quot;)  670x563+0+0  +2+1101<br />
+           1 child:<br />
+           0xc00018 (has no name): ()  670x563+0+0  +2+1101<br />
+     0x200010 (has no name): ()  1366x19+0+0  +0+0<br />
+        1 child:<br />
+        0x200003 (has no name): ()  1x1+1232+0  +1232+0<br />
+     0x20000f (has no name): ()  100x30+0+0  +0+0<br />
+     0x200002 &quot;awesome&quot;: ()  1x1+-1+-1  +-1+-1<br />
+     0x400001 (has no name): ()  10x10+-20+-20  +-20+-20<br />
+<br />
+$ xwininfo -id 0xc0000d<br />
+xwininfo: Window id: 0xc0000d &quot;arnau@miyumi: ~&quot;<br />
+<br />
+  Absolute upper-left X:  2<br />
+  Absolute upper-left Y:  1101<br />
+  Relative upper-left X:  0<br />
+  Relative upper-left Y:  0<br />
+  Width: 670<br />
+  Height: 563<br />
+  Depth: 24<br />
+  Visual: 0x20<br />
+  Visual Class: TrueColor<br />
+  Border width: 0<br />
+  Class: InputOutput<br />
+  Colormap: 0x22 (installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: no<br />
+  Corners:  +2+1101  -694+1101  -694--896  +2--896<br />
+  -geometry 111x43+1+1100<br />
+<br />
+$ xprop -id 0xc0000d<br />
+_NET_WM_DESKTOP(CARDINAL) = 0<br />
+WM_STATE(WM_STATE):<br />
+                window state: Normal<br />
+                icon window: 0x0<br />
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW<br />
+_NET_WM_PID(CARDINAL) = 15081<br />
+WM_CLIENT_LEADER(WINDOW): window id # 0xc0000d<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF-8&quot;<br />
+WM_CLASS(STRING) = &quot;xterm&quot;, &quot;XTerm&quot;<br />
+WM_HINTS(WM_HINTS):<br />
+                Client accepts input or input focus: True<br />
+                Initial state is Normal State.<br />
+                bitmap id # to use for icon: 0xc00019<br />
+                bitmap id # of mask for icon: 0xc0001b<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+                program specified size: 484 by 316<br />
+                program specified minimum size: 10 by 17<br />
+                program specified resize increment: 6 by 13<br />
+                program specified base size: 4 by 4<br />
+                window gravity: NorthWest<br />
+WM_CLIENT_MACHINE(STRING) = &quot;miyumi&quot;<br />
+WM_COMMAND(STRING) = { &quot;xterm&quot; }<br />
+WM_ICON_NAME(STRING) = &quot;arnau@miyumi: ~&quot;<br />
+WM_NAME(STRING) = &quot;arnau@miyumi: ~&quot;<br />
+<br />
+And the output of xwininfo for its parent:<br />
+<br />
+xwininfo: Window id: 0x200014 (has no name)<br />
+<br />
+  Absolute upper-left X:  1<br />
+  Absolute upper-left Y:  1100<br />
+  Relative upper-left X:  1<br />
+  Relative upper-left Y:  1100<br />
+  Width: 670<br />
+  Height: 563<br />
+  Depth: 32<br />
+  Visual: 0x6f<br />
+  Visual Class: TrueColor<br />
+  Border width: 1<br />
+  Class: InputOutput<br />
+  Colormap: 0x200000 (not installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: yes<br />
+  Corners:  +1+1100  -693+1100  -693--897  +1--897<br />
+  -geometry 670x563+1+1100<br />
+<br />
+Hope that helps!</div></div>
+
+  
+    <em>
+    <a name="comment4181" id="comment4181"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4181">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Sunday, 02 November 2014, 16:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There is a pull request to fix this now:<a href=" https://github.com/awesomeWM/awesome/pull/59"> https://github.com/awesomeWM/awesome/pull/59</a><br />
+<br />
+It&#039;s a patch to the default configuration.<br />
+<br />
+Does it fix the issue for you?</div></div>
+
+  
+    <em>
+    <a name="comment4208" id="comment4208"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#comment4208">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=87">Arnaud Fontaine (arnau)</a> -
+    Friday, 09 January 2015, 09:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes it does, closing the bug. Thank you very much!</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1155#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1155" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (2)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1157&amp;project=1&amp;pagenum=1" title="Duplicate | Clients messed up after adding another monitor | 100%"  class = "closedtasklink">FS#1157 - Clients messed up after adding another monitor</a>&#160;</del></td></tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1209&amp;project=1&amp;pagenum=1" title="Duplicate | Wrong window placement after changing display setup with xrandr  | 100%"  class = "closedtasklink">FS#1209 - Wrong window placement after changing display setup with xrandr </a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

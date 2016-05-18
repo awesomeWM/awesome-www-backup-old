@@ -1,0 +1,478 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#784 : Nvidia&#039;s TwinView is not working on awesome 3.4.5+ (Git)</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=784&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=&amp;pagenum=1" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;tasks=&amp;due=63&amp;status%5B0%5D=&amp;pagenum=1">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=800&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=&amp;pagenum=1" title="Fixed | Setting and reading client.focus can result in different clients | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity5">
+	 FS#784 - Nvidia&#039;s TwinView is not working on awesome 3.4.5+ (Git)  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=510">Wael Nasreddine (eMxyzptlk)</a>     	 - Thursday, 08 July 2010, 11:18 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Wednesday, 21 July 2010, 15:32 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Critical</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 4.0			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=510">Wael Nasreddine (eMxyzptlk)</a> (2010-07-21)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Hello,<br />
+<br />
+Using awesome-3.4.5, TwinView is working correctly, I have two separate screens, two separate status bars and clients can be displayed on either screen and can be moved around, however using awesome from git (current version is v3.4-189-g2e0ea80), in twinview, instead of having two separate screens with two separate status bars, I&#039;m having one big screen with one big status bar and clients are displayed on both screens (each screen display a bit of the client), so it&#039;s unusable!! Having one client displayed IN PART on each screen makes it impossible to work on..<br />
+<br />
+I should mention that these testings has been done Without an /etc/X11/xorg.conf (so Xorg&#039;s defaults) and without ~/.config/awesome so Awesome&#039;s default configuration two, but note that it ain&#039;t working with my custom configurations either...<br />
+<br />
+I managed to track down the first bad commit using git bisect:<br />
+<br />
+<br />
+commit 8c87b7cb57953a4da7abb7bc623880c046f19d6e<br />
+Author: Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+Date:   Mon Sep 21 16:29:19 2009 +0200<br />
+<br />
+screen: store RandR information<br />
+<br />
+Signed-off-by: Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+<br />
+<br />
+Regards,<br />
+Wael Nasreddine</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Wednesday, 21 July 2010, 15:32 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+e830df60920496670ab29d5307f3ef5c1dab1d97
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Wed Jul 21 14:46:49 2010
++0200<br />
+<br />
+    Screen: Only use Xrandr if it
+provides data<br />
+    <br />
+    This commit makes awesome ignore the
+screen geometry provided by Xrandr if
+it<br />
+    only defines a single screen. This
+should work around nvidia&#039;s binary
+driver<br />
+    which only provides useful data via
+Xinerama.<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2114" id="comment2114"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2114">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=510">Wael Nasreddine (eMxyzptlk)</a> -
+    Thursday, 08 July 2010, 11:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The first bad commit in 2009 is very weird, but I did a git bisect, and I did make and startx on each commit, the result was this commit, weird no?<br />
+<br />
+I&#039;m going to try another run at this and try to find a closer commit...</div></div>
+
+  
+    <em>
+    <a name="comment2115" id="comment2115"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2115">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 08 July 2010, 14:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That commit was written in 2009, but the patch was committed to git master only &quot;recently&quot;:<br />
+ $ git show --format=fuller 8c87b7c | head -n 5<br />
+commit 8c87b7cb57953a4da7abb7bc623880c046f19d6e<br />
+Author:     Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+AuthorDate: Mon Sep 21 16:29:19 2009 +0200<br />
+Commit:     Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+CommitDate: Fri May 28 13:26:17 2010 +0200<br />
+<br />
+This issue was already discussed on the mailing list:<a href=" http://thread.gmane.org/gmane.comp.window-managers.awesome.devel/5207"> http://thread.gmane.org/gmane.comp.window-managers.awesome.devel/5207</a><br />
+The problem can be seen here:<a href=" http://article.gmane.org/gmane.comp.window-managers.awesome.devel/5219"> http://article.gmane.org/gmane.comp.window-managers.awesome.devel/5219</a><br />
+<br />
+&lt;quote&gt;<br />
+&gt; Does &quot;xrandr&quot; (the cli command) only print a single screen, too?<br />
+<br />
+Yep, one big-ass screen. Can&#039;t use xrandr at all with the nvidia<br />
+driver -- have to use their GUI (their gui&#039;s CLI actually doesn&#039;t work<br />
+as advertised in my experience. Yes, this sucks. But their driver is<br />
+still worth it.)<br />
+&lt;/quote&gt;<br />
+<br />
+Basically, there are multiple ways to announce multiple screens in X11. The old core protocol stuff isn&#039;t used anywhere, these days the Xinerama and RandR extensions are used for querying this data.<br />
+Xinerama only provides you with some simple data while RandR is more sophiscated and also allows changing the setup dynamically.<br />
+<br />
+Older versions of awesome only used Xinerama, but somewhere around the commit you pointed at, awesome started using the RandR data if available.<br />
+The problem is that the NVIDIA driver only announces the correct info through Xinerama. When you ask RandR, it tells you that there is only one big screen. And awesome does believe this.</div></div>
+
+  
+    <em>
+    <a name="comment2116" id="comment2116"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2116">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=510">Wael Nasreddine (eMxyzptlk)</a> -
+    Thursday, 08 July 2010, 14:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for the info Uli and I haven&#039;t had any success with Nvidia&#039;s GUI either, I&#039;ve tried that at first because I thought it was disper&#039;s fault... I use disper because XrandR never worked for me either..<br />
+<br /><a href="
+    http://willem.engen.nl/projects/disper/">
+    http://willem.engen.nl/projects/disper/</a><br />
+<br />
+I hope you guys figure out a decent fix for it before the next release, until then I&#039;m forced to use 3.4.5 or to revert this commit (not tested)<br />
+<br />
+- Wael</div></div>
+
+  
+    <em>
+    <a name="comment2141" id="comment2141"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2141">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 21 July 2010, 11:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">We could add a command line switch to let people work around this. Something like &quot;--display-detection=randr&quot; and &quot;--display-detection=xinerama&quot;. Should it be &quot;screen&quot; instead of &quot;display&quot;? Is this a good idea at all?<br />
+The situation just can&#039;t stay as-is. And removing the Xrandr code again would mean to reopen some other bug report...<br />
+<br />
+Opinions? If no one speaks up, I&#039;ll hack up a command line switch. That&#039;s better than people having to patch the source code.</div></div>
+
+  
+    <em>
+    <a name="comment2142" id="comment2142"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2142">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 21 July 2010, 11:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just had an idea.<br />
+<br />
+The current situation is:<br />
+- If Xrandr is available, use it<br />
+- Else check if Xinerama is available and use it<br />
+- Else assume a single screen<br />
+<br />
+We could change this into something like this:<br />
+- If Xrandr is available and reports more than one screen, use it<br />
+- Else check if Xinerama is available and use it (No point in checking if there is more than one screen here, doesnt make a difference anyway)<br />
+- Else assume a single screen</div></div>
+
+  
+    <em>
+    <a name="comment2143" id="comment2143"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#comment2143">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=510">Wael Nasreddine (eMxyzptlk)</a> -
+    Wednesday, 21 July 2010, 12:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I would love any solution as long as it&#039;s not me patching the source code and keeping a tree myself to maintain, maintaining trees at work is enough :). Anyway for now I&#039;m stuck at version 3.4.5 and I&#039;m not in any hurry to update and break my screen setup which is essential for my work...</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=784#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="784" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

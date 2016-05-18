@@ -1,0 +1,26 @@
+From 09e4135619e78da9e0ec7b475001669db7ec0872 Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Thu, 8 Sep 2011 01:53:51 +0200
+Subject: [PATCH] wibox.widget.textbox bugfix:get layout before using it
+
+---
+ lib/wibox/widget/textbox.lua.in |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/lib/wibox/widget/textbox.lua.in b/lib/wibox/widget/textbox.lua.in
+index b42e861..bf95931 100644
+--- a/lib/wibox/widget/textbox.lua.in
++++ b/lib/wibox/widget/textbox.lua.in
+@@ -48,7 +48,8 @@ end
+ 
+ --- Draw the given textbox on the given cairo context in the given geometry
+ function draw(box, wibox, cr, width, height)
+-    layout_update(cr, box._layout)
++    local layout = box._layout
++    layout_update(cr, layout)
+     local ink, logical = layout:get_pixel_extents()
+     local offset = 0
+     if box._valign == "center" then
+-- 
+1.7.5.4
+

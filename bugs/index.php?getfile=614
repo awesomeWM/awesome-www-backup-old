@@ -1,0 +1,56 @@
+diff --git a/mouse.c b/mouse.c
+index 5e2cbbe..73f952c 100644
+--- a/mouse.c
++++ b/mouse.c
+@@ -44,7 +44,10 @@ mouse_query_pointer(xcb_window_t window, int16_t *x, int16_t *y, xcb_window_t *c
+     query_ptr_r = xcb_query_pointer_reply(globalconf.connection, query_ptr_c, NULL);
+ 
+     if(!query_ptr_r || !query_ptr_r->same_screen)
++    {
++        p_delete(&query_ptr_r);
+         return false;
++    }
+ 
+     *x = query_ptr_r->win_x;
+     *y = query_ptr_r->win_y;
+@@ -70,6 +73,14 @@ mouse_query_pointer_root(int16_t *x, int16_t *y, xcb_window_t *child)
+     return mouse_query_pointer(globalconf.screen->root, x, y, child);
+ }
+ 
++/* TODO: Ugly hack */
++bool
++mouse_pointer_owned(void)
++{
++    int16_t x, y;
++    return mouse_query_pointer_root(&x, &y, NULL);
++}
++
+ /** Set the pointer position.
+  * \param window The destination window.
+  * \param x X-coordinate inside window.
+diff --git a/mouse.h b/mouse.h
+index 99501b7..7bb3269 100644
+--- a/mouse.h
++++ b/mouse.h
+@@ -27,6 +27,7 @@
+ #include <lua.h>
+ 
+ int luaA_mouse_pushstatus(lua_State *, int, int);
++bool mouse_pointer_owned(void);
+ 
+ #endif
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
+diff --git a/objects/client.c b/objects/client.c
+index caefe80..ce3f077 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -340,6 +340,9 @@ client_focus_refresh(void)
+     client_t *c = globalconf.focus.client;
+     xcb_window_t win = globalconf.screen->root;
+ 
++    if (!mouse_pointer_owned())
++        return;
++
+     if(!globalconf.focus.need_update)
+         return;
+     globalconf.focus.need_update = false;

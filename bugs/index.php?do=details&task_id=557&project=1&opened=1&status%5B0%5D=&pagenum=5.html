@@ -1,0 +1,605 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#557 : Move away D-Bus support</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=557&amp;project=1&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=5" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=592&amp;project=1&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=5" title="Assigned | Add auto-documentation | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=5">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#557 - Move away D-Bus support  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>     	 - Friday, 10 July 2009, 16:13 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Evolution Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 New               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">2 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> (2011-11-22)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> (2011-01-06)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Currently, awesome provides a set of D-Bus function to Lua to provide direct access to the bus.<br />
+<br />
+This is totally unrelated to awesome and the C code exporting the dbus module should be moved away to a lua-dbus module.<br />
+<br />
+Such a project does not exist yet, but creating would allow any Lua application to use D-Bus, rather than having it only in awesome.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (14)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1298" id="comment1298"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment1298">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Friday, 10 July 2009, 17:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">there does seem to be a project like this, however stalled and far from finished <br />
+<br /><a href="
+http://luaforge.net/plugins/scmcvs/cvsweb.php/lua-dbus/?cvsroot=lua-dbus">
+http://luaforge.net/plugins/scmcvs/cvsweb.php/lua-dbus/?cvsroot=lua-dbus</a></div></div>
+
+  
+    <em>
+    <a name="comment1305" id="comment1305"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment1305">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 01 August 2009, 14:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yeah, I just found<a href=" http://luaforge.net/projects/lua-dbus/"> http://luaforge.net/projects/lua-dbus/</a> too and remembered this.<br />
+<br />
+A problem which I see is that this lua library needs a way to wake up awesome (=register with libev). I don&#039;t know how a general purpose library would do this. I guess this is almost impossible....</div></div>
+
+  
+    <em>
+    <a name="comment2246" id="comment2246"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2246">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 17 August 2010, 15:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This is a test. Sorry, but please ignore this.</div></div>
+
+  
+    <em>
+    <a name="comment2482" id="comment2482"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2482">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> -
+    Thursday, 06 January 2011, 12:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I took a look at lua-dbus in luaforge. The last commit was 23 months ago, and the note in README put me in doubt:<br />
+<br />
+[quote]this binding is in no way usable at this stage. I don&#039;t even provide a makefile, this is just an &quot;initial commit&quot; version.[/quote]<br />
+<br />
+Yet, I have just found simpledbus project in github.com at<a href=" https://github.com/esmil/simpledbus"> https://github.com/esmil/simpledbus</a><br />
+It looks more alive, IMHO. Is it worth to try out?</div></div>
+
+  
+    <em>
+    <a name="comment2483" id="comment2483"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2483">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> -
+    Thursday, 06 January 2011, 14:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve cloned it to my github account at<a href=" https://github.com/kstep/simpledbus"> https://github.com/kstep/simpledbus</a> and hacked it a little, so I can send method requests w/o waiting for reply.<br />
+Now I managed to make method request from within awesome with the following code:<br />
+<br />
+local dbus = require(&quot;simpledbus&quot;)<br />
+local bus = dbus.SessionBus()<br />
+function set_layout(layout)<br />
+    -- dest, path, iface, member, no-reply flag, signature, arg0  (layout number)<br />
+    return bus:call_method(&#039;ru.gentoo.kbdd&#039;, &#039;/ru/gentoo/kbdd&#039;, &#039;ru.gentoo.kbdd&#039;, &#039;set_layout&#039;, true, &#039;u&#039;, layout or 0)<br />
+end<br />
+<br />
+set_layout(1)<br />
+<br />
+This code is to control current keyboard layout with kbdd (https://awesome.naquadah.org/wiki/Keyboard_layouts_with_kbdd).<br />
+Works like a charm for me.<br /></div></div>
+
+  
+    <em>
+    <a name="comment2484" id="comment2484"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2484">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 06 January 2011, 19:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So far I only took a quick look at it, but it seems like this wants to replace your main loop or else it wouldn&#039;t work. No idea how that could be done with awesome...</div></div>
+
+  
+    <em>
+    <a name="comment2485" id="comment2485"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2485">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> -
+    Thursday, 06 January 2011, 23:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I use it to send D-BUS requests, and builtin Awesome D-BUS bindings to listen to signals.<br />
+It works this way w/o need to replace main loop (with a small patch to avoid blocking method calls).<br />
+Maybe this can help?</div></div>
+
+  
+    <em>
+    <a name="comment2487" id="comment2487"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2487">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 07 January 2011, 15:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The idea with this bug is to remove as much as possible / all dbus-related code from awesome&#039;s C core and have all of that be handled by a library. So I&#039;d really be interested in having it all work with simpledbus.<br />
+From what I could see from the examples, simpledbus provides a way more highlevel API instead of the lowlevel mess you get from awesome, so that would be a big plus, too. (I.e. instead of hand-writing the introspection XML, you can create objects that are exported to dbus)</div></div>
+
+  
+    <em>
+    <a name="comment2488" id="comment2488"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2488">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> -
+    Saturday, 08 January 2011, 17:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I see. So the main problem is in junction point between dbus library and awesome, namely in main loop, needed to listen to dbus events.<br />
+As I can get it, it&#039;s very difficult to run signal handlers in awesome&#039;s context, instead of dbus library context, as this main loop must be somehow moved from awesome private code into alien library. But maybe we can leave some thin glue code in awesome to interface with other library? Just the point to start from. I can&#039;t think of better alternatives yet, sorry.</div></div>
+
+  
+    <em>
+    <a name="comment2489" id="comment2489"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2489">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 08 January 2011, 17:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yeah, I guess having some kind of API for &quot;when this file descriptor ir readable or writable, call this callback&quot; should be enough.<br />
+Alternatively there could be a C function in the dbus library for this kind of thing and awesome would then link against the lua dbus library and do the integration that way.<br />
+<br />
+None of these two approaches works for the current state of simpledbus, I guess.</div></div>
+
+  
+    <em>
+    <a name="comment2521" id="comment2521"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2521">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> -
+    Friday, 04 February 2011, 18:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I contacted SimpleDBus author on Github to ask him to pull my patch to avoid<br />
+blocking DBUS-calls, and today I received the following answer:<br />
+<br />
+=====<br />
+First of all, sorry for the late reply. Your patch looks fine.                                                                             <br />
+                                                                                                                                           <br />
+There is, however, a big design flaw in SimpleDBus. Having a special purpose<br />
+mainloop in a library is a very bad idea. It means you can&#039;t  really do other<br />
+io properly while it runs.                                                                                                <br />
+                                                                                                                                           <br />
+Hence I wrote a Lua Event Machine (lem), which has a built-in eventloop, which<br />
+modules can hook into, and I&#039;ve now rewritten SimpleDBus to a dbus module for<br />
+that.                                                                                                                   <br />
+                                                                                                                                           <br />
+This, however, can&#039;t be used inside Awesome. To do this properly you&#039;d need to<br />
+rewrite SimpleDBus so you keep your mainloop in Lua, sort of like the luasocket<br />
+library does. Either that, or just cut down SimpleDBus so it can only send<br />
+signals and do blocking or fire-and-forget  method calls.                                                                                                                             <br />
+                                                                                                                                           <br />
+I, however, have no intention of doing that, which is why I&#039;m abandoning<br />
+SimpleDBus. You are of course very welcome to keep your fork and  develop on<br />
+it.                                                                                                                            <br />
+                                                                                                                                           <br />
+/Emil<br />
+=====<br />
+<br />
+So SimpleDBus can be considered abandoned by now. We can either adapt it to our<br />
+needs freely and support it for our own good, or discard it due to lack of original<br />
+developer&#039;s support.<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment2522" id="comment2522"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2522">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 February 2011, 18:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I guess he means<a href=" https://github.com/esmil/lem-dbus"> https://github.com/esmil/lem-dbus</a><br />
+I haven&#039;t looked into it yet, but if this already has some sort of mainloop which can also work with other stuff, perhaps we could make awesome imitate that event loop or perhaps even use it inside of awesome?<br />
+Besides dbus, awesome only really has to handle the X11 connection and timer objects. That doesn&#039;t sound like something way too complicated to me...</div></div>
+
+  
+    <em>
+    <a name="comment2773" id="comment2773"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2773">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=653">Hanspeter Portner (ventosus)</a> -
+    Tuesday, 22 November 2011, 10:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I am on the way of writing exactly such a small Lua library, as I was in the need of Lua DBus bindings to write an awesome widget for ConnMan (http://connman.net).<br />
+The bindings feature a non-blocking iterative main loop, which can be called as an awesome timer callback.<br />
+The code builds on e_dbus from the enlightenment project, as it features a cleaner DBus API than glib, and the DBus low-level C_API is cumbersome to use directly.<br />
+<br />
+It&#039;s Pre-Alpha and not feature-complete, it only implements the DBus client functions so far, as this is enough to build awesome widgets.<br />
+- send signals<br />
+- call methods<br />
+- add signal callbacks<br />
+But the server functions are to come...<br />
+<br />
+Lua DBus bindings:<a href="      git://git.code.sf.net/p/ldbus/code">      git://git.code.sf.net/p/ldbus/code</a><br />
+awesome ConnMan widget:<a href=" git://git.code.sf.net/p/ldbus/connman"> git://git.code.sf.net/p/ldbus/connman</a><br />
+<br />
+As I specifically develop it to work well with awesome, I can include any wishes, as long as the goal o keep it as simple and unbloated as possible, is fulfilled.</div></div>
+
+  
+    <em>
+    <a name="comment2778" id="comment2778"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#comment2778">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 23 November 2011, 16:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If you want to integrate this with awesome, I&#039;d suggest using lua-ev for your event loop:<a href=" https://github.com/brimworks/lua-ev"> https://github.com/brimworks/lua-ev</a><br />
+You can access libev&#039;s default loop via (I think) ev.loop.default. Since awesome uses libev&#039;s default loop, too, that will magically make everything work.<br />
+<br />
+So why this whole stunt? It would allow integrating this nicely with awesome&#039;s main loop without any hacks like an awesome timer callback. Another plus-point would be that youd have no awesome-specific code at all, so this could then be easily used without awesome.<br />
+<br />
+Sadly, brimworks&#039; lua-ev version doesn&#039;t work if it can&#039;t call ev_loop() itself. My fork of it contains a patch which makes it work with awesome.<br />
+<br />
+<br />
+Now that I said the above:<br />
+Yay! Thanks for writing dbus bindings! As soon as it can replace awesome&#039;s built-in dbus code, I&#039;d hapily remove dbus.c from awesome.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=557#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="557" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

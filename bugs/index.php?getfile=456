@@ -1,0 +1,34 @@
+From 50d366dfc5091af3ea09a4cc20980198470145e7 Mon Sep 17 00:00:00 2001
+From: Perry Hargrave <resixian@gmail.com>
+Date: Wed, 9 Nov 2011 12:34:30 -0800
+Subject: [PATCH 1/2] Prevent util.cycle from infinite loop (FS#938)
+
+If the first argument to cycle must be > 1 or else return nil
+immediately.
+
+Signed-off-by: Perry Hargrave <resixian@gmail.com>
+---
+ lib/awful/util.lua.in |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/lib/awful/util.lua.in b/lib/awful/util.lua.in
+index fb813d6..ce14e32 100644
+--- a/lib/awful/util.lua.in
++++ b/lib/awful/util.lua.in
+@@ -50,10 +50,11 @@ function color_strip_alpha(color)
+ end
+ 
+ --- Make i cycle.
+--- @param t A length.
++-- @param t A length. Must be greater than zero.
+ -- @param i An absolute index to fit into #t.
+--- @return The object at new index.
++-- @return An integer in (1, t) or nil if t is less than or equal to zero.
+ function cycle(t, i)
++    if t < 1 then return end
+     while i > t do i = i - t end
+     while i < 1 do i = i + t end
+     return i
+-- 
+1.7.7.2
+

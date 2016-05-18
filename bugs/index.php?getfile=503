@@ -1,0 +1,36 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index db1f074..77f2ebc 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -148,6 +148,22 @@ mytasklist.buttons = awful.util.table.join(
+                                               if client.focus then client.focus:raise() end
+                                           end))
+ 
++local foo = awful.widget.graph()
++foo:set_color("#ff000080") -- 50% transparent red
++foo:set_background_color("#00ff0080") -- 50% transparent green
++local bar = awful.widget.graph()
++bar:set_stack(true)
++bar:set_stack_colors({
++    "#ff000080", -- 50% transparent red
++    "#0000ff80", -- 50% transparent blue
++})
++bar:set_background_color("#00ff0080") -- 50% transparent green
++for i = 0, 100 do
++    foo:add_value(i/100)
++    bar:add_value(i/200, 1)
++    bar:add_value(0.5 - i/200, 2)
++end
++
+ for s = 1, screen.count() do
+     -- Create a promptbox for each screen
+     mypromptbox[s] = awful.widget.prompt()
+@@ -173,6 +189,8 @@ for s = 1, screen.count() do
+     left_layout:add(mylauncher)
+     left_layout:add(mytaglist[s])
+     left_layout:add(mypromptbox[s])
++    left_layout:add(foo)
++    left_layout:add(bar)
+ 
+     -- Widgets that are aligned to the right
+     local right_layout = wibox.layout.fixed.horizontal()

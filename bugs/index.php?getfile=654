@@ -1,0 +1,16 @@
+diff --git a/objects/client.c b/objects/client.c
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -759,6 +759,12 @@
+         real_geometry.width -= c->titlebar[CLIENT_TITLEBAR_RIGHT].size;
+         real_geometry.height -= c->titlebar[CLIENT_TITLEBAR_TOP].size;
+         real_geometry.height -= c->titlebar[CLIENT_TITLEBAR_BOTTOM].size;
++
++        real_geometry.x += c->border_width;
++        real_geometry.y += c->border_width;
++        real_geometry.width -= 2*c->border_width;
++        real_geometry.height -= 2*c->border_width;
++
+     } else {
+         real_geometry.x = 0;
+         real_geometry.y = 0;

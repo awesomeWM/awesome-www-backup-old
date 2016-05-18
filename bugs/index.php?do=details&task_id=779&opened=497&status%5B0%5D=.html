@@ -1,0 +1,668 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#779 : Restarting awesome loses all the window in non-active tags</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=779&amp;opened=497&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=497&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity4">
+	 FS#779 - Restarting awesome loses all the window in non-active tags  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=497">Nicolas Dumazet (NicDumZ)</a>     	 - Friday, 11 June 2010, 14:56 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 22 July 2010, 19:00 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">High</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.5</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">3 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=505">Benoit Pierre (bpierre)</a> (2010-07-01)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> (2010-06-18)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=499">Gwilhem (gwip)</a> (2010-06-13)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Hello. This is related to the discussion on<a href=" http://www.mail-archive.com/<a href="mailto:awesome@naquadah.org">awesome@naquadah.org</a>/msg02836.html"> http://www.mail-archive.com/<a href="mailto:awesome@naquadah.org">awesome@naquadah.org</a>/msg02836.html</a><br />
+<br />
+How to reproduce?<br />
+* at least two tags, open an application in tag #1, another one in tag #2<br />
+* activate only tag #1<br />
+* restart<br />
+<br />
+-&gt; only the window from tag #1 will resurrect, when we expect all windows to come back.<br />
+<br />
+Applications are not killed: lsw can find them.<br />
+<br />
+Unable to test on git/master as it&#039;s unstable for me. Downgrading to 3.4.4 fixes the issue.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 22 July 2010, 19:00 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;I got convincing reports that this bug
+was fixed. Feel free to reopen if it
+still happens. (Also, this bug should
+only happen if awesome wasn&#039;t
+closed properly)<br />
+<br />
+commit
+58f79dca8a85bea6110568e5aa2c327dd5a4e438
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Wed Jul 14 21:35:06 2010
++0200<br />
+<br />
+    Add all managed client windows to
+the safe set<br />
+    <br />
+    When an application loses its
+connection to the X11 server, all the
+windows in<br />
+    its save-set are saved by
+reparenting them back to their closest
+ancestor. Also,<br />
+    to they are unconditionally mapped.
+This second property is exactly what
+we<br />
+    need: All windows should be in
+mapped state, else the next window
+manager which<br />
+    starts up won&#039;t be managing
+them.<br />
+    <br />
+    This should fix all bugs where
+clients where lost due to a restart,
+yay! :)<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (16)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2045" id="comment2045"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2045">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 15:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not reproducable in git master :(<br />
+Started two rxvt-unicode with the default rc.lua, one on tag 1, the other on tag 2. After restart they stayed where I put them.<br />
+<br />
+I made the attached patch which shows the reasons why awesome ignores windows. This also found a semi-bug, but that one is boring and unimportant...<br />
+Could someone who sees this bug try out the attached patch? I have no idea if it applies to other versions, it&#039;s written against git master.</div></div>
+
+      <div class="attachments">
+          <a title="patch" href="?getfile=320" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            patch
+                  </a>
+                  (1.5 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2055" id="comment2055"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2055">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> -
+    Friday, 11 June 2010, 20:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I use the clients menu to bring them back to focus. See<a href=" http://awesome.naquadah.org/wiki/FAQ#How_to_add_an_application_switcher.3F"> http://awesome.naquadah.org/wiki/FAQ#How_to_add_an_application_switcher.3F</a></div></div>
+
+  
+    <em>
+    <a name="comment2056" id="comment2056"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2056">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 06:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, the missing clients show up in the clients menu for you?<br />
+Seems like I misinterpreted the bug, does the clients menu work for everyone who is seeing this? (still not reproducable btw :P)</div></div>
+
+  
+    <em>
+    <a name="comment2058" id="comment2058"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2058">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=497">Nicolas Dumazet (NicDumZ)</a> -
+    Saturday, 12 June 2010, 08:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Nope, clients menu do not list the windows.<br />
+<br />
+Strangely enough, I cant reproduce the issue anymore. I wonder if it was not a consequence of the upgrade, with some resources not properly restarted?<br />
+I&#039;ll report back in 2 days, see if this ever happens again. If it does not, bug can probably closed as invalid, and I&#039;ll apologize for the noise :)</div></div>
+
+  
+    <em>
+    <a name="comment2060" id="comment2060"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2060">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> -
+    Saturday, 12 June 2010, 13:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It is certainly not invalid. I don&#039;t see it on every restart, but when it does happen it is devastating, all my work dissapears. I found that clients menu did bring back my windows.</div></div>
+
+  
+    <em>
+    <a name="comment2064" id="comment2064"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2064">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 19:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You don&#039;t happen to create tags dynamically, do you?<br />
+Awesome saves a client&#039;s current tag in some X11 property and restores the tag again after restart. This might go wrong if the number of tags is lower than before.<br />
+<br />
+Besides that, I don&#039;t have any idea WTF is going on. The client showing up in the clients menu means that awesome does handle the client, but it&#039;s just banned because it&#039;s not associated with any tags. :/</div></div>
+
+  
+    <em>
+    <a name="comment2079" id="comment2079"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2079">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=200">Gregor Best (farhaven)</a> -
+    Saturday, 12 June 2010, 20:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That&#039;d actually make some sense, because I for example have been experiencing this only since I started using dynamic tags. Reminds me, I wanted to fix that X property some time ago. Right now, if you have a client on tag #3 and remove it, the property will still report it on tag #3 instead of tag #2. Maybe that could be massaged into the same patch if someone (or me if I&#039;m bored enough some time) decides to fix this.</div></div>
+
+  
+    <em>
+    <a name="comment2082" id="comment2082"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2082">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 13 June 2010, 06:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@gregor: Uhm, what?<br />
+You have a client on tag #3 and then untag it, meaning it got no more tags at all? Why would _NET_WM_DESKTOP be set to 2?</div></div>
+
+  
+    <em>
+    <a name="comment2088" id="comment2088"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2088">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=200">Gregor Best (farhaven)</a> -
+    Sunday, 13 June 2010, 09:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">No, not that. The clients tag list is unchanged. I mean I get the screens tag list via screen[x]:tags(), remove one tag from that and reapply the list with screen[x]:tags(t).</div></div>
+
+  
+    <em>
+    <a name="comment2090" id="comment2090"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2090">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 13 June 2010, 10:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@gregor: Sounds like a different bug, not this one.</div></div>
+
+  
+    <em>
+    <a name="comment2095" id="comment2095"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2095">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=491">Yves Frederix (yves)</a> -
+    Sunday, 13 June 2010, 11:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Still happens here (git 6e6a07b660): make sure nm-applet is running, start xterm on tag#2, go to tag#1, restart awesome a couple of times and the xterm disappears. It&#039;s still running but no longer shows up in the client menu. Is this related to bug #769?</div></div>
+
+  
+    <em>
+    <a name="comment2096" id="comment2096"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2096">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=497">Nicolas Dumazet (NicDumZ)</a> -
+    Sunday, 13 June 2010, 11:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Actually, I just reproduced this on 3.4.5 several times.<br />
+<br />
+nm-applet is not involved for me.<br />
+<br />
+I also noticed that sometimes even the apps on the active tag disappear.<br />
+<br />
+This time, I had only pidgin opened on tag #1 (which happens to use a tray icon -- would this be the link?). Hit my shortcut to restart awesome a dozen of times until the bug is triggered.<br />
+If I right-click on the toolbar (clients menu), pidgin is not listed. I can however restore the window from the tray icon, and reproduce the bug over and over.</div></div>
+
+  
+    <em>
+    <a name="comment2098" id="comment2098"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2098">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 13 June 2010, 14:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I wrote a small test application. Could you run it when all the windows are created, then restart awesome until something is missing and then run this app again? The result might be helpful.<br />
+<br />
+For compiling it:<br />
+gcc -o xlstree $(pkg-config --cflags --libs xcb xcb-property xcb-atom) xlstree.c</div></div>
+
+      <div class="attachments">
+          <a title="xlstree.c" href="?getfile=324" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            xlstree.c
+                  </a>
+                  (3.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2099" id="comment2099"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2099">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=497">Nicolas Dumazet (NicDumZ)</a> -
+    Sunday, 13 June 2010, 14:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sure, here you are.<br />
+Reproduced with a terminal and pidgin in tag #1, restart, and only the terminal stays.<br />
+<br />
+Let me know if other combinations/tests would be helpful.</div></div>
+
+      <div class="attachments">
+          <a title="before" href="?getfile=325" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            before
+                  </a>
+                  (1.8 KiB)
+          <br />
+          <a title="after" href="?getfile=326" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            after
+                  </a>
+                  (1.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2100" id="comment2100"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2100">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 13 June 2010, 14:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for that data, looks boring. Judging from that, awesome should be managing the window. Only the order of stuff changed. :(<br />
+<br />
+@NicDumZ: Do you happen to run a 64bit system?<br />
+<br />
+@jd: At some places we use xcb_change_property() with format 32 and an int pointer, at other places we use a long pointer. Could this cause issues?</div></div>
+
+  
+    <em>
+    <a name="comment2101" id="comment2101"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#comment2101">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=497">Nicolas Dumazet (NicDumZ)</a> -
+    Sunday, 13 June 2010, 14:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Nope, that&#039;s a 32bit machine :)</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=779#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="779" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

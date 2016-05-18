@@ -1,0 +1,52 @@
+From 5481d365c989f48680b54d6190720c3398802a94 Mon Sep 17 00:00:00 2001
+From: Perry Hargrave <resixian@gmail.com>
+Date: Thu, 12 May 2011 10:30:21 -0700
+Subject: [PATCH] awful.client.jumpto: View urgent clients smarter
+
+Only do a tag.viewonly() if the urgent client is not visible.
+
+Further, if the boolean 'merge' parameter is true [default false], then
+to a tag.viewmore() with all the currently visible tags.
+---
+ lib/awful/client.lua.in |   17 +++++++++++++----
+ 1 files changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/lib/awful/client.lua.in b/lib/awful/client.lua.in
+index 0ab5f13..1dceaf3 100644
+--- a/lib/awful/client.lua.in
++++ b/lib/awful/client.lua.in
+@@ -56,18 +56,27 @@ function urgent.get()
+ end
+ 
+ --- Jump to the client that received the urgent hint first.
+-function urgent.jumpto()
++-- @param merge If true then merge tags when clients are not visible.
++function urgent.jumpto(merge)
+     local c = urgent.get()
++    local merge = merge or false
+     if c then
+         local s = capi.client.focus and capi.client.focus.screen or capi.mouse.screen
+         -- focus the screen
+         if s ~= c.screen then
+             capi.mouse.screen = c.screen
+         end
+-        -- focus the tag only if the client is not sticky
+-        if not c.sticky then
+-           tag.viewonly(c:tags()[1])
++
++        if not c:isvisible() then
++            if merge then
++                tag.viewmore(util.table.join(tag.selectedlist(c.screen),
++                                             {c:tags()[1]}),
++                            c.screen)
++            else
++                tag.viewonly(c:tags()[1])
++            end
+         end
++
+         -- focus the client
+         capi.client.focus = c
+         c:raise()
+-- 
+1.7.5.1
+

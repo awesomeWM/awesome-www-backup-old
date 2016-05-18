@@ -1,0 +1,248 @@
+From 342051ad40b71342691b3fa0a0cc9d751cf12176 Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Thu, 14 Apr 2011 07:04:48 +0200
+Subject: [PATCH] add set_font to wibox.widget.textbox
+
+---
+ lib/awful/menu.lua.in           |    2 +
+ lib/awful/prompt.lua.in         |   10 +++++---
+ lib/awful/tooltip.lua.in        |    3 +-
+ lib/awful/wibox.lua.in          |    4 +-
+ lib/beautiful.lua.in            |   44 ++++++++++++++++++++++++++------------
+ lib/naughty.lua.in              |    5 ++-
+ lib/wibox/widget/textbox.lua.in |   13 ++++++-----
+ 7 files changed, 52 insertions(+), 29 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 9cfbd66..105cd1d 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -88,6 +88,7 @@ local function load_theme(a, b)
+                  fallback.menu_height or 16
+     ret.width = a.width or b.menu_width or b.width or
+                 fallback.menu_width or 100
++    ret.font = a.font or b.font or fallback.font
+     for _, prop in ipairs({"width", "height", "menu_width"}) do
+         if type(ret[prop]) ~= "number" then ret[prop] = tonumber(ret[prop]) end
+     end
+@@ -504,6 +505,7 @@ function entry(parent, args)
+     -- Create the item label widget
+     local label = wibox.widget.textbox()
+     local key = ''
++    label:set_font(args.theme.font)
+     label:set_markup(string.gsub(
+         util.escape(args.text), "&amp;(%w)",
+         function (l)
+diff --git a/lib/awful/prompt.lua.in b/lib/awful/prompt.lua.in
+index d822c3e..67af490 100644
+--- a/lib/awful/prompt.lua.in
++++ b/lib/awful/prompt.lua.in
+@@ -138,7 +138,6 @@ local function prompt_text_with_cursor(args)
+     end
+ 
+     ret = prompt .. text_start .. "<span background=\"" .. util.color_strip_alpha(args.cursor_color) .. "\" foreground=\"" .. util.color_strip_alpha(args.text_color) .. "\" underline=\"" .. underline .. "\">" .. char .. "</span>" .. text_end .. spacer
+-    if args.font then ret = "<span font_desc='" .. args.font .. "'>" .. ret .. "</span>" end
+     return ret
+ end
+ 
+@@ -173,10 +172,11 @@ function run(args, textbox, exe_callback, completion_callback, history_path, his
+     if not textbox or not exe_callback then
+         return
+     end
++    textbox:set_font(font)
+     textbox:set_markup(prompt_text_with_cursor{
+         text = text, text_color = inv_col, cursor_color = cur_col,
+         cursor_pos = cur_pos, cursor_ul = cur_ul, selectall = selectall,
+-        font = font, prompt = prettyprompt })
++        prompt = prettyprompt })
+ 
+     local exec = function()
+         textbox:set_markup("")
+@@ -261,10 +261,11 @@ function run(args, textbox, exe_callback, completion_callback, history_path, his
+                         if ncomp == 1 then return true end
+                         if ncomp == 2 then
+                             command = command_before_comp
++                            textbox:set_font(font)
+                             textbox:set_markup(prompt_text_with_cursor{
+                                 text = command_before_comp, text_color = inv_col, cursor_color = cur_col,
+                                 cursor_pos = cur_pos, cursor_ul = cur_ul, selectall = selectall,
+-                                font = font, prompt = prettyprompt })
++                                prompt = prettyprompt })
+                             return true
+                         end
+ 
+@@ -352,10 +353,11 @@ function run(args, textbox, exe_callback, completion_callback, history_path, his
+ 
+         -- Update textbox
+         local function update()
++            textbox:set_font(font)
+             textbox:set_markup(prompt_text_with_cursor{
+                 text = command, text_color = inv_col, cursor_color = cur_col,
+                 cursor_pos = cur_pos, cursor_ul = cur_ul, selectall = selectall,
+-                font = font, prompt = prettyprompt })
++                prompt = prettyprompt })
+         end
+ 
+         local success = pcall(update)
+diff --git a/lib/awful/tooltip.lua.in b/lib/awful/tooltip.lua.in
+index 56982a0..a34b509 100644
+--- a/lib/awful/tooltip.lua.in
++++ b/lib/awful/tooltip.lua.in
+@@ -123,8 +123,9 @@ end
+ -- @param self The tooltip object.
+ -- @param text New tooltip text.
+ local function set_text(self, text)
++    self.widget:set_font(data[self].font)
+     self.widget:set_markup('<span color="' .. data[self].fg
+-        .. '" font_desc="' .. data[self].font .. '">' .. text .. "</span>")
++        .. '">' .. text .. "</span>")
+ end
+ 
+ --- Change the tooltip's update interval.
+diff --git a/lib/awful/wibox.lua.in b/lib/awful/wibox.lua.in
+index ab6a908..d0ea9a3 100644
+--- a/lib/awful/wibox.lua.in
++++ b/lib/awful/wibox.lua.in
+@@ -225,7 +225,7 @@ function new(arg)
+ 
+     -- Set default size
+     if position == "left" or position == "right" then
+-        arg.width = arg.width or beautiful.get_font_height() * 1.5
++        arg.width = arg.width or beautiful.get_font_height(arg.font) * 1.5
+         if arg.height then
+             has_to_stretch = false
+             if arg.screen then
+@@ -236,7 +236,7 @@ function new(arg)
+             end
+         end
+     else
+-        arg.height = arg.height or beautiful.get_font_height() * 1.5
++        arg.height = arg.height or beautiful.get_font_height(arg.font) * 1.5
+         if arg.width then
+             has_to_stretch = false
+             if arg.screen then
+diff --git a/lib/beautiful.lua.in b/lib/beautiful.lua.in
+index f912a39..f0c0901 100644
+--- a/lib/beautiful.lua.in
++++ b/lib/beautiful.lua.in
+@@ -27,19 +27,20 @@ module("beautiful")
+ 
+ -- Local data
+ local theme
+-local font
+-local font_height
+-
+-function get_font()
+-    return font
+-end
+-
+-function get_font_height()
+-    return font_height
+-end
+-
+-local function set_font(f)
+-    font = capi.oopango.font_description_from_string(f)
++local descs = {}
++local fonts = {}
++local active_font
++
++local function load_font(name)
++    name = name or active_font
++    if name and type(name) ~= "string" and descs[name] then
++        name = descs[name]
++    end
++    if fonts[name] then
++        return fonts[name]
++    end
++    -- load new font
++    local desc = capi.oopango.font_description_from_string(name)
+ 
+     -- Create a temporary surface that we need for computing the size :(
+     local surface = capi.oocairo.image_surface_create("argb32", 1, 1)
+@@ -52,10 +53,25 @@ local function set_font(f)
+         layout = capi.oopango.cairo.layout_create(cr)
+     end
+ 
+-    layout:set_font_description(font)
++    layout:set_font_description(desc)
+ 
+     local width, height = layout:get_pixel_size()
+-    font_height = height
++    local font = { name = name, description = desc, height = height }
++    fonts[name] = font
++    descs[desc] = name
++    return font
++end
++
++local function set_font(name)
++    active_font = load_font(name).name
++end
++
++function get_font(name)
++    return load_font(name).description
++end
++
++function get_font_height(name)
++    return load_font(name).height
+ end
+ 
+ --- Init function, should be runned at the beginning of configuration file.
+diff --git a/lib/naughty.lua.in b/lib/naughty.lua.in
+index 559817a..e8c2fc7 100644
+--- a/lib/naughty.lua.in
++++ b/lib/naughty.lua.in
+@@ -367,10 +367,11 @@ function notify(args)
+     local marginbox = wibox.layout.margin()
+     marginbox:set_margins(margin)
+     marginbox:set_widget(textbox)
+-    textbox.valign = "middle"
++    textbox:set_valign("middle")
++    textbox:set_font(font)
+ 
+     local function setMarkup(pattern, replacements)
+-        textbox:set_markup(string.format('<span font_desc="%s"><b>%s</b>%s</span>', font, title, text:gsub(pattern, replacements)))
++        textbox:set_markup(string.format('<b>%s</b>%s', title, text:gsub(pattern, replacements)))
+     end
+     local function setText()
+         textbox:set_text(string.format('%s %s', title, text))
+diff --git a/lib/wibox/widget/textbox.lua.in b/lib/wibox/widget/textbox.lua.in
+index 32ac2d1..51a13ff 100644
+--- a/lib/wibox/widget/textbox.lua.in
++++ b/lib/wibox/widget/textbox.lua.in
+@@ -41,6 +41,7 @@ local function setup_layout(box, cr, width, height)
+     layout:set_wrap(box._wrap)
+     layout:set_width(oopango.units_from_number(width))
+     layout:set_height(oopango.units_from_number(height))
++    layout:set_font_description(beautiful.get_font(box._font))
+ 
+     if box._markup then
+         layout:set_markup(box._text)
+@@ -48,12 +49,6 @@ local function setup_layout(box, cr, width, height)
+         layout:set_text(box._text)
+     end
+ 
+-    if box._font then
+-        layout:set_font_description(box._font)
+-    else
+-        layout:set_font_description(beautiful.get_font())
+-    end
+-
+     local ink, logical = layout:get_pixel_extents()
+     local offset = 0
+     if box._valign == "center" then
+@@ -181,6 +176,12 @@ function set_align(box, mode)
+     end
+ end
+ 
++--- Set a textbox' font
++-- @param font The font description as string
++function set_font(box, font)
++    box._font = beautiful.get_font(font)
++end
++
+ -- Returns a new textbox
+ local function new()
+     local ret = base.make_widget()
+-- 
+1.7.4.1
+

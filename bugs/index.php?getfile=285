@@ -1,0 +1,33 @@
+diff --git a/awesome.c b/awesome.c
+index 2412f17..1108996 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -192,15 +192,20 @@ scan(void)
+     }
+ }
+ 
++static int lua_stack_items = 0;
+ static void
+ a_refresh_cb(EV_P_ ev_prepare *w, int revents)
+ {
++    if (lua_stack_items != lua_gettop(globalconf.L)) {
++        printf("Stack messed up? Expected %d, got %d\n", lua_stack_items, lua_gettop(globalconf.L));
++    }
+     awesome_refresh();
+ }
+ 
+ static void
+ a_xcb_check_cb(EV_P_ ev_check *w, int revents)
+ {
++    lua_stack_items = lua_gettop(globalconf.L);
+     xcb_generic_event_t *mouse = NULL, *event;
+ 
+     while((event = xcb_poll_for_event(globalconf.connection)))
+@@ -555,6 +560,7 @@ main(int argc, char **argv)
+     scan();
+ 
+     /* process all errors in the queue if any */
++    lua_stack_items = lua_gettop(globalconf.L);
+     xcb_event_poll_for_event_loop(&globalconf.evenths);
+     a_xcb_set_event_handlers();
+     a_xcb_set_property_handlers();

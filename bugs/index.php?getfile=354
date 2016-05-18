@@ -1,0 +1,43 @@
+From 75600583fb0b0154914b472aa0cdec4ad241520c Mon Sep 17 00:00:00 2001
+From: Roman Kosenko <madkite@gmail.com>
+Date: Sat, 18 Sep 2010 23:08:20 +0300
+Subject: [PATCH] Fix image cropping/enlarging
+
+Function imlib_create_cropped_image() from imlib2 doesn't initialize
+buffer for new image, so if we use crop bounds bigger than original ones
+we need to erase garbage from derived image.
+This bug produced colorful pressed buttons (FS#516, FS#820).
+
+Signed-off-by: Roman Kosenko <madkite@gmail.com>
+---
+ image.c |   13 +++++++++++++
+ 1 files changed, 13 insertions(+), 0 deletions(-)
+
+diff --git a/image.c b/image.c
+index a0367e7..ec8b9ad 100644
+--- a/image.c
++++ b/image.c
+@@ -420,7 +420,20 @@ luaA_image_crop(lua_State *L)
+     new = image_new(L);
+ 
+     imlib_context_set_image(image->image);
++    int ow = imlib_image_get_width(), oh = imlib_image_get_height();
+     new->image = imlib_create_cropped_image(x, y, w, h);
++    imlib_context_set_image(new->image);
++    imlib_context_set_color(0, 0, 0, 0);
++    imlib_context_set_blend(0);
++    if(x < 0)
++        imlib_image_fill_rectangle(0, 0, -x, h);
++    if(y < 0)
++        imlib_image_fill_rectangle(x < 0 ? -x : 0, 0, w, -y);
++    if(x + w > ow)
++        imlib_image_fill_rectangle(ow - x, y < 0 ? -y : 0, x + w - ow, h);
++    if(y + h > oh)
++        imlib_image_fill_rectangle(x < 0 ? -x : 0, oh - y, x + w > ow ? ow - x : w, y + h - oh);
++    imlib_context_set_blend(1);
+ 
+     return 1;
+ }
+-- 
+1.7.2.3
+

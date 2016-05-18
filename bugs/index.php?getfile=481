@@ -1,0 +1,69 @@
+
+--[[
+sample of use:
+local modreg = require("modreg")
+local modregister = modreg.modregister
+modregister("mymodulename", myobjtable)
+
+modreg.warning = print -- show debug warning
+modreg.warning = error -- raise an error
+modregister("mymodulename", myobjtable2)
+
+]]--
+
+local _M = {} -- the module
+_M._VERSION = "20120319"
+
+--local debugprint = print
+
+local assert  = assert
+local error   = error
+local package = require("package")
+local loaded  = assert(package.loaded)
+
+local
+function _modregister(modname, modobj, force)
+	if force then error("modregister() force option not implemented yet") end
+
+	-- import if submodule not already exists in capi table
+	if not loaded then return end
+	if loaded[modname] then
+		if loaded[modname] ~= modobj then
+			-- warning here
+			_M.warning("WARNING: try to overwrite a existing module: "..modname)
+			return
+		end
+		return
+	end
+	loaded[modname] = obj
+end
+
+local
+function _modunregister(modname, modobj, force)
+	error("modunregister() not implemented yet")
+end
+
+
+local
+function _modalias(srcmodname, dstmodname, force)
+	error("modalias() not implemented yet")
+	-- get the srcmod object
+	-- not exists -> error
+
+	-- get the dstmod exists
+	-- if exists
+		-- force ? -> overwrite
+		-- not force -> return
+	-- else
+		-- do the job
+	-- end
+end
+
+local nothing = function() end
+
+_M.modregister   = _modregister
+_M.modunregister = _modunregister
+_M.modalias      = _modalias
+_M.warning       = nothing -- disable by default
+
+return _M -- return the module

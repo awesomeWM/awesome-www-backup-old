@@ -1,0 +1,501 @@
+local object = require("gears.object")
+local cairo = require("lgi").cairo
+local base = {}
+local wibox = {}
+local gears = {}
+
+function log(...)
+    print(...)
+end
+
+-- {{{ base things
+function base.transform_rectangle(matrix, x, y, width, height)
+    local x1, y1 = matrix:transform_point(x, y)
+    local x2, y2 = matrix:transform_point(x, y + height)
+    local x3, y3 = matrix:transform_point(x + width, y + height)
+    local x4, y4 = matrix:transform_point(x + width, y)
+    local x = math.min(x1, x2, x3, x4)
+    local y = math.min(y1, y2, y3, y4)
+    local width = math.max(x1, x2, x3, x4) - x
+    local height = math.max(y1, y2, y3, y4) - y
+
+    return x, y, width, height
+end
+
+local function get_from_cache(cache, width, height, creation_cb)
+    -- Since the geometry cache is a weak table, we have to be careful when
+    -- doing lookups. We can't do "if cache[width] ~= nil then"!
+    local result = cache[width]
+    if not result then
+        result = {}
+        cache[width] = result
+    end
+    cache, result = result, result[height]
+    if not result then
+        result = { creation_cb() }
+        cache[height] = result
+    end
+    return unpack(result)
+end
+
+function base.fit_widget(widget, width, height)
+    -- Sanitize the input. This also filters out e.g. NaN.
+    local width = math.max(0, math.ceil(width))
+    local height = math.max(0, math.ceil(height))
+
+    return get_from_cache(widget._fit_cache, width, height, function()
+        log("widget's :fit with:", widget, width, height)
+        local w, h = 0, 0
+        if widget.fit then
+            w, h, padding = widget:fit(width, height)
+        else
+            -- If it has no fit method, calculate the size from its children
+            local layout = base.layout_widget(widget, width, height)
+            for _, info in ipairs(layout) do
+                local x, y, w2, h2 = base.transform_rectangle(info.matrix, 0, 0, info.width, info.height)
+                w, h = math.max(w, w2), math.max(h, h2)
+            end
+        end
+        padding = padding or {}
+        for _, k in pairs { "left", "right", "top", "bottom" } do
+            padding[k] = math.max(0, math.ceil(padding[k] or 0))
+        end
+        w = math.max(0, math.min(width, math.ceil(w)))
+        h = math.max(0, math.min(height, math.ceil(h)))
+        return w, h, padding
+    end)
+end
+
+function base.layout_widget(widget, width, height)
+    -- Sanitize the input. This also filters out e.g. NaN.
+    local width = math.max(0, math.ceil(width))
+    local height = math.max(0, math.ceil(height))
+
+    return get_from_cache(widget._layout_cache, width, height, function()
+        log("widget's :layout with:", widget, width, height)
+        if widget.layout == nil then
+            return {}
+        end
+        return widget:layout(width, height) or {}
+    end)
+end
+
+local function matrix_to_device(self)
+    if not self._matrix_to_device then
+        local m = cairo.Matrix.create_identity()
+        local state = self
+        while state ~= nil do
+            m:multiply(m, state.matrix)
+            state = state.parent
+        end
+        self._matrix_to_device = m
+    end
+    return self._matrix_to_device
+end
+
+function base.recursively_layout_widget(widget, width, height)
+    local _, _, padding = base.fit_widget(widget, width, height)
+    local padding_x1, padding_y1 = -padding.left, -padding.top
+    local padding_x2 = width + padding.right
+    local padding_y2 = height + padding.bottom
+    local result = {
+        parent = nil,
+        matrix = cairo.Matrix.create_identity(),
+        widget = widget,
+        width = width,
+        height = height,
+        padding = padding,
+        size_with_children_padding = nil,
+        children = {},
+        matrix_to_device = matrix_to_device,
+        -- These will be added later by wibox:_relayout()
+        redraw_needed = nil,
+        layout_changed = nil,
+    }
+    local layout = base.layout_widget(widget, width, height)
+    for _, w in ipairs(layout) do
+        local r = base.recursively_layout_widget(w.widget, w.width, w.height)
+        r.matrix = w.matrix
+        r.parent = result
+        table.insert(result.children, r)
+
+        -- Transform the child's with padding into parent's coordinates
+        local size = r.size_with_children_padding
+        local px, py, pwidth, pheight = size.x, size.y, size.height, size.width
+        px, py, pwidth, pheight = base.transform_rectangle(r.matrix, px, py, pheight, pwidth)
+
+        -- Now update padding of parent to contain child's padding
+        local px2, py2 = px + pwidth, py + pheight
+        padding_x1 = math.min(padding_x1, px)
+        padding_y1 = math.min(padding_y1, py)
+        padding_x2 = math.max(padding_x2, px2)
+        padding_y2 = math.max(padding_y2, py2)
+    end
+    result.size_with_children_padding = {
+        x = padding_x1, y = padding_y1,
+        width = padding_x2 - padding_x1,
+        height = padding_y2 - padding_y1
+    }
+    return result
+end
+
+gears.matrix = {}
+function gears.matrix.copy(matrix)
+    -- Urgh, LGI
+    -- TODO: Add assert that we are really given a matrix
+    local ret = cairo.Matrix()
+    ret:init(matrix.xx, matrix.yx, matrix.xy, matrix.yy, matrix.x0, matrix.y0)
+    return ret
+end
+
+function gears.matrix.equals(m1, m2)
+    for _, k in pairs{ "xx", "xy", "yx", "yy", "x0", "y0" } do
+        if m1[k] ~= m2[k] then
+            return false
+        end
+    end
+    return true
+end
+
+function base.place_widget(widget, matrix, width, height)
+    return {
+        widget = widget,
+        matrix = gears.matrix.copy(matrix),
+        width = width,
+        height = height
+    }
+end
+
+function base.make_widget(proxy)
+    local ret = object()
+
+    -- This signal is used by layouts to find out when they have to update.
+    ret:add_signal("widget::layout_changed")
+    ret:add_signal("widget::redraw_needed")
+
+    -- Add a cache for base.fit_widget() and layout_widget() that is cleared when necessary
+    local function clear_cache()
+        ret._fit_cache = setmetatable({}, { __mode = 'v' })
+        ret._layout_cache = setmetatable({}, { __mode = 'v' })
+    end
+    ret:connect_signal("widget::layout_changed", clear_cache)
+    clear_cache()
+
+    if proxy then
+        ret.fit = function(_, ...)
+            return base.fit_widget(proxy, ...)
+        end
+        ret.layout = function(_, width, height)
+            return { base.place_widget(proxy, cairo.Matrix.create_identity(), width, height) }
+        end
+    end
+
+    return ret
+end
+-- }}}
+
+-- {{{ wibox code
+function wibox.new(w, h)
+    local ret = object()
+
+    ret._widget_hierarchy = nil
+    ret._widget = nil
+    ret._need_relayout = false
+    ret._dirty_area = cairo.Region.create()
+
+    -- XXX
+    ret._width = w
+    ret._height = h
+    ret._surface = cairo.ImageSurface(cairo.Format.ARGB32, ret._width, ret._height)
+
+    return setmetatable(ret, { __index = wibox })
+end
+
+function wibox:dirty_area(x, y, width, height)
+    local x2, y2 = x + width, y + height
+    local x, y = math.floor(x), math.floor(y)
+    local width, height = math.ceil(x2 - x), math.ceil(y2 - y)
+    local rect = cairo.RectangleInt({
+        x = x, y = y, width = width, height = height
+    })
+    self._dirty_area:union_rectangle(rect)
+end
+
+function wibox:update()
+    self:_relayout()
+    self:_redraw()
+end
+
+function wibox:_relayout()
+    if not self._need_relayout then return end
+    self._need_relayout = false
+
+    local old_hierarchy = self._widget_hierarchy
+    self._widget_hierarchy = base.recursively_layout_widget(self._widget, self._width, self._height)
+
+    local disconnect
+    disconnect = function(info)
+        info.widget:disconnect_signal("widget::redraw_needed", info.redraw_needed)
+        info.widget:disconnect_signal("widget::layout_changed", info.layout_changed)
+        for _, w in ipairs(info.children) do
+            disconnect(w)
+        end
+    end
+    -- old hierarchy is nil on the very first redraw
+    if old_hierarchy ~= nil then
+        disconnect(old_hierarchy)
+    end
+
+    local connect
+    connect = function(info)
+        info.redraw_needed = function()
+            self:_widget_needs_redraw(info)
+        end
+        info.layout_changed = function()
+            self:_widget_changed_layout(info)
+        end
+        info.widget:connect_signal("widget::redraw_needed", info.redraw_needed)
+        info.widget:connect_signal("widget::layout_changed", info.layout_changed)
+        for _, w in ipairs(info.children) do
+            connect(w)
+        end
+    end
+    connect(self._widget_hierarchy)
+
+    if old_hierarchy == nil then
+        -- Force a full redraw
+        self:dirty_area(0, 0, self._width, self._height)
+    else
+        -- Figure out which part of the hierarchy changed and have to be redrawn
+        local compare_hierarchy
+        compare_hierarchy = function(h1, h2)
+            if h1.width ~= h2.width or h1.height ~= h2.height or #h1.children ~= #h2.children or
+                    h1.widget ~= h2.widget or not gears.matrix.equals(h1.matrix, h2.matrix) then
+                self:_widget_needs_redraw(h1)
+                self:_widget_needs_redraw(h2)
+            else
+                for i = 1, #h1.children do
+                    compare_hierarchy(h1.children[i], h2.children[i])
+                end
+            end
+        end
+        compare_hierarchy(old_hierarchy, self._widget_hierarchy)
+    end
+end
+
+function wibox:_widget_needs_redraw(widget_state)
+    -- We have to transform this widget's geometry into global coordinates
+    local m = widget_state:matrix_to_device()
+    local x, y, width, height = base.transform_rectangle(m, 0, 0, widget_state.width, widget_state.height)
+    self:dirty_area(x, y, width, height)
+end
+
+function wibox:_widget_changed_layout(widget_state)
+    self._need_relayout = true
+    if widget_state.parent then
+        widget_state.parent.widget:emit_signal("widget::layout_changed")
+    end
+end
+
+function wibox:_redraw()
+    if self._dirty_area:is_empty() then return end
+
+    local cr = cairo.Context(self._surface)
+    local dirty_area = self._dirty_area
+    self._dirty_area = cairo.Region.create()
+
+    local num = dirty_area:num_rectangles()
+    for i = 0, num-1 do
+        local rect = dirty_area:get_rectangle(i)
+        cr:rectangle(rect.x, rect.y, rect.width, rect.height)
+    end
+    cr:clip()
+
+    -- XXX Background color
+    cr:save()
+    cr:set_source_rgba(0, 0, 0, 0.5)
+    cr.operator = cairo.Operator.SOURCE
+    cr:paint()
+    cr:restore()
+
+    -- Draw the widget
+    self:_draw_widget_info(self._widget_hierarchy, cr, dirty_area)
+end
+
+function wibox:_draw_widget_info(info, cr, dirty_area)
+    cr:transform(info.matrix)
+
+    -- the widget information in info contain the state in the parent widget's
+    -- coordinate system. Transform to device geometry.
+    local size = info.size_with_children_padding
+    local x, y, width, height = base.transform_rectangle(cr.matrix, size.x, size.y, size.width, size.height)
+
+    -- Redraw this widget if it is (partly) inside the dirty area
+    local rect = cairo.RectangleInt{ x = x, y = y, width = width, height = height }
+    if dirty_area:contains_rectangle(rect) ~= "OUT" then
+        cr:rectangle(size.x, size.y, size.width, size.height)
+        cr:clip()
+
+        log("widget's :draw with:", info.widget, self, cr, info.width, info.height)
+        local call = function(func)
+            if func == nil then
+                return
+            end
+            local success, msg = pcall(func, info.widget, self, cr, info.width, info.height)
+            if not success then
+                print("Error while drawing widget: " .. msg)
+            end
+        end
+
+        -- Draw widget itself, applying its padding
+        cr:save()
+        local p = info.padding
+        cr:rectangle(-p.left, -p.right, p.left + info.width + p.right, p.top + info.height + p.bottom)
+        cr:clip()
+        call(info.widget.draw)
+        cr:restore()
+
+        -- Draw all children
+        call(info.widget.before_draw_children)
+        for _, wi in ipairs(info.children) do
+            cr:save()
+            self:_draw_widget_info(wi, cr, dirty_area)
+            cr:restore()
+        end
+        call(info.widget.after_draw_children)
+    end
+end
+-- }}}
+
+-- {{{ fixed widget
+local fixed = {}
+function fixed.new()
+    local ret = base.make_widget()
+    ret.widgets = {}
+
+    return setmetatable(ret, { __index = fixed })
+end
+
+function fixed:layout(width, height)
+    local x = 0
+    local res = {}
+
+    for k, v in ipairs(self.widgets) do
+        local w, h = base.fit_widget(v, width, height)
+        table.insert(res, base.place_widget(v, cairo.Matrix.create_translate(x, 0), w, h))
+
+        x = x + w
+        width = width - w
+    end
+
+    return res
+end
+-- }}}
+
+-- {{{ square widget
+local square = {}
+function square.new(proxy, size)
+    local ret = base.make_widget(proxy)
+    ret.size = size
+
+    return setmetatable(ret, { __index = square })
+end
+
+function square:fit(width, height)
+    local size = math.min(width, height, self.size)
+    return size, size
+end
+-- }}}
+
+-- {{{ fill widget
+local fill = {}
+function fill.new(proxy)
+    return setmetatable(base.make_widget(proxy), { __index = fill })
+end
+
+function fill:draw(wibox, cr, width, height)
+    cr:paint()
+end
+-- }}}
+
+-- {{{ bg_color widget
+local bg_color = {}
+function bg_color.new(proxy, r, g, b, a)
+    local ret = base.make_widget(proxy)
+    ret.r = r
+    ret.g = g
+    ret.b = b
+    ret.a = a
+
+    return setmetatable(ret, { __index = bg_color })
+end
+
+function bg_color:before_draw_children(wibox, cr, width, height)
+    cr:set_source_rgba(self.r, self.g, self.b, self.a)
+end
+-- }}}
+
+-- {{{ main code
+function img(r, g, b, a)
+    return bg_color.new(fill.new(square.new(nil, 100)), r, g, b, a)
+end
+
+local w = wibox.new(300, 100)
+local f = fixed.new()
+local i1 = img(1, 0, 0, 1)
+local i2 = img(0, 1, 0, 1)
+local i3 = img(0, 0, 1, 1)
+
+local custom = base.make_widget()
+function custom:layout()
+    local m = cairo.Matrix.create_translate(30, 30)
+    m:rotate(math.pi / 4)
+    m:translate(0, -30)
+    return {
+        base.place_widget(i3, cairo.Matrix.create_translate(50, 0), 200, 10),
+        base.place_widget(f, cairo.Matrix.create_translate(30, 30), 90, 30),
+        base.place_widget(f, m, 30, 10),
+    }
+end
+
+log("wibox", w, "layout", f)
+log("widgets", i1, i2, i3)
+
+f.widgets = { i1, i2, i3 }
+w._widget = custom
+w._need_relayout = true
+log("Before first update")
+w:update()
+log("Aftert first update\n")
+-- }}}
+
+-- {{{ Some redraws
+log("redrawing widget i2", i2)
+i2:emit_signal("widget::redraw_needed")
+w:update()
+log("done\n")
+
+log("changing layout of i2", i2)
+i2:emit_signal("widget::layout_changed")
+w:update()
+log("done\n")
+
+--[[
+log("Redrawing everything in parts")
+local cr = cairo.Context(w._surface)
+cr:paint()
+local step_size = 42
+for x = 0, w._width, step_size do
+    for y = 0, w._height, step_size do
+        log("Redrawing this area:", x, y, step_size, step_size)
+        w:dirty_area(x, y, step_size, step_size)
+        w:update()
+    end
+end
+log("done\n")
+--]]
+-- }}}
+
+w._surface:write_to_png("out.png")
+
+-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

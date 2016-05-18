@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Автозапуск - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<meta name="robots" content="noindex,follow" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Autostart/ru&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Autostart/ru&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Autostart/ru" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;printable=1&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Autostart/ru","wgTitle":"Autostart/ru","wgCurRevisionId":7346,"wgRevisionId":7346,"wgArticleId":476,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Awesome3"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Autostart/ru","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Autostart_ru skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Автозапуск</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><a href="/wiki/Autostart" title="Autostart">English</a></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="ru"><strong class="selflink">русский</strong></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="zh"><a href="/wiki/Autostart/zh" title="Autostart/zh">中文</a></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p>В Awesome отсутствует встроенная поддержка автозапуска приложений. Чтобы настроить
+автозапуск, Вы можете отредактировать либо .xinitrc, либо сессионный скрипт, выполняемый gdm
+или kdm, или же найти какой-то другой способ запускать приложения вместе с Awesome.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.D0.9E.D0.B1.D1.8B.D1.87.D0.BD.D1.8B.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1"><span class="tocnumber">1</span> <span class="toctext">Обычный способ</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.BE.D1.82_Freedesktop"><span class="tocnumber">2</span> <span class="toctext">Способ от Freedesktop</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#.D0.9F.D1.80.D0.BE.D1.81.D1.82.D0.BE.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1"><span class="tocnumber">3</span> <span class="toctext">Простой способ</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#.D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1.2C_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D0.B4.D0.B8.D1.80.D0.B5.D0.BA.D1.82.D0.BE.D1.80.D0.B8.D1.8E_.D0.B0.D0.B2.D1.82.D0.BE.D0.B7.D0.B0.D0.BF.D1.83.D1.81.D0.BA.D0.B0"><span class="tocnumber">4</span> <span class="toctext">Способ, использующий директорию автозапуска</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#.D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D0.B8.D0.B4.D0.B5.D0.BD.D1.82.D0.B8.D1.84.D0.B8.D0.BA.D0.B0.D1.82.D0.BE.D1.80.D1.8B.28PID.29"><span class="tocnumber">5</span> <span class="toctext">Способ использующий идентификаторы(PID)</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#.D0.92.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.BD.D1.8B.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_lua"><span class="tocnumber">6</span> <span class="toctext">Встроенный способ lua</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="#.D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_X_.D1.81.D0.B5.D1.80.D0.B2.D0.B5.D1.80.D0.B0"><span class="tocnumber">7</span> <span class="toctext">Способ X сервера</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="#.D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D1.84.D0.B0.D0.B9.D0.BB.D1.8B_X_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D0.B8"><span class="tocnumber">8</span> <span class="toctext">Способ использующий файлы X конфигурации</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id=".D0.9E.D0.B1.D1.8B.D1.87.D0.BD.D1.8B.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1">Обычный способ</span></h2>
+<p><b>xinit</b> используется для запуска X сервера и приложений, на системах не имеющих вообще, или использующих login менеджеры, такие как GDM/KDM/XDM. При запуске <i>xinit</i> без специальных опций приложений, он ищет файл <b>.xinitrc</b> в домашнем каталоге и запускает его как shell скрипт. Этот конфигурационный файл/скрипт используется для запуска клиентских приложений.
+</p><p>Вы можете запускать любые приложения из вашего файла <i>~/.xinitrc</i>, но имейте в виду, что программы которые не завершаются или не должны завершаться, вы должны отправлять в фоновый режим работы, поскольку они не блокируют другие приложения при старте. Только последняя запускаемая программа, ваш оконный менеджер (в нашем случае awesome), должен запускаться на переднем плане (т.к. она блокирует дальнейшее выполнение скрипта), поэтому скрипт не завершается до вашего выхода из awesome, и поэтому <i>xinit</i> может произвести очистку, только после выхода.
+</p><p>Если вы используете запуск X сервера с помощью команды <b>startx</b>, и беспокоитесь на то как это влияет на запуск приложений, не беспокойтесь, команда <i>startx</i> считывает <i>xinit</i>, и ваш файл <i>~/.xinitrc</i> также будет выполнен. Простейший пример файла <i>.xinitrc</i> приведен ниже:
+</p>
+<pre> #!/bin/sh
+ #
+ # User's .xinitrc file
+ 
+ # Считывание пользовательского файла X resources
+ xrdb -merge "${HOME}/.Xresources"
+ 
+ # Воспроизведение звука запуска в фоновом режиме
+ ogg123 -q "${HOME}/.config/awesome/login.ogg" &amp;
+ 
+ # Запуск эмулятора терминала в фоновом режиме
+ urxvt -T Terminal &amp;
+ 
+ # Запуск оконного менеджера
+ exec awesome
+</pre>
+<p><br />
+Более сложный пример использования файла <i>.xinitrc</i> вы можете найти на здесь: <a rel="nofollow" class="external free" href="http://git.sysphere.org/dotfiles/tree/xinitrc">http://git.sysphere.org/dotfiles/tree/xinitrc</a>
+</p><p><b>Примечание:</b> Если вы запускаете awesome используя <i>ck-launch-session</i>, вы можете захотеть создать раздельный старт скриптов и запуск awesome , или вы можете исплользовать альтернативный способ запуска приложений в rc.lua. Ссылка на этот способ:  <a rel="nofollow" class="external free" href="https://bbs.archlinux.org/viewtopic.php?pid=1085191">https://bbs.archlinux.org/viewtopic.php?pid=1085191</a>
+</p><p>Если вы используете login manager, то вы можете использовать оконный менеджер для автозапуска приложений; продолжайте чтение, для изучения различных способов как это реализовать в awesome.  Однако, какие то менеджеры считывают .xprofile, а другие .xsession.  gdm, kdm, и lightdm используют .xprofile.  Но поспольку он обрабатывается до запуска оконного менеджера, то вы не сможете использовать его для запуска графических приложений, зато этот способ отлично подходит для автозапуска фоновых приложений, или для установки переменных окружения, которые обычно прописываются в .xinitrc, когда вы не используете login manager.
+</p>
+<h2><span class="mw-headline" id=".D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.BE.D1.82_Freedesktop">Способ от Freedesktop</span></h2>
+<p>Как уже говорилось выше, awesome не поддерживает способ запуска приложений Freedesktop, но это не должно мешать вам использовать его.
+</p><p>Программа <b>dex</b> позволяет обработать файлы  *.desktop расположенные в определенных спецификацией Freedesktop местах автозапуска. Просто запустите его, используюя способ описанный ниже:
+</p>
+<pre>  dex -a -e Awesome
+</pre>
+<p>Для определения запускаемых программ используйте <b>gnome-session-properties</b> или аналогичных программ из Gnome или KDE.
+</p><p>Вы также можете сделать симлинк(symlink)  на список автозапуска из /usr/share/applications в ~/.config/autostart. После этого dex сможет найти определеные пользователем автоматически запускаемые приложения и запустить их. Проверьте следующий код:
+</p>
+<pre>  dex -a -e Awesome -d
+</pre>
+<p>Вы можете скачать Dex здесь: <a rel="nofollow" class="external free" href="http://github.com/jceb/dex">http://github.com/jceb/dex</a>.
+Или можете установить его в Archlinux используя "pacman -S <a rel="nofollow" class="external text" href="https://www.archlinux.org/packages/community/any/dex/">dex</a>".
+</p>
+<h2><span class="mw-headline" id=".D0.9F.D1.80.D0.BE.D1.81.D1.82.D0.BE.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1">Простой способ</span></h2>
+<p>Просто добавьте несколько строк в конец файла ~/.config/awesome/rc.lua:
+</p>
+<pre>
+awful.util.spawn_with_shell(&quot;КОМАНДА1&quot;)
+awful.util.spawn_with_shell(&quot;КОМАНДА2&quot;)
+</pre>
+<p>...и так далее.
+</p><p><b>Пример:</b>
+</p>
+<pre>
+awful.util.spawn_with_shell(&quot;kdeinit&quot;)
+awful.util.spawn_with_shell(&quot;lineakd&quot;)
+awful.util.spawn_with_shell(&quot;anyremote -f ~/.anyRemote/amarok.cfg&quot;)
+awful.util.spawn_with_shell(&quot;~/scripts/trm&quot;)
+awful.util.spawn_with_shell(&quot;xchat&quot;)
+awful.util.spawn_with_shell(&quot;psi&quot;)
+awful.util.spawn_with_shell(&quot;firefox-bin&quot;)
+awful.util.spawn_with_shell(&quot;gvim +Project&quot;)
+awful.util.spawn_with_shell(&quot;kchmviewer&quot;)
+awful.util.spawn_with_shell(&quot;amarok&quot;)
+awful.util.spawn_with_shell(&quot;kmix&quot;)
+awful.util.spawn_with_shell(&quot;kbluetoothd&quot;)
+awful.util.spawn_with_shell(&quot;sudo killall mplayer&quot;)
+</pre>
+<p>Чтобы запускать приложения только один раз, а не при каждом перезапуске Awesome, создайте такой скрипт:
+</p>
+<pre>
+#! /bin/bash
+
+# Запустить программу, если она ещё не запущена.
+
+if [ -z &quot;`ps -Af | grep -o -w &quot;.*$1&quot; | grep -v grep | grep -v run-once`&quot; ]; then
+  $@
+fi
+</pre>
+<p>Или так:
+</p>
+<pre>
+#!/bin/bash
+#Alternative
+pgrep $@ &gt; /dev/null || ($@ &amp;)
+</pre>
+<p>Сохраните скрипт под именем "run_once" где-нибудь в $PATH и сделайте исполняемым. Затем используйте его для автозапуска:
+</p>
+<pre>awful.util.spawn_with_shell(&quot;run_once amarok&quot;)</pre>
+<p>В качестве альтернативы отдельному shell-скрипту можно добавить в rc.lua следующий код (который к тому же будет игнорировать приложения, запущенные другими пользователями):
+</p>
+<pre>
+function run_once(cmd)
+  findme = cmd
+  firstspace = cmd:find(&quot; &quot;)
+  if firstspace then
+    findme = cmd:sub(0, firstspace-1)
+  end
+  awful.util.spawn_with_shell(&quot;pgrep -u $USER -x &quot; .. findme .. &quot; &gt; /dev/null || (&quot; .. cmd .. &quot;)&quot;)
+end
+
+run_once(&quot;amarok&quot;)
+run_once(&quot;xscreensaver -no-splash&quot;)
+</pre>
+<p><br />
+Или более продвинутую версию, которая позволяет использовать опции командной строки и позволяющая указать, на каком экране запускать приложение. Этот код также позволяет коректно обрабатывать ситуации, когда запускаемое приложение и имя процесса различаются (например wicd-client).
+</p>
+<pre>
+function run_once(prg,arg_string,pname,screen)
+    if not prg then
+        do return nil end
+    end
+
+    if not pname then
+       pname = prg
+    end
+
+    if not arg_string then 
+        awful.util.spawn_with_shell(&quot;pgrep -f -u $USER -x '&quot; .. pname .. &quot;' || (&quot; .. prg .. &quot;)&quot;,screen)
+    else
+        awful.util.spawn_with_shell(&quot;pgrep -f -u $USER -x '&quot; .. pname .. &quot; &quot;.. arg_string ..&quot;' || (&quot; .. prg .. &quot; &quot; .. arg_string .. &quot;)&quot;,screen)
+    end
+end
+
+run_once(&quot;xscreensaver&quot;,&quot;-no-splash&quot;)
+run_once(&quot;pidgin&quot;,nil,nil,2)
+run_once(&quot;wicd-client&quot;,nil,&quot;/usr/bin/python2 -O /usr/share/wicd/gtk/wicd-client.py&quot;)
+
+</pre>
+<p>С друкой стороноы, если вы захотите запустить несколько экземпляров терминала с различными именами,это также возможно используя способ указанный выше, но это потребует дополнительной установки wmctrl.
+</p><p>Сохраните этот маленький скрипт, где нибудь в указанном в $PATH каталоге и сделайте его исполняемым:
+</p>
+<pre>
+#!/bin/bash
+EXPECTED_ARGS=2
+
+if [ $# -ne $EXPECTED_ARGS ]
+then
+  exit 1
+fi
+
+COUNT=`wmctrl -l -x | grep $1 | wc -l`
+
+if [ &quot;$COUNT&quot; -lt &quot;$2&quot; ]
+then
+  exit 0
+else
+  exit 1
+fi
+</pre>
+<p>В этом случае команды автозапуска будут выглядеть следующим образом. Используя <i>name="SSH"</i> и <i>name="log</i> вы будете размещать их в разных тегах:
+</p>
+<pre>
+awful.util.spawn_with_shell(&quot;run_limited SSH 4 &amp;&amp; urxvt -name SSH&quot;);
+awful.util.spawn_with_shell(&quot;run_limited SSH 4 &amp;&amp; urxvt -name SSH&quot;);
+awful.util.spawn_with_shell(&quot;run_limited SSH 4 &amp;&amp; urxvt -name SSH&quot;);
+awful.util.spawn_with_shell(&quot;run_limited SSH 4 &amp;&amp; urxvt -name SSH&quot;);
+awful.util.spawn_with_shell(&quot;run_limited log 2 &amp;&amp; urxvt -name log&quot;);
+awful.util.spawn_with_shell(&quot;run_limited log 2 &amp;&amp; urxvt -name log&quot;);
+</pre>
+<h2><span class="mw-headline" id=".D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1.2C_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D0.B4.D0.B8.D1.80.D0.B5.D0.BA.D1.82.D0.BE.D1.80.D0.B8.D1.8E_.D0.B0.D0.B2.D1.82.D0.BE.D0.B7.D0.B0.D0.BF.D1.83.D1.81.D0.BA.D0.B0">Способ, использующий директорию автозапуска</span></h2>
+<pre>
+-- Автозапуск
+function autostart(dir)
+    if not dir then
+        do return nil end
+    end
+    local fd = io.popen(&quot;ls -1 -F &quot; .. dir)
+    if not fd then
+        do return nil end
+    end
+    for file in fd:lines() do
+        local c= string.sub(file,-1)   -- последний символ
+        if c=='*' then  -- исполняемые файлы
+            executable = string.sub( file, 1,-2 )
+            print(&quot;Автозапуск Awesome. Запускается: &quot; .. executable)
+            awful.util.spawn_with_shell(dir .. &quot;/&quot; .. executable .. &quot;&quot;) -- запуск в фоне
+        elseif c=='@' then  -- символические ссылки
+            print(&quot;Автозапуск Awesome. Симнолические ссылки пропускаются: &quot; .. file)
+        else
+            print (&quot;Автозапуск Awesome. Игнорируем файл &quot; .. file .. &quot; , т.к. не является исполняемым.&quot;)
+        end
+    end
+    io.close(fd)
+end
+
+autostart_dir = os.getenv(&quot;HOME&quot;) .. &quot;/.config/autostart&quot;
+autostart(autostart_dir)
+</pre>
+<p>Учтите (и по возможности исправьте) следующие недостатки:
+</p>
+<ul><li> файлы в директории автозапуска будут выполняться при каждом чтении конфигурационного файла, что может привести к неожиданным последствиям, если Вы делаете это несколько раз за сеанс. Чтобы избежать повторных запусков, обрабатывайте их в соответствующем скрипте.</li>
+<li> функция игнорирует символьные ссылки.</li></ul>
+<h2><span class="mw-headline" id=".D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D0.B8.D0.B4.D0.B5.D0.BD.D1.82.D0.B8.D1.84.D0.B8.D0.BA.D0.B0.D1.82.D0.BE.D1.80.D1.8B.28PID.29">Способ использующий идентификаторы(PID)</span></h2>
+<p>Поместите следующий код в runonce.lua
+</p>
+<pre>
+-- @автор Peter J. Kranz (Absurd-Mind, peter@myref.net)
+-- Любые вопросы, критику или благодарности отправляйте на электронную почту
+
+local M = {}
+
+-- получаем текущий идентификатор(Pid) awesome
+local function getCurrentPid()
+    -- получаем идентификатор awesome используя pgrep
+    local fpid = io.popen(&quot;pgrep -u &quot; .. os.getenv(&quot;USER&quot;) .. &quot; -o awesome&quot;)
+    local pid = fpid:read(&quot;*n&quot;)
+    fpid:close()
+
+    -- проверка корректности
+    if pid == nil then
+        return -1
+    end
+
+    return pid
+end
+
+local function getOldPid(filename)
+    -- открыаем файл
+    local pidFile = io.open(filename)
+    if pidFile == nil then
+        return -1
+    end
+
+    -- считываем колличество
+    local pid = pidFile:read(&quot;*n&quot;)
+    pidFile:close()
+
+    -- проверка на то, что колличество больше 0
+    if pid &lt;= 0 then
+        return -1
+    end
+
+    return pid;
+end
+
+local function writePid(filename, pid)
+    local pidFile = io.open(filename, &quot;w+&quot;)
+    pidFile:write(pid)
+    pidFile:close()
+end
+
+local function shallExecute(oldPid, newPid)
+    -- простая проверка на равенство
+    if oldPid == newPid then
+        return false
+    end
+
+    return true
+end
+
+local function getPidFile()
+    local host = io.lines(&quot;/proc/sys/kernel/hostname&quot;)()
+    return awful.util.getdir(&quot;cache&quot;) .. &quot;/awesome.&quot; .. host .. &quot;.pid&quot;
+end
+
+-- запускаем один раз при первом запуске awesome (настройка перезапуска работает)
+-- не распростраянется на &quot;pkill awesome &amp;&amp; awesome&quot;
+function M.run(shellCommand)
+    -- проверяем и запускаем
+    if shallExecute(M.oldPid, M.currentPid) then
+        awful.util.spawn_with_shell(shellCommand)
+    end
+end
+
+M.pidFile = getPidFile()
+M.oldPid = getOldPid(M.pidFile)
+M.currentPid = getCurrentPid()
+writePid(M.pidFile, M.currentPid)
+
+return M
+</pre>
+<p>Для запуска используем следующий код:
+</p>
+<pre>
+local r = require(&quot;runonce&quot;)  -- в начало файла
+
+r.run(&quot;urxvtd -q -o -f&quot;)
+r.run(&quot;urxvtc&quot;)
+r.run(&quot;urxvtc&quot;)
+r.run(&quot;wmname LG3D&quot;)
+</pre>
+<p><b>Примечание:</b> runonce.lua будет работать только если оконный менеджер запущен напрямую, как "awesome". Но, если он запущен через симлинк (например,как x-window-manager в Debian), то он будет работать некорректно. В качестве альтернативы, замените часть <code>--get awesome pid from pgrep</code> на получение его PID непосредственно из /proc а не полагайтесь на pgrep с его нестабильными именами:
+</p>
+<pre>
+-- get awesome pid from /proc
+local fpid = assert(io.open(&quot;/proc/self/stat&quot;, &quot;r&quot;))
+local pid = fpid:read(&quot;*all&quot;)
+fpid:close()
+pid = string.match(t, &quot;%S+&quot;)
+</pre>
+<h2><span class="mw-headline" id=".D0.92.D1.81.D1.82.D1.80.D0.BE.D0.B5.D0.BD.D0.BD.D1.8B.D0.B9_.D1.81.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_lua">Встроенный способ lua</span></h2>
+<p>Этот способ не зависит от внешних утилит, которые ускоряют запуск системы.
+</p><p>Для использования этого кода lua-filesystem требуется lfs.
+</p><p>Он должен быть доступн для большинства систем: debian (lua-filesystem), freebsd (ports/devel/luafilesystem/), gentoo (dev-lua/luafilesystem), ubuntu (liblua5.1-filesystem0), archlinux (luafilesystem)
+</p><p>@bsdguys: не забудьте смонтировать procfs (:
+</p>
+<pre>
+require(&quot;lfs&quot;) 
+-- {{{ Зупускаем программу единожны(run-once)
+local function processwalker()
+   local function yieldprocess()
+      for dir in lfs.dir(&quot;/proc&quot;) do
+        -- Все каталоги в /proc содержат число, представляющее процесс
+        if tonumber(dir) ~= nil then
+          local f, err = io.open(&quot;/proc/&quot;..dir..&quot;/cmdline&quot;)
+          if f then
+            local cmdline = f:read(&quot;*all&quot;)
+            f:close()
+            if cmdline ~= &quot;&quot; then
+              coroutine.yield(cmdline)
+            end
+          end
+        end
+      end
+    end
+    return coroutine.wrap(yieldprocess)
+end
+
+local function run_once(process, cmd)
+   assert(type(process) == &quot;string&quot;)
+   local regex_killer = {
+      [&quot;+&quot;]  = &quot;%+&quot;, [&quot;-&quot;] = &quot;%-&quot;,
+      [&quot;*&quot;]  = &quot;%*&quot;, [&quot;?&quot;]  = &quot;%?&quot; }
+
+   for p in processwalker() do
+      if p:find(process:gsub(&quot;[-+?*]&quot;, regex_killer)) then
+	 return
+      end
+   end
+   return awful.util.spawn(cmd or process)
+end
+-- }}}
+
+-- Пример использования
+run_once(&quot;firefox&quot;)
+run_once(&quot;dropboxd&quot;)
+-- Use the second argument, if the programm you wanna start, 
+-- differs from the what you want to search.
+run_once(&quot;redshift&quot;, &quot;nice -n19 redshift -l 51:14 -t 5700:4500&quot;)
+
+</pre>
+<h2><span class="mw-headline" id=".D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_X_.D1.81.D0.B5.D1.80.D0.B2.D0.B5.D1.80.D0.B0">Способ X сервера</span></h2>
+<p>Еще одним способом проверить запущен ли процесс, является проверка наличия у него окна. Эта возоможность работает только для процессов подключенных к X server. Есть два недостатка у этого подхода. Первый, awesome не имеет списка всех приложений, только тех приложений, которые имеют постоянное окно. Если приложение не имеет окна (например приложения в трее), его не будет в списке awesome. Второй недостаток, заключается в том, что список приложений будет доступен только после полного старта awesome, т.е. во время инициализации, он не доступен.
+</p><p>Обойти первую проблему можно используя (как вариант) xwininfo. Вторую проблему можно решить используя таймер. Вот код:
+</p>
+<pre>
+local xrun_now = function(name, cmd)
+   -- Сначала получаем список приложения из awesome (которые доступны
+   -- только  если awesome уже полностью запущен, поэтому, эта функция
+   -- должна запускаться внутри 0 таймера)
+   local squid = { name, name:sub(1,1):upper() .. name:sub(2) }
+   if awful.client.cycle(
+      function(c)
+	 return awful.rules.match_any(c,
+				      { name = squid,
+					class = squid,
+					instance = squid })
+      end)() then
+      return
+   end
+
+   -- Не найденно, проверяем с помощью xwininfo. Мы можем получить приложения имеющие имя,
+   -- но мы не получим приложения без окон...
+   if os.execute(&quot;xwininfo -name '&quot; .. name .. &quot;' &gt; /dev/null 2&gt; /dev/null&quot;) == 0 then
+      return
+   end
+   awful.util.spawn_with_shell(cmd or name)
+end
+
+-- Выполняем команду, если еще не запушена.
+xrun = function(name, cmd)
+   -- Нам нужно дождаться когда awesome полностью запустится. Поэтому используем таймер.
+   local stimer = timer { timeout = 0 }
+   local run = function()
+      stimer:stop()
+      xrun_now(name, cmd)
+   end
+   stimer:add_signal(&quot;timeout&quot;, run)
+   stimer:start()
+end
+</pre>
+<p>Пример использования:
+</p>
+<pre>
+xrun(&quot;chromium&quot;)
+xrun(&quot;pidgin&quot;, &quot;pidgin -n&quot;)
+</pre>
+<p>Первый аргумента, это название программы (название окна, экземпляр объекта или класс. Второй аргумент, это команда запуска. Первый параметр используется как команда, если второй не определен.
+</p>
+<h2><span class="mw-headline" id=".D0.A1.D0.BF.D0.BE.D1.81.D0.BE.D0.B1_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D1.83.D1.8E.D1.89.D0.B8.D0.B9_.D1.84.D0.B0.D0.B9.D0.BB.D1.8B_X_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D0.B8">Способ использующий файлы X конфигурации</span></h2>
+<p>Этот скрипт устанавливает свойства XResource отображающее, что приложение уже запущено. Этот метод по моему мнению является самым надежным. XResources существует только в памяти, поэтому необходимость в очистке отсутсвует до тех пор пока существует Х сессия.
+</p><p>Этот код также перенаправляет вывод всех запущенных процессов dex во временный файл вместо ~/.xsession-errors.
+</p>
+<pre>
+#!/bin/sh
+
+PROP=autostart.wasrun
+HASPROP=$(xrdb -query|grep $PROP)
+
+if [ &quot;$HASPROP&quot;&#160;!= &quot;&quot; ]
+then
+  exit 0;
+fi
+
+TEMPLATE=xsession-$USER-$PPID-XXX
+TEMPFILE=$(mktemp --tmpdir $TEMPLATE)
+
+echo &quot;logging to $TEMPFILE&quot;
+
+echo &quot;$PROP: on&quot; | xrdb -merge
+
+( $HOME/bin/dex -v -a 2&gt;&amp;1 1&gt;$TEMPFILE ) &amp;
+</pre>
+<p>У меня нет глубоких познаний в X resources, поэтому было бы неплохо, если бы кто нибудь проверил этот код.
+Похожий способ используется для запуска в lua вместо оболочки:
+</p>
+<pre>
+xrun = function(cmd, late)
+    local xresources = awful.util.pread(&quot;xrdb -query&quot;)
+    local myxr = xresources:match(&quot;^awesome%.xrun:%s+.-\n&quot;)
+                 or xresources:match(&quot;\nawesome%.xrun:%s+.-\n&quot;)
+                 or &quot;awesome.xrun:&quot;
+    myxr = myxr:gsub(&quot;\n&quot;, &quot;&quot;)
+    if not string.find(myxr, cmd, 1, true) then
+        -- use pread so that this runs synchronously
+        awful.util.pread(&quot;echo '&quot; .. myxr .. &quot; &quot; .. cmd:gsub(&quot;'&quot;, &quot;\\'&quot;) .. &quot;'|xrdb -merge&quot;)
+        if late then
+            local stimer = timer { timeout = late }
+            local run = function()
+                stimer:stop()
+                awful.util.spawn(cmd, false)
+            end
+            stimer:connect_signal(&quot;timeout&quot;, run)
+            stimer:start()
+        else
+            awful.util.spawn(cmd, false)
+        end
+    end
+end
+</pre>
+<p>Или используйте более базовый метод для старта приложений при запуске.
+</p>
+<pre>
+	
+local xresources_name = &quot;awesome.started&quot;
+local xresources = awful.util.pread(&quot;xrdb -query&quot;)
+if not xresources:match(xresources_name) then
+    -- Execute once for X server
+    os.execute(&quot;dex -a -e Awesome&quot;)
+end
+awful.util.spawn_with_shell(&quot;xrdb -merge &lt;&lt;&lt; &quot; .. &quot;'&quot; .. xresources_name .. &quot;: true'&quot;)
+</pre>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.128 seconds
+Real time usage: 0.164 seconds
+Preprocessor visited node count: 804/1000000
+Preprocessor generated node count: 1746/1000000
+Post‐expand include size: 3238/2097152 bytes
+Template argument size: 1494/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 48/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:476-0!*!0!!en!5!* and timestamp 20160515122543 and revision id 7346
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Autostart/ru&amp;oldid=7346">https://awesomewm.org/w/index.php?title=Autostart/ru&amp;oldid=7346</a>"</div>
+					<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/wiki/Category:Awesome3" title="Category:Awesome3">Awesome3</a></li></ul></div></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Autostart/ru" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Autostart/ru&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Autostart/ru&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Autostart/ru&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Autostart%2Fru&amp;returntoquery=printable%3Dyes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Autostart/ru" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Autostart/ru" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Autostart/ru&amp;oldid=7346" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Autostart/ru&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 20 September 2015, at 19:14.</li>
+									<li id="viewcount">This page has been accessed 14,306 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;printable=1\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":104});
+}</script></body></html>

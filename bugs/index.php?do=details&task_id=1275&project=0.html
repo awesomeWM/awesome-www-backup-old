@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1275 : Unwanted accidental screen changes caused by bogus xcb_generic_event</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1275&amp;project=0" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1276&amp;project=0" title="Unconfirmed | Clicks in gtk3 applications report a leave event | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1271&amp;project=0" title="Unconfirmed | Placment rule for xcalc only obeyed some times | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1275 - Unwanted accidental screen changes caused by bogus xcb_generic_event  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Thursday, 05 June 2014, 05:50 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 05 June 2014, 13:14 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.6			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Ok, that one was long to debug...<br />
+<br />
+Long story short, I open firefox on screen 1, it flicker then move on screen 2, in the selected tag instead of the www one. Great... Why?<br />
+<br />
+After much foobar-ism, I managed to track this down to withcurrent being called by an xcb_generic_event at<br />
+<br />
+#3  0x0000000000412e1a in event_handle_configurerequest (ev=0x1d93bd0)<br />
+    at /home/kde-devel/kde/src/awesome/event.c:345<br />
+<br />
+if added this to client_resize_do<br />
+printf(&quot;\n WINID %d From resize %d %d x %d %d w %d %d\n&quot;,c-&gt;window,screen_get_index(c-&gt;screen),screen_get_index(new_screen),old_geometry.x,geometry.x,old_geometry.width,geometry.width);<br />
+<br />
+and got:<br />
+<br />
+<br />
+HERE C Mozilla Firefox<br />
+TAG Internet<br />
+ WINID 41943231 From resize 1 1 x 1920 1920 w 1918 1918<br />
+ WINID 41943231 From resize 1 1 x 1920 1920 w 1918 1918<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 1<br />
+<br />
+ WINID 41943231 From resize 1 1 x 0 1920 w 1918 1918<br />
+ WINID 41943231 From resize 1 2 x 1920 0 w 1918 1918<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 1<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 64<br />
+  restoring member tabs = 64<br />
+HERE WITHCURRENT<br />
+INVALID SCREEN CHANGE!!!!!<br />
+<br />
+<br />
+<br />
+sorry for all the prints with useless names, but at some point, you can see that the screen change when firefox restore the session<br />
+<br />
+<br />
+do you think we should first check that in event.c before calling resize to prevent accidental screen changes? Or is it better to add a request::screen as suggested before to avoid this situation?<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment4080" id="comment4080"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4080">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 05 June 2014, 13:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; After much foobar-ism, I managed to track this down to withcurrent being called by an xcb_generic_event at<br />
+&gt; <br />
+&gt; #3 0x0000000000412e1a in event_handle_configurerequest (ev=0x1d93bd0)<br />
+&gt; at /home/kde-devel/kde/src/awesome/event.c:345<br />
+<br />
+You mean awful.tag.withcurrent, right? So firefox gives us a specific position for its window in a ConfigureRequest, we obey and put it at that position (which happens to be on another screen than what it is on currently) and awful.tag.withcurrent gets called due to the resulting property::screen signal.<br />
+<br />
+Hm. Why am I not allowed to blame firefox here? :(<br />
+<br />
+We could change event_handle_configurerequest() to just emit request::x, y, width, height, border_width etc signals, but (a) this would mean we would violate ICCCM (we have to take special action if we ignore the configure request) and (b) I don&#039;t see how this really helps with clients moving themselves to another screen during startup.<br />
+<br />
+Also, I don&#039;t see *why* firefox does this at all. If it wants to restore some saved window position, then there is a proper, non-flickering approach for doing that. So it must be doing something else...?</div></div>
+
+  
+    <em>
+    <a name="comment4083" id="comment4083"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4083">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 05 June 2014, 16:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">On top of that, we then ignore the x, y, width and height arguments as it is added to a tag layout and resized anyway, so the only thing that happen is the window going into a random tag with no way to enforce the rules (well, Tyrannical rules).<br />
+<br />
+So, the possible solutions are:<br />
+1) Add the request x, y, width and height as suggested (+ convert the x,y ones into ::screen, as they are the only ones that really affect the user of those bugus softwares)<br />
+2) Add a new client properties to disable those events, something like &quot;ignore_external_resize&quot;. This wont generally solve the problem, but there is not that many clients like that<br />
+<br />
+Pick one and I will send a patch. In general this should not happen, but I saw it a few time and this is the first time I digg into this. As always, my opinion is that there should be a way to prevent clients from skipping the rule system and doing whatever they want. This was the whole point of the request:: system. But leave the current behavior as the default one.</div></div>
+
+  
+    <em>
+    <a name="comment4091" id="comment4091"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4091">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=230">rawoul (rawoul)</a> -
+    Wednesday, 11 June 2014, 08:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m not sure it&#039;s the same bug but I get similar behaviour with a recent chrome and awesome 3.4.15. The Chrome window pops up on top of other windows on a different tab (on the same screen), after receiving the following event:<br />
+<br />
+ConfigureNotify event, serial 24, synthetic NO, window 0x1e0003e,<br />
+    event 0x1e0003e, window 0x1e0003e, (0,22), width 1278, height 1576,<br />
+    border_width 1, above 0x240036f, override NO<br /></div></div>
+
+  
+    <em>
+    <a name="comment4092" id="comment4092"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4092">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=230">rawoul (rawoul)</a> -
+    Wednesday, 11 June 2014, 11:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ignore my previous comment, chrome works fine with awesome 3.5.5.</div></div>
+
+  
+    <em>
+    <a name="comment4093" id="comment4093"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4093">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=230">rawoul (rawoul)</a> -
+    Wednesday, 11 June 2014, 11:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hum, actually it does also fail with awesome 3.5.5. I suspect the bug is linked to chromium switching to their &#039;Aura&#039; toolkit instead of GTK.</div></div>
+
+  
+    <em>
+    <a name="comment4094" id="comment4094"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#comment4094">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=230">rawoul (rawoul)</a> -
+    Wednesday, 11 June 2014, 12:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The bug seems to be related to GPU drivers (see<a href=" https://code.google.com/p/chromium/issues/detail?id=350522"> https://code.google.com/p/chromium/issues/detail?id=350522</a>), sorry for the noise.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1275" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

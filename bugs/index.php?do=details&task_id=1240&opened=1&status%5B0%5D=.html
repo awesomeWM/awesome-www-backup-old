@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1240 : W: awesome: luaA_object_decref:122: BUG: Reference not found: -1 0x41c1e998</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1240&amp;opened=1&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1238&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Floating dialogue expands | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1241&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Tag index need to be reset when changing screen (or removed) | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1240 - W: awesome: luaA_object_decref:122: BUG: Reference not found: -1 0x41c1e998  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Wednesday, 26 March 2014, 04:05 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 04 April 2014, 10:39 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Just upgraded to the latest git, this print when I load my config. Here is the backtrace if I add a breakpoint on the warning<br />
+<br />
+(gdb) break luaA_object_decref:122<br />
+Breakpoint 1 at 0x42900a: file /home/kde-devel/kde/src/awesome/common/luaobject.c, line 104.<br />
+(gdb) run<br />
+(gdb) bt<br />
+#0  luaA_object_decref (L=L@entry=0x40000378, tud=tud@entry=-1, pointer=pointer@entry=0x40077ca0) at /home/kde-devel/kde/src/awesome/common/luaobject.c:104<br />
+#1  0x000000000041ac9c in luaA_object_unref (pointer=0x40077ca0, L=0x40000378) at /home/kde-devel/kde/src/awesome/common/luaobject.h:133<br />
+#2  luaA_awesome_disconnect_signal (L=0x40000378) at /home/kde-devel/kde/src/awesome/luaa.c:292<br />
+#3  0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#4  0x00007ffff4ed11dc in lj_cf_package_require () from /usr/lib64/libluajit-5.1.so.2<br />
+#5  0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#6  0x00007ffff4ed11dc in lj_cf_package_require () from /usr/lib64/libluajit-5.1.so.2<br />
+#7  0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#8  0x00007ffff4ed11dc in lj_cf_package_require () from /usr/lib64/libluajit-5.1.so.2<br />
+#9  0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#10 0x00007ffff4ed11dc in lj_cf_package_require () from /usr/lib64/libluajit-5.1.so.2<br />
+#11 0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#12 0x00007ffff4e70690 in lua_pcall () from /usr/lib64/libluajit-5.1.so.2<br />
+#13 0x000000000041a843 in luaA_loadrc (confpath=&lt;optimized out&gt;, confpath@entry=0x6a97f0 &quot;/home/lepagee/.config/awesome/rc.lua&quot;, run=run@entry=true)<br />
+    at /home/kde-devel/kde/src/awesome/luaa.c:509<br />
+#14 0x000000000041d184 in luaA_parserc (xdg=xdg@entry=0x7fffffffc9f0, confpatharg=confpatharg@entry=0x0, run=run@entry=true)<br />
+    at /home/kde-devel/kde/src/awesome/luaa.c:566<br />
+#15 0x000000000040ec86 in main (argc=1, argv=0x7fffffffcb48) at /home/kde-devel/kde/src/awesome/awesome.c:523<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Friday, 04 April 2014, 10:39 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Deferred<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Cosmic Rays!        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (4)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3935" id="comment3935"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1240#comment3935">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 26 March 2014, 08:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Someone is disconnecting a signal on the &quot;awesome&quot; signal that wasn&#039;t connected. Any awesome.disconnect_signal() calls in your config that run during startup?<br />
+<br />
+The only one in awesome is in wibox.drawable and this one seems safe to me (because (a) it&#039;s internal and works for everyone else and (b) it doesn&#039;t disconnected while parsing the config).</div></div>
+
+  
+    <em>
+    <a name="comment3940" id="comment3940"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1240#comment3940">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Wednesday, 26 March 2014, 18:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">According to grep awesome.disc -R --color ./ in my config, no, strange</div></div>
+
+  
+    <em>
+    <a name="comment3944" id="comment3944"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1240#comment3944">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 26 March 2014, 19:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You could springle print(&quot;foo&quot;) or io.stderr:write(&quot;foo\n&quot;) calls into your config and use that for figuring out where exactly this comes from. Besides that, I am out of ideas.</div></div>
+
+  
+    <em>
+    <a name="comment3980" id="comment3980"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1240#comment3980">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 04 April 2014, 05:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">doesn&#039;t happen with the latest 3.5 HEAD, please close</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1240#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1240" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

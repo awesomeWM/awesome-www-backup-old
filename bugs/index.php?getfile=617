@@ -1,0 +1,163 @@
+diff --git a/event.c b/event.c
+index f0f8c54..9bd0265 100644
+--- a/event.c
++++ b/event.c
+@@ -285,23 +285,52 @@ event_handle_configurerequest(xcb_configure_request_event_t *ev)
+     if((c = client_getbywin(ev->window)))
+     {
+         area_t geometry = c->geometry;
++        int16_t diff_w = 0, diff_h = 0, diff_border = 0;
+ 
+         if(ev->value_mask & XCB_CONFIG_WINDOW_X)
+             geometry.x = ev->x;
+         if(ev->value_mask & XCB_CONFIG_WINDOW_Y)
+             geometry.y = ev->y;
+         if(ev->value_mask & XCB_CONFIG_WINDOW_WIDTH)
++        {
++            uint16_t old_w = geometry.width;
+             geometry.width = ev->width;
++            /* The ConfigureRequest specifies the size of the client window, we want the frame */
++            geometry.width += c->titlebar[CLIENT_TITLEBAR_LEFT].size;
++            geometry.width += c->titlebar[CLIENT_TITLEBAR_RIGHT].size;
++            diff_w = geometry.width - old_w;
++        }
+         if(ev->value_mask & XCB_CONFIG_WINDOW_HEIGHT)
++        {
++            uint16_t old_h = geometry.height;
+             geometry.height = ev->height;
+-
++            /* The ConfigureRequest specifies the size of the client window, we want the frame */
++            geometry.height += c->titlebar[CLIENT_TITLEBAR_TOP].size;
++            geometry.height += c->titlebar[CLIENT_TITLEBAR_BOTTOM].size;
++            diff_h = geometry.height - old_h;
++        }
+         if(ev->value_mask & XCB_CONFIG_WINDOW_BORDER_WIDTH)
+         {
++            diff_border = ev->border_width - c->border_width;
++            diff_h += diff_border;
++            diff_w += diff_border;
++
+             luaA_object_push(globalconf.L, c);
+             window_set_border_width(globalconf.L, -1, ev->border_width);
+             lua_pop(globalconf.L, 1);
+         }
+ 
++        /* If the client resizes without moving itself, apply window gravity */
++        if(c->size_hints.flags & XCB_ICCCM_SIZE_HINT_P_WIN_GRAVITY)
++        {
++            int16_t diff_x = 0, diff_y = 0;
++            xwindow_translate_for_gravity(c->size_hints.win_gravity, diff_border, diff_border, diff_w, diff_h, &diff_x, &diff_y);
++            if(!(ev->value_mask & XCB_CONFIG_WINDOW_X))
++                geometry.x += diff_x;
++            if(!(ev->value_mask & XCB_CONFIG_WINDOW_Y))
++                geometry.y += diff_y;
++        }
++
+         if(!client_resize(c, geometry, false))
+             /* ICCCM 4.1.5 / 4.2.3, if nothing was changed, send an event saying so */
+             client_send_configure(c);
+diff --git a/objects/client.c b/objects/client.c
+index caefe80..6f602a2 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -1570,6 +1570,8 @@ titlebar_resize(client_t *c, client_titlebar_t bar, int size)
+         fatal("Unknown titlebar kind %d\n", (int) bar);
+     }
+ 
++    /* Move client according to window gravity */
++
+     c->titlebar[bar].size = size;
+     client_resize_do(c, geometry, true, false);
+ }
+diff --git a/xwindow.c b/xwindow.c
+index ab3b80a..7c2f8b9 100644
+--- a/xwindow.c
++++ b/xwindow.c
+@@ -89,8 +89,8 @@ xwindow_configure(xcb_window_t win, area_t geometry, int border)
+     ce.response_type = XCB_CONFIGURE_NOTIFY;
+     ce.event = win;
+     ce.window = win;
+-    ce.x = geometry.x;
+-    ce.y = geometry.y;
++    ce.x = geometry.x + border;
++    ce.y = geometry.y + border;
+     ce.width = geometry.width;
+     ce.height = geometry.height;
+     ce.border_width = border;
+@@ -296,4 +296,64 @@ xwindow_set_shape(xcb_window_t win, int width, int height, enum xcb_shape_sk_t k
+         xcb_free_pixmap(globalconf.connection, pixmap);
+ }
+ 
++/** Calculate the position change that a window needs applied.
++ * \param gravity The window gravity that should be used.
++ * \param change_width_before The window width difference that will be applied.
++ * \param change_height_before The window height difference that will be applied.
++ * \param change_width_after The window width difference that will be applied.
++ * \param change_height_after The window height difference that will be applied.
++ * \param dx On return, this will be set to the amount the pixel has to be moved.
++ * \param dy On return, this will be set to the amount the pixel has to be moved.
++ */
++void xwindow_translate_for_gravity(xcb_gravity_t gravity, int16_t change_width_before, int16_t change_height_before,
++        int16_t change_width_after, int16_t change_height_after, int16_t *dx, int16_t *dy)
++{
++    int16_t x = 0, y = 0;
++    int16_t change_height = change_height_before + change_height_after;
++    int16_t change_width = change_width_before + change_width_after;
++
++    switch (gravity) {
++    case XCB_GRAVITY_WIN_UNMAP:
++    case XCB_GRAVITY_NORTH_WEST:
++        break;
++    case XCB_GRAVITY_NORTH:
++        x = -change_width / 2;
++        break;
++    case XCB_GRAVITY_NORTH_EAST:
++        x = -change_width;
++        break;
++    case XCB_GRAVITY_WEST:
++        y = -change_height / 2;
++        break;
++    case XCB_GRAVITY_CENTER:
++        x = -change_width / 2;
++        y = -change_height / 2;
++        break;
++    case XCB_GRAVITY_EAST:
++        x = -change_width;
++        y = -change_height / 2;
++        break;
++    case XCB_GRAVITY_SOUTH_WEST:
++        y = -change_height;
++        break;
++    case XCB_GRAVITY_SOUTH:
++        x = -change_width / 2;
++        y = -change_height;
++        break;
++    case XCB_GRAVITY_SOUTH_EAST:
++        x = -change_width;
++        y = -change_height;
++        break;
++    case XCB_GRAVITY_STATIC:
++        x = -change_width_before;
++        x = -change_height_before;
++        break;
++    }
++
++    if (dx)
++        *dx = x;
++    if (dy)
++        *dy = y;
++}
++
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
+diff --git a/xwindow.h b/xwindow.h
+index 7a53073..561a5dc 100644
+--- a/xwindow.h
++++ b/xwindow.h
+@@ -41,6 +41,7 @@ void xwindow_takefocus(xcb_window_t);
+ void xwindow_set_cursor(xcb_window_t, xcb_cursor_t);
+ void xwindow_set_border_color(xcb_window_t, color_t *);
+ void xwindow_set_shape(xcb_window_t, int, int, enum xcb_shape_sk_t, cairo_surface_t *, int);
++void xwindow_translate_for_gravity(xcb_gravity_t, int16_t, int16_t, int16_t, int16_t, int16_t *, int16_t *);
+ 
+ #endif
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

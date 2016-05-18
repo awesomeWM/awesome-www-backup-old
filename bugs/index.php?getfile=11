@@ -1,0 +1,58 @@
+ awesome.c |   10 ++++++++++
+ config.h  |    2 ++
+ event.c   |    1 +
+ 3 files changed, 13 insertions(+), 0 deletions(-)
+
+diff --git a/awesome.c b/awesome.c
+index 3a455d9..3200768 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -207,6 +207,7 @@ main(int argc, char *argv[])
+     Display * dpy;
+     int shape_event, randr_event_base;
+     int screen, screen_count;
++    int i, cmdlen;
+     event_handler **handler;
+     struct sockaddr_un *addr;
+ 
+@@ -235,6 +236,15 @@ main(int argc, char *argv[])
+     if(!(dpy = XOpenDisplay(NULL)))
+         eprint("cannot open display\n");
+ 
++    for(cmdlen = 0, i = 0; i < argc; i++)
++        cmdlen += a_strlen(argv[i] + 1);
++    globalconf.argv = p_new(char, cmdlen);
++    a_strcpy(globalconf.argv, cmdlen, argv[0]);
++    for(i = 1; i < argc; i++) {
++        a_strcat(globalconf.argv, cmdlen, " ");
++        a_strcat(globalconf.argv, cmdlen, argv[i]);
++    }
++
+     xfd = ConnectionNumber(dpy);
+ 
+     XSetErrorHandler(xerrorstart);
+diff --git a/config.h b/config.h
+index 4a90f3e..5cb5b4a 100644
+--- a/config.h
++++ b/config.h
+@@ -313,6 +313,8 @@ struct AwesomeConf
+     FocusList *focus;
+     /** Link between tags and clients */
+     TagClientLink *tclink;
++    /** Command line passed to awesome */
++    char *argv;
+ };
+ 
+ void config_parse(const char *);
+diff --git a/event.c b/event.c
+index 333781f..23f0734 100644
+--- a/event.c
++++ b/event.c
+@@ -409,6 +409,7 @@ void
+ handle_event_randr_screen_change_notify(XEvent *e)
+ {
+     XRRUpdateConfiguration(e);
++    uicb_exec(0, globalconf.argv);
+ }
+ 
+ void

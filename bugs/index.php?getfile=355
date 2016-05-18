@@ -1,0 +1,227 @@
+From 3fcc67ccf58b8eb5946b1730d4a0619c17efd928 Mon Sep 17 00:00:00 2001
+From: Roman Kosenko <madkite@gmail.com>
+Date: Tue, 21 Sep 2010 17:03:09 +0300
+Subject: [PATCH] Naughty notification fix
+
+1. Support of "run" function in presets (allows user to add left click
+handler).
+2. Support of "transform" function in presets (allows user to add custom
+transformation of notification text rules in order to be comparable with
+popular programs)
+3. Add max_icon_size parameter.
+4. Log original notify in stderr in case of any markup error.
+5. Accept "file://" prefix in icon path (like notification-daemon does).
+6. Use config.default_preset as default preset
+7. Fix bug with swapping width/height parameters while resizing icon.
+8. Other small bugfixes and improvements.
+
+Signed-off-by: Roman Kosenko <madkite@gmail.com>
+---
+ lib/naughty.lua.in |   77 +++++++++++++++++++++++++++++++++++-----------------
+ 1 files changed, 52 insertions(+), 25 deletions(-)
+
+diff --git a/lib/naughty.lua.in b/lib/naughty.lua.in
+index 3c4315b..154a72a 100644
+--- a/lib/naughty.lua.in
++++ b/lib/naughty.lua.in
+@@ -10,13 +10,14 @@ local table = table
+ local type = type
+ local string = string
+ local pcall = pcall
++local tostring = tostring
+ local capi = { screen = screen,
+                awesome = awesome,
+                dbus = dbus,
+                widget = widget,
+                wibox = wibox,
+                image = image,
+-               timer = timer }
++               timer = timer, io = io }
+ local button = require("awful.button")
+ local util = require("awful.util")
+ local bt = require("beautiful")
+@@ -190,7 +191,7 @@ end
+ -- @param notification Notification object to be destroyed
+ -- @return True if the popup was successfully destroyed, nil otherwise
+ function destroy(notification)
+-    if notification and notification.box.screen then
++    if notification and notification.box and notification.box.screen then
+         if suspended then
+             for k, v in pairs(notifications.suspended) do
+                 if v.box == notification.box then
+@@ -254,8 +255,9 @@ end
+ -- @param height Popup height. Default: nil (auto)
+ -- @param width Popup width. Default: nil (auto)
+ -- @param font Notification font. Default: beautiful.font or awesome.font
+--- @param icon Path to icon. Default: nil
++-- @param icon Path to icon or image object. Default: nil
+ -- @param icon_size Desired icon size in px. Default: nil
++-- @param max_icon_size Maximum icon size in px (if icon size is greater it will be resized). Default: nil
+ -- @param fg Foreground color. Default: beautiful.fg_focus or '#ffffff'
+ -- @param bg Background color. Default: beautiful.bg_focus or '#535d6c'
+ -- @param border_width Border width. Default: 1
+@@ -276,6 +278,7 @@ function notify(args)
+     local timeout = args.timeout or preset.timeout or 5
+     local icon = args.icon or preset.icon
+     local icon_size = args.icon_size or preset.icon_size
++    local max_icon_size = args.max_icon_size or preset.max_icon_size
+     local text = args.text or preset.text or ""
+     local title = args.title or preset.title
+     local screen = args.screen or preset.screen or 1
+@@ -286,7 +289,7 @@ function notify(args)
+     local opacity = args.opacity or preset.opacity
+     local margin = args.margin or preset.margin or "5"
+     local border_width = args.border_width or preset.border_width or "1"
+-    local position = args.position or preset.position or "top_right"
++    local position = args.position or preset.position or config.default_position or "top_right"
+ 
+     -- beautiful
+     local beautiful = bt.get()
+@@ -333,8 +336,10 @@ function notify(args)
+     notification.die = die
+ 
+     local run = function ()
+-        if args.run then
++        if args.run and type(args.run) == "function" then
+             args.run(notification)
++        elseif preset.run and type(preset.run) == "function" then
++            preset.run(notification)
+         else
+             die()
+         end
+@@ -357,6 +362,10 @@ function notify(args)
+     layout.margins[textbox] = { right = margin, left = margin, bottom = margin, top = margin }
+     textbox.valign = "middle"
+ 
++    if preset.transform and type(preset.transform) == "function" then
++        text = preset.transform(text)
++    end
++
+     local function setText(pattern, replacements)
+         textbox.text = string.format('<span font_desc="%s"><b>%s</b>%s</span>', font, title, text:gsub(pattern, replacements))
+     end
+@@ -368,14 +377,20 @@ function notify(args)
+         if not pcall(setText, "[<>&]", { ['<'] = "&lt;", ['>'] = "&gt;", ['&'] = "&amp;" }) then
+             textbox.text = "<i>&lt;Invalid markup, cannot display message&gt;</i>"
+         end
++        capi.io.stderr:write("naughty notify: \"" .. text .. "\"\n")
+     end
+ 
+     -- create iconbox
+     local iconbox = nil
+     if icon then
+         -- try to guess icon if the provided one is non-existent/readable
+-        if type(icon) == "string" and not util.file_readable(icon) then
+-            icon = getIcon(icon)
++        if type(icon) == "string" then
++            icon = icon:gsub("^file:///?", "/");
++            if not icon:match("^/") then
++                icon = getIcon(icon)
++            elseif not util.file_readable(icon) then
++                icon = nil
++            end
+         end
+ 
+         -- if we have an icon, use it
+@@ -390,7 +405,9 @@ function notify(args)
+                 img = icon
+             end
+             if icon_size then
+-                img = img:crop_and_scale(0,0,img.height,img.width,icon_size,icon_size)
++                img = img:crop_and_scale(0, 0, img.width, img.height, icon_size, icon_size)
++            elseif max_icon_size and (img.width > max_icon_size or img.height > max_icon_size) then
++                img = img:crop_and_scale(0, 0, img.width, img.height, max_icon_size, max_icon_size)
+             end
+             iconbox.resize = false
+             iconbox.image = img
+@@ -444,7 +461,11 @@ function notify(args)
+     notification.idx = offset.idx
+ 
+     -- populate widgets
+-    notification.box.widgets = { iconbox, textbox, ["layout"] = layout.horizontal.leftright }
++    if iconbox then
++        notification.box.widgets = { iconbox, textbox, ["layout"] = layout.horizontal.leftright }
++    else
++        notification.box.widgets = { textbox, ["layout"] = layout.horizontal.leftright }
++    end
+ 
+     -- insert the notification to the table
+     table.insert(notifications[screen][notification.position], notification)
+@@ -462,7 +483,7 @@ end
+ -- Notify
+ if capi.dbus then
+     capi.dbus.add_signal("org.freedesktop.Notifications", function (data, appname, replaces_id, icon, title, text, actions, hints, expire)
+-    args = { preset = { } }
++    args = { preset = config.default_preset }
+     if data.member == "Notify" then
+         if text ~= "" then
+             args.text = text
+@@ -476,14 +497,14 @@ if capi.dbus then
+                 return
+             end
+         end
+-        local score = 0
+-        for i, obj in pairs(config.mapping) do
++        local score = -1
++        for _, obj in pairs(config.mapping) do
+             local filter, preset, s = obj[1], obj[2], 0
+             if (not filter.urgency or filter.urgency == hints.urgency) and
+                (not filter.category or filter.category == hints.category) and
+                (not filter.appname or filter.appname == appname) then
+-                for j, el in pairs(filter) do s = s + 1 end
+-                if s > score then
++                for _, _ in pairs(filter) do s = s + 1 end
++                if s > score or s == score and filter.appname then
+                     score = s
+                     args.preset = preset
+                 end
+@@ -491,29 +512,35 @@ if capi.dbus then
+         end
+         if not args.preset.callback or (type(args.preset.callback) == "function" and
+             args.preset.callback(data, appname, replaces_id, icon, title, text, actions, hints, expire)) then
+-            if icon ~= "" then
+-                args.icon = icon
+-            elseif hints.icon_data then
++            local image = hints.icon_data or hints.image_data
++            if image and type(image) == "table" then
+                 -- icon_data is an array:
+                 -- 1 -> width, 2 -> height, 3 -> rowstride, 4 -> has alpha
+                 -- 5 -> bits per sample, 6 -> channels, 7 -> data
+-
+                 local imgdata
+                 -- If has alpha (ARGB32)
+-                if hints.icon_data[6] == 4 then
+-                    imgdata = hints.icon_data[7]
++                if image[4] and image[5] == 8 and image[6] == 4 and type(image[7]) == "table" and type(image[1]) == "number" and type(image[2]) == "number" then
++                    imgdata = image[7]
+                 -- If has not alpha (RGB24)
+-                elseif hints.icon_data[6] == 3 then
++                elseif not image[4] and image[5] == 8 and image[6] == 3 and type(image[7]) == "table" and type(image[1]) == "number" and type(image[2]) == "number" then
+                     imgdata = ""
+-                    for i = 1, #hints.icon_data[7], 3 do
+-                        imgdata = imgdata .. hints.icon_data[7]:sub(i , i + 2):reverse()
+-                        imgdata = imgdata .. string.format("%c", 255) -- alpha is 255
++                    for i = 1, #image[7], 3 do
++                        imgdata = imgdata .. image[7]:sub(i , i + 2):reverse() .. string.char(255) -- alpha is 255
+                     end
+                 end
+                 if imgdata then
+-                    args.icon = capi.image.argb32(hints.icon_data[1], hints.icon_data[2], imgdata)
++                    args.icon = capi.image.argb32(image[1], image[2], imgdata)
++                else
++                    local image_props = ""
++                    for i = 1, #image - 1 do
++                        image_props = image_props .. "/" .. tostring(image[i])
++                    end
++                    capi.io.stderr:write("naughty notify: unsupported image format (" .. image_props:sub(2) .. ")\n")
+                 end
+             end
++            if not args.icon and icon ~= "" then
++                args.icon = icon
++            end
+             if replaces_id and replaces_id ~= "" and replaces_id ~= 0 then
+                 args.replaces_id = replaces_id
+             end
+-- 
+1.7.3
+

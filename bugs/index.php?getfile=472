@@ -1,0 +1,76 @@
+From b75a95a6598d127dba812ef736d9b6282ebc9b13 Mon Sep 17 00:00:00 2001
+From: "Ignas Anikevicius (gns_ank)" <anikevicius@gmail.com>
+Date: Thu, 1 Mar 2012 03:46:48 +0000
+Subject: [PATCH] awful: ewmh.lua Fix unmaximization (#964)
+
+This makes awful not to overwrite the saved geometry by just storing the
+two geometries in separate places.
+---
+ lib/awful/ewmh.lua.in |   34 +++++++++++++++++-----------------
+ 1 files changed, 17 insertions(+), 17 deletions(-)
+
+diff --git a/lib/awful/ewmh.lua.in b/lib/awful/ewmh.lua.in
+index f0262e3..f6d407a 100644
+--- a/lib/awful/ewmh.lua.in
++++ b/lib/awful/ewmh.lua.in
+@@ -1,7 +1,7 @@
+ ---------------------------------------------------------------------------
+ -- @author Julien Danjou &lt;julien@danjou.info&gt;
+ -- @copyright 2009 Julien Danjou
+--- @release @AWESOME_VERSION@
++-- @release v3.4-624-ga0e21bb
+ ---------------------------------------------------------------------------
+ 
+ local setmetatable = setmetatable
+@@ -26,32 +26,32 @@ end
+ -- @param window The window.
+ -- @param set Set or unset the maximized values.
+ local function maximized_horizontal(window, set)
++    local g = {}
+     if set then
+-        store_geometry(window, "maximized")
+-        local g = screen[window.screen].workarea
+-        window:geometry { width = g.width, x = g.x }
+-    elseif data[window] and data[window].maximized
+-        and data[window].maximized.x
+-        and data[window].maximized.width then
+-        window:geometry { width = data[window].maximized.width,
+-                          x = data[window].maximized.x }
++        store_geometry(window, "maximized_horizontal")
++        g = screen[window.screen].workarea
++    elseif data[window] and data[window].maximized_horizontal
++        and data[window].maximized_horizontal.x
++        and data[window].maximized_horizontal.width then
++        g = data[window].maximized_horizontal
+     end
++    window:geometry { width = g.width, x = g.x }
+ end
+ 
+ -- Maximize a window vertically.
+ -- @param window The window.
+ -- @param set Set or unset the maximized values.
+ local function maximized_vertical(window, set)
++    local g = {}
+     if set then
+-        store_geometry(window, "maximized")
+-        local g = screen[window.screen].workarea
+-        window:geometry { height = g.height, y = g.y }
+-    elseif data[window] and data[window].maximized
+-        and data[window].maximized.y
+-        and data[window].maximized.height then
+-        window:geometry { height = data[window].maximized.height,
+-                          y = data[window].maximized.y }
++        store_geometry(window, "maximized_vertical")
++        g = screen[window.screen].workarea
++    elseif data[window] and data[window].maximized_vertical
++        and data[window].maximized_vertical.y
++        and data[window].maximized_vertical.height then
++        g = data[window].maximized_vertical
+     end
++    window:geometry { height = g.height, y = g.y }
+ end
+ 
+ -- Fullscreen a window.
+-- 
+1.7.8.4
+

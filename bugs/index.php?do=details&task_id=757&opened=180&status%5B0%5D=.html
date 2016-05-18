@@ -1,0 +1,674 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#757 : Image/Drawing System Overhaul With Cairo Bias</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=757&amp;opened=180&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876&amp;opened=180&amp;status%5B0%5D=" title="Won&#039;t fix | Libnotify spec requires that we handle some markup | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=180&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=731&amp;opened=180&amp;status%5B0%5D=" title="Fixed | Awesome should tell the user if their fonts don&#039;t fit | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#757 - Image/Drawing System Overhaul With Cairo Bias  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a>     	 - Tuesday, 13 April 2010, 15:00 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Wednesday, 29 September 2010, 17:39 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Evolution Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> (2010-04-13)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">In general, I consider the Awesome drawing system to be fairly mediocre. Some complaints:<br />
+<br />
+We use both imlib2 and cairo. Talking to psychon, this doesn&#039;t seem particularly useful. It was explained to me that imlib is used for loading files from disk and some drawing, whereas Cairo is used for displaying and some drawing. However:<br />
+ - imlib *sucks* at drawing. The current features provided in image.c consist of lines, rectangles, circles, pixels, and basic rectangle fills/gradients. However, Cairo provides features like drawing complex shapes using beziers. These shapes are then intelligently understood as a collection of nodes like an SVG and can be filled and transformed. At the moment, the imlib features that we provide for drawing on images make it possible to (pretty much only) create the widgets that currently exist: basic lines and rectangles. Creating anything more complex is virtually impossible.<br />
+ - cairo can load pngs.<a href=" http://cairographics.org/manual/cairo-png-functions.html#cairo-image-surface-create-from-png"> http://cairographics.org/manual/cairo-png-functions.html#cairo-image-surface-create-from-png</a> . This feature should be researched a bit more. Regardless, I&#039;ve checked through the source, and every image file that we provide is already a PNG, and I expect that 95% of all images used for awesome are pngs or svgs. (Cairo can load SVGs also -- SVGs are frequently used for various icons on the system.)<br />
+<br />
+So, in the interest of pushing awesome widgets forward again, I propose:<br />
+ - drop imlib as a dependency. It, I think, is superseded by Cairo.<br />
+ - provide direct cairo surface access for drawing on images so that more complexly shaped widgets (clickable stars, volume waves drawn directly as widgets, various wavy progress bars, etc) are possible.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Wednesday, 29 September 2010, 17:39 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+db3b1fe4318dfc3fc4f919e150f2a1e864d19e53
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Wed Sep 29 19:36:58 2010
++0200<br />
+<br />
+    Image: Remove<br />
+    <br />
+    Everything now uses oocairo
+instead.<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (16)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2238" id="comment2238"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2238">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 16 August 2010, 07:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Seen on the mailing list archives: (Replaces imlib2 with some gdk code)<br />
+<br /><a href="
+http://article.gmane.org/gmane.comp.window-managers.awesome/6116">
+http://article.gmane.org/gmane.comp.window-managers.awesome/6116</a><br /><a href="
+http://article.gmane.org/gmane.comp.window-managers.awesome/6122">
+http://article.gmane.org/gmane.comp.window-managers.awesome/6122</a></div></div>
+
+  
+    <em>
+    <a name="comment2239" id="comment2239"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2239">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 16 August 2010, 07:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">GdkPixbuf is only used for loading / saving images in that code, so I guess gdk isn&#039;t needed after all.</div></div>
+
+  
+    <em>
+    <a name="comment2240" id="comment2240"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2240">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 16 August 2010, 07:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I think this is a good idea. It might be a target for 4.0.<br />
+<br />
+Imlib2 may be kept as an optional (or not) build flag to permit the loading of formats others than png/svg. Passing ARGB32 data between Imlib2 and cairo would be a piece of cake then.</div></div>
+
+  
+    <em>
+    <a name="comment2241" id="comment2241"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2241">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 16 August 2010, 09:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Just a thought:<br />
+<br />
+Instead of handling widgets in the core, we could export enough of cairo&#039;s API to lua to do all of that completely in lua (let&#039;s call it plan F?). ;-)</div></div>
+
+  
+    <em>
+    <a name="comment2242" id="comment2242"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2242">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 16 August 2010, 10:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This is what I though, Uli.<br />
+<br />
+In `next&#039; branch, there&#039;s no widget anymore anyway, so it&#039;s not plan F, it&#039;s just the next step of the plan E ;-)<br />
+<br />
+(plan A/B/C/D/E where incompatible ideas :-)</div></div>
+
+  
+    <em>
+    <a name="comment2255" id="comment2255"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2255">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 18 August 2010, 16:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So let&#039;s start with a drawing API. How should it look like? Should this be like the current api (draw line, circle, ...) or a kind of cairo-bindings for lua? I&#039;d almost prefer the latter since it provides way more possibilities.</div></div>
+
+  
+    <em>
+    <a name="comment2256" id="comment2256"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2256">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Wednesday, 18 August 2010, 17:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Cairo bindings obviously.<br />
+<br />
+Eventually, using some existing binding maybe a big plus…</div></div>
+
+  
+    <em>
+    <a name="comment2257" id="comment2257"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2257">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 18 August 2010, 17:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I looked around a little.<br />
+<br /><a href="
+http://luaforge.net/projects/luacairo/">
+http://luaforge.net/projects/luacairo/</a> auto-generated crap that was last touched years ago.<br /><a href="
+http://conky.sf.net/">
+http://conky.sf.net/</a> Seems to use the very same stuff as luacairo.<br />
+<br />
+The C code for the above projects is automatically generated by tolua++. It requires you to explicitely call the appropriate &quot;destroy&quot; functions for surfaces etc or else you&#039;ll see leaks. I&#039;d rather have the garbage collector take care of that. Since it&#039;s auto-generated, it&#039;s not really easy to mess with this.<br />
+<br />
+Besides that, google didn&#039;t find anything remotely helpful.</div></div>
+
+  
+    <em>
+    <a name="comment2258" id="comment2258"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2258">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Wednesday, 18 August 2010, 17:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Anyhow, I think we should not decide blindly to embed our own wrapper.<br />
+If luacairo is crap, we might just make a better one that anyone in the Lua community can use as standalone, and use it directly from awesome. This would make even easier to test drawing outside awesome itself.<br />
+<br />
+(I already did embed a D-Bus binding, and I regret that somehow… But this one would be harder to disembed due to the fd monitoring we have to do.)</div></div>
+
+  
+    <em>
+    <a name="comment2259" id="comment2259"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2259">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=200">Gregor Best (farhaven)</a> -
+    Wednesday, 18 August 2010, 18:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I remember a long time ago I used oocairo for drawing on widgets. That was before I added the wrappers for the Imlib2 drawing functions to awesome. I don&#039;t remember the specifics, but IIRC garbage collection was done by the Lua VM and no tolua++ was involved.</div></div>
+
+  
+    <em>
+    <a name="comment2262" id="comment2262"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2262">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 19 August 2010, 10:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">oocairo looks promising. The only problems I see so far is that no distro seems to ship oocairo (well, that would have to change then! ;-) ) and that, without modifying oocairo, it&#039;s only possible to &quot;move&quot; images from lua to the awesome C core, not the other way around. This would mean that reading client.content, imagebox.image, wibox.shape_{clip,bounding} would no longer possible.<br />
+Do we want write-only properties or should we fork oocairo? :/</div></div>
+
+  
+    <em>
+    <a name="comment2263" id="comment2263"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2263">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 19 August 2010, 10:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, There are also bg_image and icon (client.icon). Making client.icon write-only is not an option, so I guess we do need some magic here.</div></div>
+
+  
+    <em>
+    <a name="comment2264" id="comment2264"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2264">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 19 August 2010, 20:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Attached is a first patch/hack I just made for testing this. This doesn&#039;t need awesome to link against oocairo, all the magic lies in this one line:<br />
+<br />
+cairo_surface_t **cairo_surface = (cairo_surface_t **)luaL_checkudata(L, -1, &quot;6d31a064-6711-11dd-bdd8-00e081225ce5&quot;); <br />
+<br />
+That way we can access that data without needing anything from oocairo. My current plan would be removing images completely and letting oocairo handle all of this.<br />
+<br />
+As mentioned above, the only problem with this is that I can&#039;t easily hand over images to lua without changing oocairo or hacking in some ugly stuff (Trying to allocate an userdata that oocairo will handle safely).<br />
+<br />
+Anyway, this does look promising and it&#039;s fun to play with this. :)</div></div>
+
+      <div class="attachments">
+          <a title="ugly-hack.patch" href="?getfile=338" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            ugly-hack.patch
+                  </a>
+                  (4.5 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2265" id="comment2265"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2265">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 20 August 2010, 12:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, I got a less ugly hack. This one drops &quot;image&quot; completely and replaces everything with oocairo&#039;s surface. I got this as split-up commits laying around, but I&#039;ll attach the complete diff.<br />
+<br />
+Just because I could, I changed the API of the imagebox. Instead of &quot;imgbox.image = foo&quot;, it&#039;s now &quot;imgbox:draw(foo)&quot;. This should make it clearer that the imagebox isn&#039;t automatically updated when the image changes (it creates a private copy of the image).<br />
+Instead of adding the necessary modifications to awful &amp; co, I reimplemented the old image code in lua. That should most likely be dropped and fixed before this is pushed anywhere.<br />
+<br />
+The second patch is what is needed for oocairo. Please note that the first patch does this uglyness to CMakeList.txt, no idea how to properly fix that yet:<br />
+<br />
+  target_link_libraries(${PROJECT_AWE_NAME}<br />
+     ${AWESOME_COMMON_REQUIRED_LIBRARIES}<br />
+     ${AWESOME_REQUIRED_LIBRARIES}<br />
+-    ${AWESOME_OPTIONAL_LIBRARIES})<br />
++    ${AWESOME_OPTIONAL_LIBRARIES}<br />
++    /home/psychon/projects/lua-oocairo/.libs/liblua-oocairo.a)<br />
+<br />
+Diffstat:<br />
+ CMakeLists.txt                 |    4 +-<br />
+ awesome.c                      |   42 ++<br />
+ awesomerc.lua.in               |    3 +<br />
+ common/tokenize.gperf          |    4 +-<br />
+ draw.c                         |   40 +--<br />
+ draw.h                         |    3 +-<br />
+ ewmh.c                         |    2 +-<br />
+ globalconf.h                   |    6 +<br />
+ lib/awful/widget/button.lua.in |    4 +-<br />
+ lib/awful/widget/common.lua.in |   13 +-<br />
+ lib/cairo.lua.in               |   81 ++++<br />
+ luaa.c                         |    3 -<br />
+ luaa.h                         |    1 +<br />
+ objects/client.c               |   25 +-<br />
+ objects/client.h               |    2 +-<br />
+ objects/image.c                |  834 ----------------------------------------<br />
+ objects/image.h                |   41 --<br />
+ objects/wibox.c                |  128 +------<br />
+ objects/wibox.h                |   12 +-<br />
+ objects/widget.c               |    2 +-<br />
+ objects/widgets/imagebox.c     |   52 ++-<br />
+ objects/widgets/textbox.c      |   28 +-<br />
+ 22 files changed, 248 insertions(+), 1082 deletions(-)</div></div>
+
+      <div class="attachments">
+          <a title="awesome-oocairo.patch" href="?getfile=339" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            awesome-oocairo.patch
+                  </a>
+                  (54 KiB)
+          <br />
+          <a title="oocairo.patch" href="?getfile=340" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            oocairo.patch
+                  </a>
+                  (1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2267" id="comment2267"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2267">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Tuesday, 24 August 2010, 07:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Isn&#039;t there an easy way to export our images as string in ARGB32 format?<br /></div></div>
+
+  
+    <em>
+    <a name="comment2398" id="comment2398"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#comment2398">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 29 September 2010, 17:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@jd: We can now only load PNGs, everything else results in empty images. This kinda breaks debian&#039;s &quot;debian.menu&quot;.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="757" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

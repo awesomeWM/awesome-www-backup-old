@@ -1,0 +1,48 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.*;
+
+public class TestWindow extends JFrame implements Runnable {
+    /**
+     * @param args Command line arguments
+     * @throws InvocationTargetException 
+     * @throws InterruptedException 
+     */
+    public static void main(String[] args) throws InterruptedException, InvocationTargetException {
+        javax.swing.SwingUtilities.invokeAndWait(new TestWindow());
+    }
+
+    public TestWindow()
+    {
+        super("Hello world");
+    }
+
+    @Override
+    public void run() {
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        JLabel emptyLabel = new JLabel("Hello world");
+        getContentPane().add(emptyLabel,BorderLayout.CENTER);
+        JOptionPane optionPane = new JOptionPane("foo");
+        final JDialog dialog = new JDialog(this, "Foo", false);
+        dialog.setContentPane(optionPane);
+        dialog.pack();
+
+        JButton button = new JButton("Toggle");
+        button.addActionListener(new ActionListener() {
+                private boolean visible = false;
+                
+                public void actionPerformed(ActionEvent e) {
+                    visible = !visible;
+                    dialog.setVisible(visible);
+                }
+            });
+        add(button);
+
+        pack();
+        setVisible(true);
+    }
+}

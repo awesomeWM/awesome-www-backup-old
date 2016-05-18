@@ -1,0 +1,437 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#742 : Allow to use other compilers such as Sun Studio</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=742&amp;project=1&amp;pagenum=3" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=733&amp;project=1&amp;pagenum=3" title="Unconfirmed | wmctrl raise/focus window in max layout inncomplete  | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;pagenum=3">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=746&amp;project=1&amp;pagenum=3" title="Unconfirmed | Restore ontop property after returning from fullscreen | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#742 - Allow to use other compilers such as Sun Studio  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=452">Maciej Blizinski (automatthias)</a>     	 - Wednesday, 10 March 2010, 09:37 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 12 August 2010, 16:20 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Build system		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Low</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">The following bit of code in awesomeConfig.cmake unconditionally injects GCC-specific compiler flags:<br />
+<br />
+# {{{ CFLAGS<br />
+add_definitions(-std=gnu99 -ggdb3 -fno-strict-aliasing -Wall -Wextra<br />
+    -Wchar-subscripts -Wundef -Wshadow -Wcast-align -Wwrite-strings<br />
+    -Wsign-compare -Wunused -Wno-unused-parameter -Wuninitialized -Winit-self<br />
+    -Wpointer-arith -Wredundant-decls -Wformat-nonliteral<br />
+    -Wno-format-zero-length -Wmissing-format-attribute -Wmissing-prototypes<br />
+    -Wstrict-prototypes)<br />
+# }}}<br />
+<br />
+When trying to compile with Sun Studio:<br />
+<br />
+(cd work/build-isa-sparcv8/awesome-3.4.4; gmake prefix=&quot;/opt/csw&quot; exec_prefix=&quot;/opt/csw&quot; bindir=&quot;/opt/csw/bin&quot; sbindir=&quot;/opt/csw/sbin&quot; libexecdir=&quot;/opt/csw/libexec&quot; datadir=&quot;/<br />
+opt/csw/share&quot; sysconfdir=&quot;/opt/csw/etc&quot; sharedstatedir=&quot;/opt/csw/share&quot; localstatedir=&quot;/opt/csw/var&quot; libdir=&quot;/opt/csw/lib&quot; infodir=&quot;/opt/csw/share/info&quot; lispdir=&quot;/opt/csw/sha<br />
+re/emacs/site-lisp&quot; includedir=&quot;/opt/csw/include&quot; mandir=&quot;/opt/csw/share/man&quot; docdir=&quot;/opt/csw/share/doc&quot; sourcedir=&quot;/opt/csw/src&quot; CPPFLAGS=&quot;-I/opt/csw/X11/include -I/opt/csw/<br />
+include&quot; CFLAGS=&quot;-xO3 -xarch=v8&quot; CXXFLAGS=&quot;-xO3 -xarch=v8&quot; LDFLAGS=&quot;-xarch=v8 -L/opt/csw/X11/lib -L/opt/csw/lib&quot; ASFLAGS=&quot;&quot; OPTFLAGS=&quot;-xO3 -xarch=v8&quot; CC=&quot;/opt/studio/SOS11/SUN<br />
+Wspro/bin/cc&quot; CXX=&quot;/opt/studio/SOS11/SUNWspro/bin/CC&quot; CC_HOME=&quot;/opt/studio/SOS11/SUNWspro&quot; CC_VERSION=&quot;Sun C 5.10 SunOS_sparc 2009/06/03&quot; CXX_VERSION=&quot;Sun C++ 5.10 SunOS_sparc<br />
+ 2009/06/03&quot; GARCH=&quot;sparc&quot; GAROSREL=&quot;5.10&quot; GARPACKAGE=&quot;trunk&quot; LD_OPTIONS=&quot;-R/opt/csw/X11/lib/\$ISALIST -R/opt/csw/X11/lib -R/opt/csw/lib/\$ISALIST -R/opt/csw/lib&quot; VERBOSE=1)<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: Entering directory `/home/maciej/src/opencsw/pkg/awesome.local/trunk/work/build-isa-sparcv8/awesome-3.4.4&#039;<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+gmake[2]: gcc: Command not found<br />
+mkdir -p .build-netra.chopin.edu.pl--<br />
+cd .build-netra.chopin.edu.pl-- &amp;&amp; cmake  &quot;.&quot; ..<br />
+Re-run cmake no build system arguments<br />
+-- The C compiler identification is SunPro<br />
+-- The CXX compiler identification is SunPro<br />
+-- Check for working C compiler: /opt/studio/SOS11/SUNWspro/bin/cc<br />
+-- Check for working C compiler: /opt/studio/SOS11/SUNWspro/bin/cc -- works<br />
+-- Detecting C compiler ABI info<br />
+-- Detecting C compiler ABI info - done<br />
+-- Check for working CXX compiler: /opt/studio/SOS11/SUNWspro/bin/CC<br />
+-- Check for working CXX compiler: /opt/studio/SOS11/SUNWspro/bin/CC -- works<br />
+-- Detecting CXX compiler ABI info<br />
+-- Detecting CXX compiler ABI info - done<br />
+-- Check if the system is big endian<br />
+-- Searching 16 bit integer<br />
+-- Looking for sys/types.h<br />
+-- Looking for sys/types.h - found<br />
+-- Looking for stdint.h<br />
+-- Looking for stdint.h - found<br />
+-- Looking for stddef.h<br />
+-- Looking for stddef.h - found<br />
+-- Check size of unsigned short<br />
+-- Check size of unsigned short - done<br />
+-- Using unsigned short<br />
+-- Check if the system is big endian - big endian<br />
+-- cat -&gt; /opt/csw/gnu/cat<br />
+-- ln -&gt; /opt/csw/gnu/ln<br />
+-- grep -&gt; /opt/csw/gnu/grep<br />
+-- git -&gt; /opt/csw/bin/git<br />
+-- hostname -&gt; /opt/csw/gnu/hostname<br />
+(...)<br />
+[  5%] Building C object CMakeFiles/awesome.dir/awesome.c.o<br />
+/opt/studio/SOS11/SUNWspro/bin/cc   -xO3 -xarch=v8  -xO3 -DNDEBUG -I/home/maciej/src/opencsw/pkg/awesome.local/trunk/work/build-isa-sparcv8/awesome-3.4.4 -I/home/maciej/src/op<br />
+encsw/pkg/awesome.local/trunk/work/build-isa-sparcv8/awesome-3.4.4/.build-netra.chopin.edu.pl-- -I/opt/csw/X11/include -I/opt/csw/include/glib-2.0 -I/opt/csw/lib/glib-2.0/incl<br />
+ude -I/opt/csw/include/cairo -I/opt/csw/include/pixman-1 -I/opt/csw/include/freetype2 -I/opt/csw/include -I/opt/csw/include/libpng12 -I/opt/csw/include/pango-1.0 -I/opt/csw/X1<br />
+1/include/startup-notification-1.0 -I/opt/csw/include/dbus-1.0 -I/opt/csw/lib/dbus-1.0/include   -std=gnu99 -ggdb3 -fno-strict-aliasing -Wall -Wextra -Wchar-subscripts -Wundef<br />
+ -Wshadow -Wcast-align -Wwrite-strings -Wsign-compare -Wunused -Wno-unused-parameter -Wuninitialized -Winit-self -Wpointer-arith -Wredundant-decls -Wformat-nonliteral -Wno-for<br />
+mat-zero-length -Wmissing-format-attribute -Wmissing-prototypes -Wstrict-prototypes -o CMakeFiles/awesome.dir/awesome.c.o   -c /home/maciej/src/opencsw/pkg/awesome.local/trunk<br />
+/work/build-isa-sparcv8/awesome-3.4.4/awesome.c<br />
+cc: Warning: Option -d=gnu99 passed to ld, if ld is invoked, ignored otherwise<br />
+cc: Warning: Option -db3 passed to ld, if ld is invoked, ignored otherwise<br />
+cc: Warning: Option -fno-strict-aliasing passed to ld, if ld is invoked, ignored otherwise<br />
+cc: -W option with unknown program all<br />
+gmake[5]: *** [CMakeFiles/awesome.dir/awesome.c.o] Error 1<br />
+gmake[5]: Leaving directory `/home/maciej/src/opencsw/pkg/awesome.local/trunk/work/build-isa-sparcv8/awesome-3.4.4/.build-netra.chopin.edu.pl--&#039;<br />
+gmake[4]: *** [CMakeFiles/awesome.dir/all] Error 2<br />
+<br />
+<br />
+For Sun Studio, the right c99 flag is -xc99.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (3)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2468" id="comment2468"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=742#comment2468">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 10 December 2010, 21:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tried to start this slowly and asked freenode / #cmake how to do the equivalent of AC_PROG_CC_C99 with cmake. The answer was<br />
+a) add_definitions(-std=c99)<br />
+b) CMake is an unportable crap of pile (or was it pile of crap?)<br />
+<br />
+So I guess I can&#039;t do much about this besides writing a configure.ac for awesome :/</div></div>
+
+  
+    <em>
+    <a name="comment3153" id="comment3153"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=742#comment3153">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a> -
+    Monday, 27 August 2012, 23:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I have attached a patch that will check to see which OS you&#039;re on before setting the C standard. This may not be the optimal solution but it&#039;s probably about as good as it gets. :)</div></div>
+
+      <div class="attachments">
+          <a title="0003-Fix-issue-with-C-standard-being-gnu99-vs-c99-FS-742.patch" href="?getfile=524" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-makefile; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0003-Fix-issue-with-C-standar...
+                  </a>
+                  (1.2 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3155" id="comment3155"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=742#comment3155">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a> -
+    Tuesday, 28 August 2012, 00:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Please ignore my previous patch. It had a small but fatal error in it. My sincerest apologies.</div></div>
+
+      <div class="attachments">
+          <a title="0001-Fix-issue-with-C-standard-being-gnu99-vs-c99-FS-742.patch" href="?getfile=526" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-makefile; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0001-Fix-issue-with-C-standar...
+                  </a>
+                  (1.1 KiB)
+          <br />
+    </div>
+  
+
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=742#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="742" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

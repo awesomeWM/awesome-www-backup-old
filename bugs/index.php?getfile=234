@@ -1,0 +1,11 @@
+--- /usr/share/awesome/lib/awful/menu.lua.orig	2009-10-23 11:37:37.000000000 +0200
++++ /usr/share/awesome/lib/awful/menu.lua	2009-10-24 05:13:05.523197648 +0200
+@@ -316,7 +316,7 @@
+         wibox.width = menu.w
+         wibox.height = menu.h
+         wibox.x = menu.x
+-        wibox.y = menu.y + (num - 1) * (menu.h - menu.theme.border_width)
++        wibox.y = menu.y + (num - 1) * (menu.h + menu.theme.border_width)
+         wibox.screen = screen_index
+     end
+ 

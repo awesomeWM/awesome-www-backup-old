@@ -1,0 +1,27 @@
+diff --git a/event.c b/event.c
+index a892851..c82cd23 100644
+--- a/event.c
++++ b/event.c
+@@ -584,6 +584,7 @@ event_handle_unmapnotify(xcb_unmap_notify_event_t *ev)
+ static void
+ event_handle_randr_screen_change_notify(xcb_randr_screen_change_notify_event_t *ev)
+ {
++    puts("got randr screen change notify!");
+     /* Code  of  XRRUpdateConfiguration Xlib  function  ported to  XCB
+      * (only the code relevant  to RRScreenChangeNotify) as the latter
+      * doesn't provide this kind of function */
+diff --git a/screen.c b/screen.c
+index 2c0838f..0a1d505 100644
+--- a/screen.c
++++ b/screen.c
+@@ -78,6 +78,10 @@ screen_scan_randr(void)
+         {
+             p_delete(&version_reply);
+ 
++            xcb_randr_select_input(globalconf.connection, globalconf.screen->root,
++                    XCB_RANDR_NOTIFY_MASK_SCREEN_CHANGE | XCB_RANDR_NOTIFY_MASK_CRTC_CHANGE |
++                    XCB_RANDR_NOTIFY_MASK_OUTPUT_CHANGE | XCB_RANDR_NOTIFY_MASK_OUTPUT_PROPERTY);
++
+             /* A quick XRandR recall:
+              * You have CRTC that manages a part of a SCREEN.
+              * Each CRTC can draw stuff on one or more OUTPUT. */

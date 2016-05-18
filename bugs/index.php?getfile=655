@@ -1,0 +1,82 @@
+Section "Device"
+   Identifier "HD7970"
+   Driver "Radeon"
+   BusID "PCI:2:0:0"
+   Option "monitor-DisplayPort-1" "Apple"
+EndSection
+
+Section "Device"
+   Identifier "HD4770"
+   Driver "Radeon"
+   BusID "PCI:4:0:0"
+   Screen 0
+   Option "ZaphodHeads" "DVI-1"
+EndSection
+
+Section "Device"
+   Identifier "HD4770-2"
+   Driver "Radeon"
+   BusID "PCI:4:0:0"
+   Screen 1
+   Option "ZaphodHeads" "DVI-2"
+EndSection
+
+Section "Monitor"
+   Identifier "Apple"
+   VendorName "App"
+   ModelName "9226"
+EndSection
+
+Section "Monitor"
+   Identifier "DVI-1"
+#   VendorName ""
+#   ModelName "9226"
+EndSection
+
+Section "Monitor"
+   Identifier "DVI-2"
+#   VendorName ""
+#   ModelName "9226"
+EndSection
+
+Section "Screen"
+  Identifier "Main"
+  Device "HD7970"
+  Monitor "Apple"
+  SubSection "Display"
+     Viewport 0 0 
+     Depth    32
+  EndSubSection
+EndSection
+
+Section "Screen"
+  Identifier "L"
+  Device "HD4770"
+  Monitor "DVI-1"
+  SubSection "Display"
+     Viewport 0 0 
+     Depth    32
+  EndSubSection
+EndSection
+
+Section "Screen"
+  Identifier "R"
+  Device "HD4770-2"
+  Monitor "DVI-2"
+  SubSection "Display"
+     Viewport 0 0 
+     Depth    32
+  EndSubSection
+EndSection
+
+Section "ServerLayout"
+  Identifier "DaScreenz"
+  Screen "L" 0 0 
+  Screen "Main" RightOf "L" 
+  Screen "R" RightOf "Main"
+  #Option "Xinerama" "true"
+EndSection
+
+Section "ServerFlags"
+  # Option "RandR" "false"
+EndSection

@@ -1,0 +1,8 @@
+
+all: fullscreen-map fullscreen-resize
+
+fullscreen-map:
+	gcc -Wall -g fullscreen.c -o fullscreen-map `pkg-config --cflags gtk+-2.0 --libs gtk+-2.0`
+
+fullscreen-resize:
+	gcc -Wall -g fullscreen.c -o fullscreen-resize -DRESIZE `pkg-config --cflags gtk+-2.0 --libs gtk+-2.0`

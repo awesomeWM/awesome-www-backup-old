@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>The briefest introduction to Lua - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/The_briefest_introduction_to_Lua" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/w/skins/MonoBook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/w/skins/MonoBook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"The_briefest_introduction_to_Lua","wgTitle":"The briefest introduction to Lua","wgCurRevisionId":7082,"wgRevisionId":7082,"wgArticleId":716,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"The_briefest_introduction_to_Lua","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-The_briefest_introduction_to_Lua skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">The briefest introduction to Lua</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><p>In order to configure and extend Awesome you will need to know at least a little Lua. There are a lot of books, manuals and tutorials on the Web, but who's got time for that? The aim of this page is to provide a very terse introduction which will familiarize newcomers with just enough about Lua to use and configure Awesome. In order to learn more Lua than that, you should read <a rel="nofollow" class="external text" href="http://lua-users.org/wiki/TutorialDirectory">a more comprehensive tutorial</a>.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#How_to_get_started"><span class="tocnumber">1</span> <span class="toctext">How to get started</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#What_is_Lua_like.3F"><span class="tocnumber">2</span> <span class="toctext">What is Lua like?</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#General_stuff"><span class="tocnumber">3</span> <span class="toctext">General stuff</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#Types"><span class="tocnumber">4</span> <span class="toctext">Types</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Variables"><span class="tocnumber">5</span> <span class="toctext">Variables</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="#Local"><span class="tocnumber">5.1</span> <span class="toctext">Local</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Multiple_assignment"><span class="tocnumber">5.2</span> <span class="toctext">Multiple assignment</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-8"><a href="#Control_structures"><span class="tocnumber">6</span> <span class="toctext">Control structures</span></a>
+<ul>
+<li class="toclevel-2 tocsection-9"><a href="#Conditions"><span class="tocnumber">6.1</span> <span class="toctext">Conditions</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#Loops"><span class="tocnumber">6.2</span> <span class="toctext">Loops</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#Functions"><span class="tocnumber">7</span> <span class="toctext">Functions</span></a></li>
+<li class="toclevel-1 tocsection-12"><a href="#Useful_stuff"><span class="tocnumber">8</span> <span class="toctext">Useful stuff</span></a>
+<ul>
+<li class="toclevel-2 tocsection-13"><a href="#Nil_in_conditions"><span class="tocnumber">8.1</span> <span class="toctext">Nil in conditions</span></a></li>
+<li class="toclevel-2 tocsection-14"><a href="#Useful_libraries"><span class="tocnumber">8.2</span> <span class="toctext">Useful libraries</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-15"><a href="#So_far_so_good"><span class="tocnumber">9</span> <span class="toctext">So far so good</span></a></li>
+</ul>
+</div>
+
+<h3><span class="mw-headline" id="How_to_get_started">How to get started</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=1" title="Edit section: How to get started">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>If you have <b>Awesome</b> installed, then you already have <b>Lua</b>. Open your terminal and type "lua". Here it is, your interactive lua environment.
+</p>
+<h3><span class="mw-headline" id="What_is_Lua_like.3F">What is Lua like?</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=2" title="Edit section: What is Lua like?">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li> Lua has a mix of C-like and Pascal-like syntax.</li></ul>
+<ul><li> Lua is dynamically typed (like JavaScript).</li></ul>
+<h3><span class="mw-headline" id="General_stuff">General stuff</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=3" title="Edit section: General stuff">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li> Spaces don't matter - use as many as you like</li></ul>
+<ul><li> Linebreaks don't matter - use as many as you like</li></ul>
+<ul><li> Indentation doesn't matter - use as much as you like</li></ul>
+<ul><li> No semicolons - <s>use as much as you like</s> don't use them</li></ul>
+<ul><li> On a given line, any text to the right of <b>--</b> is considered a comment</li></ul>
+<h3><span class="mw-headline" id="Types">Types</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=4" title="Edit section: Types">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li> Numbers. <b>123</b> and <b>0.456</b> are numbers. Lua doesn't make a distinction between integer and real numbers, so don't worry, you can safely compare any number.</li></ul>
+<p>You can use the mathematical expressions +, -, * and / on numbers.
+</p>
+<pre>   &gt; print(2+2)
+   4
+   &gt; print ( 5 / 2 )
+   2.5
+</pre>
+<ul><li> Booleans. <b>true</b> and <b>false</b> are booleans. <b>==</b>, <b>&gt;</b>, <b>&lt;</b>, <b>&gt;=</b>, <b>&lt;=</b> are comparison operators. <b>~=</b> is "not equal" operator (instead of&#160;!=). There are also: <b>and</b>, <b>or</b>, <b>not</b>.</li></ul>
+<pre> &gt; print(5 &gt;= 3 and not (3 &lt; 0))
+ true
+ &gt; print(2.5 == 2)
+ false
+</pre>
+<ul><li> Strings. Strings represent a sequence of characters. They can be enclosed in <b>"</b> (double quote) or <b>'</b> (single quote) symbols (if you choose one, the other won't be considered a control symbol). You can also escape symbols with <b>\</b>. Concatenation operator is <b>..</b> (instead of + in some languages).</li></ul>
+<pre> &gt; print( "I am printin' \"My first string\"\non two lines" )
+ I am printin' "My first string"
+ on two lines
+</pre>
+<p>Note: numbers are automatically treated as strings when concatenated, but other types(such as the boolean (5 == 0) in the example below) are not - use <b>tostring</b> on them.
+</p>
+<pre> &gt; print( "This number is " .. 5 .. " and it equals zero: " .. tostring(5 == 0))
+ This number is 5 and it equals zero: false
+</pre>
+<ul><li> nil. <b>nil</b> (like null in many languages) means nothing. And equals nothing except itself. You'll learn more about nil later on.</li></ul>
+<ul><li> Tables. Tables are ubiquitous in Lua. A table is an array and a hashmap (dictionary) at the same time. It is an ad hoc data structure.  An empty table is defined like this: <b>{}</b>. Table keys can be of any type - integer, string, boolean or even another table.</li></ul>
+<pre> &gt; x = {}          -- Wow, we defined our first variable! Yes, it is simple like this.
+ &gt; x[1] = "our first item"
+ &gt; print(x[1])     -- This is how we get a value by key from the table
+ our first item
+ &gt; x["wm"] = "awesome"
+ &gt; print(x["wm"])
+ awesome
+</pre>
+<p>You can define a table and some initial key values simultaneously. This is done like: <b>y = { key = "somevalue", anotherkey = "anothervalue" }</b>. Comma is a separator here. Only string keys (without quotes) are supported this way.
+</p><p>Lua offers one nifty mechanism for tables - you can access the values by the string key with following syntax: <b>table.key</b>. This creates an illusion of a data structure.
+</p>
+<pre> &gt; x = {}
+ &gt; x.color = "white"  -- Same as x["color"] = "white"
+ &gt; print(x.color)
+ white
+ &gt; x.wm_langs = { xmonad = "Haskell", awesome = "Lua" }
+ &gt; print(x.wm_langs.awesome) -- Same as x["wm_langs"]["awesome"]
+ Lua
+</pre>
+<p>If table doesn't have any value for the given key it means that the value equals <b>nil</b>.
+</p>
+<pre> &gt; x = {}
+ &gt; print(x.blahblah)
+ nil
+</pre>
+<p>You can initialize tables without specifying keys, then it will act as an array with values mapped to number keys.
+</p>
+<pre> &gt; x = { "first", "second", "third" }
+ &gt; print(x[2])
+ second
+ &gt; print(x.2)     -- No, no! Only string keys can be referenced like this!
+ stdin:1: `)' expected near `.2'
+ &gt; print(x["2"])  -- 2 and "2" are not equal, of course
+ nil
+</pre>
+<ul><li> Function. We will talk about functions later, now you should know, that any function can be assigned to a variable, passed as an argument or be returned from another function.</li></ul>
+<pre> &gt; ourfunction = print
+ &gt; ourfunction(2+2)
+ 4
+ &gt; get_length = string.len
+ &gt; ourfunction(get_length("some string"))
+ 11
+</pre>
+<h3><span class="mw-headline" id="Variables">Variables</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=5" title="Edit section: Variables">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>As was said earlier, Lua is dynamically typed. That means that you don't have to define the type explicitly - any variable can have any type.
+Until variable gets declared it has the value <b>nil</b>. To declare a variable just assign value to it.
+</p>
+<pre> &gt; print(a)  -- a wasn't declared yet
+ nil
+ &gt; a = 42
+ &gt; print(a)
+ 42
+ &gt; a = "the answer is " .. a
+ &gt; print(a)
+ the answer is 42
+</pre>
+<h4><span class="mw-headline" id="Local">Local</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=6" title="Edit section: Local">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>Whenever you assign value to a variable, it becomes visible to the whole environment. It becomes global (you can avoid it by using modules, but we do not cover modules in this short tutorial). To keep your variables inside use the keyword <b>local</b>. With <b>local</b> your variable will be visible only to the block (function, control structure, file) where it is defined.
+</p>
+<pre> &gt; a = 42
+ &gt; if a == 42 then            -- If you press "Return" here, the next line will be 
+ &gt;&gt; local a = 10              -- preceeded with &gt;&gt;. This means that you are currently
+ &gt;&gt; print("Inside: " .. a)    -- inside the block (in this case, if..then block)
+ &gt;&gt; local b = 100
+ &gt;&gt; end
+ Inside: 10
+ &gt; print(a)
+ 42                           -- See, local binding replaced a with 10 only inside the block
+ &gt; print(b)
+ nil                          -- And the variable b was never globally declared
+</pre>
+<h4><span class="mw-headline" id="Multiple_assignment">Multiple assignment</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=7" title="Edit section: Multiple assignment">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>In Lua you can assign many values to many variables at the same time. It looks like this:
+</p>
+<pre> &gt; a, b, c = 1, "and", 2
+ &gt; print(a..b..c)
+ 1and2
+ &gt; a, b, c = 1, "and"
+ &gt; print(c)
+ nil      -- c hadn't got its value pair, so it was assigned to nil
+ &gt; a, b, c = 5, "and", 6, "and", 7
+ &gt; print(a..b..c)
+ 5and6    -- all unused values just went to Limbo
+</pre>
+<h3><span class="mw-headline" id="Control_structures">Control structures</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=8" title="Edit section: Control structures">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="Conditions">Conditions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=9" title="Edit section: Conditions">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>The syntax is simple: 
+<b>if</b> <i>condition</i> <b>then</b> <i>code</i> <b>else</b> <i>code</i> <b>end</b>.
+</p>
+<pre> &gt; food = "beans"
+ &gt; if food == "cake" then
+ &gt;&gt; print("Yummy!")
+ &gt;&gt; else
+ &gt;&gt; print("Ew, I won't eat that!")
+ &gt;&gt; end
+ Ew, I won't eat that!
+</pre>
+<p>We can leave aside the <b>else</b> part if we are not interested in it.
+</p>
+<pre> &gt; under_attack = true
+ &gt; if under_attack then    -- Booleans can be used like this in conditions
+ &gt;&gt; print("Alarm!")
+ &gt;&gt; end
+ Alarm!
+</pre>
+<p>If you want to analyze more conditions, use <b>elseif</b>:
+</p>
+<pre> &gt; n = -42
+ &gt; if n &gt; 0 then
+ &gt;&gt; print("Positive")
+ &gt;&gt; elseif n &lt; 0 then
+ &gt;&gt; print("Negative")
+ &gt;&gt; else
+ &gt;&gt; print("Zero")
+ &gt;&gt; end
+ Negative
+</pre>
+<h4><span class="mw-headline" id="Loops">Loops</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=10" title="Edit section: Loops">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<ul><li> Conditional loop. Has the following syntax: <b>while</b> <i>condition</i> <b>do</b> <i>code</i> <b>end</b>.</li></ul>
+<pre> &gt; i, r = 0, ""
+ &gt; while i &lt; 10 do
+ &gt;&gt; r = r .. i
+ &gt;&gt; i = i + 1
+ &gt;&gt; end
+ &gt; print(r)
+ 0123456789
+</pre>
+<ul><li> For loop. To loop through a range of numbers use the folowing construct: </li></ul>
+<p><b>for</b> <i>var</i> = <i>start_num</i>,<i>end_num</i> <b>do</b> <i>code</i> <b>end</b>.
+</p>
+<pre> &gt; r = ""
+ &gt; for i = 0, 9 do
+ &gt;&gt; r = r .. i
+ &gt;&gt; end
+ &gt; print(r)
+ 0123456789
+</pre>
+<ul><li> Foreach loop. Lua allows you iterate through a table with the following syntax:</li></ul>
+<p><b>for</b> <i>key_var</i>, <i>value_var</i> <b>in</b> pairs(<i>table_name</i>) <b>do</b> <i>code</i> <b>end</b>.
+</p>
+<pre> &gt; a = { red="#FF0000", yellow="#FFFF00", white="#FFFFFF" }
+ &gt; for name, color_code in pairs(a) do
+ &gt;&gt; print(name .. " is " .. color_code)
+ &gt;&gt; end
+ yellow is #FFFF00
+ white is #FFFFFF
+ red is #FF0000
+</pre>
+<p>Note that the order of traversing is not guaranteed.
+</p><p>You can iterate through an "array" with <i>ipairs</i>. In this case the order is guaranteed.
+</p>
+<pre> &gt; a, caesar = { "veni, ", "vidi, ", "vici" }, ""
+ &gt; for i, v in ipairs(a) do
+ &gt;&gt; caesar = caesar .. v    -- We just don't use the key, only value
+ &gt;&gt; end
+ &gt; print(caesar)
+ veni, vidi, vici
+ 
+</pre>
+<h3><span class="mw-headline" id="Functions">Functions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=11" title="Edit section: Functions">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>The basic syntax for defining a function is: <i>function_name</i> = <b>function</b>(<i>arguments</i>) <i>code</i> <b>end</b>. To return the value from a function use the keyword <b>return</b>.
+</p>
+<pre> &gt; sum = function(a,b) return a + b end
+ &gt; print( sum(2,2) )
+ 4
+</pre>
+<p>If you don't supply some arguments to a function, then they will just be assigned to <b>nil</b>.
+</p>
+<pre> &gt; print_three_args = function(a, b, c)
+ &gt;&gt; print("First: " .. tostring(a))    -- We use tostring() here because 
+ &gt;&gt; print("Second: " .. tostring(b))   -- nil is not automatically cast
+ &gt;&gt; print("Third: " .. tostring(c))    -- when concatenated
+ &gt;&gt; end
+ &gt; print_three_args(10,20)
+ First: 10
+ Second: 20
+ Third: nil
+</pre>
+<p>The function can return more than one value at once. You need to use multiple assignment to get all result values.
+</p>
+<pre> &gt; sum_and_diff = function(a, b) 
+ &gt;&gt; return a+b, a-b
+ &gt;&gt; end
+ &gt; x, y = sum_and_diff(5,3)
+ &gt; print(x, y)   -- print() can actually handle more than one argument.
+ 8     2         -- It prints them separated by tab.
+</pre>
+<p>There is a more convenient way to define functions:
+<b>function</b> <i>function_name</i> (<i>arguments</i>) <i>code</i> <b>end</b>
+</p>
+<pre> &gt; function doubler (x)
+ &gt;&gt; return x * 2
+ &gt;&gt; end
+ &gt; print( doubler(42) )
+ 84
+</pre>
+<h3><span class="mw-headline" id="Useful_stuff">Useful stuff</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=12" title="Edit section: Useful stuff">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<h4><span class="mw-headline" id="Nil_in_conditions">Nil in conditions</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=13" title="Edit section: Nil in conditions">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>In conditions <b>nil</b> always evaluates to false. It allows to do such witty tricks:
+</p>
+<pre> &gt; f = io.open("foo.txt")  -- Trying to open some file. If the file exists, than
+ &gt; if f then               -- variable f will contain some table, else f will be nil.
+ &gt;&gt; print("File exists")
+ &gt;&gt; else print("File not found") end
+ File not found
+</pre>
+<p>Or you can use this to supply default arguments to your function. Consider this example:
+</p>
+<pre> &gt; function multiplicator (x, y)
+ &gt;&gt; y = y or 2    -- If y is nil, then it will be assigned to 2
+ &gt;&gt; return x * y
+ &gt;&gt; end
+ &gt; print(multiplicator(10, 3))
+ 30
+ &gt; print(multiplicator(10))
+ 20
+</pre>
+<h4><span class="mw-headline" id="Useful_libraries">Useful libraries</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=14" title="Edit section: Useful libraries">edit</a><span class="mw-editsection-bracket">]</span></span></h4>
+<p>If you plan to write something for Awesome, you'll need to learn how to use the following libraries: <a rel="nofollow" class="external text" href="http://lua-users.org/wiki/StringLibraryTutorial">string</a>, <a rel="nofollow" class="external text" href="http://lua-users.org/wiki/TableLibraryTutorial">table</a>, <a rel="nofollow" class="external text" href="http://lua-users.org/wiki/IoLibraryTutorial">io</a>.
+</p>
+<h3><span class="mw-headline" id="So_far_so_good">So far so good</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit&amp;section=15" title="Edit section: So far so good">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Now you know enough Lua to at least understand the mess in your <b>rc.lua</b> file. This is a beginning. The more you read and change your configuration file the more you'll learn about Lua. If you really want to explore every part of Awesome and write something yourself, you should consider reading the tutorial I mentioned at the beginning.
+</p><p>Good luck hacking Lua!
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.028 seconds
+Real time usage: 0.032 seconds
+Preprocessor visited node count: 68/1000000
+Preprocessor generated node count: 84/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:716-0!*!*!!en!*!* and timestamp 20160514151254 and revision id 7082
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=The_briefest_introduction_to_Lua&amp;oldid=7082">https://awesomewm.org/w/index.php?title=The_briefest_introduction_to_Lua&amp;oldid=7082</a>"</div>
+					<div id='catlinks' class='catlinks catlinks-allhidden'></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/The_briefest_introduction_to_Lua" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:The_briefest_introduction_to_Lua&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=The+briefest+introduction+to+Lua" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/The_briefest_introduction_to_Lua" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/The_briefest_introduction_to_Lua" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-print"><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;oldid=7082" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=The_briefest_introduction_to_Lua&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 25 October 2014, at 08:08.</li>
+									<li id="viewcount">This page has been accessed 29,616 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":107});
+}</script></body></html>

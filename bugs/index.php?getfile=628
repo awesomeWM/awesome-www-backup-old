@@ -1,0 +1,29 @@
+From 47c14e47cbaea8f978bdf295e9893893be1bc77a Mon Sep 17 00:00:00 2001
+From: Sebastian Pipping <sebastian@pipping.org>
+Date: Sun, 30 Jun 2013 19:02:42 +0200
+Subject: [PATCH] Workaround to make systray icons size work for awesome (but
+ not XFCE!)
+
+---
+ src/applet.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/applet.c b/src/applet.c
+index afb574a..42c4acb 100644
+--- a/src/applet.c
++++ b/src/applet.c
+@@ -3148,9 +3148,9 @@ status_icon_size_changed_cb (GtkStatusIcon *icon,
+ 
+ 	nma_icons_reload (applet);
+ 
+-	applet_schedule_update_icon (applet);
++	applet_update_icon (applet);
+ 
+-	return TRUE;
++	return FALSE;
+ }
+ 
+ static void
+-- 
+1.8.2.1
+

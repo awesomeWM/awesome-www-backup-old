@@ -1,0 +1,26 @@
+From 51243c740bcb41ed44e1c7d9c65e09b1331c4c48 Mon Sep 17 00:00:00 2001
+From: Roman Kosenko <madkite@gmail.com>
+Date: Mon, 20 Sep 2010 03:47:02 +0300
+Subject: [PATCH 2/2] fix paint new windows - set damage property to true on window mapping
+
+Signed-off-by: Roman Kosenko <madkite@gmail.com>
+---
+ xcompmgr.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/xcompmgr.c b/xcompmgr.c
+index 8c21f7c..564a7c2 100644
+--- a/xcompmgr.c
++++ b/xcompmgr.c
+@@ -1191,7 +1191,7 @@ map_win (Display *dpy, Window id, unsigned long sequence, Bool fade)
+     w->damage_bounds.x = w->damage_bounds.y = 0;
+     w->damage_bounds.width = w->damage_bounds.height = 0;
+ #endif
+-    w->damaged = 0;
++    w->damaged = 1;
+ 
+     if (fade && fadeWindows)
+ 	set_fade (dpy, w, 0, get_opacity_percent (dpy, w, 1.0), fade_in_step, NULL, False, True, True);
+-- 
+1.7.2.3
+

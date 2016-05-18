@@ -1,0 +1,39 @@
+From 9ba69823ef92368450afa6bc61de0c9d319af045 Mon Sep 17 00:00:00 2001
+From: TsT <tst2005@gmail.com>
+Date: Tue, 6 Mar 2012 00:07:41 +0100
+Subject: [PATCH 2/2] table.foreach is deprecated: now use for + pairs
+
+---
+ lib/awful/completion.lua.in |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/lib/awful/completion.lua.in b/lib/awful/completion.lua.in
+index 6877f91..66158e1 100644
+--- a/lib/awful/completion.lua.in
++++ b/lib/awful/completion.lua.in
+@@ -11,6 +11,7 @@ local os = os
+ local table = table
+ local math = math
+ local print = print
++local pairs = pairs
+ local util = require("awful.util")
+ 
+ --- Completion module.
+@@ -172,11 +173,11 @@ function generic(text, cur_pos, ncomp, keywords)
+ 
+     -- Filter out only keywords starting with text
+     local matches = {}
+-    table.foreach(keywords, function(_, x)
+-        if x:sub(1 , #text) == text then
++    for _, x in pairs(keywords) do
++        if x:sub(1, #text) == text then
+             table.insert(matches, x)
+         end
+-    end)
++    end
+ 
+     -- if there are no matches just leave out with the current text and position
+     if #matches == 0 then
+-- 
+1.7.2.5
+

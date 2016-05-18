@@ -1,0 +1,26 @@
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+
+public class bugtest {
+public static void main(String[] args)
+{
+	JFrame frame = new JFrame();
+	JMenuBar bar = new JMenuBar();
+	
+	JMenu file = new JMenu("File");
+	JMenuItem open = new JMenuItem("Open");
+	JMenuItem save = new JMenuItem("Save");	
+	JMenuItem close = new JMenuItem("Close");
+	bar.add(file);
+	file.add(open);
+	file.add(save);
+	file.add(close);
+	frame.setJMenuBar(bar);
+	frame.pack();
+	frame.setSize(200,200);
+	frame.setVisible(true);
+}
+}

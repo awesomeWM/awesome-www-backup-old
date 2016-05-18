@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>awesome BTS - All Projects: Tasklist</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=0" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=0" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=0" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/index.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">All Projects</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=index&amp;project=0&amp;project=1&amp;do=index&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0" selected="selected">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="index" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=0">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=0&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+      
+
+
+<div id="tasklist">
+  <form action="https://awesomewm.org/bugs/index.php?project=0&amp;do=index" id="massops" method="post">
+    <div>
+      <table id="tasklist_table">
+        <thead>
+          <tr>
+            <th class="caret">
+            </th>
+                                    <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=id&amp;sort=desc">ID</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=project&amp;sort=asc">Project</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=category&amp;sort=asc">Category</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=tasktype&amp;sort=asc">Task Type</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=severity&amp;sort=desc">Severity</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=summary&amp;sort=desc">Summary</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=status&amp;sort=desc">Status</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3&amp;order=progress&amp;sort=desc">Progress</a></th>                      </tr>
+        </thead>
+        <tbody>
+                <tr id="task729" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=729&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Lua stack unbalanced | 100%"  class = "closedtasklink">729</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=729&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Lua stack unbalanced | 100%"  class = "closedtasklink">Lua stack unbalanced</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task716" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=716&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | xload can not be focused | 100%"  class = "closedtasklink">716</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=716&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | xload can not be focused | 100%"  class = "closedtasklink">xload can not be focused</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task713" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=713&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | &quot;unprotected&quot; calls to luaL_error() | 100%"  class = "closedtasklink">713</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=713&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | &quot;unprotected&quot; calls to luaL_error() | 100%"  class = "closedtasklink">&quot;unprotected&quot; calls to luaL_error()</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task710" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=710&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="New | Calling an unexisting dbus name should result in an error | 0%" >710</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=710&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="New | Calling an unexisting dbus name should result in an error | 0%" >Calling an unexisting dbus name should result in an err</a>...</td>                    <td class='task_status'>New</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task641" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=641&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Flicker when starting application which is moved to a different  | 100%"  class = "closedtasklink">641</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=641&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Flicker when starting application which is moved to a different  | 100%"  class = "closedtasklink">Flicker when starting application which is moved to a d</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task596" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=596&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Correctly set up objects before their new signal is emitted | 100%"  class = "closedtasklink">596</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=596&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Correctly set up objects before their new signal is emitted | 100%"  class = "closedtasklink">Correctly set up objects before their new signal is emi</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task581" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=581&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | honour_size_hints = false sometimes not honoured during manage | 100%"  class = "closedtasklink">581</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=581&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | honour_size_hints = false sometimes not honoured during manage | 100%"  class = "closedtasklink">honour_size_hints = false sometimes not honoured during</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task511" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=511&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | awesome generatess needless ConfigureNotify events  | 100%"  class = "closedtasklink">511</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=511&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | awesome generatess needless ConfigureNotify events  | 100%"  class = "closedtasklink">awesome generatess needless ConfigureNotify events </a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task499" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=499&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | High c.titlebar.border_width breaks | 100%"  class = "closedtasklink">499</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=499&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | High c.titlebar.border_width breaks | 100%"  class = "closedtasklink">High c.titlebar.border_width breaks</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task494" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=494&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Not a bug | windows disappear after restart if less tags than before are cre | 100%"  class = "closedtasklink">494</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=494&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Not a bug | windows disappear after restart if less tags than before are cre | 100%"  class = "closedtasklink">windows disappear after restart if less tags than befor</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task492" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=492&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | lua code run via awesome-client is truncated after 1024b | 100%"  class = "closedtasklink">492</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=492&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | lua code run via awesome-client is truncated after 1024b | 100%"  class = "closedtasklink">lua code run via awesome-client is truncated after 1024</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task1063" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1063&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Release awesome 3.4.14 | 100%"  class = "closedtasklink">1063</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1063&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Release awesome 3.4.14 | 100%"  class = "closedtasklink">Release awesome 3.4.14</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task1053" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1053&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | &quot;Proper&quot; text input via xkb and libxkbcommon | 100%"  class = "closedtasklink">1053</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1053&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | &quot;Proper&quot; text input via xkb and libxkbcommon | 100%"  class = "closedtasklink">&quot;Proper&quot; text input via xkb and libxkbcommon</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task1029" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1029&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Add something like a focused screen | 100%"  class = "closedtasklink">1029</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Lua libraries</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1029&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Add something like a focused screen | 100%"  class = "closedtasklink">Add something like a focused screen</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task795" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=795&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Use proper timestamps | 100%"  class = "closedtasklink">795</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=795&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Fixed | Use proper timestamps | 100%"  class = "closedtasklink">Use proper timestamps</a>&#160;</del></td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task709" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=709&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Implemented | naughty doesn&#039;t implement org.freedekstop.Notifications.GetCapab | 100%"  class = "closedtasklink">709</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>naughty</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=709&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Implemented | naughty doesn&#039;t implement org.freedekstop.Notifications.GetCapab | 100%"  class = "closedtasklink">naughty doesn&#039;t implement org.freedekstop.Notifications</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                <tr id="task584" class="severity1">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=584&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Implemented | Make access to invalid object properties cause a warning | 100%"  class = "closedtasklink">584</a>&#160;</del></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Very Low</td>                    <td class='task_summary'><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=584&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=3" title="Implemented | Make access to invalid object properties cause a warning | 100%"  class = "closedtasklink">Make access to invalid object properties cause a warnin</a>&#160;</del>...</td>                    <td class='task_status'>Closed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png" alt="100%" /></td>                  </tr>
+                </tbody>
+      </table>
+      <table id="pagenumbers">
+        <tr>
+                    <td id="taskrange">
+            Showing tasks 41 - 57 of 57          </td>
+          <td id="numbers">
+            Page 3 of 3<span class="DoNotPrint"> &nbsp;&nbsp;--&nbsp;&nbsp; <a id="previous" accesskey="p" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=2">&lt; Previous</a> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=1">1</a> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=1&amp;opened=289&amp;status%5B0%5D=&amp;pagenum=2">2</a> - <strong>3</strong></span>          </td>
+                  </tr>
+      </table>
+          </div>
+  </form>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

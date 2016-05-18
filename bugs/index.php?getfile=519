@@ -1,0 +1,20 @@
+diff --git a/common/util.c b/common/util.c
+index f3f155a..e2f4572 100644
+--- a/common/util.c
++++ b/common/util.c
+@@ -25,6 +25,7 @@
+ #include <unistd.h>
+ #include <limits.h>
+ #include <fcntl.h>
++#include <string.h>
+ 
+ #include "common/util.h"
+ #include "common/tokenize.h"
+@@ -195,6 +196,7 @@ a_exec(const char *cmd)
+         shell = "/bin/sh";
+ 
+     execl(shell, shell, "-c", cmd, NULL);
++    fatal("execv() failed: %s", strerror(errno));
+ }
+ 
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

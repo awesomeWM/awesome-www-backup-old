@@ -1,0 +1,86 @@
+From 9f81a0021ff0f912ad783cb3bc66b9a0c1cc1b13 Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Thu, 31 Mar 2011 11:44:09 +0200
+Subject: [PATCH 4/5] convert menu width and height from string to number
+
+---
+ themes/default/theme.lua.in |    6 +++---
+ themes/sky/theme.lua.in     |    6 +++---
+ themes/zenburn/theme.lua.in |    6 +++---
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/themes/default/theme.lua.in b/themes/default/theme.lua.in
+index 68c80b0..b1da6a0 100644
+--- a/themes/default/theme.lua.in
++++ b/themes/default/theme.lua.in
+@@ -17,7 +17,7 @@ theme.fg_focus      = "#ffffff"
+ theme.fg_urgent     = "#ffffff"
+ theme.fg_minimize   = "#ffffff"
+ 
+-theme.border_width  = "1"
++theme.border_width  = 1
+ theme.border_normal = "#000000"
+ theme.border_focus  = "#535d6c"
+ theme.border_marked = "#91231c"
+@@ -40,8 +40,8 @@ theme.taglist_squares_unsel = "@AWESOME_THEMES_PATH@/default/taglist/squarew.png
+ -- menu_[bg|fg]_[normal|focus]
+ -- menu_[border_color|border_width]
+ theme.menu_submenu_icon = "@AWESOME_THEMES_PATH@/default/submenu.png"
+-theme.menu_height = "15"
+-theme.menu_width  = "100"
++theme.menu_height = 15
++theme.menu_width  = 100
+ 
+ -- You can add as many variables as
+ -- you wish and access them by using
+diff --git a/themes/sky/theme.lua.in b/themes/sky/theme.lua.in
+index 568417b..f005440 100644
+--- a/themes/sky/theme.lua.in
++++ b/themes/sky/theme.lua.in
+@@ -19,7 +19,7 @@ theme.fg_focus      = "#2e3436"
+ theme.fg_urgent     = "#2e3436"
+ theme.fg_minimize   = "#2e3436"
+ 
+-theme.border_width  = "2"
++theme.border_width  = 2
+ theme.border_normal = "#dae3e0"
+ theme.border_focus  = "#729fcf"
+ theme.border_marked = "#eeeeec"
+@@ -47,8 +47,8 @@ theme.taglist_squares_unsel = "@AWESOME_THEMES_PATH@/default/taglist/squarew.png
+ theme.wallpaper_cmd         = { "awsetbg @AWESOME_THEMES_PATH@/sky/sky-background.png" }
+ theme.taglist_squares       = "true"
+ theme.titlebar_close_button = "true"
+-theme.menu_height           = "15"
+-theme.menu_width            = "100"
++theme.menu_height           = 15
++theme.menu_width            = 100
+ 
+ -- Define the image to load
+ theme.titlebar_close_button_normal = "@AWESOME_THEMES_PATH@/default/titlebar/close_normal.png"
+diff --git a/themes/zenburn/theme.lua.in b/themes/zenburn/theme.lua.in
+index 02190d8..13f58a9 100644
+--- a/themes/zenburn/theme.lua.in
++++ b/themes/zenburn/theme.lua.in
+@@ -25,7 +25,7 @@ theme.bg_systray = theme.bg_normal
+ -- }}}
+ 
+ -- {{{ Borders
+-theme.border_width  = "2"
++theme.border_width  = 2
+ theme.border_normal = "#3F3F3F"
+ theme.border_focus  = "#6F6F6F"
+ theme.border_marked = "#CC9393"
+@@ -66,8 +66,8 @@ theme.mouse_finder_color = "#CC9393"
+ -- Variables set for theming the menu:
+ -- menu_[bg|fg]_[normal|focus]
+ -- menu_[border_color|border_width]
+-theme.menu_height = "15"
+-theme.menu_width  = "100"
++theme.menu_height = 15
++theme.menu_width  = 100
+ -- }}}
+ 
+ -- {{{ Icons
+-- 
+1.7.4.1
+

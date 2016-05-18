@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Writing own widgets - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<meta name="robots" content="noindex,follow" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Writing_own_widgets&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Writing_own_widgets&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Writing_own_widgets" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;printable=1&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Writing_own_widgets","wgTitle":"Writing own widgets","wgCurRevisionId":6252,"wgRevisionId":6252,"wgArticleId":865,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Widgets","Awesome3.5"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Writing_own_widgets","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Writing_own_widgets skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Writing own widgets</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><table class="ambox" style="clear: both; width: 50%; background-color: #fefefe; border-color:#AAB #AAB #AAB #999; border-style: solid; border-width: 1px 1px 1px 10px; padding: 4px; margin: 1px auto; vertical-align: middle; text-align: left;"><tr><td width="72px" height="auto"><a href="/wiki/File:Time_machine.png" class="image"><img alt="Time machine.png" src="/w/images/thumb/Time_machine.png/64px-Time_machine.png" width="64" height="64" srcset="/w/images/thumb/Time_machine.png/96px-Time_machine.png 1.5x, /w/images/Time_machine.png 2x" /></a></td><td style="vertical-align: middle"><b>This page contains version-specific content</b><br />Code or instructions listed here may not work for all versions of Awesome.<br />You can help the community by creating pages for other versions.<br />Proven working in: <b>3.5</b>
+</td></tr></table>
+<p>With awesome 3.5 it becomes  possible to write your own widgets, without (ab)using the imagebox widget. We will do this by writing a widget that shows a simple cross in the wibox' foreground color.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Full_code"><span class="tocnumber">1</span> <span class="toctext">Full code</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#What_the_heck_does_it_do.3F"><span class="tocnumber">2</span> <span class="toctext">What the heck does it do?</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#The_fit.28.29_function"><span class="tocnumber">2.1</span> <span class="toctext">The fit() function</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#The_draw.28.29_function"><span class="tocnumber">2.2</span> <span class="toctext">The draw() function</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Redrawing_the_widget"><span class="tocnumber">2.3</span> <span class="toctext">Redrawing the widget</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Further_reading"><span class="tocnumber">3</span> <span class="toctext">Further reading</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Full_code">Full code</span></h2>
+<pre>   local mycross = wibox.widget.base.make_widget()
+   mycross.fit = function(mycross, width, height)
+       local size = math.min(width, height)
+       return size, size
+   end
+   mycross.draw = function(mycross, wibox, cr, width, height)
+       cr:move_to(0, 0)
+       cr:line_to(width, height)
+       cr:move_to(width, 0)
+       cr:line_to(0, height)
+       cr:set_line_width(3)
+       cr:stroke()
+   end
+</pre>
+<p>That's it. We just needed to write two functions and now we got a simple widget which displays a cross.
+</p>
+<h2><span class="mw-headline" id="What_the_heck_does_it_do.3F">What the heck does it do?</span></h2>
+<p>Our widget consists of just two functions. Isn't that really easy?
+</p>
+<h3><span class="mw-headline" id="The_fit.28.29_function">The fit() function</span></h3>
+<p>The first function is called <i>fit</i>. It is called whenever the widget needs to decide how large it should be. This function gets three arguments:
+- The widget itself
+- The available width
+- The available height
+</p><p>Based on this information, this function has to decide how large the widget should be. In the example above, we just decide that the widget should be quadratic and its size should be the smaller one of the available width and height.
+</p><p>Please note that the <i>fit</i> function's result is only a hint and the widget may be drawn at different sizes, depending on the layout used. Some layouts don't even call the <i>fit</i> function at all. This means that your <i>fit</i> function should not do any important calculations and should not change any state.
+</p>
+<h3><span class="mw-headline" id="The_draw.28.29_function">The draw() function</span></h3>
+<p>The other function is called <i>draw</i>. Obviously, it gets called to actually draw the widget. The arguments to this function are:
+- Again, the widget itself
+- The wibox or titlebar that the widget is being painted to
+- A cairo context that should be used for drawing the widget
+- The available width and height that the widget got allocated
+</p><p>The widget should then draw itself to the given cairo context in the area between the top-left corner (0, 0) and the bottom right corner at (width, height). The above example just draws a cross in this area. Please refer to cairo's documentation for more information about the available functions.
+</p><p>Notice that we did not specify any color for our cross. Which color gets used in this case? It is the wibox' foreground color. This is of course a nice thing and you should avoid setting specific colors in your own widgets, when possible.
+</p><p>Also, we did not draw any background for the widget. The widget's background is automatically filled with the wibox' background color. This means that your own widgets shouldn't draw their own background if they don't really have to.
+</p>
+<h3><span class="mw-headline" id="Redrawing_the_widget">Redrawing the widget</span></h3>
+<p>There is one last thing that is missing. Let's say we are writing an actual widget, for example a battery widget. How can the widget be forced to redraw itself?
+</p><p>This is as easy as <i>mycross:emit_signal("widget::updated")</i>.
+</p><p>Now you should know enough so that you can write your own widgets. Have fun!
+</p>
+<h2><span class="mw-headline" id="Further_reading">Further reading</span></h2>
+<p>For more examples on cairo's API, you can read <a rel="nofollow" class="external free" href="https://github.com/pavouk/lgi/blob/master/samples/cairo.lua">https://github.com/pavouk/lgi/blob/master/samples/cairo.lua</a> and <a rel="nofollow" class="external free" href="http://cairographics.org/manual/">http://cairographics.org/manual/</a>.
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.056 seconds
+Real time usage: 0.060 seconds
+Preprocessor visited node count: 67/1000000
+Preprocessor generated node count: 302/1000000
+Post‐expand include size: 1284/2097152 bytes
+Template argument size: 287/2097152 bytes
+Highest expansion depth: 5/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:865-0!*!*!!en!5!* and timestamp 20160515131645 and revision id 6252
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Writing_own_widgets&amp;oldid=6252">https://awesomewm.org/w/index.php?title=Writing_own_widgets&amp;oldid=6252</a>"</div>
+					<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="/wiki/Category:Widgets" title="Category:Widgets">Widgets</a></li><li><a href="/wiki/Category:Awesome3.5" title="Category:Awesome3.5">Awesome3.5</a></li></ul></div></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Writing_own_widgets" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Writing_own_widgets&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Writing_own_widgets&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Writing_own_widgets&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Writing+own+widgets&amp;returntoquery=printable%3Dyes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Writing_own_widgets" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Writing_own_widgets" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Writing_own_widgets&amp;oldid=6252" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Writing_own_widgets&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 11 February 2014, at 23:29.</li>
+									<li id="viewcount">This page has been accessed 7,438 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;printable=1\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":111});
+}</script></body></html>

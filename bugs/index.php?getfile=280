@@ -1,0 +1,40 @@
+From 121d97de8a7f882f98e05367fe2025e406a8d800 Mon Sep 17 00:00:00 2001
+From: Uli Schlachter <psychon@znc.in>
+Date: Wed, 23 Dec 2009 10:51:30 +0100
+Subject: [PATCH] Implement the GetCapabilities call in naughty
+
+This call is required by the freedesktop specification.
+
+Signed-off-by: Uli Schlachter <psychon@znc.in>
+---
+ lib/naughty.lua.in |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+diff --git a/lib/naughty.lua.in b/lib/naughty.lua.in
+index 0bf9d49..24c4918 100644
+--- a/lib/naughty.lua.in
++++ b/lib/naughty.lua.in
+@@ -490,6 +490,10 @@ if capi.dbus then
+     elseif data.member == "GetServerInfo" or data.member == "GetServerInformation" then
+         -- name of notification app, name of vender, version
+         return "s", "naughty", "s", "awesome", "s", capi.awesome.version:match("%d.%d"), "s", "1.0"
++    elseif data.member == "GetCapabilities" then
++        -- We actually do display the body of the message, we support <b>, <i>
++        -- and <u> in the body and we handle static (non-animated) icons.
++        return "as", { "s", "body", "s", "body-markup", "s", "icon-static" }
+     end
+     end)
+ 
+@@ -506,6 +510,9 @@ if capi.dbus then
+         </method>
+       </interface>
+       <interface name="org.freedesktop.Notifications">
++        <method name="GetCapabilities">
++          <arg name="caps" type="as" direction="out"/>
++        </method>
+         <method name="CloseNotification">
+           <arg name="id" type="u" direction="in"/>
+         </method>
+-- 
+1.6.5
+

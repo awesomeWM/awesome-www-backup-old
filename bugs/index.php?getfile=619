@@ -1,0 +1,47 @@
+From e07045827bfa22ee0db532c573ebb493c0c8d1d0 Mon Sep 17 00:00:00 2001
+From: Matthias <ms@softimpulse.de>
+Date: Mon, 8 Apr 2013 22:47:35 +0200
+Subject: [PATCH] Allow pango layout in menu labels by avoiding util.escape
+ and still allow access keys
+
+---
+ lib/awful/menu.lua.in |   23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index ba92da7..65e6386 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -498,12 +498,23 @@ function menu.entry(parent, args)
+     local label = wibox.widget.textbox()
+     local key = ''
+     label:set_font(args.theme.font)
+-    label:set_markup(string.gsub(
+-        util.escape(args.text), "&amp;(%w)",
+-        function (l)
+-            key = string.lower(l)
+-            return "<u>" .. l .. "</u>"
+-        end, 1))
++    -- search for ampersand not starting xml_entity
++    local pos_amp=0
++    local s= args.text
++    while true do
++        local pos_ent= string.find(s, '&%w+;', pos_amp)
++        pos_amp=string.find(s, '&%w', pos_amp)
++        if pos_amp == nil then break end
++        if pos_ent == pos_amp then
++            pos_amp= pos_amp+1
++        else
++            key= string.lower(string.sub(s, pos_amp+1,pos_amp+1))
++            s = string.sub(s, 1,pos_amp-1) .. "<u>" .. string.sub(s, pos_amp+1,pos_amp+1) .."</u>" .. string.sub(s, pos_amp+2)
++            break
++        end
++    end
++    label:set_markup(s)
++
+     -- Set icon if needed
+     local icon, iconbox
+     local margin = wibox.layout.margin()
+-- 
+1.7.10.4
+

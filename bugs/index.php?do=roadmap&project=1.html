@@ -1,0 +1,792 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>awesome BTS - Roadmap</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=roadmap&amp;project=1" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="roadmap" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+      <script type="text/javascript">
+
+function hideAll(allTasks)
+{
+    for (i = 0; i < allTasks.length; i++) {
+        if (!allTasks[i]) continue;
+        hidestuff('dd'+ allTasks[i]);
+        hidestuff('hide'+ allTasks[i]);
+        showstuff('expand'+ allTasks[i], 'inline');
+    }
+}
+
+function showAll(allTasks)
+{
+    for (i = 0; i < allTasks.length; i++) {
+        if (!allTasks[i]) continue;
+        showstuff('dd'+ allTasks[i]);
+        hidestuff('expand'+ allTasks[i]);
+        showstuff('hide'+ allTasks[i], 'inline');
+    }
+}
+</script>
+
+
+<script type="text/javascript">
+allTasks94 = [764,983,1070,1135,1138,1175,1205,1271,];
+</script>
+
+<div class="box roadmap">
+<h3>Roadmap for version 3.5.6
+        <small class="DoNotPrint">
+      <a href="javascript:showAll(allTasks94)">Expand all</a> |
+      <a href="javascript:hideAll(allTasks94)">Collapse all</a>
+    </small>
+    </h3>
+
+<p><img src="https://awesomewm.org/bugs/themes/Bluey/percent-50.png"
+				title="50% complete"
+				alt="" width="200" height="20" />
+</p>
+
+<p>45% of
+   <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=94&amp;status[]=">
+     13 tasks
+   </a> completed.
+      <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=94">8 open tasks:</a>
+   </p>
+
+<dl class="roadmap">
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=764&amp;project=1" title="Unconfirmed | Maximized window state becomes confused when moved between scree | 0%" >FS#764 - Maximized window state becomes confused when moved between scree</a>
+        <small class="DoNotPrint">
+          <a id="expand764" href="javascript:showstuff('dd764');hidestuff('expand764');showstuff('hide764', 'inline')">Expand</a>
+          <a class="hide" id="hide764" href="javascript:hidestuff('dd764');hidestuff('hide764');showstuff('expand764', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd764" >
+        Using awesome debian/3.4.4-1 (Jet Sex)<br />
+<br />
+I have an nvidia card, and I have two monitors set up as one contiguous desktop (TwinView).  The two monitors have different sizes.<br />
+<br />
+I usually have firefox open on my left monitor in a maximized state.  If I open a new firefox window via Ctrl-N, and try to move it to the 2nd screen, this is what happens:<br />
+<br />
+1) Ctrl-N: new window appears on left monitor in a maximized state<br />
+<br />
+2) cmd-o (awful.client.movetoscreen): the window moves to the right monitor.  Its geometry is unchanged however.  Also, the window appears in the window list at the top of the *LEFT* monitor.  The window list indicates that it&#039;s still maximized, but the window is not filling up the right monitor.<br />
+<br />
+3) With the new window focused, cmd-m (bound to a function that flips c.maximized_horizontal, and maximized_vertical): <br />
+The window jumps back to the left screen, and is now a regular tiled window.<br />
+<br />
+4) cmd-o again: The window moves to the right screen, and is still tiled.<br />
+<br />
+5) cmd-m again: The window is now properly maximized on the right screen, and shows up as expected in the right-screen&#039;s list of windows.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=983&amp;project=1" title="New | Lua 5.2 support | 80%" >FS#983 - Lua 5.2 support</a>
+        <small class="DoNotPrint">
+          <a id="expand983" href="javascript:showstuff('dd983');hidestuff('expand983');showstuff('hide983', 'inline')">Expand</a>
+          <a class="hide" id="hide983" href="javascript:hidestuff('dd983');hidestuff('hide983');showstuff('expand983', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd983" >
+        We should port awesome to Lua 5.2
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1070&amp;project=1" title="Unconfirmed | Squares in tag list cover tag numbers | 0%" >FS#1070 - Squares in tag list cover tag numbers</a>
+        <small class="DoNotPrint">
+          <a id="expand1070" href="javascript:showstuff('dd1070');hidestuff('expand1070');showstuff('hide1070', 'inline')">Expand</a>
+          <a class="hide" id="hide1070" href="javascript:hidestuff('dd1070');hidestuff('hide1070');showstuff('expand1070', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1070" >
+        In Awesome 3.5 (and in the git version) with the default configuration the little squares in the tag list are so big that they partially cover the tag number. This is not the case in Awesome 3.4.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1135&amp;project=1" title="Assigned | Properly support window gravity | 0%" >FS#1135 - Properly support window gravity</a>
+        <small class="DoNotPrint">
+          <a id="expand1135" href="javascript:showstuff('dd1135');hidestuff('expand1135');showstuff('hide1135', 'inline')">Expand</a>
+          <a class="hide" id="hide1135" href="javascript:hidestuff('dd1135');hidestuff('hide1135');showstuff('expand1135', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1135" >
+        Today I found<a href=" https://git.gnome.org/browse/metacity/plain/src/wm-tester/test-gravity.c"> https://git.gnome.org/browse/metacity/plain/src/wm-tester/test-gravity.c</a> and then tried to finally implement window gravities, as required by ICCCM (see the attached patch).<br />
+<br />
+I guess this works fine. However, it would also be nice to implement _NET_MOVERESIZE_WINDOW (and be sure to add it to _NET_WM_SUPPORTED!).<br />
+<br />
+Also, this contains a todo to obey window gravity when adding/removing titlebars. (But I guess that belongs into another commit...).<br />
+<br />
+Oh and: Also obey gravity when border_width changes?
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1138&amp;project=1" title="Unconfirmed | Taglist/tasklist buttons functions are called twice if the mouse | 0%" >FS#1138 - Taglist/tasklist buttons functions are called twice if the mouse</a>
+        <small class="DoNotPrint">
+          <a id="expand1138" href="javascript:showstuff('dd1138');hidestuff('expand1138');showstuff('hide1138', 'inline')">Expand</a>
+          <a class="hide" id="hide1138" href="javascript:hidestuff('dd1138');hidestuff('hide1138');showstuff('expand1138', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1138" >
+        mytasklist.buttons and mytaglist.buttons functions are called twiceif the mouse move. Ont for &quot;press&quot; and one for &quot;release&quot;. If the click is very fast and doesn&#039;t move, then they are called only one. If this could be avoided, it would make awesome a little faster when using mouse and it is also problematic if there is a menu on right click, as it will show and hide until the click is &quot;proprely&quot; made.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175&amp;project=1" title="Unconfirmed | Java menu problem with Awesome &gt;=3.5 and xinerama | 0%" >FS#1175 - Java menu problem with Awesome &gt;=3.5 and xinerama</a>
+        <small class="DoNotPrint">
+          <a id="expand1175" href="javascript:showstuff('dd1175');hidestuff('expand1175');showstuff('hide1175', 'inline')">Expand</a>
+          <a class="hide" id="hide1175" href="javascript:hidestuff('dd1175');hidestuff('hide1175');showstuff('expand1175', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1175" >
+        Using latest awesome-git checkout, but this is an ongoing problem as of some months now. (Arch Linux: `yaourt -Sa awesome-git`).<br />
+<br />
+In java applications, when running a dual-head (xinerama) setup, there are a variety of strange behaviours with menus in java applications. (Tested with, amongst others, CGoban3 from<a href=" http://www.gokgs.com"> http://www.gokgs.com</a>). This occurs in both Oracle&#039;s latest JRE and OpenJDK 7.<br />
+<br />
+On the first/leftmost monitor, a menu often responds to a click and stays open, but is &#039;offset&#039; by perhaps 20 vertical pixels. (So I can select an item by hovering in the space above it.)<br />
+<br />
+On the second/rightmost monitor, the menu will not stay open, but if I hold down the mouse and move to the equivalent space on the first/leftmost monitor it starts to select items.<br />
+<br />
+In a single-monitor setup Java seems to work fine even without the _JAVA_AWT_WM_NONREPARENTING and wmname hacks. The behaviour described here occurs regardless of whether I&#039;m using _JAVA_AWT_WM_NONREPARENTING/wmname or not. This clearly seems related to the long-running reparenting issue. I thought that wmname, and the OpenJDK, had made this a non-issue, though.<br />
+<br />
+To reproduce:<br />
+<br />
+1) Run awesome in a xinerama dual-monitor setup.<br />
+2) Run a java swing application, such as CGoban3 (www.gokgs.com)<br />
+3) Move window between workspaces and try clicking on menus.<br />
+<br />
+I noticed in Task #972 that someone mentioned &#039;the java menu problem&#039;, but I couldn&#039;t find an actual bug report linked to this, so I opened one.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1205&amp;project=1" title="Unconfirmed | maximised windows do not stay maximised when they change size | 0%" >FS#1205 - maximised windows do not stay maximised when they change size</a>
+        <small class="DoNotPrint">
+          <a id="expand1205" href="javascript:showstuff('dd1205');hidestuff('expand1205');showstuff('hide1205', 'inline')">Expand</a>
+          <a class="hide" id="hide1205" href="javascript:hidestuff('dd1205');hidestuff('hide1205');showstuff('expand1205', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1205" >
+        When awesome has a window maximised, and the window wants to change size, awesome will resize the window while still thinking it&#039;s maximised. Instead, awesome should ignore the change in size, and only honour it when the video is no longer maximised.<br />
+<br />
+This behaviour was observed while using the video player &quot;mpv&quot; (an mplayer fork), which changes the window size to match the resolution of the video playing. Personally I know of no other programs that change their own size in such a way, so I can&#039;t test it further. However, I&#039;ve had a good look at the awesome code, and suspect that the window&#039;s maximised state isn&#039;t being checked when a new window size is requested by the client.<br />
+<br />
+This was confirmed on 3.5.2, and the latest git master (v3.5.2-16-g7adc21e).
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1271&amp;project=1" title="Unconfirmed | Placment rule for xcalc only obeyed some times | 0%" >FS#1271 - Placment rule for xcalc only obeyed some times</a>
+        <small class="DoNotPrint">
+          <a id="expand1271" href="javascript:showstuff('dd1271');hidestuff('expand1271');showstuff('hide1271', 'inline')">Expand</a>
+          <a class="hide" id="hide1271" href="javascript:hidestuff('dd1271');hidestuff('hide1271');showstuff('expand1271', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1271" >
+        I&#039;m using the rule<br />
+<br />
+    { rule = { class = &quot;XCalc&quot; },<br />
+      properties = { floating = true ,  x = 100, y = 100 } },<br />
+<br />
+and xcalc always obeys the floating part, but only occasionally the x,y part. On some restarts of awesome the postioning works, while on others it just always positions a new xcalc window at x=0, y just below the awesome bar. Not sure how to diagnose the problem more specifically.
+        <br style="position:absolute;" />
+      </dd>
+    </dl>
+
+</div>
+
+<script type="text/javascript">
+allTasks92 = [1144,1230,1237,1275,1306,];
+</script>
+
+<div class="box roadmap">
+<h3>Roadmap for version 3.6
+        <small class="DoNotPrint">
+      <a href="javascript:showAll(allTasks92)">Expand all</a> |
+      <a href="javascript:hideAll(allTasks92)">Collapse all</a>
+    </small>
+    </h3>
+
+<p><img src="https://awesomewm.org/bugs/themes/Bluey/percent-60.png"
+				title="60% complete"
+				alt="" width="200" height="20" />
+</p>
+
+<p>55% of
+   <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=92&amp;status[]=">
+     11 tasks
+   </a> completed.
+      <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=92">5 open tasks:</a>
+   </p>
+
+<dl class="roadmap">
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1144&amp;project=1" title="Unconfirmed | Floating windows resized improperly  | 0%" >FS#1144 - Floating windows resized improperly </a>
+        <small class="DoNotPrint">
+          <a id="expand1144" href="javascript:showstuff('dd1144');hidestuff('expand1144');showstuff('hide1144', 'inline')">Expand</a>
+          <a class="hide" id="hide1144" href="javascript:hidestuff('dd1144');hidestuff('hide1144');showstuff('expand1144', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1144" >
+        Since 3.5 yakuake doesn&#039;t work properly with awesome anymore. Yakuake is a quake-like drop-down terminal. In awesome &lt;= 3.4 there already always was a flicker, when activating the yakuake window, while another window was present on the current tag, but in the end it all looked right (Window maximized below yakuake, yakuake in the foreground). Now it doesn&#039;t work anymore, there is a flicker, than yakuake AND the window both share half of the screen (as if yakuake wasn&#039;t floated), but the content of the both windows is not adapted (i.e. both &quot;think&quot; they are the only one).<br />
+<br />
+My interpretation is that the window is not actually floated before it is drawn, but after, and that some goes wrong then.<br />
+<br />
+This screencast should illustrate the issue:<br /><a href="
+http://soulrebel.in-berlin.de/awesome_yakuake.ogv">
+http://soulrebel.in-berlin.de/awesome_yakuake.ogv</a><br />
+<br />
+(it also illustrates a nother, unrelated issue, which I will open an extra bug report for)<br />
+<br />
+I would be grateful for any help, patches or work-arounds, because it severely influences my work flow.<br />
+<br />
+Thank you!
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1230&amp;project=1" title="New | Yet another task-/taglist rewrite | 0%" >FS#1230 - Yet another task-/taglist rewrite</a>
+        <small class="DoNotPrint">
+          <a id="expand1230" href="javascript:showstuff('dd1230');hidestuff('expand1230');showstuff('hide1230', 'inline')">Expand</a>
+          <a class="hide" id="hide1230" href="javascript:hidestuff('dd1230');hidestuff('hide1230');showstuff('expand1230', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1230" >
+        In 3.4, the task-/taglist widgets got a label function and a list of buttons as its argument. The label function was called for every single object and returned the text, bg color, bg image and icon to use. To skip/hide entries, nothing was returned.<br />
+<br />
+In 3.5, the task-/taglist widgets only get a filter function that can skip entries. The label function still exists, but only internally and cannot be influenced from rc.lua (why?). We have some theme options to influence the way that the task-/taglist looks like.<br />
+<br />
+For 3.6/4.0, we could give the list a single function which gets an object and returns a single widget for it. Updating the widget needs to be done through the suitable signals, not by re-creating the complete list on some randomly selected set of signals. That way, even the order of the icon and text could be swapped. Return nil would again count as filtering. The currently available options would of course have to be implemented in awful.widget.tasklist/taglist as ready-to-use callback functions.<br />
+<br />
+Perhaps it also makes sense to do things in two steps? Have a function which extracts name, icon etc from the object, just like the 3.4 version did and have another function which uses this information to create the widget and gets the first function as an upvalue.<br />
+<br />
+So the API could be something like:<br />
+<br />
+awful.widget.tasklist(s, function(t) return awful.widget.tasklist.filter.alll(t, awful.widget.tasklist.label) end)<br />
+<br />
+(Where tasklist.label works just like it did in 3.4 and tasklist.filter.all works like it does in 3.5, but returns a single widget and which uses the provided callback for getting text etc)<br />
+<br />
+What do others thing about this? Any use cases that I forgot?<br />
+<br />
+<br />
+This proposal should make the following possible (...I hope):<br />
+awful.widget.tasklist(s, function(t)<br />
+    return awful.widget.tasklist.filter.alll(t, function(t)<br />
+        local res = { awful.widget.tasklist.label(t) end }<br />
+        res[1] = &quot;[&quot; .. c.machine .. &quot;] &quot; .. res[1]<br />
+        return table.unpack(res))<br />
+    end<br />
+end)<br /><a href="
+http://thread.gmane.org/gmane.comp.window-managers.awesome.devel/8731">
+http://thread.gmane.org/gmane.comp.window-managers.awesome.devel/8731</a><br />
+<br />
+<br />
+EDIT: Another thing to keep in mind: &lt;span&gt; doesn&#039;t work with gears.color-style colors. So it would be best to remove all usage of &lt;span&gt; tags
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1237&amp;project=1" title="New | Don&#039;t use pango markup for specifying colors | 0%" >FS#1237 - Don&#039;t use pango markup for specifying colors</a>
+        <small class="DoNotPrint">
+          <a id="expand1237" href="javascript:showstuff('dd1237');hidestuff('expand1237');showstuff('hide1237', 'inline')">Expand</a>
+          <a class="hide" id="hide1237" href="javascript:hidestuff('dd1237');hidestuff('hide1237');showstuff('expand1237', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1237" >
+        Currently we have quite some code (taglist, tasklist, prompt, menubar) which uses &lt;span&gt; with background= or color= to set colors. This means that e.g. beautiful.fg_normal, fg_focus etc can only be #aarrggbb-style colors, not the more elaborate stuff that gears.color supports.<br />
+<br />
+It would be nice if this were rewritten to use &quot;widget magic&quot; so that it becomes possible to use the full expressiveness of gears.color here.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1275&amp;project=1" title="Unconfirmed | Unwanted accidental screen changes caused by bogus xcb_generic_e | 0%" >FS#1275 - Unwanted accidental screen changes caused by bogus xcb_generic_e</a>
+        <small class="DoNotPrint">
+          <a id="expand1275" href="javascript:showstuff('dd1275');hidestuff('expand1275');showstuff('hide1275', 'inline')">Expand</a>
+          <a class="hide" id="hide1275" href="javascript:hidestuff('dd1275');hidestuff('hide1275');showstuff('expand1275', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1275" >
+        Ok, that one was long to debug...<br />
+<br />
+Long story short, I open firefox on screen 1, it flicker then move on screen 2, in the selected tag instead of the www one. Great... Why?<br />
+<br />
+After much foobar-ism, I managed to track this down to withcurrent being called by an xcb_generic_event at<br />
+<br />
+#3  0x0000000000412e1a in event_handle_configurerequest (ev=0x1d93bd0)<br />
+    at /home/kde-devel/kde/src/awesome/event.c:345<br />
+<br />
+if added this to client_resize_do<br />
+printf(&quot;\n WINID %d From resize %d %d x %d %d w %d %d\n&quot;,c-&gt;window,screen_get_index(c-&gt;screen),screen_get_index(new_screen),old_geometry.x,geometry.x,old_geometry.width,geometry.width);<br />
+<br />
+and got:<br />
+<br />
+<br />
+HERE C Mozilla Firefox<br />
+TAG Internet<br />
+ WINID 41943231 From resize 1 1 x 1920 1920 w 1918 1918<br />
+ WINID 41943231 From resize 1 1 x 1920 1920 w 1918 1918<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 1<br />
+<br />
+ WINID 41943231 From resize 1 1 x 0 1920 w 1918 1918<br />
+ WINID 41943231 From resize 1 2 x 1920 0 w 1918 1918<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 1<br />
+TSTBrowser::restoreTree<br />
+  level = 1<br />
+  tabsToRestore = 64<br />
+  restoring member tabs = 64<br />
+HERE WITHCURRENT<br />
+INVALID SCREEN CHANGE!!!!!<br />
+<br />
+<br />
+<br />
+sorry for all the prints with useless names, but at some point, you can see that the screen change when firefox restore the session<br />
+<br />
+<br />
+do you think we should first check that in event.c before calling resize to prevent accidental screen changes? Or is it better to add a request::screen as suggested before to avoid this situation?<br />
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1306&amp;project=1" title="Unconfirmed | Postpone/block layout (re)arrangement during applying of awful.r | 0%" >FS#1306 - Postpone/block layout (re)arrangement during applying of awful.r</a>
+        <small class="DoNotPrint">
+          <a id="expand1306" href="javascript:showstuff('dd1306');hidestuff('expand1306');showstuff('hide1306', 'inline')">Expand</a>
+          <a class="hide" id="hide1306" href="javascript:hidestuff('dd1306');hidestuff('hide1306');showstuff('expand1306', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1306" >
+        Could the layout (re-)arrangement get postponed during the execution of the &quot;manage&quot; hook?<br />
+<br />
+I have just debugged an issue with my config, where starting a new client that was set to floating in a function connected to the manage signal (after awful.rules.apply) caused screen/layout flickering.<br />
+<br />
+Setup:<br />
+1. tile layout<br />
+2. one master client<br />
+3. start a new client, which gets set to floating through a custom &quot;manage&quot; signal handler<br />
+<br />
+There were quite a lot of calls to arrange/do_tile and the number of master and other windows changed inbetween them.<br />
+<br />
+I could fix the particular issue at hand by removing disconnecting the default signal and attaching it again after my function.<br />
+<br />
+btw: I&#039;ve noticed that client.floating.set alone can trigger (at least) two re-arrangements, via client.property.set and c:geometry.<br />
+<br />
+v3.5.2-203-g03aaf9a
+        <br style="position:absolute;" />
+      </dd>
+    </dl>
+
+</div>
+
+<script type="text/javascript">
+allTasks63 = [498,568,571,574,586,592,614,687,909,954,1001,1054,1066,1257,];
+</script>
+
+<div class="box roadmap">
+<h3>Roadmap for version 4.0
+        <small class="DoNotPrint">
+      <a href="javascript:showAll(allTasks63)">Expand all</a> |
+      <a href="javascript:hideAll(allTasks63)">Collapse all</a>
+    </small>
+    </h3>
+
+<p><img src="https://awesomewm.org/bugs/themes/Bluey/percent-60.png"
+				title="60% complete"
+				alt="" width="200" height="20" />
+</p>
+
+<p>61% of
+   <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=63&amp;status[]=">
+     30 tasks
+   </a> completed.
+      <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=63">14 open tasks:</a>
+   </p>
+
+<dl class="roadmap">
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=498&amp;project=1" title="Unconfirmed | primary output change via xrandr is not recognized | 0%" >FS#498 - primary output change via xrandr is not recognized</a>
+        <small class="DoNotPrint">
+          <a id="expand498" href="javascript:showstuff('dd498');hidestuff('expand498');showstuff('hide498', 'inline')">Expand</a>
+          <a class="hide" id="hide498" href="javascript:hidestuff('dd498');hidestuff('hide498');showstuff('expand498', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd498" >
+        Changing the primary output (xrandr --output LVDS --primary) isn&#039;t recognized by awesome<br />
+so you have to restart it.<br />
+I think awesome should act like resizing/adding a screen.<br />
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=568&amp;project=1" title="New | Remove resize from imagebox | 100%" >FS#568 - Remove resize from imagebox</a>
+        <small class="DoNotPrint">
+          <a id="expand568" href="javascript:showstuff('dd568');hidestuff('expand568');showstuff('hide568', 'inline')">Expand</a>
+          <a class="hide" id="hide568" href="javascript:hidestuff('dd568');hidestuff('hide568');showstuff('expand568', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd568" >
+        This should not be used, and the hack in widgets layout should be removed also.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=571&amp;project=1" title="New | Remove c:swap() | 100%" >FS#571 - Remove c:swap()</a>
+        <small class="DoNotPrint">
+          <a id="expand571" href="javascript:showstuff('dd571');hidestuff('expand571');showstuff('hide571', 'inline')">Expand</a>
+          <a class="hide" id="hide571" href="javascript:hidestuff('dd571');hidestuff('hide571');showstuff('expand571', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd571" >
+        Client are exported to Lua via client.get().<br />
+<br />
+This returns a table with all clients. Client can be swapped in that list with c:swap(cc).<br />
+<br />
+This is used to determine the order of rendering in various place, mostly the layout engine.<br />
+<br />
+This should be removed. awful should handle its own internal ordered table of clients. This should remove the need of swapping client in C, and should be anyway faster when setting a client slave (last entry) for example.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity3">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=574&amp;project=1" title="New | sticky windows mess up focus history | 0%" >FS#574 - sticky windows mess up focus history</a>
+        <small class="DoNotPrint">
+          <a id="expand574" href="javascript:showstuff('dd574');hidestuff('expand574');showstuff('hide574', 'inline')">Expand</a>
+          <a class="hide" id="hide574" href="javascript:hidestuff('dd574');hidestuff('hide574');showstuff('expand574', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd574" >
+        To reproduce:<br />
+<br />
+- open a terminal in tag 1<br />
+- open a terminal in tag 2<br />
+- open another program on any tag (I used gcolor2)<br />
+- mod+x client.focus.sticky = true<br />
+- focus terminal in tag 1<br />
+- focus terminal in tag 2<br />
+- switch between the two tags<br />
+- focus always reverts to the sticky client<br />
+<br />
+Tested with default config.<br />
+<br />
+Edit:<br />
+This is not only about sticky windows, <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=328&amp;project=1" title="Duplicate | Focus is on the wrong window when switching back to a tag that h | 100%"  class = "closedtasklink">FS#328</a>&#160;</del> describes the same bug with clients having multiple tags.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=586&amp;project=1" title="New | Use screen object rather than integer | 30%" >FS#586 - Use screen object rather than integer</a>
+        <small class="DoNotPrint">
+          <a id="expand586" href="javascript:showstuff('dd586');hidestuff('expand586');showstuff('hide586', 'inline')">Expand</a>
+          <a class="hide" id="hide586" href="javascript:hidestuff('dd586');hidestuff('hide586');showstuff('expand586', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd586" >
+        It would be nice to return screen object rather than integer as object attribute.<br />
+<br />
+Then, we could use things like:<br />
+<br />
+client.focus.screen.workarea.x <br />
+rather than<br />
+screen[client.focus.screen].workarea.x<br />
+<br />
+screen[] would be able to be used with integer or object as key, it would not matter. That would keep compatibility with current code, but ease futur work.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=592&amp;project=1" title="Assigned | Add auto-documentation | 0%" >FS#592 - Add auto-documentation</a>
+        <small class="DoNotPrint">
+          <a id="expand592" href="javascript:showstuff('dd592');hidestuff('expand592');showstuff('hide592', 'inline')">Expand</a>
+          <a class="hide" id="hide592" href="javascript:hidestuff('dd592');hidestuff('hide592');showstuff('expand592', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd592" >
+        Auto-documentation is a module for documenting awesome and awful objects from the inside.<br />
+<br />
+It&#039;s automagically generated using luadoc.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=614&amp;project=1" title="New | Split/merge awful and beautiful | 0%" >FS#614 - Split/merge awful and beautiful</a>
+        <small class="DoNotPrint">
+          <a id="expand614" href="javascript:showstuff('dd614');hidestuff('expand614');showstuff('hide614', 'inline')">Expand</a>
+          <a class="hide" id="hide614" href="javascript:hidestuff('dd614');hidestuff('hide614');showstuff('expand614', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd614" >
+        awful depends on beautiful. Stop that.<br />
+<br />
+<br />
+Discussion can happen here about this topic. :)
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687&amp;project=1" title="New | Stop restarting on XRandR event | 0%" >FS#687 - Stop restarting on XRandR event</a>
+        <small class="DoNotPrint">
+          <a id="expand687" href="javascript:showstuff('dd687');hidestuff('expand687');showstuff('hide687', 'inline')">Expand</a>
+          <a class="hide" id="hide687" href="javascript:hidestuff('dd687');hidestuff('hide687');showstuff('expand687', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd687" >
+        awesome should emits proper signals and just change the screens array.
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=909&amp;project=1" title="Unconfirmed | tag-switching keycodes broken on OS X | 0%" >FS#909 - tag-switching keycodes broken on OS X</a>
+        <small class="DoNotPrint">
+          <a id="expand909" href="javascript:showstuff('dd909');hidestuff('expand909');showstuff('hide909', 'inline')">Expand</a>
+          <a class="hide" id="hide909" href="javascript:hidestuff('dd909');hidestuff('hide909');showstuff('expand909', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd909" >
+        In the following bug and commit to fix it, the default configuration for switching tags was changed to use keycodes.<br />
+<br /><a href="
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=627">
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=627</a><br /><a href="
+http://git.naquadah.org/?p=awesome.git;a=commit;h=295f71255204ab6acd5986641cc85fa1ea2bfc6a">
+http://git.naquadah.org/?p=awesome.git;a=commit;h=295f71255204ab6acd5986641cc85fa1ea2bfc6a</a><br />
+<br />
+This is terribly broken on Mac OS X. The default keycode layout does not put the number keys on my QWERTY laptop keyboard anywhere near that range, and as a matter of fact the number keys aren&#039;t even contiguous. The keycodes #10 thru #18 are mapped to other keys, such as &quot;f&quot; and &quot;h&quot;, causing bizarre behavior with this default configuration. (For example, Mod4-h will switch to tag 3 and then resize the master window down one notch.)<br />
+<br />
+I&#039;m not really sure of a solution that works on OS X and is acceptable to the non-QWERTY folks...
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=954&amp;project=1" title="Unconfirmed | No way to handle client resize with mouse in custom layout modul | 0%" >FS#954 - No way to handle client resize with mouse in custom layout modul</a>
+        <small class="DoNotPrint">
+          <a id="expand954" href="javascript:showstuff('dd954');hidestuff('expand954');showstuff('hide954', 'inline')">Expand</a>
+          <a class="hide" id="hide954" href="javascript:hidestuff('dd954');hidestuff('hide954');showstuff('expand954', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd954" >
+        lib/awful/mouse/init.lua has the resize code for each layout hardcoded into it. Aside from being poor structure, this makes it impossible to handle resizing in your own layout module.<br />
+<br />
+A simple patch allows this functionality:<br />
+    local lay = layout.get(c.screen)<br />
+<br />
+    if lay == layout.suit.floating or aclient.floating.get(c) then<br />
+        return client_resize_floating(c, corner, fixed_x, fixed_y)<br />
+    elseif lay == layout.suit.tile<br />
+        or lay == layout.suit.tile.left<br />
+        or lay == layout.suit.tile.top<br />
+        or lay == layout.suit.tile.bottom<br />
+        then<br />
+        return client_resize_tiled(c, lay)<br />
+    elseif lay == layout.suit.magnifier then<br />
+        return client_resize_magnifier(c, corner)<br />
++   elseif lay.on_client_resize then<br />
++       return lay:on_client_resize(c, corner)<br />
+    end<br />
+<br />
+Moving the resize functions for each layout into the layout modules themselves would also be a considerable improvement as far as code cleanliness is concerned.<br />
+<br />
+$ git describe<br />
+v3.4-564-gd9e4c1e<br />
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1001&amp;project=1" title="Unconfirmed | A client should be considered to be on the screen on which it ta | 0%" >FS#1001 - A client should be considered to be on the screen on which it ta</a>
+        <small class="DoNotPrint">
+          <a id="expand1001" href="javascript:showstuff('dd1001');hidestuff('expand1001');showstuff('hide1001', 'inline')">Expand</a>
+          <a class="hide" id="hide1001" href="javascript:hidestuff('dd1001');hidestuff('hide1001');showstuff('expand1001', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1001" >
+        Currently a client&#039;s screen is determined by its top-left corner of the bounding box.<br />
+When this corner is outside of any screen, awesome wrongly assumes the client to be on the first screen[1].<br />
+A more intuitive behavior would be:<br />
+- intersect the client bounding box with each screen<br />
+- calculate the intersections&#039; areas<br />
+- sort screens by area, descending<br />
+=&gt; The first one is the right screen for the client.<br />
+<br />
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1054&amp;project=1" title="New | Remove timer objects | 0%" >FS#1054 - Remove timer objects</a>
+        <small class="DoNotPrint">
+          <a id="expand1054" href="javascript:showstuff('dd1054');hidestuff('expand1054');showstuff('hide1054', 'inline')">Expand</a>
+          <a class="hide" id="hide1054" href="javascript:hidestuff('dd1054');hidestuff('hide1054');showstuff('expand1054', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1054" >
+        Thanks to <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=985&amp;project=1" title="Fixed | Provide lua-ev / lgi+glib mainloop integration | 100%"  class = "closedtasklink">FS#985</a>&#160;</del>, we can now use Glib in lua. This means that glib timeouts can be used and timer objects are no longer necessary. I bet everyone will love us for removing them. :-P<br />
+<br />
+    local glib = require(&quot;lgi&quot;).GLib<br />
+    local count = 0<br />
+    glib.timeout_add_seconds(glib.PRIORITY_DEFAULT, 1, function()<br />
+        print(count)<br />
+        count = count + 1<br />
+        return count &lt; 60<br />
+    end)<br />
+<br />
+(If this returns false, the timeout is removed)
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1066&amp;project=1" title="Unconfirmed | awfule/tooltip.lua html sanitizing | 0%" >FS#1066 - awfule/tooltip.lua html sanitizing</a>
+        <small class="DoNotPrint">
+          <a id="expand1066" href="javascript:showstuff('dd1066');hidestuff('expand1066');showstuff('hide1066', 'inline')">Expand</a>
+          <a class="hide" id="hide1066" href="javascript:hidestuff('dd1066');hidestuff('hide1066');showstuff('expand1066', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1066" >
+        There is a red warning when showing &lt;, &gt;, &amp; using the awful.tooltip:set_text function and vicious.register function.<br />
+<br />
+The problem seem to be in the `lib/awful/tooltip.lua` at line 127 (the set_text function). The `text` parameter need to be sanitized.<br />
+<br />
+Cheers!
+        <br style="position:absolute;" />
+      </dd>
+          <dt class="severity2">
+        <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1257&amp;project=1" title="New | Follow XDG icon theme specification | 0%" >FS#1257 - Follow XDG icon theme specification</a>
+        <small class="DoNotPrint">
+          <a id="expand1257" href="javascript:showstuff('dd1257');hidestuff('expand1257');showstuff('hide1257', 'inline')">Expand</a>
+          <a class="hide" id="hide1257" href="javascript:hidestuff('dd1257');hidestuff('hide1257');showstuff('expand1257', 'inline')">Collapse</a>
+        </small>
+      </dt>
+      <dd id="dd1257" >
+        The desktop notification specification says:<br />
+<br />
+The &quot;app_icon&quot; parameter and &quot;image-path&quot; hint should be either an URI (file:// is the only URI schema supported right now) or a name in a freedesktop.org-compliant icon theme (not a GTK+ stock ID).<br /><a href="
+https://developer.gnome.org/notification-spec/#icons-and-images-formats">
+https://developer.gnome.org/notification-spec/#icons-and-images-formats</a><br />
+<br />
+So we have to follow the Icon Theme Specification for this:<br /><a href="
+http://standards.freedesktop.org/icon-theme-spec/latest/">
+http://standards.freedesktop.org/icon-theme-spec/latest/</a><br />
+<br />
+Previous discussion on this (with a solution(?) that uses GTK):<br /><a href="
+https://github.com/awesomeWM/awesome/pull/32">
+https://github.com/awesomeWM/awesome/pull/32</a>
+        <br style="position:absolute;" />
+      </dd>
+    </dl>
+
+</div>
+
+<script type="text/javascript">
+allTasks95 = [];
+</script>
+
+<div class="box roadmap">
+<h3>Roadmap for version 3.5.7
+    </h3>
+
+<p><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="" width="200" height="20" />
+</p>
+
+<p>0% of
+   <a href="https://awesomewm.org/bugs/index.php?do=index&amp;tasks=&amp;project=1&amp;due=95&amp;status[]=">
+     0 tasks
+   </a> completed.
+   </p>
+
+</div>
+
+<p><a href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1&amp;txt=true"><img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" /> Text Version</a></p>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

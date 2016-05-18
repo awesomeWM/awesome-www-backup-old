@@ -1,0 +1,137 @@
+[kukman@archbook awesome]$ xprop 
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_FULLSCREEN
+_NET_WM_USER_TIME(CARDINAL) = 9363237
+_NET_WM_DESKTOP(CARDINAL) = 2
+WM_STATE(WM_STATE):
+        window state: Normal
+        icon window: 0x0
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 14680167
+_NET_WM_ICON(CARDINAL) =    Icon (32 x 32):
+                                    
+                   ▒▒               
+                  ▒░░▒              
+                  ░░░░              
+                  ░░░░              
+                 ░░░░░░             
+                                    
+                      ░             
+                                    
+                                    
+                                    
+                ▒░░░░░░▒            
+               ▒▒░░░░░░▒▒           
+               ▒░░░░░░░▒▒           
+               ▒░░░░░░░▒▒           
+              ▒▒░░░░░░░░▒▒          
+              ░░░░░░░░░░░░          
+              ░ ░░░░░░░░░           
+             ░           ░░         
+              ░         ░ ░         
+             ░           ░          
+            ▒░            ░▒        
+           ▒▒▒░░         ░▒▒▒       
+          ░▒▒▒▒▒░░░░░░░░░▒▒▒▒▒      
+         ░░▒▒▒▒▒░▒▒░░░░░░▒▒▒▒░░     
+        ░░░░░▒▒▒░▒▒░░░░░░▒▒░░░░░    
+       ░░░░░░░░▒▒▒▒▒░░░░░░░░░░░░░   
+                                    
+       ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   
+                                    
+                                    
+                                    
+
+
+XdndAware(ATOM) = BITMAP
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
+_NET_WM_NAME(UTF8_STRING) = "ELEKTRI4KA [uniongang.ru] - Bruno (2009) - Медиа-проигрыватель VLC"
+WM_CLIENT_LEADER(WINDOW): window id # 0xe0000b
+WM_WINDOW_ROLE(STRING) = "vlc-main"
+_NET_WM_PID(CARDINAL) = 8568
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x3e, 0x7e, 0x0, 0x0
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST
+WM_NAME(COMPOUND_TEXT) = "ELEKTRI4KA [uniongang.ru] - Bruno (2009) - Медиа-проигрыватель VLC"
+WM_LOCALE_NAME(STRING) = "ru_RU.UTF-8"
+WM_CLASS(STRING) = "vlc", "Vlc"
+WM_HINTS(WM_HINTS):
+        Client accepts input or input focus: True
+        Initial state is Normal State.
+        bitmap id # to use for icon: 0xe00016
+        window id # of group leader: 0xe0000b
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+        user specified location: -4, 15
+        program specified location: -4, 15
+        user specified size: 1362 by 745
+        program specified size: 1362 by 745
+        program specified minimum size: 539 by 0
+        window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = "archbook"
+WM_COMMAND(STRING) = { "vlc" }
+[kukman@archbook awesome]$ xprop 
+_NET_WM_DESKTOP(CARDINAL) = 2
+WM_STATE(WM_STATE):
+        window state: Normal
+        icon window: 0x0
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 14681082
+_NET_WM_USER_TIME(CARDINAL) = 9392806
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_MODAL
+_NET_WM_ICON(CARDINAL) =    Icon (32 x 32):
+                                    
+                   ▒▒               
+                  ▒░░▒              
+                  ░░░░              
+                  ░░░░              
+                 ░░░░░░             
+                                    
+                      ░             
+                                    
+                                    
+                                    
+                ▒░░░░░░▒            
+               ▒▒░░░░░░▒▒           
+               ▒░░░░░░░▒▒           
+               ▒░░░░░░░▒▒           
+              ▒▒░░░░░░░░▒▒          
+              ░░░░░░░░░░░░          
+              ░ ░░░░░░░░░           
+             ░           ░░         
+              ░         ░ ░         
+             ░           ░          
+            ▒░            ░▒        
+           ▒▒▒░░         ░▒▒▒       
+          ░▒▒▒▒▒░░░░░░░░░▒▒▒▒▒      
+         ░░▒▒▒▒▒░▒▒░░░░░░▒▒▒▒░░     
+        ░░░░░▒▒▒░▒▒░░░░░░▒▒░░░░░    
+       ░░░░░░░░▒▒▒▒▒░░░░░░░░░░░░░   
+                                    
+       ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒   
+                                    
+                                    
+                                    
+
+
+_NET_WM_WINDOW_OPACITY(CARDINAL) = 3435973887
+XdndAware(ATOM) = BITMAP
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
+WM_CLIENT_LEADER(WINDOW): window id # 0xe0000b
+_NET_WM_PID(CARDINAL) = 8568
+_NET_WM_WINDOW_TYPE(ATOM) = _KDE_NET_WM_WINDOW_TYPE_OVERRIDE, _NET_WM_WINDOW_TYPE_NORMAL
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x6, 0x1, 0x0, 0x3, 0x0
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST
+WM_NAME(STRING) = "vlc"
+WM_LOCALE_NAME(STRING) = "ru_RU.UTF-8"
+WM_CLASS(STRING) = "vlc", "Vlc"
+WM_HINTS(WM_HINTS):
+        Client accepts input or input focus: True
+        Initial state is Normal State.
+        bitmap id # to use for icon: 0xe003f7
+        window id # of group leader: 0xe0000b
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+        user specified location: -2, 17
+        program specified location: -2, 17
+        user specified size: 600 by 72
+        program specified size: 600 by 72
+        program specified minimum size: 600 by 72
+        window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = "archbook"
+WM_COMMAND(STRING) = { "vlc" }

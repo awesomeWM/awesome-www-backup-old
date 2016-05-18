@@ -1,0 +1,51 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 9a53c4f..0b6084c 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -186,6 +186,26 @@ for s = 1, screen.count() do
+     left_layout:add(mytaglist[s])
+     left_layout:add(mypromptbox[s])
+ 
++    local net = wibox.layout.flex.vertical()
++    local net_up = wibox.layout.fixed.horizontal()
++    local net_down = wibox.layout.fixed.horizontal()
++    local icon = wibox.widget.imagebox()
++    local text = wibox.widget.textbox()
++    local graph = awful.widget.graph()
++    icon:set_image(require("lgi").cairo.ImageSurface('RGB24', 1, 1))
++    text:set_text("text")
++    graph:set_width(5)
++    graph:set_background_color("#ff0000")
++    for _, w in pairs{net_up, net_down} do
++	w:add(icon)
++	w:add(text)
++	w:add(graph)
++    end
++    net:add(net_up)
++    net:add(net_down)
++    left_layout:reset()
++    left_layout:add(net)
++
+     -- Widgets that are aligned to the right
+     local right_layout = wibox.layout.fixed.horizontal()
+     if s == 1 then right_layout:add(wibox.widget.systray()) end
+@@ -195,8 +215,8 @@ for s = 1, screen.count() do
+     -- Now bring it all together (with the tasklist in the middle)
+     local layout = wibox.layout.align.horizontal()
+     layout:set_left(left_layout)
+-    layout:set_middle(mytasklist[s])
+-    layout:set_right(right_layout)
++    --layout:set_middle(mytasklist[s])
++    --layout:set_right(right_layout)
+ 
+     mywibox[s]:set_widget(layout)
+ end
+@@ -384,7 +404,7 @@ client.connect_signal("manage", function (c, startup)
+         end
+     end
+ 
+-    local titlebars_enabled = false
++    local titlebars_enabled = true
+     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
+         -- buttons for the titlebar
+         local buttons = awful.util.table.join(

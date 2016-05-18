@@ -1,0 +1,631 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#7 : Integrate dmenu-like menu</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=7" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=6" title="Fixed | Add master property to rules | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=9" title="Implemented | Tabbed windows | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity1">
+	 FS#7 - Integrate dmenu-like menu  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>     	 - Tuesday, 01 January 2008, 18:32 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Wednesday, 19 March 2008, 05:48 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Feature Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Uicb		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Very Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">High</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 2.3			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=42">Dag Odenhall (donri)</a> (2008-03-01)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">awesome should integrate a menu like dmenu</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Wednesday, 19 March 2008, 05:48 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Implemented<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Implemented in post-2.2        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (12)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2" id="comment2"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment2">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> -
+    Thursday, 03 January 2008, 03:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can it has a menu that follow Debian&#039;s menu structure? (get files from /usr/share/menu and create a structured menu, for example)</div></div>
+
+  
+    <em>
+    <a name="comment5" id="comment5"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment5">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=9">Martin Stubenschrott (maxauthority)</a> -
+    Thursday, 03 January 2008, 21:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@naoliv: I don&#039;t think it will have a menu in what you think, dmenu or such things are rather mini commandline to launch things.<br />
+<br />
+In my opinion the perfect menu should work like the query module from ion3:<br />
+<br />
+it has mainly 3 advantages over dmenu:<br />
+1.) It SHOWS the completions on the fly while writing characters in a kind of a popup, so you don&#039;t have to write too many<br />
+2.) It uses &lt;tab&gt; to select other completions, not left/right, which are much harder to reach<br />
+3.) It can also complete arguments to programs. So: gvim foo&lt;tab&gt; will complete any file with foo in your home directory.<br />
+<br />
+But one should still try to keep it (and the completion system) generic, as a menu module can be used for many other purposes (like connecting to ssh, viewing man pages, ...)</div></div>
+
+  
+    <em>
+    <a name="comment32" id="comment32"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment32">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 11 January 2008, 10:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Martin&#039;s suggestions are good.<br />
+<br />
+So far, my main concern is about implementation. I still don&#039;t know if this should be part of awesome code or written as a separate tool like dmenu.<br />
+<br />
+Implementations ideas are welcome.</div></div>
+
+  
+    <em>
+    <a name="comment33" id="comment33"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment33">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=7">calmar (calmar)</a> -
+    Friday, 11 January 2008, 11:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&#039;gmrun&#039; seems to fit some requirements Martin told about - it&#039;s just not really nice with the gtk look.<br />
+<br />
+I would like to add these requirement:<br />
+<br />
+1. it should be possible to limit the programs (e.g with adding them into a file) - that actually speeds up finding items (and speeds up the start of itself as well). <br />
+<br />
+2. it should be able to open console programs in a console (gmrun does this, but you have to type &lt;C-Enter&gt; or something, that makes many extra strokes over the years ;))<br />
+<br /><a href="
+http://www.calmar.ws/awesome/.9menurc">
+http://www.calmar.ws/awesome/.9menurc</a> (maybe with a file like this, it either opens the thing on the left, or when there is a :... it does that then)<br />
+<br />
+In order to create these files, some simple bashscript could help. The advantage of scanning the whole path all around, is when you happen to have new programs there, but then you could still run the bash-scripts (or whatever) what updates/adds them to the current or so :). It&#039;s a little more effort at the begin, Might be an option to use both, file or cache+initial scanning might be the best so.<br />
+<br />
+Anyway, i&#039;m about happy with I have actually, and should better shut-up therefore...<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment34" id="comment34"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment34">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=7">calmar (calmar)</a> -
+    Friday, 11 January 2008, 11:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I actually think (my 2 cents), it&#039;s better to have it not inside the mw. Can still be a add-on-app for awesome (and also others then therefore). Unless there are clear disadvantages with that, what had to be mentioned then..</div></div>
+
+  
+    <em>
+    <a name="comment37" id="comment37"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment37">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=9">Martin Stubenschrott (maxauthority)</a> -
+    Friday, 11 January 2008, 12:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I am definitly for integration within awesome for some reasons:<br />
+1.) It just takes your color/font settings from the awesomerc<br />
+2.) It takes your key definitions from the awesomerc<br />
+3.) If it&#039;s a seperate app, it mostly looks out of place or at least not so well integrated. For example an integrated run dialog could not take the whole width of the screen, but just show instead of your focustitle widget.<br />
+<br />
+<br />
+@calmar: I think the opposite, that is essential that such a menu has basic query capabilities built-in.<br />
+In ion3 I could just press a key and open a man page (with completion), or press another key and open programs, or another one for ssh. I know that all those things could also be done in a dmenu-like system, but the point is, not everybody likes it to configure all those things specially, it would be nice to have most common things &quot;Just work&quot; but still allow custom things to do. And no, i do not want to write a bashscript to write a file with program names, just too launch a simple program.<br />
+<br />
+Also Ion3 solved the console program &quot;problem&quot; in quite a good/logical way (for me at least), if you type :vim in your run prompt, it opens it in a console.<br />
+Since also the man page viewer, or ssh query need a terminal it would probably make sense to go the ion way which has a XTERMCMD environment variable which is called instead of xterm.<br />
+<br />
+So my proposed interface would look like that:<br />
+<br />
+    key<br />
+    {<br />
+        modkey = {&quot;Mod4&quot;}<br />
+        key = &quot;r&quot;<br />
+        command = &quot;run&quot; // or &quot;query&quot; or whatever<br />
+        arg = &quot;application&quot;<br />
+    }<br />
+<br />
+    key<br />
+    {<br />
+        modkey = {&quot;Mod4&quot;}<br />
+        key = &quot;s&quot;<br />
+        command = &quot;run&quot;<br />
+        arg = &quot;ssh&quot; // so, &quot;application&quot;, &quot;ssh&quot;, &quot;man&quot;, etc. were built ins<br />
+    }<br />
+<br />
+    key<br />
+    {<br />
+        modkey = {&quot;Mod4&quot;}<br />
+        key = &quot;c&quot;<br />
+        command = &quot;run&quot;<br />
+        arg = &quot;custom:Movies:my_script.sh&quot; // The title of the query would be &quot;Movies&quot;<br />
+		                                   // and the items would come from that script, in a dmenu like fashion to stdout<br />
+    }<br />
+<br />
+available built in args could be:<br />
+<br />
+applications: List all applications in your path<br />
+ssh: ssh to some location<br />
+man: shows the man page in your $XTERMCMD terminal<br />
+file: Could at some point open any files with it&#039;s associated program (needs a locate database, or beagle backend, ...)<br />
+window: Query for windows to jump to<br />
+custom: would allow to create your own &quot;run&quot; commands somehow.<br />
+<br />
+<br />
+Hope you get my idea, and love it as much as i do :)<br />
+<br />
+--<br />
+Martin<br /></div></div>
+
+  
+    <em>
+    <a name="comment38" id="comment38"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment38">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 11 January 2008, 12:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Martin, a program out of awesome does not need that:<br />
+1) it does not know how to read the config file to use colors/font<br />
+2) and also keys definition<br />
+3) dmenu already do that IIUC<br />
+<br />
+The rest of your implementation can be scripted by default in awesome distribution.</div></div>
+
+  
+    <em>
+    <a name="comment135" id="comment135"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment135">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=31">Christian Gogolin (cgogolin)</a> -
+    Saturday, 09 February 2008, 16:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">As awesome is made for keyboard oriented users a real menu with klickable buttons seams unnecessary to me, but a program luncher with a bash like tab completition would be great.<br />
+<br />
+I am coming from ion3 and I really miss the program luncher that was described in the first post of Martin Stubenschrott.<br />
+<br />
+Please implement something like this in awesome!<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment207" id="comment207"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment207">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=39">John Cooper (choffee)</a> -
+    Tuesday, 26 February 2008, 17:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">A text based interface to gnome-do would be my ideal!<br />
+<br /><a href="
+http://do.davebsd.com/">
+http://do.davebsd.com/</a></div></div>
+
+  
+    <em>
+    <a name="comment208" id="comment208"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment208">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Tuesday, 26 February 2008, 18:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">2. Awesome Plugins :))))</div></div>
+
+  
+    <em>
+    <a name="comment217" id="comment217"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment217">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=42">Dag Odenhall (donri)</a> -
+    Saturday, 01 March 2008, 10:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Menus could be managed like widgets<br />
+<br />
+menu my_menu {<br />
+  items = &quot;~/.applist&quot;<br />
+  keys {<br />
+    key {<br />
+      key = &quot;Enter&quot;<br />
+      command = &quot;spawn&quot;<br />
+    }<br />
+  }<br />
+}<br />
+<br />
+keys {<br />
+  key {<br />
+    modkey = {&quot;Mod4&quot;}<br />
+    key = &quot;p&quot;<br />
+    command = &quot;widget_tell&quot;<br />
+    arg = &quot;my_menu&quot;<br />
+  }<br />
+}<br />
+<br />
+The selected item would be appended to the &quot;arg&quot; of the &quot;command&quot;. No arg implies to spawn that program, with an arg it could be made scriptable. The selected item would be sent to a program to handle it. This would also make it easy to set up e.g. control+enter for running a terminal program like calmar requested:<br />
+<br />
+key {<br />
+  modkey = {&quot;Ctrl&quot;}<br />
+  key = &quot;Enter&quot;<br />
+  command = &quot;spawn&quot;<br />
+  arg = &quot;urxvt -e&quot;<br />
+}<br />
+<br />
+There should probably also be a way to configure what escape does in dmenu. This could be a command in itself, called e.g. escape or return.<br />
+<br />
+This menu widget should probably be able to lay over other widgets (I don&#039;t know if other widgets can do this?).</div></div>
+
+  
+    <em>
+    <a name="comment265" id="comment265"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#comment265">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=7">calmar (calmar)</a> -
+    Sunday, 09 March 2008, 15:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I would have some issues:<br />
+<br />
+1. when the first match would be selected on a &lt;ret&gt; or shall there be the possibility to open also stuff not on the menu - then <br />
+that might come into the way.<br />
+<br />
+Well, &lt;tab&gt;&lt;ret&gt; (select first then open) is ok too.<br />
+<br />
+2. I don&#039;t really like the std-colors it uses. Maybe an option to have custom ones? Actually they look alsmost awful. grey on black. Ok for the taglist but not for that (with my configuration for me). Including font-size config option :) I would like a bigger font.<br />
+<br />
+3. &lt;shift&gt;&lt;tab&gt; for cycling back would be nice too.<br />
+<br />
+then it might already be better than dmenu and seems to be faster as well (what was sometimes an issue with my dmenu, despite i only feed some dozens of apps to it).<br />
+<br />
+4. When that is going to be the thing in awesome (dmenu like), any hints about improving:<a href=" http://www.calmar.ws/tmp/dmenu_do"> http://www.calmar.ws/tmp/dmenu_do</a> , like other general ideas?</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=7#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="7" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

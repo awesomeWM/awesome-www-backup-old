@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <xcb/xcb.h>
+
+int main() {
+	xcb_connection_t *c = xcb_connect(NULL, NULL);
+	xcb_screen_t *s = xcb_setup_roots_iterator(xcb_get_setup(c)).data;
+	xcb_window_t win = xcb_generate_id(c);
+	xcb_generic_event_t *ev;
+	uint32_t mask[2] = { 0, XCB_EVENT_MASK_STRUCTURE_NOTIFY };
+
+	xcb_create_window(c, s->root_depth, win, s->root, 10, 10, 20, 20, 5,
+			XCB_WINDOW_CLASS_INPUT_OUTPUT, s->root_visual,
+			XCB_CW_BACK_PIXEL | XCB_CW_EVENT_MASK, mask);
+	xcb_map_window(c, win);
+
+	xcb_flush(c);
+	while ((ev = xcb_wait_for_event(c))) {
+		switch (ev->response_type) {
+		case XCB_REPARENT_NOTIFY:
+			break;
+		case XCB_MAP_NOTIFY:
+			puts("Got mapped");
+			break;
+		case XCB_CONFIGURE_NOTIFY:
+		case XCB_CONFIGURE_NOTIFY | 0x80: {
+				xcb_configure_notify_event_t *notify = (void *) ev;
+				xcb_get_geometry_reply_t *geom = xcb_get_geometry_reply(c, xcb_get_geometry_unchecked(c, win), NULL);
+				xcb_translate_coordinates_reply_t *coord = xcb_translate_coordinates_reply(c,
+						xcb_translate_coordinates_unchecked(c, win, s->root, 0, 0), NULL);
+				printf("Got %sconfigure notify with x: %d, y: %d, border: %d\n",
+						ev->response_type == XCB_CONFIGURE_NOTIFY ? "" : "synthetic ",
+						notify->x, notify->y, notify->border_width);
+				printf("Current geometry is x:%d, y:%d, at root: x:%d, y:%d\n",
+						geom->x, geom->y, coord->dst_x, coord->dst_y);
+				free(geom);
+				free(coord);
+				break;
+			}
+		default:
+			printf("Ignoring event %d\n", ev->response_type);
+		}
+		free(ev);
+		fflush(stdout);
+	}
+}

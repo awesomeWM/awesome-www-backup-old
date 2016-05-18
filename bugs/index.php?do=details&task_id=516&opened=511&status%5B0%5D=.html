@@ -1,0 +1,583 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#516 : Colorful background behind awesome&#039;s &quot;a&quot; menu</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=516&amp;opened=511&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=511&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity1">
+	 FS#516 - Colorful background behind awesome&#039;s &quot;a&quot; menu  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a>     	 - Monday, 04 May 2009, 12:45 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Monday, 27 September 2010, 09:15 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 beautiful		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Very Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.2</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> (2010-09-18)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">(version is Debian&#039;s 3.3-rc1)<br />
+<br />
+Using awesome&#039;s default config file and theme I see a colorful background behind awesome&#039;s &quot;a&quot; while clicking on the menu.<br />
+See the attached file.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Monday, 27 September 2010, 09:15 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+dd656f514a12311dafcd7d464ae37545aba0c369
+<br />
+Author: Roman Kosenko
+&lt;madkite@gmail.com&gt;<br />
+Date:   Sat Sep 18 23:08:20 2010
++0300<br />
+<br />
+    Fix image cropping/enlarging<br />
+    <br />
+    Function
+imlib_create_cropped_image() from imlib2
+doesn&#039;t initialize<br />
+    buffer for new image, so if we use
+crop bounds bigger than original ones<br
+/>
+    we need to erase garbage from
+derived image.<br />
+    This bug produced colorful pressed
+buttons (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=516&amp;opened
+=511&amp;status%5B0%5D=" title="Fixed |
+Colorful background behind
+awesome&#039;s &quot;a&quot; menu |
+100%"  class =
+"closedtasklink">FS#516</a>&#160;</del>,
+<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=822&amp;opened
+=511&amp;status%5B0%5D="
+title="Duplicate | croping images |
+100%"  class =
+"closedtasklink">FS#822</a>&#160;</del>)
+.<br />
+    <br />
+    Signed-off-by: Roman Kosenko
+&lt;madkite@gmail.com&gt;<br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (12)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/1)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1230" id="comment1230"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1230">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> -
+    Monday, 04 May 2009, 12:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The screenshot</div></div>
+
+      <div class="attachments">
+          <a title="awesome.png" href="?getfile=190" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/png" />
+            &nbsp;&nbsp;
+            awesome.png
+                  </a>
+                  (0.9 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment1231" id="comment1231"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1231">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 04 May 2009, 12:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, this is garbage from memory. I know that, but never found how to fix it properly actually. :)</div></div>
+
+  
+    <em>
+    <a name="comment1591" id="comment1591"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1591">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 December 2009, 16:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Does this still happen? Don&#039;t call me on it, but I think I fixed a bug somewhere where awesome would do weird stuff with a pixmap or something like that...</div></div>
+
+  
+    <em>
+    <a name="comment1599" id="comment1599"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1599">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> -
+    Friday, 11 December 2009, 22:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It&#039;s still present on awesome 3.4.2</div></div>
+
+  
+    <em>
+    <a name="comment1602" id="comment1602"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1602">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 December 2009, 12:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, after some (not funny) debugging I got a patch for something different and I think this is imlib&#039;s fault.<br />
+<br />
+awful.widget.button creates the image like this:<br />
+    img_press = img_release:crop(-2, -2, img_release.width, img_release.height)<br />
+<br />
+This causes imlib_create_cropped_image() to be called. This function allocates a buffer for the new image but doesn&#039;t actually initialize it (why should it? It&#039;s going to be filled with the cropped content anyway).<br />
+But since we are cropping from some negative offset, some later functions skips the first two rows and lines of the image and leaves them unitialized.<br />
+<br />
+I managed to make valgrind complain about this by using :save() on the cropped image (no idea why the normal painting doesnt cause a warning and the warning I get this way doesn&#039;t look completely right either).<br />
+<br />
+We could perhaps work around this by doing the cropping &quot;by hand&quot; with imlib_image_copy_rect(). (I heard that imlib&#039;s upstream is quite dead these days, is that correct?)<br /></div></div>
+
+  
+    <em>
+    <a name="comment1603" id="comment1603"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1603">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Saturday, 12 December 2009, 16:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Imlib2 still gets security fixes upstream, so it&#039;s not that dead.</div></div>
+
+  
+    <em>
+    <a name="comment1609" id="comment1609"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1609">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 14 December 2009, 18:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I took this upstream and it seems like we are abusing the API[1].<br />
+Once I find the time I&#039;ll write some patches for checking the arguments to crop() and fixing awful.widget.button to use sth else for creating its image.<br />
+<br />
+Uli<br />
+<br />
+[1]<a href=" http://trac.enlightenment.org/e/ticket/477"> http://trac.enlightenment.org/e/ticket/477</a></div></div>
+
+  
+    <em>
+    <a name="comment1621" id="comment1621"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment1621">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 18 December 2009, 18:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tried to write a patch for this, but I failed badly. :(<br />
+Anyone else wants to give this a try?</div></div>
+
+  
+    <em>
+    <a name="comment2069" id="comment2069"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment2069">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 19:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">We could fill those uninitialized lines with the current theme&#039;s bg color or sth like that... Not nice, but I don&#039;t have any better idea on this.</div></div>
+
+  
+    <em>
+    <a name="comment2375" id="comment2375"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment2375">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 18 September 2010, 07:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There was just a duplicate of this (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=822&amp;opened=511&amp;status%5B0%5D=" title="Duplicate | croping images | 100%"  class = "closedtasklink">FS#822</a>&#160;</del>) with a suggested patch.<br />
+<br />
+This is NOT my patch:<br />
+<br />
+ Comment by Roman Kosenko (kite) - Sat Sep 18 03:15:23 2010 — Edit — Delete<br />
+suggested patch</div></div>
+
+      <div class="attachments">
+          <a title="0001-image.patch" href="?getfile=353" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            0001-image.patch
+                  </a>
+                  (0.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2378" id="comment2378"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment2378">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Saturday, 18 September 2010, 21:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">New version of patch.</div></div>
+
+      <div class="attachments">
+          <a title="0001-fix-image-cropping.patch" href="?getfile=354" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            0001-fix-image-cropping.patch
+                  </a>
+                  (1.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2388" id="comment2388"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#comment2388">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> -
+    Monday, 27 September 2010, 13:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Great work guys.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=516#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="516" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (1)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=822&amp;opened=511&amp;status%5B0%5D=" title="Duplicate | croping images | 100%"  class = "closedtasklink">FS#822 - croping images</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

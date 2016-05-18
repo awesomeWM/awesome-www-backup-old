@@ -1,0 +1,30 @@
+--- awesome-3.4.10/client.c	2011-08-21 23:56:46.860384135 +0200
++++ awesome-3.4.10-org/client.c	2011-08-21 23:52:20.676263380 +0200
+@@ -1893,6 +1893,18 @@
+ }
+ 
+ static int
++luaA_client_set_name(lua_State *L, client_t *c)
++{
++    const char *name = luaL_checkstring(L, -1);
++    /* client_set_name use free() on the old name, so if we pass the string
++     * directly from luaL_checkstring, the WM will crash. */
++    char *new_name = malloc(strlen(name));
++    strcpy(new_name, name);
++    client_set_name(L, 1, new_name);
++    return 0;
++}
++
++static int
+ luaA_client_get_icon_name(lua_State *L, client_t *c)
+ {
+     lua_pushstring(L, c->icon_name ? c->icon_name : c->alt_icon_name);
+@@ -2299,7 +2311,7 @@
+     luaA_class_add_property(&client_class, A_TK_NAME,
+                             NULL,
+                             (lua_class_propfunc_t) luaA_client_get_name,
+-                            NULL);
++                            (lua_class_propfunc_t) luaA_client_set_name);
+     luaA_class_add_property(&client_class, A_TK_TRANSIENT_FOR,
+                             NULL,
+                             (lua_class_propfunc_t) luaA_client_get_transient_for,

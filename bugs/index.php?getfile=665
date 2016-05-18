@@ -1,0 +1,12 @@
+diff -rup awesome-3.4.15/event.c awesome-3.4.15.patch/event.c
+--- awesome-3.4.15/event.c	2013-02-11 13:50:21.000000000 +0000
++++ awesome-3.4.15.patch/event.c	2014-02-18 07:14:28.552116657 +0000
+@@ -141,6 +141,8 @@ event_handle_button(xcb_button_press_eve
+ 
+     globalconf.timestamp = ev->time;
+ 
++    if(ev->response_type == XCB_BUTTON_RELEASE)
++        ev->detail = 0;
+     if(event_handle_mousegrabber(ev->root_x, ev->root_y, 1 << (ev->detail - 1 + 8)))
+         return;
+ 

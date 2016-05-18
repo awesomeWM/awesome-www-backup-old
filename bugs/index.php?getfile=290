@@ -1,0 +1,9 @@
+-- Fix titlebar geometry for maximized apps
+c:add_signal('property::titlebar', function(c)
+    if awful.client.floating.get(c) == true and c.maximized_vertical then
+        local geom = c:geometry()
+        geom.y      = screen[c.screen].workarea.y
+        geom.height = screen[c.screen].workarea.height
+        c:geometry(geom)
+    end
+end)

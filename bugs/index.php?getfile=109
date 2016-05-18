@@ -1,0 +1,33 @@
+diff --git a/awesome-client.c b/awesome-client.c
+index 6e552ef..a70f4f0 100644
+--- a/awesome-client.c
++++ b/awesome-client.c
+@@ -92,7 +92,11 @@ sockets_reconnect(void)
+ static int
+ send_msg(const char *msg, ssize_t msg_len)
+ {
++    #ifndef __FreeBSD__
+     if(send(csfd, msg, msg_len, MSG_NOSIGNAL | MSG_EOR) == -1)
++    #else
++    if(send(csfd, msg, msg_len, MSG_NOSIGNAL | MSG_EOF) == -1)
++    #endif
+     {
+         switch (errno)
+         {
+diff --git a/common/socket.c b/common/socket.c
+index 840029c..ba89831 100644
+--- a/common/socket.c
++++ b/common/socket.c
+@@ -78,8 +78,11 @@ int
+ socket_getclient(void)
+ {
+     int csfd;
+-
++    #ifndef __FreeBSD__
+     csfd = socket(AF_UNIX, SOCK_SEQPACKET, 0);
++    #else
++    csfd = socket(PF_UNIX, SOCK_STREAM, 0);
++    #endif
+ 
+     if(csfd < 0)
+         warn("error opening UNIX domain socket: %s", strerror(errno));

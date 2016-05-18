@@ -1,0 +1,52 @@
+From 729ac8e71b717c4bf0dd0cde047481beede80e58 Mon Sep 17 00:00:00 2001
+From: Julien Danjou <julien@danjou.info>
+Date: Wed, 25 Mar 2009 15:04:57 +0100
+Subject: [PATCH] image: add set_changes_on_disk method
+
+Signed-off-by: Julien Danjou <julien@danjou.info>
+---
+ image.c |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
+
+diff --git a/image.c b/image.c
+index 39e09e5..055bbfe 100644
+--- a/image.c
++++ b/image.c
+@@ -332,6 +332,26 @@ luaA_image_crop_and_scale(lua_State *L)
+     return luaA_image_userdata_new(L, new);
+ }
+ 
++/** By default the timestamp of an image on disk is not compared with the image
++ * in its cache - this is to minimize disk activity when using the cache.
++ * Call this function and it will flag the image as being liable to change on disk
++ * so the timestamp of the image file on disk will be checked and compared with
++ * the cached image when it next needs to use this image in the cache.
++ * \param L The Lua VM state.
++ * \return The number of elements pushed on stack.
++ * \luastack
++ * \lvalue An image.
++ */
++static int
++luaA_image_set_changes_on_disk(lua_State *L)
++{
++    image_t **image = luaA_checkudata(L, 1, "image");
++    imlib_context_set_image((*image)->image);
++    imlib_image_set_changes_on_disk();
++    image_compute(*image);
++    return 0;
++}
++
+ /** Saves the image to the given path. The file extension (e.g. .png or .jpg)
+  * will affect the output format.
+  * \param L The Lua VM state.
+@@ -408,6 +428,7 @@ const struct luaL_reg awesome_image_meta[] =
+     { "orientate", luaA_image_orientate },
+     { "crop", luaA_image_crop },
+     { "crop_and_scale", luaA_image_crop_and_scale },
++    { "set_changes_on_disk", luaA_image_set_changes_on_disk },
+     { "save", luaA_image_save },
+     { "__gc", luaA_image_gc },
+     { "__eq", luaA_image_eq },
+-- 
+1.6.2.1
+

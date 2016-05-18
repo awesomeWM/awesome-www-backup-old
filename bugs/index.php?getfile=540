@@ -1,0 +1,88 @@
+From 569aa50020c062b25d48b4976e84d236877c9348 Mon Sep 17 00:00:00 2001
+From: dodo <dodo.the.last@gmail.com>
+Date: Thu, 25 Oct 2012 18:39:19 +0200
+Subject: [PATCH 1/2] tag.screen doesn't exist anymore
+
+awful.tag.getscreen(tag) returns now the tag's screen index
+---
+ awesomerc.lua.in            |    4 ++--
+ lib/awful/mouse/init.lua.in |    5 +++--
+ lib/awful/tag.lua.in        |   10 +++++-----
+ 3 files changed, 10 insertions(+), 9 deletions(-)
+
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index e55d71d..8980f60 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -122,8 +122,8 @@ mytaglist.buttons = awful.util.table.join(
+                     awful.button({ modkey }, 1, awful.client.movetotag),
+                     awful.button({ }, 3, awful.tag.viewtoggle),
+                     awful.button({ modkey }, 3, awful.client.toggletag),
+-                    awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+-                    awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
++                    awful.button({ }, 4, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end),
++                    awful.button({ }, 5, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end)
+                     )
+ mytasklist = {}
+ mytasklist.buttons = awful.util.table.join(
+diff --git a/lib/awful/mouse/init.lua.in b/lib/awful/mouse/init.lua.in
+index 1540bc4..63e3ec9 100644
+--- a/lib/awful/mouse/init.lua.in
++++ b/lib/awful/mouse/init.lua.in
+@@ -234,8 +234,9 @@ function mouse.client.dragtotag.widget(c)
+                                   local w = mouse.widget_under_pointer()
+                                   if w and widget.taglist.gettag(w) then
+                                       local t = widget.taglist.gettag(w)
+-                                      if t.screen ~= c.screen then
+-                                          aclient.movetoscreen(c, t.screen)
++                                      local s = tag.getscreen(t)
++                                      if s ~= c.screen then
++                                          aclient.movetoscreen(c, s)
+                                       end
+                                       aclient.movetotag(t, c)
+                                   end
+diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
+index 980741c..370afea 100644
+--- a/lib/awful/tag.lua.in
++++ b/lib/awful/tag.lua.in
+@@ -37,7 +37,7 @@ tag.history.limit = 20
+ -- @param new_index Integer absolute position in the table to insert.
+ function tag.move(new_index, target_tag)
+     local target_tag = target_tag or tag.selected()
+-    local scr = target_tag.screen
++    local scr = tag.getscreen(target_tag)
+     local tmp_tags = capi.screen[scr]:tags()
+ 
+     if (not new_index) or (new_index < 1) or (new_index > #tmp_tags) then
+@@ -117,8 +117,8 @@ function tag.delete(target_tag, fallback_tag)
+     local target_tag = target_tag or tag.selected()
+     if target_tag == nil then return end
+ 
+-    local ntags = #capi.screen[target_tag.screen]:tags()
+-    local target_scr = target_tag.screen
++    local target_scr = tag.getscreen(target_tag)
++    local ntags = #capi.screen[target_scr]:tags()
+ 
+     -- We can't use the target tag as a fallback.
+     local fallback_tag = fallback_tag
+@@ -147,7 +147,7 @@ function tag.delete(target_tag, fallback_tag)
+     end
+ 
+     -- delete the tag
+-    target_tag.screen = nil
++    data.tags[target_tag].screen = nil
+ 
+     -- If no tags are visible, try and view one.
+     if tag.selected(target_scr) == nil and ntags > 0 then
+@@ -398,7 +398,7 @@ function tag.getidx(query_tag)
+     local query_tag = query_tag or tag.selected()
+     if query_tag == nil then return end
+ 
+-    for i, t in ipairs(tag.gettags(query_tag.screen)) do
++    for i, t in ipairs(tag.gettags(tag.getscreen(query_tag))) do
+         if t == query_tag then
+             return i
+         end
+-- 
+1.7.10.4
+

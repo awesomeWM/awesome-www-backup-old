@@ -1,0 +1,37 @@
+From e71ab595a2d4e473540ad01896b4657c0f01ab5a Mon Sep 17 00:00:00 2001
+From: Steven Oliver <oliver.steven@gmail.com>
+Date: Mon, 27 Aug 2012 19:52:17 -0400
+Subject: [PATCH 3/3] Fix issue with C standard being gnu99 vs c99 (FS#742)
+
+
+Signed-off-by: Steven Oliver <oliver.steven@gmail.com>
+---
+ awesomeConfig.cmake | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/awesomeConfig.cmake b/awesomeConfig.cmake
+index a7ebb0e..c50004f 100644
+--- a/awesomeConfig.cmake
++++ b/awesomeConfig.cmake
+@@ -15,8 +15,17 @@ option(GENERATE_MANPAGES "generate manpages" ON)
+ option(COMPRESS_MANPAGES "compress manpages" ON)
+ option(GENERATE_LUADOC "generate luadoc" ON)
+ 
++
+ # {{{ CFLAGS
+-add_definitions(-std=gnu99 -ggdb3 -rdynamic -fno-strict-aliasing -Wall -Wextra
++# Solaris needs c99
++if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
++    set(C_VERSION -std=c99)
++else()
++    set(C_VERSION -std=gnu99)
++endif()
++
++add_definitions(${CVERSION}
++    -ggdb3 -rdynamic -fno-strict-aliasing -Wall -Wextra
+     -Wchar-subscripts -Wundef -Wshadow -Wcast-align -Wwrite-strings
+     -Wsign-compare -Wunused -Wno-unused-parameter -Wuninitialized -Winit-self
+     -Wpointer-arith -Wredundant-decls -Wformat-nonliteral
+-- 
+1.7.11.4
+

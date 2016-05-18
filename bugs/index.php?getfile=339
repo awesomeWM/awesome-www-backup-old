@@ -1,0 +1,1776 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7998ec7..27f8609 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -70,7 +70,6 @@ set(AWE_SRCS
+     ${SOURCE_DIR}/common/xutil.c
+     ${SOURCE_DIR}/objects/button.c
+     ${SOURCE_DIR}/objects/client.c
+-    ${SOURCE_DIR}/objects/image.c
+     ${SOURCE_DIR}/objects/key.c
+     ${SOURCE_DIR}/objects/tag.c
+     ${SOURCE_DIR}/objects/timer.c
+@@ -99,7 +98,8 @@ set_target_properties(${PROJECT_AWE_NAME}
+ target_link_libraries(${PROJECT_AWE_NAME}
+     ${AWESOME_COMMON_REQUIRED_LIBRARIES}
+     ${AWESOME_REQUIRED_LIBRARIES}
+-    ${AWESOME_OPTIONAL_LIBRARIES})
++    ${AWESOME_OPTIONAL_LIBRARIES}
++    /home/psychon/projects/lua-oocairo/.libs/liblua-oocairo.a)
+ 
+ # atoms
+ file(MAKE_DIRECTORY ${BUILD_DIR}/common)
+diff --git a/awesome.c b/awesome.c
+index c516369..c72728d 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -55,6 +55,48 @@ awesome_t globalconf;
+ /** argv used to run awesome */
+ static char *awesome_argv;
+ 
++static cairo_user_data_key_t data_key;
++static inline void
++free_data(void *data)
++{
++    p_delete(&data);
++}
++
++int
++luaA_surface_from_data(lua_State *L, int width, int height, uint32_t *data)
++{
++    unsigned long int len = width * height;
++    unsigned char *buffer = p_dup(data, len);
++    cairo_surface_t *surface =
++        cairo_image_surface_create_for_data(buffer,
++                                            CAIRO_FORMAT_ARGB32,
++                                            width,
++                                            height,
++                                            width*4);
++    cairo_surface_set_user_data(surface, &data_key, buffer, &free_data);
++    /* This will increase the reference count of the surface */
++    int ret = oocairo_surface_push(globalconf.L, surface);
++    /* So we have to drop our own reference */
++    cairo_surface_destroy(surface);
++    return ret;
++}
++
++cairo_surface_t *
++cairo_surface_dup(cairo_surface_t *surface)
++{
++    cairo_surface_t *res = cairo_image_surface_create(
++            cairo_image_surface_get_format(surface),
++            cairo_image_surface_get_width(surface),
++            cairo_image_surface_get_height(surface));
++
++    cairo_t *cr = cairo_create(res);
++    cairo_set_source_surface(cr, surface, 0, 0);
++    cairo_paint(cr);
++    cairo_destroy(cr);
++
++    return res;
++}
++
+ /** Call before exiting.
+  */
+ void
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 388d968..57bc138 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -1,3 +1,6 @@
++-- Replace awesome's own image library
++image = require("cairo")
++
+ -- Standard awesome library
+ require("awful")
+ require("awful.autofocus")
+diff --git a/common/tokenize.gperf b/common/tokenize.gperf
+index c17b86c..5e90aab 100644
+--- a/common/tokenize.gperf
++++ b/common/tokenize.gperf
+@@ -36,7 +36,6 @@ height
+ hidden
+ icon
+ icon_name
+-image
+ imagebox
+ index
+ instance
+@@ -75,8 +74,6 @@ role
+ screen
+ selected
+ session
+-shape_bounding
+-shape_clip
+ Shift
+ size_hints
+ size_hints_honor
+@@ -106,3 +103,4 @@ workarea
+ wrap
+ x
+ y
++draw
+diff --git a/draw.c b/draw.c
+index 2b23d30..a2bdcd0 100644
+--- a/draw.c
++++ b/draw.c
+@@ -237,51 +237,23 @@ draw_rectangle(draw_context_t *ctx, area_t geometry,
+     }
+ }
+ 
+-/** Draw an image from ARGB data to a draw context.
+- * Data should be stored as an array of alpha, red, blue, green for each pixel
+- * and the array size should be w * h elements long.
++/** Draw an image to a draw context.
+  * \param ctx Draw context to draw to.
+  * \param x X coordinate.
+  * \param y Y coordinate.
+- * \param w Width.
+- * \param h Height.
+  * \param ratio The ratio to apply to the image.
+- * \param data The image pixels array.
++ * \param source The image to draw.
+  */
+-static void
+-draw_image_from_argb_data(draw_context_t *ctx, int x, int y, int w, int h,
+-                          double ratio, unsigned char *data)
++void
++draw_surface(draw_context_t *ctx, int x, int y,
++             double ratio, cairo_surface_t *source)
+ {
+-    cairo_t *cr;
+-    cairo_surface_t *source;
+-
+-    source = cairo_image_surface_create_for_data(data, CAIRO_FORMAT_ARGB32, w, h,
+-#if CAIRO_VERSION_MAJOR < 1 || (CAIRO_VERSION_MAJOR == 1 && CAIRO_VERSION_MINOR < 5) || (CAIRO_VERSION_MAJOR == 1 && CAIRO_VERSION_MINOR == 5 && CAIRO_VERSION_MICRO < 8)
+-                                                 sizeof(unsigned char) * 4 * w);
+-#else
+-                                                 cairo_format_stride_for_width(CAIRO_FORMAT_ARGB32, w));
+-#endif
+-    cr = cairo_create(ctx->surface);
++    cairo_t *cr = cairo_create(ctx->surface);
+     cairo_scale(cr, ratio, ratio);
+     cairo_set_source_surface(cr, source, x / ratio, y / ratio);
+-
+     cairo_paint(cr);
+ 
+     cairo_destroy(cr);
+-    cairo_surface_destroy(source);
+-}
+-
+-/** Draw an image to a draw context.
+- * \param ctx Draw context to draw to.
+- * \param x X coordinate.
+- * \param y Y coordinate.
+- * \param ratio The ratio to apply to the image.
+- * \param image The image to draw.
+- */
+-void
+-draw_image(draw_context_t *ctx, int x, int y, double ratio, image_t *image)
+-{
+-    draw_image_from_argb_data(ctx, x, y, image_getwidth(image), image_getheight(image), ratio, image_getdata(image));
+ }
+ 
+ /** Rotate a pixmap.
+diff --git a/draw.h b/draw.h
+index 1d776cb..5a44010 100644
+--- a/draw.h
++++ b/draw.h
+@@ -27,7 +27,6 @@
+ 
+ #include <xcb/xcb.h>
+ 
+-#include "objects/image.h"
+ #include "color.h"
+ #include "common/array.h"
+ 
+@@ -127,7 +126,7 @@ typedef struct
+ bool draw_text_context_init(draw_text_context_t *, const char *, ssize_t);
+ void draw_text(draw_context_t *, draw_text_context_t *, PangoEllipsizeMode, PangoWrapMode, alignment_t, alignment_t, area_t);
+ void draw_rectangle(draw_context_t *, area_t, float, bool, const color_t *);
+-void draw_image(draw_context_t *, int, int, double, image_t *);
++void draw_surface(draw_context_t *, int, int, double, cairo_surface_t *);
+ void draw_rotate(draw_context_t *, xcb_drawable_t, xcb_drawable_t, int, int, int, int, double, int, int);
+ area_t draw_text_extents(draw_text_context_t *);
+ alignment_t draw_align_fromstr(const char *, ssize_t);
+diff --git a/ewmh.c b/ewmh.c
+index 977a27e..7f3d1f3 100644
+--- a/ewmh.c
++++ b/ewmh.c
+@@ -662,7 +662,7 @@ ewmh_window_icon_from_reply(xcb_get_property_reply_t *r)
+     if (!data[0] || !data[1] || len > r->length - 2)
+         return 0;
+ 
+-    return image_new_from_argb32(globalconf.L, data[0], data[1], data + 2);
++    return luaA_surface_from_data(globalconf.L, data[0], data[1], data + 2);
+ }
+ 
+ /** Get NET_WM_ICON.
+diff --git a/globalconf.h b/globalconf.h
+index b833f2b..76a46c1 100644
+--- a/globalconf.h
++++ b/globalconf.h
+@@ -119,5 +119,11 @@ typedef struct
+ 
+ extern awesome_t globalconf;
+ 
++// UGLY HACK
++#include <cairo.h>
++extern int oocairo_surface_push(lua_State *L, cairo_surface_t *surface);
++extern int luaA_surface_from_data(lua_State *L, int width, int height, uint32_t *data);
++cairo_surface_t *cairo_surface_dup(cairo_surface_t *surface);
++
+ #endif
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/lib/awful/widget/button.lua.in b/lib/awful/widget/button.lua.in
+index 52215ba..e20467f 100644
+--- a/lib/awful/widget/button.lua.in
++++ b/lib/awful/widget/button.lua.in
+@@ -21,7 +21,9 @@ module("awful.widget.button")
+ function new(args)
+     if not args or not args.image then return end
+     local img_release
+-    if type(args.image) == "string" then
++    if type(args.image) == "table" and args.image.type == "image" then
++        img_release = args.image
++    elseif type(args.image) == "string" then
+         img_release = capi.image(args.image)
+     elseif type(args.image) == "image" then
+         img_release = args.image
+diff --git a/lib/awful/widget/common.lua.in b/lib/awful/widget/common.lua.in
+index 8e2af43..e6f0db0 100644
+--- a/lib/awful/widget/common.lua.in
++++ b/lib/awful/widget/common.lua.in
+@@ -91,18 +91,19 @@ function common.list_update(w, buttons, label, data, template, objects)
+         end
+ 
+         local text, bg, bg_image, icon = label(o)
+-        tb.text, tb.bg, tb.bg_image = text, bg, bg_image
++        tb.text, tb.bg = text, bg
++        if type(bg_image) == "table" then
++            tb.bg_image = bg_image._surface
++        else
++            tb.bg_image = bg_image
++        end
+         ib.bg, ib.image = bg, icon
+         if not tb.text then
+             tb.visible = false
+         else
+             tb.visible = true
+         end
+-        if not ib.image then
+-            ib.visible = false
+-        else
+-            ib.visible = true
+-        end
++        ib.visible = true
+    end
+ end
+ 
+diff --git a/lib/cairo.lua.in b/lib/cairo.lua.in
+new file mode 100644
+index 0000000..3a0a23b
+--- /dev/null
++++ b/lib/cairo.lua.in
+@@ -0,0 +1,81 @@
++---------------------------------------------------------------------------
++-- @author Uli Schlachter
++-- @copyright 2010 Uli Schlachter
++-- @release @AWESOME_VERSION@
++---------------------------------------------------------------------------
++
++local oocairo = require("oocairo")
++local setmetatable = setmetatable
++local pairs = pairs
++local print = print
++local type = type
++local awesome = {
++    add_signal = awesome.add_signal
++}
++
++module("cairo")
++
++local function new(arg)
++end
++
++local img_funcs = {}
++
++local function make_image(surface)
++    local width = surface:get_width()
++    local height = surface:get_height()
++
++    local res = { width = width, height = height, _surface = surface, type = "image" }
++    for k, v in pairs(img_funcs) do
++        res[k] = v
++    end
++    return res
++end
++
++local function crop(source, source_x, source_y, dest_w, dest_h)
++    local new = oocairo.image_surface_create("argb32", dest_w, dest_h)
++    local cr = oocairo.context_create(new)
++    cr:set_source(source._surface, -source_x, -source_y)
++    cr:paint()
++    return make_image(new)
++end
++
++local function crop_and_scale(source, source_x, source_y, w, h, dest_w, dest_h)
++    local new = oocairo.image_surface_create("argb32", dest_w, dest_h)
++    local cr = oocairo.context_create(new)
++    cr:scale(dest_w / w, dest_h / h)
++    cr:set_source(source._surface, -source_x, -source_y)
++    cr:paint()
++    return make_image(new)
++end
++
++local function new(file)
++    return make_image(oocairo.image_surface_create_from_png(file))
++end
++
++img_funcs = {
++    crop_and_scale = crop_and_scale,
++    crop = crop,
++}
++
++function argb32(width, height, data)
++    if not data then
++        return make_image(oocairo.image_surface_create("argb32", width, height))
++    end
++
++    return make_image(oocairo.image_surface_create_from_data(data, "argb32", width, height, width * 4))
++end
++
++awesome.add_signal("debug::newindex::miss", function(obj, key, val)
++    if key ~= "image" or type(obj) ~= "widget" or obj.type ~= "imagebox" then
++        return
++    end
++    if type(val) == "userdata" or type(val) == "nil" then
++        obj:draw(val)
++    else
++        obj:draw(val._surface)
++    end
++end)
++
++setmetatable(_M, { __call = function (_, ...) return new(...) end })
++
++-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/luaa.c b/luaa.c
+index 91fadaa..277644f 100644
+--- a/luaa.c
++++ b/luaa.c
+@@ -753,9 +753,6 @@ luaA_init(xdgHandle* xdg)
+     /* Export button */
+     button_class_setup(L);
+ 
+-    /* Export image */
+-    image_class_setup(L);
+-
+     /* Export tag */
+     tag_class_setup(L);
+ 
+diff --git a/luaa.h b/luaa.h
+index 1465951..42ab397 100644
+--- a/luaa.h
++++ b/luaa.h
+@@ -31,6 +31,7 @@
+ 
+ #include "draw.h"
+ #include "common/lualib.h"
++#include "common/luaclass.h"
+ 
+ #define luaA_deprecate(L, repl) \
+     do { \
+diff --git a/objects/client.c b/objects/client.c
+index 60463de..703bbe5 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -50,6 +50,8 @@ client_wipe(client_t *c)
+     p_delete(&c->alt_icon_name);
+     p_delete(&c->name);
+     p_delete(&c->alt_name);
++    if(c->icon)
++        cairo_surface_destroy(c->icon);
+ }
+ 
+ /** Change the clients urgency flag.
+@@ -1086,12 +1088,17 @@ void
+ client_set_icon(lua_State *L, int cidx, int iidx)
+ {
+     client_t *c = luaA_checkudata(L, cidx, &client_class);
+-    /* convert index to absolute */
+-    cidx = luaA_absindex(L, cidx);
+-    iidx = luaA_absindex(L, iidx);
+-    luaA_checkudata(L, iidx, &image_class);
+-    luaA_object_unref_item(L, cidx, c->icon);
+-    c->icon = luaA_object_ref_item(L, cidx, iidx);
++    if(lua_isnil(L, iidx))
++    {
++        if(c->icon)
++            cairo_surface_destroy(c->icon);
++        c->icon = NULL;
++    } else {
++        cairo_surface_t **cairo_surface = (cairo_surface_t **)luaL_checkudata(L, iidx, "6d31a064-6711-11dd-bdd8-00e081225ce5");
++        if(c->icon)
++            cairo_surface_destroy(c->icon);
++        c->icon = cairo_surface_dup(*cairo_surface);
++    }
+     luaA_object_emit_signal(L, cidx < iidx ? cidx : cidx - 1, "property::icon", 0);
+ }
+ 
+@@ -1437,7 +1444,7 @@ luaA_client_get_content(lua_State *L, client_t *c)
+                     data[y * ximage->width + x] |= 0xff000000; /* set alpha to 0xff */
+                 }
+ 
+-            retval = image_new_from_argb32(L, ximage->width, ximage->height, data);
++            retval = luaA_surface_from_data(L, ximage->width, ximage->height, data);
+         }
+         xcb_image_destroy(ximage);
+     }
+@@ -1508,7 +1515,9 @@ luaA_client_get_screen(lua_State *L, client_t *c)
+ static int
+ luaA_client_get_icon(lua_State *L, client_t *c)
+ {
+-    return luaA_object_push_item(L, -2, c->icon);
++    if(c->icon)
++        return oocairo_surface_push(L, c->icon);
++    return 0;
+ }
+ 
+ static int
+diff --git a/objects/client.h b/objects/client.h
+index 952c911..3bc0179 100644
+--- a/objects/client.h
++++ b/objects/client.h
+@@ -112,7 +112,7 @@ struct client_t
+     /** Key bindings */
+     key_array_t keys;
+     /** Icon */
+-    image_t *icon;
++    cairo_surface_t *icon;
+     /** Size hints */
+     xcb_size_hints_t size_hints;
+     bool size_hints_honor;
+diff --git a/objects/image.c b/objects/image.c
+deleted file mode 100644
+index ebefb24..0000000
+--- a/objects/image.c
++++ /dev/null
+@@ -1,834 +0,0 @@
+-/*
+- * image.c - image object
+- *
+- * Copyright © 2008-2009 Julien Danjou <julien@danjou.info>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+- *
+- */
+-
+-#include <xcb/xcb_image.h>
+-
+-#include <Imlib2.h>
+-
+-#include "globalconf.h"
+-#include "config.h"
+-#include "luaa.h"
+-#include "common/luaobject.h"
+-
+-struct image
+-{
+-    LUA_OBJECT_HEADER
+-    /** Imlib2 image */
+-    Imlib_Image image;
+-    /** Image data */
+-    uint8_t *data;
+-    /** Flag telling if the image is up to date or needs computing before
+-     * drawing */
+-    bool isupdated;
+-};
+-
+-LUA_OBJECT_FUNCS(image_class, image_t, image)
+-
+-static void
+-image_wipe(image_t *image)
+-{
+-    imlib_context_set_image(image->image);
+-    imlib_free_image();
+-    p_delete(&image->data);
+-}
+-
+-static const char *
+-image_imlib_load_strerror(Imlib_Load_Error e)
+-{
+-    switch(e)
+-    {
+-      case IMLIB_LOAD_ERROR_FILE_DOES_NOT_EXIST:
+-        return "no such file or directory";
+-      case IMLIB_LOAD_ERROR_FILE_IS_DIRECTORY:
+-        return "file is a directory";
+-      case IMLIB_LOAD_ERROR_PERMISSION_DENIED_TO_READ:
+-        return "read permission denied";
+-      case IMLIB_LOAD_ERROR_NO_LOADER_FOR_FILE_FORMAT:
+-        return "no loader for file format";
+-      case IMLIB_LOAD_ERROR_PATH_TOO_LONG:
+-        return "path too long";
+-      case IMLIB_LOAD_ERROR_PATH_COMPONENT_NON_EXISTANT:
+-        return "path component non existent";
+-      case IMLIB_LOAD_ERROR_PATH_COMPONENT_NOT_DIRECTORY:
+-        return "path component not a directory";
+-      case IMLIB_LOAD_ERROR_PATH_POINTS_OUTSIDE_ADDRESS_SPACE:
+-        return "path points outside address space";
+-      case IMLIB_LOAD_ERROR_TOO_MANY_SYMBOLIC_LINKS:
+-        return "too many symbolic links";
+-      case IMLIB_LOAD_ERROR_OUT_OF_MEMORY:
+-        return "out of memory";
+-      case IMLIB_LOAD_ERROR_OUT_OF_FILE_DESCRIPTORS:
+-        return "out of file descriptors";
+-      case IMLIB_LOAD_ERROR_PERMISSION_DENIED_TO_WRITE:
+-        return "write permission denied";
+-      case IMLIB_LOAD_ERROR_OUT_OF_DISK_SPACE:
+-        return "out of disk space";
+-      case IMLIB_LOAD_ERROR_UNKNOWN:
+-        return "unknown error, that's really bad";
+-      case IMLIB_LOAD_ERROR_NONE:
+-        return "no error, oops";
+-    }
+-
+-    return "unknown error";
+-}
+-
+-/** Get image width.
+- * \param image The image.
+- * \return The image width in pixel.
+- */
+-int
+-image_getwidth(image_t *image)
+-{
+-    imlib_context_set_image(image->image);
+-    return imlib_image_get_width();
+-}
+-
+-/** Get image height.
+- * \param image The image.
+- * \return The image height in pixel.
+- */
+-int
+-image_getheight(image_t *image)
+-{
+-    imlib_context_set_image(image->image);
+-    return imlib_image_get_height();
+-}
+-
+-/** Get the ARGB32 data from an image.
+- * \param image The image.
+- * \return Data.
+- */
+-uint8_t *
+-image_getdata(image_t *image)
+-{
+-    int size, i;
+-    uint32_t *data;
+-    double alpha;
+-    uint8_t *dataimg;
+-#if AWESOME_IS_BIG_ENDIAN
+-    const int index_a = 0, index_r = 1, index_g = 2, index_b = 3;
+-#else
+-    const int index_a = 3, index_r = 2, index_g = 1, index_b = 0;
+-#endif
+-
+-    if(image->isupdated)
+-        return image->data;
+-
+-    imlib_context_set_image(image->image);
+-
+-    data = imlib_image_get_data_for_reading_only();
+-
+-    size = imlib_image_get_width() * imlib_image_get_height();
+-
+-    p_realloc(&image->data, size * 4);
+-    dataimg = image->data;
+-
+-    for(i = 0; i < size; i++, dataimg += 4)
+-    {
+-        dataimg[index_a] = (data[i] >> 24) & 0xff;           /* A */
+-        /* cairo wants pre-multiplied alpha */
+-        alpha = dataimg[index_a] / 255.0;
+-        dataimg[index_r] = ((data[i] >> 16) & 0xff) * alpha; /* R */
+-        dataimg[index_g] = ((data[i] >>  8) & 0xff) * alpha; /* G */
+-        dataimg[index_b] = (data[i]         & 0xff) * alpha; /* B */
+-    }
+-
+-    image->isupdated = true;
+-
+-    return image->data;
+-
+-}
+-
+-static void
+-image_draw_to_1bit_ximage(image_t *image, xcb_image_t *img)
+-{
+-    imlib_context_set_image(image->image);
+-
+-    uint32_t *data = imlib_image_get_data_for_reading_only();
+-
+-    int width = imlib_image_get_width();
+-    int height = imlib_image_get_height();
+-
+-    for(int y = 0; y < height; y++)
+-        for(int x = 0; x < width; x++)
+-        {
+-            int i, pixel, tmp;
+-
+-            i = y * width + x;
+-
+-            // Sum up all color components ignoring alpha
+-            tmp  = (data[i] >> 16) & 0xff;
+-            tmp += (data[i] >>  8) & 0xff;
+-            tmp +=  data[i]        & 0xff;
+-
+-            pixel = (tmp / 3 < 127) ? 0 : 1;
+-
+-            xcb_image_put_pixel(img, x, y, pixel);
+-        }
+-}
+-
+-// Convert an image to a 1bit pixmap
+-xcb_pixmap_t
+-image_to_1bit_pixmap(image_t *image, xcb_drawable_t d)
+-{
+-    xcb_pixmap_t pixmap;
+-    xcb_image_t *img;
+-    uint16_t width, height;
+-
+-    width = image_getwidth(image);
+-    height = image_getheight(image);
+-
+-    /* Prepare the pixmap and gc */
+-    pixmap = xcb_generate_id(globalconf.connection);
+-    xcb_create_pixmap(globalconf.connection, 1, pixmap, d, width, height);
+-
+-    /* Prepare the image */
+-    img = xcb_image_create_native(globalconf.connection, width, height,
+-            XCB_IMAGE_FORMAT_XY_BITMAP, 1, NULL, 0, NULL);
+-    image_draw_to_1bit_ximage(image, img);
+-
+-    /* Paint the image to the pixmap */
+-    xcb_image_put(globalconf.connection, pixmap, globalconf.gc, img, 0, 0, 0);
+-
+-    xcb_image_destroy(img);
+-
+-    return pixmap;
+-}
+-
+-/** Create a new image from ARGB32 data.
+- * \param L The Lua VM state.
+- * \param width The image width.
+- * \param height The image height.
+- * \param data The image data.
+- * \return 1 if an image has been pushed on stack, 0 otherwise.
+- */
+-int
+-image_new_from_argb32(lua_State *L, int width, int height, uint32_t *data)
+-{
+-    Imlib_Image imimage;
+-
+-    if((imimage = imlib_create_image_using_copied_data(width, height, data)))
+-    {
+-        imlib_context_set_image(imimage);
+-        imlib_image_set_has_alpha(true);
+-        image_t *image = image_new(L);
+-        image->image = imimage;
+-        return 1;
+-    }
+-
+-    return 0;
+-}
+-
+-/** Create a new, completely black image.
+- * \param L The Lua VM state.
+- * \param width The image width.
+- * \param height The image height.
+- * \return 1 if an image has been pushed on stack, 0 otherwise.
+- */
+-static int
+-image_new_blank(lua_State *L, int width, int height)
+-{
+-    Imlib_Image imimage;
+-
+-    if((imimage = imlib_create_image(width, height)))
+-    {
+-        imlib_context_set_image(imimage);
+-        imlib_image_set_has_alpha(true);
+-        /* After creation, an image has undefined content. Fix that up. */
+-        imlib_context_set_color(0, 0, 0, 0xff);
+-        imlib_image_fill_rectangle(0, 0, width, height);
+-        image_t *image = image_new(L);
+-        image->image = imimage;
+-        return 1;
+-    }
+-
+-    return 0;
+-}
+-
+-/** Load an image from filename.
+- * \param L The Lua VM state.
+- * \param filename The image file to load.
+- * \return 1 if image is loaded and on stack, 0 otherwise.
+- */
+-static int
+-image_new_from_file(lua_State *L, const char *filename)
+-{
+-    Imlib_Image imimage;
+-    Imlib_Load_Error e = IMLIB_LOAD_ERROR_NONE;
+-    image_t *image;
+-
+-    if(!filename)
+-        return 0;
+-
+-    if(!(imimage = imlib_load_image_with_error_return(filename, &e)))
+-    {
+-        warn("cannot load image %s: %s", filename, image_imlib_load_strerror(e));
+-        return 0;
+-    }
+-
+-    /* Make imlib check if the file changed on disk if it's later opened by the
+-     * same file name again before using its cache.
+-     */
+-    imlib_context_set_image(imimage);
+-    imlib_image_set_changes_on_disk();
+-
+-    image = image_new(L);
+-    image->image = imimage;
+-
+-    return 1;
+-}
+-
+-/** Create a new image object.
+- * \param L The Lua stack.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lparam The image path.
+- * \lreturn An image object.
+- */
+-static int
+-luaA_image_new(lua_State *L)
+-{
+-    const char *filename;
+-
+-    if((filename = lua_tostring(L, 2)))
+-        return image_new_from_file(L, filename);
+-    return 0;
+-}
+-
+-/** Create a new image object from ARGB32 data.
+- * \param L The Lua stack.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lparam The image width.
+- * \lparam The image height.
+- * \lparam The image data as a string in ARGB32 format, or nil to create an
+- * empty image.
+- * \lreturn An image object.
+- */
+-static int
+-luaA_image_argb32_new(lua_State *L)
+-{
+-    size_t len;
+-    unsigned int width = luaL_checknumber(L, 1);
+-    unsigned int height = luaL_checknumber(L, 2);
+-
+-    if (width == 0)
+-        luaL_error(L, "image.argb32() called with zero width");
+-    if (height == 0)
+-        luaL_error(L, "image.argb32() called with zero height");
+-
+-    if(lua_isnil(L, 3))
+-    {
+-        return image_new_blank(L, width, height);
+-    }
+-
+-    const char *data = luaL_checklstring(L, 3, &len);
+-
+-    if(width * height * 4 != len)
+-        luaL_error(L, "string size does not match image size");
+-
+-    return image_new_from_argb32(L, width, height, (uint32_t *) data);
+-}
+-
+-/** Performs 90 degree rotations on the current image. Passing 0 orientation
+- * does not rotate, 1 rotates clockwise by 90 degree, 2, rotates clockwise by
+- * 180 degrees, 3 rotates clockwise by 270 degrees.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The rotation to perform.
+- */
+-static int
+-luaA_image_orientate(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int orientation = luaL_checknumber(L, 2);
+-
+-    imlib_context_set_image(image->image);
+-    imlib_image_orientate(orientation);
+-
+-    image->isupdated = false;
+-
+-    return 0;
+-}
+-
+-/** Rotate an image with specified angle radians and return a new image.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The angle in radians.
+- * \lreturn A rotated image.
+- */
+-static int
+-luaA_image_rotate(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class), *new;
+-    double angle = luaL_checknumber(L, 2);
+-
+-    new = image_new(L);
+-
+-    imlib_context_set_image(image->image);
+-    new->image = imlib_create_rotated_image(angle);
+-
+-    return 1;
+-}
+-
+-/** Crop an image to the given rectangle.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The top left x coordinate of the rectangle.
+- * \lparam The top left y coordinate of the rectangle.
+- * \lparam The width of the rectangle.
+- * \lparam The height of the rectangle.
+- * \lreturn A cropped image.
+- */
+-static int
+-luaA_image_crop(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class), *new;
+-    int x = luaL_checkint(L, 2);
+-    int y = luaL_checkint(L, 3);
+-    int w = luaL_checkint(L, 4);
+-    int h = luaL_checkint(L, 5);
+-
+-    new = image_new(L);
+-
+-    imlib_context_set_image(image->image);
+-    new->image = imlib_create_cropped_image(x, y, w, h);
+-
+-    return 1;
+-}
+-
+-/** Crop the image to the given rectangle and scales it.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The top left x coordinate of the source rectangle.
+- * \lparam The top left y coordinate of the source rectangle.
+- * \lparam The width of the source rectangle.
+- * \lparam The height of the source rectangle.
+- * \lparam The width of the destination rectangle.
+- * \lparam The height of the destination rectangle.
+- * \lreturn A cropped image.
+- */
+-static int
+-luaA_image_crop_and_scale(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class), *new;
+-    int source_x = luaL_checkint(L, 2);
+-    int source_y = luaL_checkint(L, 3);
+-    int w = luaL_checkint(L, 4);
+-    int h = luaL_checkint(L, 5);
+-    int dest_w = luaL_checkint(L, 6);
+-    int dest_h = luaL_checkint(L, 7);
+-
+-    new = image_new(L);
+-
+-    imlib_context_set_image(image->image);
+-    new->image = imlib_create_cropped_scaled_image(source_x,
+-                                                   source_y,
+-                                                   w, h,
+-                                                   dest_w, dest_h);
+-
+-    return 1;
+-}
+-
+-/** Draw a pixel in an image
+- * \param L The Lua VM state
+- * \luastack
+- * \lvalue An image.
+- * \lparam The x coordinate of the pixel to draw
+- * \lparam The y coordinate of the pixel to draw
+- * \lparam The color to draw the pixel in
+- */
+-static int
+-luaA_image_draw_pixel(lua_State *L)
+-{
+-    size_t len;
+-    color_t color;
+-    color_init_cookie_t cookie;
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int x = luaL_checkint(L, 2);
+-    int y = luaL_checkint(L, 3);
+-    const char *buf = luaL_checklstring(L, 4, &len);
+-
+-    cookie = color_init_unchecked(&color, buf, len);
+-    imlib_context_set_image(image->image);
+-    color_init_reply(cookie);
+-
+-    if((x > imlib_image_get_width()) || (y > imlib_image_get_height()))
+-        return 0;
+-
+-    imlib_context_set_color(color.red, color.green, color.blue, color.alpha);
+-    imlib_image_draw_pixel(x, y, 1);
+-    image->isupdated = false;
+-    return 0;
+-}
+-
+-/** Draw a line in an image
+- * \param L The Lua VM state
+- * \luastack
+- * \lvalue An image.
+- * \lparam The x1 coordinate of the line to draw
+- * \lparam The y1 coordinate of the line to draw
+- * \lparam The x2 coordinate of the line to draw
+- * \lparam The y2 coordinate of the line to draw
+- * \lparam The color to draw the line in
+- */
+-static int
+-luaA_image_draw_line(lua_State *L)
+-{
+-    size_t len;
+-    color_t color;
+-    color_init_cookie_t cookie;
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int x1 = luaL_checkint(L, 2);
+-    int y1 = luaL_checkint(L, 3);
+-    int x2 = luaL_checkint(L, 4);
+-    int y2 = luaL_checkint(L, 5);
+-    const char *buf = luaL_checklstring(L, 6, &len);
+-
+-    cookie = color_init_unchecked(&color, buf, len);
+-    imlib_context_set_image(image->image);
+-    color_init_reply(cookie);
+-
+-    imlib_context_set_color(color.red, color.green, color.blue, color.alpha);
+-    imlib_image_draw_line(x1, y1, x2, y2, 0);
+-    image->isupdated = false;
+-    return 0;
+-}
+-
+-/** Draw a rectangle in an image
+- * \param L The Lua VM state
+- * \luastack
+- * \lvalue An image.
+- * \lparam The x coordinate of the rectangles top left corner
+- * \lparam The y coordinate of the rectangles top left corner
+- * \lparam The width of the rectangle
+- * \lparam The height of the rectangle
+- * \lparam True if the rectangle should be filled, False otherwise
+- * \lparam The color to draw the rectangle in
+- */
+-static int
+-luaA_image_draw_rectangle(lua_State *L)
+-{
+-    size_t len;
+-    color_t color;
+-    color_init_cookie_t cookie;
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int x = luaL_checkint(L, 2);
+-    int y = luaL_checkint(L, 3);
+-    int width  = luaL_checkint(L, 4);
+-    int height = luaL_checkint(L, 5);
+-    int fill = luaA_checkboolean(L, 6);
+-    const char *buf = luaL_checklstring(L, 7, &len);
+-
+-    cookie = color_init_unchecked(&color, buf, len);
+-    imlib_context_set_image(image->image);
+-    color_init_reply(cookie);
+-
+-    imlib_context_set_color(color.red, color.green, color.blue, color.alpha);
+-    if(!fill)
+-        imlib_image_draw_rectangle(x, y, width, height);
+-    else
+-        imlib_image_fill_rectangle(x, y, width, height);
+-    image->isupdated = false;
+-    return 0;
+-}
+-
+-/** Convert a table to a color range and set it as current color range.
+- * \param L The Lua VM state.
+- * \param ud The index of the table.
+- * \return A color range that you are responsible to free.
+- */
+-static Imlib_Color_Range
+-luaA_table_to_color_range(lua_State *L, int ud)
+-{
+-    Imlib_Color_Range range = imlib_create_color_range();
+-
+-    imlib_context_set_color_range(range);
+-
+-    for(size_t i = 1; i <= lua_objlen(L, ud); i++)
+-    {
+-        /* get t[i] */
+-        lua_pushnumber(L, i);
+-        lua_gettable(L, ud);
+-
+-        size_t len;
+-        const char *colstr = lua_tolstring(L, -1, &len);
+-
+-        if(colstr)
+-        {
+-            color_t color;
+-
+-            color_init_cookie_t cookie = color_init_unchecked(&color, colstr, len);
+-
+-            /* get value with colstr as key in table */
+-            lua_pushvalue(L, -1);
+-            lua_gettable(L, ud);
+-
+-            /* convert the distance, if any, to number, or set 1 */
+-            int distance = lua_tonumber(L, -1);
+-            /* remove distance */
+-            lua_pop(L, 1);
+-
+-            color_init_reply(cookie);
+-
+-            imlib_context_set_color(color.red, color.green, color.blue, color.alpha);
+-
+-            imlib_add_color_to_color_range(distance);
+-        }
+-
+-        /* remove color string (value) */
+-        lua_pop(L, 1);
+-    }
+-
+-    return range;
+-}
+-
+-/** Draw a rectangle in an image with gradient color.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The x coordinate of the rectangles top left corner.
+- * \lparam The y coordinate of the rectangles top left corner.
+- * \lparam The width of the rectangle.
+- * \lparam The height of the rectangle.
+- * \lparam A table with the color to draw the rectangle. You can specified the
+- * color distance from the previous one by setting t[color] = distance.
+- * \lparam The angle of gradient.
+- */
+-static int
+-luaA_image_draw_rectangle_gradient(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int x = luaL_checkint(L, 2);
+-    int y = luaL_checkint(L, 3);
+-    int width  = luaL_checkint(L, 4);
+-    int height = luaL_checkint(L, 5);
+-    luaA_checktable(L, 6);
+-    double angle = luaL_checknumber(L, 7);
+-
+-    imlib_context_set_image(image->image);
+-
+-    luaA_table_to_color_range(L, 6);
+-
+-    imlib_image_fill_color_range_rectangle(x, y, width, height, angle);
+-
+-    imlib_free_color_range();
+-
+-    image->isupdated = false;
+-
+-    return 0;
+-}
+-
+-/** Draw a circle in an image
+- * \param L The Lua VM state
+- * \luastack
+- * \lvalue An image.
+- * \lparam The x coordinate of the center of the circle
+- * \lparam The y coordinate of the center of the circle
+- * \lparam The horizontal amplitude (width)
+- * \lparam The vertical amplitude (height)
+- * \lparam True if the circle should be filled, False otherwise
+- * \lparam The color to draw the circle in
+- */
+-static int
+-luaA_image_draw_circle(lua_State *L)
+-{
+-    size_t len;
+-    color_t color;
+-    color_init_cookie_t cookie;
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    int x = luaL_checkint(L, 2);
+-    int y = luaL_checkint(L, 3);
+-    int ah = luaL_checkint(L, 4);
+-    int av = luaL_checkint(L, 5);
+-    int fill = luaA_checkboolean(L, 6);
+-    const char *buf = luaL_checklstring(L, 7, &len);
+-
+-    cookie = color_init_unchecked(&color, buf, len);
+-    imlib_context_set_image(image->image);
+-    color_init_reply(cookie);
+-
+-    imlib_context_set_color(color.red, color.green, color.blue, color.alpha);
+-    if(!fill)
+-        imlib_image_draw_ellipse(x, y, ah, av);
+-    else
+-        imlib_image_fill_ellipse(x, y, ah, av);
+-    image->isupdated = false;
+-    return 0;
+-}
+-
+-/** Saves the image to the given path. The file extension (e.g. .png or .jpg)
+- * will affect the output format.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The image path.
+- */
+-static int
+-luaA_image_save(lua_State *L)
+-{
+-    image_t *image = luaA_checkudata(L, 1, &image_class);
+-    const char *path = luaL_checkstring(L, 2);
+-    Imlib_Load_Error err;
+-
+-    imlib_context_set_image(image->image);
+-    imlib_save_image_with_error_return(path, &err);
+-
+-    if(err != IMLIB_LOAD_ERROR_NONE)
+-        warn("cannot save image %s: %s", path, image_imlib_load_strerror(err));
+-
+-    return 0;
+-}
+-
+-/** Insert one image into another.
+- * \param L The Lua VM state.
+- * \return The number of elements pushed on stack.
+- * \luastack
+- * \lvalue An image.
+- * \lparam The image to insert.
+- * \lparam The X offset of the image to insert (optional).
+- * \lparam The Y offset of the image to insert (optional).
+- * \lparam The horizontal offset of the upper right image corner (optional).
+- * \lparam The vertical offset of the upper right image corner (optional).
+- * \lparam The horizontal offset of the lower left image corner (optional).
+- * \lparam The vertical offset of the lower left image corner (optional).
+- * \lparam The X coordinate of the source rectangle (optional).
+- * \lparam The Y coordinate of the source rectangle (optional).
+- * \lparam The width of the source rectangle (optional).
+- * \lparam The height of the source rectangle (optional).
+- */
+-static int
+-luaA_image_insert(lua_State *L)
+-{
+-    image_t *image_target = luaA_checkudata(L, 1, &image_class);
+-    image_t *image_source = luaA_checkudata(L, 2, &image_class);
+-    int xoff = luaL_optnumber(L, 3, 0);
+-    int yoff = luaL_optnumber(L, 4, 0);
+-
+-    int xsrc = luaL_optnumber(L, 5, 0);
+-    int ysrc = luaL_optnumber(L, 6, 0);
+-    int wsrc = luaL_optnumber(L, 7, image_getwidth(image_source));
+-    int hsrc = luaL_optnumber(L, 8, image_getheight(image_source));
+-
+-    int hxoff = luaL_optnumber(L, 9, image_getwidth(image_source));
+-    int hyoff = luaL_optnumber(L, 10, 0);
+-
+-    int vxoff = luaL_optnumber(L, 11, 0);
+-    int vyoff = luaL_optnumber(L, 12, image_getheight(image_source));
+-
+-    imlib_context_set_image(image_target->image);
+-
+-    imlib_blend_image_onto_image_skewed(image_source->image, 0,
+-                                        /* source rectangle */
+-                                        xsrc, ysrc, wsrc, hsrc,
+-                                        /* position of the source image in the target image */
+-                                        xoff, yoff,
+-                                        /* axis offsets for the source image, (w|0|0|h)
+-                                         * is the default */
+-                                        hxoff, hyoff, vxoff, vyoff);
+-
+-    image_target->isupdated = false;
+-
+-    return 0;
+-}
+-
+-static int
+-luaA_image_get_width(lua_State *L, image_t *image)
+-{
+-    lua_pushnumber(L, image_getwidth(image));
+-    return 1;
+-}
+-
+-static int
+-luaA_image_get_height(lua_State *L, image_t *image)
+-{
+-    lua_pushnumber(L, image_getheight(image));
+-    return 1;
+-}
+-
+-static int
+-luaA_image_get_alpha(lua_State *L, image_t *image)
+-{
+-    imlib_context_set_image(image->image);
+-    lua_pushboolean(L, imlib_image_has_alpha());
+-    return 1;
+-}
+-
+-void
+-image_class_setup(lua_State *L)
+-{
+-    static const struct luaL_reg image_methods[] =
+-    {
+-        LUA_CLASS_METHODS(image)
+-        { "__call", luaA_image_new },
+-        { "argb32", luaA_image_argb32_new },
+-        { NULL, NULL }
+-    };
+-
+-    static const struct luaL_reg image_meta[] =
+-    {
+-        LUA_OBJECT_META(image)
+-        LUA_CLASS_META
+-        { "rotate", luaA_image_rotate },
+-        { "orientate", luaA_image_orientate },
+-        { "crop", luaA_image_crop },
+-        { "crop_and_scale", luaA_image_crop_and_scale },
+-        { "save", luaA_image_save },
+-        { "insert", luaA_image_insert },
+-        /* draw on images, whee! */
+-        { "draw_pixel", luaA_image_draw_pixel },
+-        { "draw_line",  luaA_image_draw_line  },
+-        { "draw_rectangle", luaA_image_draw_rectangle },
+-        { "draw_rectangle_gradient", luaA_image_draw_rectangle_gradient },
+-        { "draw_circle", luaA_image_draw_circle },
+-        { NULL, NULL }
+-    };
+-
+-    luaA_class_setup(L, &image_class, "image", NULL,
+-                     (lua_class_allocator_t) image_new,
+-                     (lua_class_collector_t) image_wipe,
+-                     NULL,
+-                     luaA_class_index_miss_property, luaA_class_newindex_miss_property,
+-                     image_methods, image_meta);
+-    luaA_class_add_property(&image_class, A_TK_WIDTH,
+-                            NULL,
+-                            (lua_class_propfunc_t) luaA_image_get_width,
+-                            NULL);
+-    luaA_class_add_property(&image_class, A_TK_HEIGHT,
+-                            NULL,
+-                            (lua_class_propfunc_t) luaA_image_get_height,
+-                            NULL);
+-    luaA_class_add_property(&image_class, A_TK_ALPHA,
+-                            NULL,
+-                            (lua_class_propfunc_t) luaA_image_get_alpha,
+-                            NULL);
+-}
+-
+-// vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/objects/image.h b/objects/image.h
+deleted file mode 100644
+index 12c6192..0000000
+--- a/objects/image.h
++++ /dev/null
+@@ -1,41 +0,0 @@
+-/*
+- * image.h - image object header
+- *
+- * Copyright © 2008-2009 Julien Danjou <julien@danjou.info>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+- *
+- */
+-
+-#ifndef AWESOME_OBJECTS_IMAGE_H
+-#define AWESOME_OBJECTS_IMAGE_H
+-
+-#include <xcb/xcb.h>
+-#include "common/luaclass.h"
+-
+-typedef struct image image_t;
+-
+-void image_class_setup(lua_State *);
+-int image_new_from_argb32(lua_State *L, int, int, uint32_t *);
+-uint8_t * image_getdata(image_t *);
+-int image_getwidth(image_t *);
+-int image_getheight(image_t *);
+-
+-xcb_pixmap_t image_to_1bit_pixmap(image_t *, xcb_drawable_t);
+-
+-lua_class_t image_class;
+-
+-#endif
+-// vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/objects/wibox.c b/objects/wibox.c
+index 0743012..ac47d54 100644
+--- a/objects/wibox.c
++++ b/objects/wibox.c
+@@ -19,8 +19,6 @@
+  *
+  */
+ 
+-#include <xcb/shape.h>
+-
+ #include "screen.h"
+ #include "wibox.h"
+ #include "objects/client.h"
+@@ -85,6 +83,8 @@ wibox_wipe(wibox_t *wibox)
+     p_delete(&wibox->cursor);
+     wibox_wipe_resources(wibox);
+     widget_node_array_wipe(&wibox->widgets);
++    if(wibox->bg_image)
++        cairo_surface_destroy(wibox->bg_image);
+ }
+ 
+ /** Wipe an array of widget_node. Release references to widgets.
+@@ -114,62 +114,6 @@ wibox_need_update(wibox_t *wibox)
+     wibox_clear_mouse_over(wibox);
+ }
+ 
+-static int
+-have_shape(void)
+-{
+-    const xcb_query_extension_reply_t *reply;
+-
+-    reply = xcb_get_extension_data(globalconf.connection, &xcb_shape_id);
+-    if (!reply || !reply->present)
+-        return 0;
+-
+-    /* We don't need a specific version of SHAPE, no version check required */
+-    return 1;
+-}
+-
+-static void
+-shape_update(xcb_window_t win, xcb_shape_kind_t kind, image_t *image, int offset)
+-{
+-    xcb_pixmap_t shape;
+-
+-    if(image)
+-        shape = image_to_1bit_pixmap(image, win);
+-    else
+-        /* Reset the shape */
+-        shape = XCB_NONE;
+-
+-    xcb_shape_mask(globalconf.connection, XCB_SHAPE_SO_SET, kind,
+-                   win, offset, offset, shape);
+-
+-    if (shape != XCB_NONE)
+-        xcb_free_pixmap(globalconf.connection, shape);
+-}
+-
+-/** Update the window's shape.
+- * \param wibox The simple window whose shape should be updated.
+- */
+-static void
+-wibox_shape_update(wibox_t *wibox)
+-{
+-    if(wibox->window == XCB_NONE)
+-        return;
+-
+-    if(!have_shape())
+-    {
+-        static bool warned = false;
+-        if(!warned)
+-            warn("The X server doesn't have the SHAPE extension; "
+-                    "can't change window's shape");
+-        warned = true;
+-        return;
+-    }
+-
+-    shape_update(wibox->window, XCB_SHAPE_SK_CLIP, wibox->shape.clip, 0);
+-    shape_update(wibox->window, XCB_SHAPE_SK_BOUNDING, wibox->shape.bounding, - wibox->border_width);
+-
+-    wibox->need_shape_update = false;
+-}
+-
+ static void
+ wibox_draw_context_update(wibox_t *w)
+ {
+@@ -239,8 +183,6 @@ wibox_init(wibox_t *w)
+ 
+     /* Update draw context physical screen, important for Zaphod. */
+     wibox_draw_context_update(w);
+-
+-    wibox_shape_update(w);
+ }
+ 
+ /** Refresh the window content by copying its pixmap data to its window.
+@@ -584,8 +526,6 @@ wibox_refresh(void)
+ {
+     foreach(w, globalconf.wiboxes)
+     {
+-        if((*w)->need_shape_update)
+-            wibox_shape_update(*w);
+         if((*w)->need_update)
+             wibox_draw(*w);
+     }
+@@ -995,11 +935,20 @@ luaA_wibox_get_bg(lua_State *L, wibox_t *wibox)
+ static int
+ luaA_wibox_set_bg_image(lua_State *L, wibox_t *wibox)
+ {
+-    luaA_checkudata(L, -1, &image_class);
+-    luaA_object_unref_item(L, -3, wibox->bg_image);
+-    wibox->bg_image = luaA_object_ref_item(L, -3, -1);
++    if(lua_isnil(L, -1))
++    {
++        if(wibox->bg_image)
++            cairo_surface_destroy(wibox->bg_image);
++        wibox->bg_image = NULL;
++    } else {
++        cairo_surface_t **cairo_surface = (cairo_surface_t **)luaL_checkudata(L, -1, "6d31a064-6711-11dd-bdd8-00e081225ce5");
++        if(wibox->bg_image)
++            cairo_surface_destroy(wibox->bg_image);
++        wibox->bg_image = cairo_surface_dup(*cairo_surface);
++    }
+     wibox->need_update = true;
+-    luaA_object_emit_signal(L, -2, "property::bg_image", 0);
++    luaA_dumpstack(L);
++    luaA_object_emit_signal(L, -3, "property::bg_image", 0);
+     return 0;
+ }
+ 
+@@ -1011,7 +960,9 @@ luaA_wibox_set_bg_image(lua_State *L, wibox_t *wibox)
+ static int
+ luaA_wibox_get_bg_image(lua_State *L, wibox_t *wibox)
+ {
+-    return luaA_object_push_item(L, 1, wibox->bg_image);
++    if(wibox->bg_image)
++        return oocairo_surface_push(L, wibox->bg_image);
++    return 0;
+ }
+ 
+ /** Set the wibox on top status.
+@@ -1164,41 +1115,6 @@ luaA_wibox_get_widgets(lua_State *L, wibox_t *wibox)
+ {
+     return luaA_object_push_item(L, 1, wibox->widgets_table);
+ }
+-
+-static int
+-luaA_wibox_set_shape_bounding(lua_State *L, wibox_t *wibox)
+-{
+-    luaA_checkudata(L, -1, &image_class);
+-    luaA_object_unref_item(L, -3, wibox->shape.bounding);
+-    wibox->shape.bounding = luaA_object_ref_item(L, -3, -1);
+-    wibox->need_shape_update = true;
+-    luaA_object_emit_signal(L, -2, "property::shape_bounding", 0);
+-    return 0;
+-}
+-
+-static int
+-luaA_wibox_get_shape_bounding(lua_State *L, wibox_t *wibox)
+-{
+-    return luaA_object_push_item(L, 1, wibox->shape.bounding);
+-}
+-
+-static int
+-luaA_wibox_set_shape_clip(lua_State *L, wibox_t *wibox)
+-{
+-    luaA_checkudata(L, -1, &image_class);
+-    luaA_object_unref_item(L, -3, wibox->shape.clip);
+-    wibox->shape.clip = luaA_object_ref_item(L, -3, -1);
+-    wibox->need_shape_update = true;
+-    luaA_object_emit_signal(L, -2, "property::shape_clip", 0);
+-    return 0;
+-}
+-
+-static int
+-luaA_wibox_get_shape_clip(lua_State *L, wibox_t *wibox)
+-{
+-    return luaA_object_push_item(L, 1, wibox->shape.clip);
+-}
+-
+ void
+ wibox_class_setup(lua_State *L)
+ {
+@@ -1275,14 +1191,6 @@ wibox_class_setup(lua_State *L)
+                             (lua_class_propfunc_t) luaA_wibox_set_height,
+                             (lua_class_propfunc_t) luaA_wibox_get_height,
+                             (lua_class_propfunc_t) luaA_wibox_set_height);
+-    luaA_class_add_property(&wibox_class, A_TK_SHAPE_BOUNDING,
+-                            (lua_class_propfunc_t) luaA_wibox_set_shape_bounding,
+-                            (lua_class_propfunc_t) luaA_wibox_get_shape_bounding,
+-                            (lua_class_propfunc_t) luaA_wibox_set_shape_bounding);
+-    luaA_class_add_property(&wibox_class, A_TK_SHAPE_CLIP,
+-                            (lua_class_propfunc_t) luaA_wibox_set_shape_clip,
+-                            (lua_class_propfunc_t) luaA_wibox_get_shape_clip,
+-                            (lua_class_propfunc_t) luaA_wibox_set_shape_clip);
+ }
+ 
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/objects/wibox.h b/objects/wibox.h
+index 5f0849f..8a79b50 100644
+--- a/objects/wibox.h
++++ b/objects/wibox.h
+@@ -41,12 +41,10 @@ struct wibox_t
+     widget_t *mouse_over;
+     /** Need update */
+     bool need_update;
+-    /** Need shape update */
+-    bool need_shape_update;
+     /** Cursor */
+     char *cursor;
+     /** Background image */
+-    image_t *bg_image;
++    cairo_surface_t *bg_image;
+     /** The pixmap copied to the window object. */
+     xcb_pixmap_t pixmap;
+     /** The window geometry. */
+@@ -55,14 +53,6 @@ struct wibox_t
+     draw_context_t ctx;
+     /** Orientation */
+     orientation_t orientation;
+-    /** The window's shape */
+-    struct
+-    {
+-        /** The window's content */
+-        image_t *clip;
+-        /** The window's content and border */
+-        image_t *bounding;
+-    } shape;
+     /** Has wibox an attached systray **/
+     bool has_systray;
+ };
+diff --git a/objects/widget.c b/objects/widget.c
+index 39f5dd9..adf5667 100644
+--- a/objects/widget.c
++++ b/objects/widget.c
+@@ -322,7 +322,7 @@ widget_render(wibox_t *wibox)
+ 
+     /* draw background image, only if the background color is not opaque */
+     if(wibox->bg_image && ctx->bg.alpha != 0xffff)
+-        draw_image(ctx, 0, 0, 1.0, wibox->bg_image);
++        draw_surface(ctx, 0, 0, 1.0, wibox->bg_image);
+ 
+     /* draw background color */
+     xcolor_to_color(&ctx->bg, &col);
+diff --git a/objects/widgets/imagebox.c b/objects/widgets/imagebox.c
+index b01ef8c..440bcf2 100644
+--- a/objects/widgets/imagebox.c
++++ b/objects/widgets/imagebox.c
+@@ -26,7 +26,7 @@
+ typedef struct
+ {
+     /** Imagebox image */
+-    image_t *image;
++    cairo_surface_t *image;
+     color_t bg;
+     bool resize;
+ } imagebox_data_t;
+@@ -39,8 +39,8 @@ imagebox_extents(lua_State *L, widget_t *widget)
+ 
+     if(d->image)
+     {
+-        geometry.width = image_getwidth(d->image);
+-        geometry.height = image_getheight(d->image);
++        geometry.width = cairo_image_surface_get_width(d->image);
++        geometry.height = cairo_image_surface_get_height(d->image);
+     }
+     else
+     {
+@@ -67,8 +67,8 @@ imagebox_draw(widget_t *widget, draw_context_t *ctx, area_t geometry, wibox_t *p
+         if(d->bg.initialized)
+             draw_rectangle(ctx, geometry, 1.0, true, &d->bg);
+ 
+-        double ratio = d->resize ? (double) geometry.height / image_getheight(d->image) : 1;
+-        draw_image(ctx, geometry.x, geometry.y, ratio, d->image);
++        double ratio = d->resize ? (double) geometry.height / cairo_image_surface_get_height(d->image) : 1;
++        draw_surface(ctx, geometry.x, geometry.y, ratio, d->image);
+     }
+ }
+ 
+@@ -79,9 +79,38 @@ static void
+ imagebox_destructor(widget_t *w)
+ {
+     imagebox_data_t *d = w->data;
++    if(d->image)
++        cairo_surface_destroy(d->image);
+     p_delete(&d);
+ }
+ 
++static int
++luaA_imagebox_draw(lua_State *L)
++{
++    widget_t *widget = luaA_checkudata(L, 1, &widget_class);
++    imagebox_data_t *d = widget->data;
++
++    if(lua_isnil(L, 2))
++    {
++        if(d->image)
++            cairo_surface_destroy(d->image);
++        d->image = NULL;
++    } else {
++        /* Ugly lua-OOCairo magic. */
++        cairo_surface_t **cairo_surface = (cairo_surface_t **)luaL_checkudata(L, 2, "6d31a064-6711-11dd-bdd8-00e081225ce5");
++
++        if(widget->type != widget_imagebox)
++            return luaL_error(L, "imagebox::draw called on wrong widget");
++        if(d->image)
++            cairo_surface_destroy(d->image);
++
++        d->image = cairo_surface_dup(*cairo_surface);
++    }
++
++    widget_invalidate_bywidget(widget);
++    return 0;
++}
++
+ /** Imagebox widget.
+  * \param L The Lua VM state.
+  * \param token The key token.
+@@ -99,15 +128,15 @@ luaA_imagebox_index(lua_State *L, awesome_token_t token)
+ 
+     switch(token)
+     {
+-      case A_TK_IMAGE:
+-        luaA_object_push_item(L, 1, d->image);
+-        break;
+       case A_TK_BG:
+         luaA_pushcolor(L, &d->bg);
+         break;
+       case A_TK_RESIZE:
+         lua_pushboolean(L, d->resize);
+         break;
++      case A_TK_DRAW:
++        lua_pushcfunction(L, luaA_imagebox_draw);
++        break;
+       default:
+         return 0;
+     }
+@@ -131,11 +160,6 @@ luaA_imagebox_newindex(lua_State *L, awesome_token_t token)
+         const char *buf;
+         size_t len;
+ 
+-      case A_TK_IMAGE:
+-        luaA_checkudataornil(L, -1, &image_class);
+-        luaA_object_unref_item(L, 1, d->image);
+-        d->image = luaA_object_ref_item(L, 1, 3);
+-        break;
+       case A_TK_BG:
+         if(lua_isnil(L, 3))
+             p_clear(&d->bg, 1);
+@@ -146,7 +170,7 @@ luaA_imagebox_newindex(lua_State *L, awesome_token_t token)
+         d->resize = luaA_checkboolean(L, 3);
+         break;
+       default:
+-        return 0;
++        return luaA_class_newindex_miss_property(L, (lua_object_t *) widget);
+     }
+ 
+     widget_invalidate_bywidget(widget);
+diff --git a/objects/widgets/textbox.c b/objects/widgets/textbox.c
+index 4508ba7..bbe31ea 100644
+--- a/objects/widgets/textbox.c
++++ b/objects/widgets/textbox.c
+@@ -63,7 +63,7 @@ typedef struct
+     /** Background color */
+     color_t bg;
+     /** Background image */
+-    image_t *bg_image;
++    cairo_surface_t *bg_image;
+     /** Background resize to wibox height. */
+     bool bg_resize;
+     /** Background alignment */
+@@ -127,8 +127,8 @@ textbox_extents(lua_State *L, widget_t *widget)
+ 
+     if(d->bg_image)
+     {
+-        int bgi_height = image_getheight(d->bg_image);
+-        int bgi_width = image_getwidth(d->bg_image);
++        int bgi_height = cairo_image_surface_get_height(d->bg_image);
++        int bgi_width = cairo_image_surface_get_width(d->bg_image);
+         double ratio = d->bg_resize ? (double) geometry.height / bgi_height : 1;
+         geometry.width = MAX(d->extents.width + d->margin.left + d->margin.right, MAX(d->width, bgi_width * ratio));
+     }
+@@ -156,8 +156,8 @@ textbox_draw(widget_t *widget, draw_context_t *ctx, area_t geometry, wibox_t *p)
+ 
+     if(d->bg_image)
+     {
+-        int bgi_height = image_getheight(d->bg_image);
+-        int bgi_width = image_getwidth(d->bg_image);
++        int bgi_height = cairo_image_surface_get_height(d->bg_image);
++        int bgi_width = cairo_image_surface_get_width(d->bg_image);
+         double ratio = d->bg_resize ? (double) geometry.height / bgi_height : 1;
+         /* check there is enough space to draw the image */
+         if(ratio * bgi_width <= geometry.width)
+@@ -181,7 +181,7 @@ textbox_draw(widget_t *widget, draw_context_t *ctx, area_t geometry, wibox_t *p)
+               default:
+                 break;
+             }
+-            draw_image(ctx, x, y, ratio, d->bg_image);
++            draw_surface(ctx, x, y, ratio, d->bg_image);
+         }
+     }
+ 
+@@ -211,6 +211,8 @@ textbox_destructor(widget_t *w)
+ {
+     textbox_data_t *d = w->data;
+     draw_text_context_wipe(&d->data);
++    if(d->bg_image)
++        cairo_surface_destroy(d->bg_image);
+     p_delete(&d->text);
+     p_delete(&d);
+ }
+@@ -263,7 +265,7 @@ luaA_textbox_index(lua_State *L, awesome_token_t token)
+         lua_pushstring(L, draw_align_tostr(d->bg_align));
+         return 1;
+       case A_TK_BG_IMAGE:
+-        return luaA_object_push(L, d->bg_image);
++        return oocairo_surface_push(L, d->bg_image);
+       case A_TK_BG:
+         return luaA_pushcolor(L, &d->bg);
+       case A_TK_MARGIN:
+@@ -350,9 +352,15 @@ luaA_textbox_newindex(lua_State *L, awesome_token_t token)
+         d->bg_resize = luaA_checkboolean(L, 3);
+         break;
+       case A_TK_BG_IMAGE:
+-        luaA_checkudataornil(L, -1, &image_class);
+-        luaA_object_unref_item(L, 1, d->bg_image);
+-        d->bg_image = luaA_object_ref_item(L, 1, 3);
++        if(lua_isnil(L, -1))
++        {
++            cairo_surface_destroy(d->bg_image);
++            d->bg_image = NULL;
++        } else {
++            cairo_surface_t **cairo_surface = (cairo_surface_t **)luaL_checkudata(L, -1, "6d31a064-6711-11dd-bdd8-00e081225ce5");
++            cairo_surface_destroy(d->bg_image);
++            d->bg_image = cairo_surface_dup(*cairo_surface);
++        }
+         break;
+       case A_TK_BG:
+         if(lua_isnil(L, 3))

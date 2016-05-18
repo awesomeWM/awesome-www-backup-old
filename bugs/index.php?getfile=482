@@ -1,0 +1,47 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index db1f074..693223c 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -376,3 +376,5 @@ end)
+ client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+ -- }}}
++
++print(client, require("capi.client"))
+diff --git a/common/luaclass.c b/common/luaclass.c
+index 1ffe398..855655b 100644
+--- a/common/luaclass.c
++++ b/common/luaclass.c
+@@ -235,7 +235,14 @@ luaA_class_setup(lua_State *L, lua_class_t *class,
+     luaL_register(L, name, methods);                                   /* 2 */
+     lua_pushvalue(L, -1);           /* dup self as metatable              3 */
+     lua_setmetatable(L, -2);        /* set self as metatable              2 */
+-    lua_pop(L, 2);
++
++    /* get package.loaded.capi and register this class */
++    lua_getglobal(L, "package");                                       /* 3 */
++    lua_getfield(L, -1, "loaded");                                     /* 4 */
++    lua_getfield(L, -1, "capi");                                       /* 5 */
++    lua_pushvalue(L, -4);                                              /* 6 */
++    lua_setfield(L, -2, name);                                         /* 5 */
++    lua_pop(L, 5);
+ 
+     class->collector = collector;
+     class->allocator = allocator;
+diff --git a/luaa.c b/luaa.c
+index ee26366..17a7776 100644
+--- a/luaa.c
++++ b/luaa.c
+@@ -290,6 +290,12 @@ luaA_fixups(lua_State *L)
+     lua_pushliteral(L, "selection");
+     lua_pushcfunction(L, luaA_selection_get);
+     lua_settable(L, LUA_GLOBALSINDEX);
++    /* create package.loaded.capi */
++    lua_getglobal(L, "package");
++    lua_getfield(L, -1, "loaded");
++    lua_newtable(L);
++    lua_setfield(L, -2, "capi");
++    lua_pop(L, 2);
+ }
+ 
+ /** Look for an item: table, function, etc.

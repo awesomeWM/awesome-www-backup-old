@@ -1,0 +1,67 @@
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 712371b..bd47643 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -2,7 +2,7 @@
+ -- @author Damien Leone &lt;damien.leone@gmail.com&gt;
+ -- @author Julien Danjou &lt;julien@danjou.info&gt;
+ -- @copyright 2008 Damien Leone, Julien Danjou
+--- @release @AWESOME_VERSION@
++-- @release v3.3-436-g06f4a30
+ ---------------------------------------------------------------------------
+ 
+ -- Grab environment we need
+@@ -197,12 +197,12 @@ local function add_item(data, num, item_info)
+     local iconbox
+     if item_info[3] then
+         local icon = type(item_info[3]) == "string" and image(item_info[3]) or item_info[3]
+-        if icon.width > tonumber(data.h) or icon.height > tonumber(data.h) then
++        if icon.width > data.h or icon.height > data.h then
+             local width, height
+-            if ((data.h/icon.height) * icon.width) > tonumber(data.h) then
+-                width, height = data.h, (tonumber(data.h) / icon.width) * icon.height
++            if ((data.h/icon.height) * icon.width) > data.h then
++                width, height = data.h, (data.h / icon.width) * icon.height
+             else
+-                width, height = (tonumber(data.h) / icon.height) * icon.width, data.h
++                width, height = (data.h / icon.height) * icon.width, data.h
+             end
+             icon = icon:crop_and_scale(0, 0, icon.width, icon.height, width, height)
+         end
+@@ -227,6 +227,7 @@ local function add_item(data, num, item_info)
+     end
+ 
+     -- Add widgets to the wibox
++    local height = label:extents().height + 2
+     if iconbox then
+         item.widgets = {
+             iconbox,
+@@ -242,7 +243,7 @@ local function add_item(data, num, item_info)
+         }
+     end
+ 
+-
++    item.height = height
+     item.ontop = true
+ 
+     return { wibox = item, cmd = item_info[2] }
+@@ -366,13 +367,19 @@ function new(menu, parent, num)
+         data.auto_expand = true
+     end
+     data.h = parent and parent.h or data.theme.menu_height
++    if type(data.h) ~= 'number' then data.h = tonumber(data.h) end
+     data.w = parent and parent.w or data.theme.menu_width
++    if type(data.w) ~= 'number' then data.w = tonumber(data.h) end
+ 
+     -- Create items
+     for k, v in pairs(menu.items) do
+         table.insert(data.items, add_item(data, k, v))
+     end
+ 
++    if #data.items > 0 and data.h < data.items[1].wibox.height then
++        data.h = data.items[1].wibox.height
++    end
++
+     -- Set methods
+     data.hide = hide
+     data.show = show

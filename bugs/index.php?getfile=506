@@ -1,0 +1,11 @@
+--- a/lib/awful/client.lua.in	2012-06-19 12:40:31.127711141 +0200
++++ b/lib/awful/client.lua.in	2012-06-19 12:42:18.700702970 +0200
+@@ -375,7 +375,7 @@
+ -- @param c Optional client, otherwise focused one is used.
+ function client.swap.byidx(i, c)
+     local sel = c or capi.client.focus
+-    local target = next(i, sel)
++    local target = client.next(i, sel)
+     if target then
+         target:swap(sel)
+     end

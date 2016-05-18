@@ -1,0 +1,12 @@
+diff --git a/lib/beautiful.lua.in b/lib/beautiful.lua.in
+index 9997329..4325cac 100644
+--- a/lib/beautiful.lua.in
++++ b/lib/beautiful.lua.in
+@@ -34,6 +34,7 @@ local wallpaper = {}
+ -- @param tw A table with wallpaper commands.
+ -- @return False if tw length is zero or if any entries in tw are not strings.
+ function wallpaper.is_valid(tw)
++    if type(tw) ~= 'table' then return false end
+     for _, v in pairs(tw) do
+         if type(v) ~= 'string' then return false end
+     end

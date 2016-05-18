@@ -1,0 +1,249 @@
+<mediawiki xmlns="http://www.mediawiki.org/xml/export-0.9/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mediawiki.org/xml/export-0.9/ http://www.mediawiki.org/xml/export-0.9.xsd" version="0.9" xml:lang="en">
+  <siteinfo>
+    <sitename>awesome</sitename>
+    <dbname>awesome</dbname>
+    <base>https://awesomewm.org/wiki/Main_Page</base>
+    <generator>MediaWiki 1.24.2</generator>
+    <case>first-letter</case>
+    <namespaces>
+      <namespace key="-2" case="first-letter">Media</namespace>
+      <namespace key="-1" case="first-letter">Special</namespace>
+      <namespace key="0" case="first-letter" />
+      <namespace key="1" case="first-letter">Talk</namespace>
+      <namespace key="2" case="first-letter">User</namespace>
+      <namespace key="3" case="first-letter">User talk</namespace>
+      <namespace key="4" case="first-letter">awesome</namespace>
+      <namespace key="5" case="first-letter">awesome talk</namespace>
+      <namespace key="6" case="first-letter">File</namespace>
+      <namespace key="7" case="first-letter">File talk</namespace>
+      <namespace key="8" case="first-letter">MediaWiki</namespace>
+      <namespace key="9" case="first-letter">MediaWiki talk</namespace>
+      <namespace key="10" case="first-letter">Template</namespace>
+      <namespace key="11" case="first-letter">Template talk</namespace>
+      <namespace key="12" case="first-letter">Help</namespace>
+      <namespace key="13" case="first-letter">Help talk</namespace>
+      <namespace key="14" case="first-letter">Category</namespace>
+      <namespace key="15" case="first-letter">Category talk</namespace>
+    </namespaces>
+  </siteinfo>
+  <page>
+    <title>Main Page</title>
+    <ns>0</ns>
+    <id>1</id>
+    <revision>
+      <id>7469</id>
+      <parentid>7468</parentid>
+      <timestamp>2016-05-09T04:46:32Z</timestamp>
+      <contributor>
+        <username>Elv13</username>
+        <id>375</id>
+      </contributor>
+      <comment>/* Documentation */</comment>
+      <text xml:space="preserve" bytes="14286">{{Languages}}
+
+
+{| align=&quot;right&quot;
+  | __TOC__
+  |}
+
+[[Image:Aw 64.png|left|awesome]]
+&lt;div style=&quot;margin-left: 70px;&quot;&gt;
+
+The goal of this wiki is to provide a community-made documentation and especially help new users with the configuration of awesome. We cover developer information too, including information about how-to build awesome (several related distributions), how-to debug, and so on.
+
+'''Note:''' Due to spammers, you must create an account in order to edit pages. While having to create an account to edit is annoying, so is spam.
+
+Feel free to register as a user and contribute to our documentation effort.
+
+Current [[Releases|awesome releases]]:
+* Stable: [http://awesome.naquadah.org/download/ awesome {{stable-version}}].
+* Development: Development versions of awesome can be downloaded via Git or as tarballs from [https://github.com/awesomeWM/awesome Github].
+* Screenshots: [[Screenshots]]
+
+&lt;/div&gt;
+
+== Documentation ==
+[[Image:Stock book blue.png|left|Documentation]]
+&lt;div style=&quot;margin-left: 70px;&quot;&gt;
+Configuration and control of awesome have changed between major versions and may continue to evolve in future ones. Some of the following documents may try to describe all the existing versions. Please fix them if a missing version needs special explanations. Other documents may be bound to only one version of awesome. Please fix them if version indication is missing.
+
+=== Installation &amp; Basics For Users ===
+* [[Awesome 3.x]] - Manpage and keyboard shortcuts.
+* [http://www.cheatography.com/fievel/cheat-sheets/awesome-window-manager-3-x/ Awesome 3.x shortcuts cheat sheet]
+* [http://awesomewm.github.io/apidoc/documentation/90-FAQ.md.html FAQ] - Check here first if you're having problems!
+* [http://awesomewm.github.io/apidoc/documentation/01-readme.md.html Building awesome] - Instructions for building / installing awesome.
+* [[awesome 3 configuration]] - Get help understanding awesome 3 configuration and API basics.
+* [[awesome 3.0 to 3.1]] config options that changed between the releases
+* [[awesome 3.3 to 3.4]] configuration changes to the 3.4 version
+* [[awesome 3.4 to 3.5]] configuration changes to the 3.5 version
+* [[Quickly Setting up Awesome with Gnome]] - How to make awesome be used in your gnome session with a couple of commands.
+* [[KDE and awesome]]
+* [[My first awesome]] Tutorial for new users and beginners
+
+=== Development Basics ===
+* [[Using Xephyr]]
+* [[Debugging]]
+* [[Signals]]
+* [[keycodes]]
+* [[Development Environment with Xephyr and GNU Make]]
+
+You might also want to join our IRC channel [irc://irc.oftc.net/awesome '''#awesome'''] on [http://www.oftc.net OFTC].
+&lt;/div&gt;
+
+== Customization ==
+[[Image:Toolbox.png|left|Statusbars]]
+&lt;div style=&quot;margin-left: 70px;&quot;&gt;
+=== Statusbars and widgets ===
+* [[Widgets in awesome]] - A brief guide on the implementation of widgets within awesome.
+* [[Vicious]] - How to use the vicious widget library to add dynamic widgets.
+* [[Obvious]] - How to use the Obvious repo (Widgets with community support).
+* [[User Contributed Widgets]]
+* [[Using Cairo within Awesome]]
+* [[Titlebar and Statusbar height]] - Small how-to that helps you customize statusbar and titlebar height.
+* [[Bashets]] - Small Lua library to empower you to use your existing shellscripts as content providers for widgets.
+* [[Launcher auto-hiding]] - Hide a launcher when the application is running.
+* [[Lain]] - Complements to improve configurability and usability.
+
+=== Theming awesome ===
+* [[Beautiful|Theming with Beautiful]] - How to theme your awesome-3 with the beautiful library.
+* [[Beautiful themes|User Contributed Themes]] - Several awesome themes for use with beautiful.
+* [[Customizing Fonts]] - How to add new fonts to your system.
+* [[Nice Icons]] - Where to find nice icons to use in your widgets.
+* [[Picturesque]] - Automatically fetch and change wallpapers.
+* [[Variety]] - Another automatic wallpaper changer.
+
+=== User configuration files ===
+* [https://github.com/copycat-killer/awesome-copycats awesome-copycats]
+* Examples of [[User_Configuration_Files|other users' configuration files]].
+
+=== Other tips ===
+* [[Autostart]] - Small function providing autostart functionality for awesome.
+* [[Autostop]]  - Simple method to execute a program on quitting awesome.
+* [[Understanding Rules]] - Describes Awesome's awful.rules facility for applying modifications to selected windows.
+* [[NASA IOTD_Wallpaper]] - Use NASA's &quot;Image of the day&quot; as wallpaper using feh
+* [[Run or raise]] - Run a client, or pop to it if it is already running.
+* [[Global Keybindings]] - Create global keybindings in awesome.
+* [[Document keybindings]] - Add documentation to each keybinding and display an &quot;help&quot; panel
+* [[Keybindings and numeric pad]] - Use the numeric pad to go to tags and show menus associated to each tag
+* [[Gradient]] - Visual feedback on numerical data (e.g. processor usage).
+* [[Problems with Java]] - What to do if your java apps look grey.
+* [[Symbolic tag names]] - How to make your tags have that mysterious symbolic look.
+* [[XRandR Screen Table]] - If you don't like using numbers for screens.
+* [[Move Mouse]] - Move the mouse from the centre of the screen for mouseless working.
+* [[Dbus, naughty and logs]] - Display colorized notifications of your logs.
+* [[Naughty log watcher]] - Native implementation (no shell scripts/dbus required).
+* [[Using Xephyr]] - How to run nested X sessions - good for testing new builds of awesome or different config files.
+* [[Using Multiple Screens]] - How to setup X with multiple screens/monitors for use with awesome.
+* [[Using redshift with awesome]] - Redshift integration with awesome
+* [[FullScreens|Fullscreens on Multiple Screens]] - How to span a client on multiple screens/monitors with a key
+* [[nm-applet]] - How to setup nm-applet to start automatically in awesome.
+* [[Mcabber notifications]] - Cool notifications for mcabber via naughty.
+* [[Drop-down terminal]] - Toggle a video game-like console on the top of your screen like Yakuake/Tilda.
+* [[Scratchpad manager]] - Basic scratchpad manager for the awesome window manager.
+* [[WMII-like tag management]] - Mimic WMII's way of tag managment.
+* [[Video wallpaper]] - Play a video for your wallpaper using mplayer.
+* [[Transparency]] - Transparent windows using xcompmgr.
+* [[Minitray]] - Toggable system tray.
+* [[Coverart display]] - Display Cover Art for current mpd song.
+* [[urxvt tips|Urxvt tips]] - Tips for using rxvt-unicode with awesome.
+* [[irssi tips|Irssi tips]] - Tips for using Irssi with awesome.
+* [[IM tips]] - Tips for using instant messaging clients with awesome.
+* [[Remove icons]] - How to remove icons from the tasklist and show only current client.
+* [[Custom Prompts]] - Customized prompts you can use with awful's prompt.
+* [[Using dmenu]] - Altering the color scheme, integrating with beautiful, and Run or Raise.
+* [[Run commands in background]] - Run shell-commands in background (without hanging awesome!) and returns it's output. 
+* [[How to add awesome to gdm3]] - This document explains to how add awesome WM to list of WMs gdm list
+* [[How to take ScreenShot with PrntScr key]] This coumentation explains you how to define PrntScr to take screenshot 
+* [[ShutdownDialog|Shutdown dialog]] - A simple dialog to shutdown/reboot/suspend/lock screen.
+* [[Tree File Menu]] - Python script to generate a tree file menu.
+* [[Cycling Random Wallpaper Or Xscreensaver]] - Cycle you background to a random picture or Xscreensaver after a random delay
+* [[Blinking text]] - Blinking the text on textbox widget
+* [[RPN Calculator]] - RPN calculator
+* [[Modal Keybindings]]
+* [[Shared tags]] share tagset for multiple screens
+* [[Move Window to Workspace Left/Right]] - A function for moving a window one workspace to the left or right.
+* [[Move Client to Monitor Left/Right]] - How to move client to a specific direction when using more than two monitors.
+* [[Move Client to a specific Monitor]] - How to move a client to a specific monitor.
+* [[Move Focus to a specific Monitor]] - How to move the curser/focus to a specific monitor.
+* [[Better Font Rendering]]
+* [[Disable startup-notification globally]] - If you are annoyed by the stopwatch/busy mouse cursor.
+* [[Keeping multitags persistent]] - If you want to able to quickly jump back to a multitag configuration
+* [[Conky bar]] - A statusbar-like Conky configuration which is not overlapped by windows
+* [[Conky HUD]] - An overlay-like heads-up-display configuration for Conky
+* [[Workaround plugins that steal the keyboard focus]] - This has been a known bug in Firefox for over 10 years.
+* [[MPD information with mpdcron]]
+* [[Autostart with consolekit]] - Using awesome menu to restart/shutdown/hibernate/suspend your computer
+* [[Vmware]] - Awesome and vmware tools
+* [[Libreoffice Multi-monitor]] - Configure Libreoffice to work correctly with multiple monitors
+* [[Systray Hide/Show]] - How to add a keybinding that toggles the systray's visibility
+* [[SpeakerWidget]] - A speaker widget with fancy icons.
+* [[HelpPopup]] - identifies the application and shows a hint for him
+* [[TranslateIt|Translation selected text]] - translate text from X-buffer, using Google.Translate.
+* [[RemoveExtraSpace| Remove extra space]] - remove/tuning space between tags, if you using icons.
+* [[Disable DPMS|Disable DPMS]] - disable energy saving mode for fullscreen applications
+* [[Move all clients to another tag ]] Move all the clients on this tag to another tag.
+&lt;/div&gt;
+
+== Lua extensions ==
+[[Image:Lua.jpg|left|Lua extensions]]
+&lt;div style=&quot;margin-left: 70px;&quot;&gt;
+Lua is a fast, light-weight, embeddable scripting language. Lua combines simple procedural syntax with powerful data description constructs based on associative arrays and extensible semantics. Lua is dynamically typed, runs by interpreting bytecode for a register-based virtual machine, and has automatic memory management with incremental garbage collection, making it ideal for configuration, scripting, and rapid prototyping. 
+
+Common uses of Lua are:
+* A configuration language for applications.
+* A standalone scripting language.
+* An embedded language in applications to modify runtime behaviour.
+
+To get introduced into Lua, please read [[The_briefest_introduction_to_Lua | the briefest introduction to Lua]]. For deeper knowledge please read this [http://lua-users.org/wiki/LuaTutorial tutorial] for the newcomers to the language. As a suggestion, please consider to get this [http://lua-users.org/wiki/LuaShortReference Lua Short Reference]. The Awesome framework is built with Lua as the extension language. Some of all extensions can be seen below: 
+
+* [http://awesome.naquadah.org/doc/api/ awful] - the standard awesome Lua library.
+* [[awful.menu|awful.menu]] - a popup menu library.
+* [https://github.com/Elv13/radical Radical] - A powerful and extensible menu system
+* [[Beautiful|Beautiful]] - a theming library.
+* [[Obvious|Obvious]] - a new implementation of a widget library made since Wicked.
+* [[Vicious|Vicious]] - a modular widget library derived from Wicked.
+* [[Space Invaders|Space Invaders]] - allows you to play Space Invaders with Awesome
+* [[Naughty|Naughty]] - a popup notification library
+* [[Shifty|Shifty]] - dynamic tagging library with advanced client matching and sane configuration
+* [https://github.com/Elv13/tyrannical Tyrannical] - A declarative tag and client configuration system for awful dynamic tags (Shifty spiritual successor)
+* [[Eminent|Eminent]] - effortless wmii-style dynamic tagging library that does not require any rc.lua changes
+* [[Rodentbane|Rodentbane]] - a library for rapid control of the mouse cursor using just the keyboard
+* [https://github.com/Elv13/collision Collision] - A powerful keyboard based navigation and resizing module with visual feedback indicators
+* [[Flaw|Flaw]] - an object oriented library to manage widgets.
+* [https://github.com/Elv13/retrograde Retrograde] - A layout system identical the one from Awesome 3.2-3.4 for Awesome 3.5+
+* [[couth|couth]] - yet another extension library -- includes visual popup notifications for alsa and mpd volume.
+* [[keychains|keychains]] - use of keychains in awesome
+* [[hints|hints]] - window hints to focus windows
+* [https://github.com/copycat-killer/vain-again Vain] - An alternative layout system
+* [[Blingbling|BlingBling]] - A beautiful Cairo based widget set
+* [https://github.com/copycat-killer/lain Lain] - A widget library
+* [https://raw.github.com/gvalkov/dotfiles-awesome/master/ezconfig.lua ezconfig] - Emacs-style keybindings for Awesome (eg. &lt;code&gt;'M-S-a'&lt;/code&gt; vs &lt;code&gt;awful.key({modkey, 'Shift'}, 'a'&lt;/code&gt;)
+* [https://github.com/svexican/cheeky cheeky] - A simple type-ahead window switcher (uses native clients menu)
+* [https://github.com/svexican/dreary dreary] - Temporary/overwritable client keybinds
+* [https://github.com/sirkha/keyjoy keyjoy] - Change your mouse and keyboard properties on a per-client basis using rules.
+* [https://github.com/Elv13/repetitive Repetitive] - Record and execute macros. Pin tags, clients and macros to F-keys at runtime
+* [[Revelation|Revelation]] - Implementing [http://en.wikipedia.org/wiki/Exposé_(Mac_OS_X) Mac OS X Exposé] in awesome.
+* [https://github.com/guotsuan/treetile Treetile] - Treetile is binary tree-based and dynamical tiling layout for Awesome 3.5 and latter. you can split the screen in the way similarly to tmux or i3wm. 
+&lt;/div&gt;
+
+== More ==
+[[Image:Stock_help_blue.png|left|More]]
+&lt;div style=&quot;margin-left: 70px;&quot;&gt;
+Most people these days are used to having a more complete desktop. This section includes links to various apps that are lightweight and useful from within awesome to fill the gaps between just a window manager and a full-blown desktop environment like KDE or GNOME.
+
+* [[Customizing GTK Apps]] - How to use themes without gnome-settings-daemon.
+* [[Terminals]] - Replacements for desktop environment terminals.
+* [[File Managers]] - Lightweight stand-alone File Managers.
+* [[Automounting]] - A replacement for &quot;gnome-volume-manager&quot;, &quot;thunar-volman&quot;, etc.
+* [[Xscreensaver]] - Locking the screen; replacement for gnome-screensaver, etc.
+* [[Calendars]] - calendars and agenda solutions (text, graphical, interactive, ...)
+* [[PowerManagement]] - A replacement for gnome-power-manager or kpowersave
+&lt;/div&gt;
+
+[[Category:Awesome]]</text>
+      <sha1>kqf3t72436z34lne4nybu2sjxmlas9v</sha1>
+      <model>wikitext</model>
+      <format>text/x-wiki</format>
+    </revision>
+  </page>
+</mediawiki>

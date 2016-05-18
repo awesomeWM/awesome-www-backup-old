@@ -1,0 +1,47 @@
+From 14d2488a6d86985dc914669caccb69ad66fbbc7d Mon Sep 17 00:00:00 2001
+From: Perry Hargrave <resixian@gmail.com>
+Date: Wed, 9 Nov 2011 12:47:27 -0800
+Subject: [PATCH 2/2] Check wallpaper_cmd entries are valid (FS#938)
+
+wallpaper.is_valid(tw):
+    Checks that the table has only string entries.
+
+Signed-off-by: Perry Hargrave <resixian@gmail.com>
+---
+ lib/beautiful.lua.in |   13 ++++++++++++-
+ 1 files changed, 12 insertions(+), 1 deletions(-)
+
+diff --git a/lib/beautiful.lua.in b/lib/beautiful.lua.in
+index 476747d..9997329 100644
+--- a/lib/beautiful.lua.in
++++ b/lib/beautiful.lua.in
+@@ -29,6 +29,17 @@ module("beautiful")
+ -- Local data
+ local theme
+ 
++local wallpaper = {}
++-- Checks the entries in the wallpaper_cmd are valid.
++-- @param tw A table with wallpaper commands.
++-- @return False if tw length is zero or if any entries in tw are not strings.
++function wallpaper.is_valid(tw)
++    for _, v in pairs(tw) do
++        if type(v) ~= 'string' then return false end
++    end
++    return (#tw > 0) and true
++end
++
+ --- Init function, should be runned at the beginning of configuration file.
+ -- @param path The theme file path.
+ function init(path)
+@@ -49,7 +60,7 @@ function init(path)
+             end
+ 
+             -- setup wallpaper
+-            if theme.wallpaper_cmd then
++            if wallpaper.is_valid(theme.wallpaper_cmd) then
+                 for s = 1, capi.screen.count() do
+                     util.spawn(theme.wallpaper_cmd[util.cycle(#theme.wallpaper_cmd, s)], false, s)
+                 end
+-- 
+1.7.7.2
+

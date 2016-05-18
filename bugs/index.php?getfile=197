@@ -1,0 +1,33 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 99df879..cbfbf95 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -30,15 +30,6 @@ modkey = "Mod4"
+ -- Table of layouts to cover with awful.layout.inc, order matters.
+ layouts =
+ {
+-    awful.layout.suit.tile,
+-    awful.layout.suit.tile.left,
+-    awful.layout.suit.tile.bottom,
+-    awful.layout.suit.tile.top,
+-    awful.layout.suit.fair,
+-    awful.layout.suit.fair.horizontal,
+-    awful.layout.suit.max,
+-    awful.layout.suit.max.fullscreen,
+-    awful.layout.suit.magnifier,
+     awful.layout.suit.floating
+ }
+ 
+@@ -393,9 +384,12 @@ awful.hooks.manage.register(function (c, startup)
+         awful.client.movetotag(tags[target.screen][target.tag], c)
+     end
+ 
++
+     -- Do this after tag mapping, so you don't see it on the wrong tag for a split second.
+     client.focus = c
+ 
++    awful.placement.no_overlap(c)
++
+     -- Set key bindings
+     c:keys(clientkeys)
+ 

@@ -1,0 +1,56 @@
+From 487a6b87ab274c6b57b88dc61df749959a286c6e Mon Sep 17 00:00:00 2001
+From: Hiltjo Posthuma <hiltjo@codemadness.org>
+Date: Sun, 6 Dec 2009 16:42:32 +0100
+Subject: [PATCH] Tag a client after properties are set
+
+Make sure to tag a client with the set of current tags after all client
+properties are set.
+
+Fixes #FS664.
+
+Signed-off-by: Hiltjo Posthuma <hiltjo@codemadness.org>
+---
+ lib/awful/rules.lua.in |    7 ++++++-
+ lib/awful/tag.lua.in   |    1 -
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/lib/awful/rules.lua.in b/lib/awful/rules.lua.in
+index 8859b2a..dc9b6a2 100644
+--- a/lib/awful/rules.lua.in
++++ b/lib/awful/rules.lua.in
+@@ -89,7 +89,9 @@ end
+ 
+ --- Apply rules to a client.
+ -- @param c The client.
+-function apply(c)
++-- @param startup Executed at startup ? (optional, default is false)
++function apply(c, startup)
++    startup = startup or false
+     local props = {}
+     local callbacks = {}
+     for _, entry in ipairs(rules) do
+@@ -129,6 +131,9 @@ function apply(c)
+         callback(c)
+     end
+ 
++    -- Apply tags.
++    atag.withcurrent(c, startup)
++
+     -- Do this at last so we do not erase things done by the focus
+     -- signal.
+     if props.focus then
+diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
+index 949a83d..416753d 100644
+--- a/lib/awful/tag.lua.in
++++ b/lib/awful/tag.lua.in
+@@ -374,7 +374,6 @@ capi.client.add_signal("manage", function(c, startup)
+             c.screen = capi.mouse.screen
+         end
+     end
+-    withcurrent(c, startup)
+     c:add_signal("property::screen", withcurrent)
+ end)
+ 
+-- 
+1.6.5.3
+

@@ -1,0 +1,30 @@
+From ec0e1462a16fd4047643ace142f04f47e2b016ac Mon Sep 17 00:00:00 2001
+From: perry <perry.hargrave@gmail.com>
+Date: Tue, 28 Apr 2009 00:05:28 -0700
+Subject: [PATCH 3/4] theme_path: change theme path to be suffixed with *.lua
+
+follows change in beautiful to dofile() instead of reading plain
+text
+---
+ awesomerc.lua.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 8d99906..0138e0f 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -8,9 +8,9 @@ require("naughty")
+ -- {{{ Variable definitions
+ -- Themes define colours, icons, and wallpapers
+ -- The default is a dark theme
+-theme_path = "@AWESOME_THEMES_PATH@/default/theme"
++theme_path = "@AWESOME_THEMES_PATH@/default/theme.lua"
+ -- Uncommment this for a lighter theme
+--- theme_path = "@AWESOME_THEMES_PATH@/sky/theme"
++-- theme_path = "@AWESOME_THEMES_PATH@/sky/theme.lua"
+ 
+ -- Actually load theme
+ beautiful.init(theme_path)
+-- 
+1.6.2.4
+

@@ -1,0 +1,511 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#812 : Flash settings menu not responding to clicks</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=812" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#812 - Flash settings menu not responding to clicks  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=531">Maarten van Casteren (Maartenvc)</a>     	 - Friday, 10 September 2010, 16:56 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Monday, 02 May 2011, 17:32 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Hello all,<br />
+<br />
+I&#039;ve been experimenting with the latest git version of awesome and have encountered a problem with running flash applets in firefox. I&#039;m mainly using gentoo but have also observed the problem with a compiled build from git on ubuntu 10.04.1.<br />
+<br />
+Versions:<br />
+Firefox - 3.6.8<br />
+Flashplayer - 10.1.82.76<br />
+gtk+ - 2.20.1-r1<br />
+<br />
+Problem:<br />
+The problem begins when rightclicking inside the flash applet and going into the settings menu, or if a flash applet attempts to access your webcam/microphone. The dialog screen that appears inside the flash applet does not react to mouse clicks at all.<br />
+<br />
+How to test:<br />
+The following webcam tutorial flash applet attempts to access the webcam and pops up a dialog asking for permission, which does not react to clicks.<br />
+<br /><a href="
+http://www.newgrounds.com/portal/view/326194">
+http://www.newgrounds.com/portal/view/326194</a><br />
+<br />
+The settings dialog can be opened by rightclicking in any flash applet.<br />
+<br />
+When did it appear:<br />
+I&#039;ve tracked it down to the following point in git master<br />
+<br />
+2010-08-08 - Gregor Best - fix some deprecated atom constants<br />
+<br />
+This version does not exhibit the problem - the settings dialog responds to mouse clicks.<br />
+<br />
+2010-08-09 - Uli Schlachter - Turn this into a reparenting WM<br />
+<br />
+This version starts exhibiting the problem - settings dialog no longer responds to mouse clicks.<br />
+<br />
+Can anyone else confirm this is happening for them too? If so, does anyone have some ideas about what&#039;s going wrong and how to fix it?<br />
+<br />
+Regards, Maarten</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Monday, 02 May 2011, 17:32 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Deferred<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Reporter says:<br />
+<br />
+On Gentoo with awesome 3.4.8, I&#039;ve
+tried the latest version of flash 10 in
+Firefox 4. The problem seems to be gone
+now.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2324" id="comment2324"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2324">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 06:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t have flash. Let&#039;s just blame flash. Better ideas?</div></div>
+
+  
+    <em>
+    <a name="comment2342" id="comment2342"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2342">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=531">Maarten van Casteren (Maartenvc)</a> -
+    Wednesday, 15 September 2010, 09:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The settings dialog seems to work if the flash applet can be set to fullscreen mode such as a youtube video. After switching back to embedded mode it stops working again.<br />
+<br />
+Also found a bug thread on ubuntu that seems to be a similar problem:<br /><a href="
+http://ubuntuforums.org/showthread.php?t=978212">
+http://ubuntuforums.org/showthread.php?t=978212</a><br />
+<br />
+I&#039;ve tried using the workaround described in the thread of setting: <br />
+WindowlessDisable=true<br />
+in the file: /etc/adobe/mms.cfg<br />
+However this hasn&#039;t solved anything.<br />
+<br />
+Another workaround described there, setting:<br />
+AVHardwareDisable=false<br />
+does prevent plugins from popping up a box to ask for webcam/mic permission, but that just breaks plugins that use the webcam, and it doesn&#039;t fix the unclickable settings manager.<br />
+<br />
+I&#039;ve had to add:<br />
+export GDK_NATIVE_WINDOWS=1<br />
+to a wrapper that starts firefox to get flash plugins to respond to clicks at all. I&#039;m not sure if that is related to this bug, but it&#039;s a problem that seems to happen to people using Compiz and at least one other person using awesome.<br />
+Relevant bug thread for this other problem:<br /><a href="
+https://bugs.launchpad.net/ubuntu/+source/flashplugin-nonfree/+bug/410407">
+https://bugs.launchpad.net/ubuntu/+source/flashplugin-nonfree/+bug/410407</a><br />
+<br />
+I&#039;d like to migrate from the now unmaintained Ion3 to awesome, which is the perfect replacement with the lua scripting extensibility. I&#039;m willing to help solve this but I could use some pointers on where to start digging and looking around.</div></div>
+
+  
+    <em>
+    <a name="comment2343" id="comment2343"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2343">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 15 September 2010, 09:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t really have any idea what to do about this. <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762" title="Researching | mozplugger freezes desktop (works in wmii) | 0%" >FS#762</a> sounds remotely related to this.<br />
+<br />
+Does flash create its own window when ignores mouse clicks / with the GDK_NATIVE_WINDOW workaround?<br />
+To find out, run &quot;xwindow -tree&quot; in a terminal and click on the browser window. It lists all child windows, no idea how to find out if one of them is flash.<br />
+X11 input handling is ugly. :(<br />
+<br />
+(Boy, ubuntu bug reports are always spammy)</div></div>
+
+  
+    <em>
+    <a name="comment2349" id="comment2349"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2349">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=531">Maarten van Casteren (Maartenvc)</a> -
+    Thursday, 16 September 2010, 09:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">To answer your question the short way: From my tests with xwininfo, it seems to me flash creates its own window (several recursive ones, in fact) for running the plugin, but no additional ones when opening the settings manager.<br />
+<br />
+Here&#039;s the long version:<br />
+With GDK_NATIVE_WINDOW=1, I ran xwininfo -tree on a fresh firefox window with google open, then ran it again after opening the webcam flash tutorial in the same tab.<br />
+<br />
+The results are attached (gdknativeon-google and gdknativeon-webcamtutorial), the difference between the two:<br />
+-              2 children:<br />
++              3 children:<br />
++              0xe0136f (has no name): ()  1278x906+0+0  +1+117<br />
++                 1 child:<br />
++                 0xe01473 (has no name): ()  550x400+190+386  +191+503<br />
++                    1 child:<br />
++                    0xe01474 (has no name): ()  550x400+0+0  +191+503<br />
++                       1 child:<br />
++                       0xe01475 (has no name): ()  550x400+0+0  +191+503<br />
++                          1 child:<br />
++                          0xe01476 (has no name): ()  550x400+0+0  +191+503<br />
+<br />
+There is one new child window the same size as a firefox tab, which has a child window (and 3 more recursive children) with much smaller geometry. 550x400 seems about right for the size of that flash applet. There is no further difference in the xwininfo output if I open the flash settings menu afterward.<br />
+<br />
+With GDK_NATIVE_WINDOW removed from the wrapper, (gdknativeoff-google and gdknativeoff-webcamtutorial) the difference between the two caused by the flash applet looks the same as above, but both of these versions have fewer windows on the way down to the leaves of the tree. In this test case, the flash applet does not respond to clicks even outside the settings window here, but still reacts to mouseover events. Also, holding down ctrl makes the clicks come through in the content of the applet, but this does not help for the settings manager.<br />
+<br />
+Regardless of this GDK_NATIVE_WINDOW variable&#039;s setting, the settings manager dialog is unclickable.</div></div>
+
+      <div class="attachments">
+          <a title="gdknativeon-google" href="?getfile=344" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            gdknativeon-google
+                  </a>
+                  (0.6 KiB)
+          <br />
+          <a title="gdknativeon-webcamtutorial" href="?getfile=345" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            gdknativeon-webcamtutorial
+                  </a>
+                  (1.1 KiB)
+          <br />
+          <a title="gdknativeoff-google" href="?getfile=346" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            gdknativeoff-google
+                  </a>
+                  (0.4 KiB)
+          <br />
+          <a title="gdknativeoff-webcamtutorial" href="?getfile=347" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            gdknativeoff-webcamtutorial
+                  </a>
+                  (0.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2362" id="comment2362"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2362">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 17 September 2010, 08:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, no idea. Flash is weird.</div></div>
+
+  
+    <em>
+    <a name="comment2387" id="comment2387"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#comment2387">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=531">Maarten van Casteren (Maartenvc)</a> -
+    Monday, 27 September 2010, 12:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Found a post in the arch linux forums that might shed some more light on the problem:<br />
+<br /><a href="
+https://bbs.archlinux.org/viewtopic.php?pid=755318#p755318">
+https://bbs.archlinux.org/viewtopic.php?pid=755318#p755318</a><br />
+<br />
+An eclipse user had a similar experience where the buttons were unresponsive to clicks. Apparently it&#039;s created by a combination of a recent GTK version and an app that does weird X-specific hacks.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=812#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="812" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

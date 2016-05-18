@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#434 : Gkrellm Configure dialog is inaccessable</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=434&amp;opened=195&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=195&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=421&amp;opened=195&amp;status%5B0%5D=" title="Not a bug | iceweasel is floating on restart | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#434 - Gkrellm Configure dialog is inaccessable  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a>     	 - Friday, 23 January 2009, 00:14 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Tuesday, 03 February 2009, 09:28 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> (2009-01-23)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I&#039;m running v3.1-203-gcc58b84 but this has been happening forever for me.<br />
+<br />
+When running a gkrellm in docked or non-docked mode, the configuration dialog can&#039;t be seen.<br />
+<br />
+It kinda like it&#039;s not in any tags.  It&#039;s got some weird negative X and Y geometry.<br />
+<br />
+If you right click on the taskbar, you can see it in the list that pops up, but selecting does (apparently) nothing.<br />
+<br />
+If you reset awesome while it is open, it appears as a regular tiled client. (default rc.lua)<br />
+<br />
+xwininfo and xprop can show stuff by name, even if you can&#039;t select it with the mouse or keyboard:<br />
+<br />
+$ xwininfo -name &#039;GKrellM Configuration&#039;<br />
+<br />
+xwininfo: Window id: 0xc0c9da &quot;GKrellM Configuration&quot;<br />
+<br />
+  Absolute upper-left X:  -472<br />
+  Absolute upper-left Y:  -363<br />
+  Relative upper-left X:  -472<br />
+  Relative upper-left Y:  -363<br />
+  Width: 472<br />
+  Height: 363<br />
+  Depth: 24<br />
+  Visual Class: TrueColor<br />
+  Border width: 1<br />
+  Class: InputOutput<br />
+  Colormap: 0x20 (installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: no<br />
+  Corners:  +-472+-363  -1278+-363  -1278-798  +-472-798<br />
+  -geometry 472x363+-472+-363<br />
+<br />
+and also xprop:<br />
+<br />
+$ xprop -name &#039;GKrellM Configuration&#039;<br />
+WM_STATE(WM_STATE):<br />
+                window state: Normal<br />
+                icon window: 0x0<br />
+WM_HINTS(WM_HINTS):<br />
+                Client accepts input or input focus: True<br />
+                Initial state is Normal State.<br />
+                bitmap id # to use for icon: 0xc0001e<br />
+                window id # of group leader: 0xc00001<br />
+XdndAware(ATOM) = BITMAP<br />
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0<br />
+_NET_WM_ICON(CARDINAL) = 16, 16, 4278190336, 4282466880, 4282468417, 4283058252, 4282863435, 4283519573, 4283651410, 4283652431, 4283980375, 4283651410, 4283651410, 4282863183, 4283256396, 4282863183, 4282466880, 4281021231, 4278190336, 4285560177, 4285297782, 4285560177, 4286020472, 4286612095, 4286612872, 4286612872, 4286612872, 4286612872, 4286612872, 4286612872, 4285560177, 4285297782, 4285034604, 4284835684, 4278190336, 4284640879, 4284575862, 4285297782, 4285628036, 4286612872, 4286155922, 4287535264, 4287535264, 4286547598, 4286352279, 4285891722, 4285628036, 4284970620, 4284311668, 4284245088, 4279177485, 4284114278, 4284051327, 4287535264, 4288719024, 4288719024, 4287535264, 4286547598, 4284311668, 4286812836, 4286352279, 4285432981, 4285299597, 4284575874, 4283918965, 4283256396, 4279639321, 4284114278, 4284575874, 4289900724, 4291809742, 4292994272, 4289506987, 4286020472, 4283192154, 4287470767, 4286812836, 4286154906, 4285300630, 4285166977, 4283918965, 4283256396, 4279639321, 4284114278, 4284115322, 4282470234, 4288913572, 4292994272, 4283058252, 4278914577, 4286812836, 4286812836, 4286352279, 4285825941, 4285299597, 4284970632, 4284115322, 4283256396, 4279639321, 4284114278, 4283328625, 4289117890, 4280099882, 4291809742, 4278914577, 4286154906, 4286812836, 4286945939, 4288668983, 4286357106, 4284709258, 4284115322, 4283328625, 4283256396, 4279835160, 4283128929, 4286352279, 4285891722, 4282931812, 4291809742, 4283061601, 4286154906, 4286812836, 4288668983, 4292934028, 4288668983, 4284774017, 4284774017, 4283328625, 4283256396, 4279639321, 4285824639, 4287802030, 4281349950, 4283918965, 4291809742, 4283061601, 4286154906, 4286812836, 4287412076, 4289720109, 4287282004, 4284051327, 4285166977, 4283328625, 4283256396, 4279639321, 4286945939, 4281613373, 4283061601, 4285166977, 4291809742, 4283192154, 4286154906, 4286812836, 4285959582, 4286357106, 4285628036, 4284774017, 4284051327, 4283328625, 4283256396, 4279835160, 4287802030, 4278914577, 4284115322, 4284774017, 4291809742, 4283061601, 4286154906, 4286812836, 4286812836, 4285432981, 4285299597, 4284774017, 4284311668, 4283328625, 4283256396, 4279639321, 4285824639, 4282931812, 4284051327, 4284575874, 4291086796, 4283192154, 4286154906, 4286812836, 4286154906, 4285825941, 4285299597, 4284709258, 4284051327, 4283328625, 4283256396, 4280361760, 4281744697, 4282470234, 4283918965, 4283918965, 4283061601, 4282470234, 4284970632, 4285299597, 4285299597, 4284051327, 4283524983, 4283918965, 4284311668, 4282931812, 4283256396, 4279639321, 4283128929, 4282470234, 4282667094, 4282470234, 4282931812, 4282931812, 4283128929, 4283128929, 4282864987, 4283128929, 4282864987, 4282470234, 4282470234, 4282863435, 4283980375, 4278190336, 4283651410, 4283785313, 4284309340, 4284245088, 4284835684, 4285230442, 4285230442, 4285560177, 4284835684, 4285034604, 4284245088, 4284245088, 4283785313, 4283785313, 4283519573, 4278190336, 4281021231, 4281611827, 4281613373, 4281809206, 4282466880, 4281613373, 4282468417, 4282466880, 4282468417, 4282466880, 4281744697, 4281809206, 4281021231, 4281611827, 4281021231<br />
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 12634588<br />
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL<br />
+_NET_WM_USER_TIME(CARDINAL) = 7322140<br />
+_NET_WM_USER_TIME_WINDOW(WINDOW): window id # 0xc0c9db<br />
+WM_CLIENT_LEADER(WINDOW): window id # 0xc00001<br />
+_NET_WM_PID(CARDINAL) = 2834<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF-8&quot;<br />
+WM_CLIENT_MACHINE(STRING) = &quot;stumpy&quot;<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+                program specified minimum size: 472 by 363<br />
+                window gravity: NorthWest<br />
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST<br />
+WM_CLASS(STRING) = &quot;Gkrellm_conf&quot;, &quot;Gkrellm&quot;<br />
+WM_ICON_NAME(STRING) = &quot;GKrellM Configuration&quot;<br />
+_NET_WM_ICON_NAME(UTF8_STRING) = 0x47, 0x4b, 0x72, 0x65, 0x6c, 0x6c, 0x4d, 0x20, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e<br />
+WM_NAME(STRING) = &quot;GKrellM Configuration&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = 0x47, 0x4b, 0x72, 0x65, 0x6c, 0x6c, 0x4d, 0x20, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Tuesday, 03 February 2009, 09:28 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+6c963a6eed168bf8b051094325362c5320fa8ca8
+<br />
+Author: Julien Danjou
+&lt;julien@danjou.info&gt;<br />
+Date:   Tue Feb 3 10:24:04 2009 +0100<br
+/>
+<br />
+    client: check tags even after
+transient/group tag copy (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=434&amp;opened
+=195&amp;status%5B0%5D=" title="Fixed |
+Gkrellm Configure dialog is inaccessable
+| 100%"  class =
+"closedtasklink">FS#434</a>&#160;</del>)
+<br />
+    <br />
+    Signed-off-by: Julien Danjou
+&lt;julien@danjou.info&gt;<br />
+<br />        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (7)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1056" id="comment1056"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1056">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 02 February 2009, 08:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can you try latest git?</div></div>
+
+  
+    <em>
+    <a name="comment1057" id="comment1057"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1057">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 13:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">v3.1-231-gae6a598 has the same behavior.<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment1058" id="comment1058"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1058">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 14:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The window is never assigned to a tag because group !=0 in client_manage in client.c<br />
+<br />
+However, client_duplicate_tags() probably does nothing because gkrellm is sticky and is not assigned to any tag?</div></div>
+
+  
+    <em>
+    <a name="comment1059" id="comment1059"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1059">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 14:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, this fixes it for me.  No idea how this affects other clients.<br />
+<br />
+diff --git a/client.c b/client.c<br />
+index 4d3f5c9..8722eae 100644<br />
+--- a/client.c<br />
++++ b/client.c<br />
+@@ -562,7 +562,7 @@ client_manage(xcb_window_t w, xcb_get_geometry_reply_t *wgeom, int phys_screen,<br />
+     {<br />
+         if(c-&gt;transient_for)<br />
+             client_duplicate_tags(tc, c);<br />
+-        else if (group)<br />
++        else if (group &amp;&amp; !group-&gt;issticky)<br />
+             client_duplicate_tags(group, c);<br />
+         else<br />
+         {<br /></div></div>
+
+  
+    <em>
+    <a name="comment1060" id="comment1060"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1060">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 14:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Of course, that seems to break iceweasel.  Can&#039;t see the browse window now.  For example, the file upload browse button to attach a file on this very page.<br />
+<br />
+Fouey.<br /></div></div>
+
+  
+    <em>
+    <a name="comment1061" id="comment1061"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1061">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 14:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hmm.  Forget my last comment.  Seems to be working fine now!</div></div>
+
+  
+    <em>
+    <a name="comment1062" id="comment1062"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#comment1062">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=195">Dale P. Smith (dsmith)</a> -
+    Monday, 02 February 2009, 17:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">More detailed explanation of what is going on.<br />
+<br />
+The problem is that the configure window is never assigned to any tags.  This is because group is !0.  The call to client_duplicate_tags() ends up doing nothing because group (the gkrellm window) is sticky and has no tags.  So the same no tags are assigned to the configure window.  oops.<br />
+<br />
+My patch above only assigns the window to the group tags if the group window is not sticky.  That fixes this case for me, but what if there is some other case where group is !0 and the group window has no tags? The code should probably be something more like<br />
+<br />
+  if (group &amp;&amp; !client_has_one_or_more_tags(group))<br />
+<br />
+<br /></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=434#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="434" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

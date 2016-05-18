@@ -1,0 +1,17 @@
+diff --git a/objects/client.c b/objects/client.c
+index 4f912d8..4b811b1 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -598,6 +598,12 @@ client_send_configure(client_t *c)
+     geometry.height -= c->titlebar[CLIENT_TITLEBAR_TOP].size;
+     geometry.height -= c->titlebar[CLIENT_TITLEBAR_BOTTOM].size;
+ 
++    /* FIXME: Is this correct? */
++    geometry.x += c->border_width;
++    geometry.y += c->border_width;
++    geometry.width -= 2*c->border_width;
++    geometry.height -= 2*c->border_width;
++
+     xwindow_configure(c->window, geometry, c->border_width);
+ }
+ 

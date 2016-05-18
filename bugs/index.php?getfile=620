@@ -1,0 +1,124 @@
+
+ConfigureNotify event, serial 18, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 19, height 19,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 18, synthetic NO, window 0x3600003,
+    state VisibilityUnobscured
+
+PropertyNotify event, serial 18, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77784609, state PropertyNewValue
+
+ConfigureNotify event, serial 18, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 22, height 22,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 18, synthetic NO, window 0x3600003,
+    state VisibilityPartiallyObscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77784629, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 26, height 26,
+    border_width 0, above 0x16000c2, override NO
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77784657, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 28, height 28,
+    border_width 0, above 0x16000c2, override NO
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 19, height 19,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityUnobscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77785512, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 22, height 22,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityPartiallyObscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77785522, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 26, height 26,
+    border_width 0, above 0x16000c2, override NO
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77785535, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 28, height 28,
+    border_width 0, above 0x16000c2, override NO
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 19, height 19,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityUnobscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77786576, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 22, height 22,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityPartiallyObscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77786586, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 26, height 26,
+    border_width 0, above 0x16000c2, override NO
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77786598, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 28, height 28,
+    border_width 0, above 0x16000c2, override NO
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 19, height 19,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityUnobscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77787542, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 22, height 22,
+    border_width 0, above 0x16000c2, override NO
+
+VisibilityNotify event, serial 19, synthetic NO, window 0x3600003,
+    state VisibilityPartiallyObscured
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77787557, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 26, height 26,
+    border_width 0, above 0x16000c2, override NO
+
+PropertyNotify event, serial 19, synthetic NO, window 0x3600003,
+    atom 0x28 (WM_NORMAL_HINTS), time 77787571, state PropertyNewValue
+
+ConfigureNotify event, serial 19, synthetic NO, window 0x3600003,
+    event 0x3600003, window 0x3600003, (114,0), width 28, height 28,
+    border_width 0, above 0x16000c2, override NO

@@ -1,0 +1,22 @@
+--- client.lua~
++++ client.lua
+@@ -435,6 +435,8 @@
+ -- @param c Optional client to toggle, otherwise the focused one is used.
+ function toggletag(target, c)
+     local sel = c or capi.client.focus
++    -- If 'c' is focused client, clear it so we trigger refocus at end
++    if c == capi.client.focus then c = nil end
+     -- Check that tag and client screen are identical
+     if sel and sel.screen == target.screen then
+         local tags = sel:tags()
+@@ -453,6 +455,11 @@
+             tags[#tags + 1] = target
+         end
+         sel:tags(tags)
++        -- if no client passed, regain focus for client
++        if not c then
++           capi.client.focus = sel
++           sel:raise()
++        end
+     end
+ end

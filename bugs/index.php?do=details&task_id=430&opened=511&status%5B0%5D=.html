@@ -1,0 +1,638 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#430 : Java (Swing) dialogs don&#039;t go away properly</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=430&amp;opened=511&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=511&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#430 - Java (Swing) dialogs don&#039;t go away properly  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=216">Espen Wiborg (espenhw)</a>     	 - Tuesday, 13 January 2009, 09:36 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 12 August 2010, 10:48 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.1</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> (2010-07-29)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">In Java, it is common practice to create a dialog once, and then calling setVisible(boolean) to show/hide it as needed.  Awesome doesn&#039;t seem to like this; the dialog shows up, is dismissed normally, but then reappears when the focus changes.  The &quot;reappeared&quot; dialog doesn&#039;t have any Java event handlers attached, apparently, so it cannot be dismissed; the only option is to move it out of the way.<br />
+<br />
+I can reliably reproduce this with almost any Java application (e.g. SoapUI) using awesome built from the 3.1 branch (with one difference:  I&#039;ve cherry-picked the &quot;client: allow selection of nofocus windows&quot; commit from master); I haven&#039;t tried it with master yet.<br />
+<br />
+I&#039;ve dug a bit, and found that the dialog reappears when client.focus is set.<br />
+<br />
+If needed, I can provide a small Java program that exhibits the issue.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 12 August 2010, 10:48 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Fixed in master:<br />
+<br />
+commit
+102063dbbdfb0bc9f43268d98f7dcb5269547395
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Fri Jul 30 20:54:20 2010
++0200<br />
+<br />
+    Turn this into a reparenting WM<br
+/>
+    <br />
+    Each window is now reparented under
+a window created by awesome. This window
+is<br />
+    NOT visible, this commit should not
+cause any visible differences. Instead,
+this<br />
+    is done to work around problems with
+X11.<br />
+    <br />
+    The only alternative would be to ban
+windows by moving them offscreen which
+is<br />
+    ugly in itself and breaks pagers.
+Doing it like this seems to be the
+better<br />
+    solution.<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (13)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1020" id="comment1020"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment1020">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Tuesday, 13 January 2009, 09:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That&#039;d be lovely to provide  a java program and test against master.</div></div>
+
+  
+    <em>
+    <a name="comment1021" id="comment1021"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment1021">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=216">Espen Wiborg (espenhw)</a> -
+    Wednesday, 14 January 2009, 20:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tested with master and the default config; interestingly, I cannot reproduce.  However, master exhibits a different problem:  When the dialog should be redisplayed, it doesn&#039;t appear.<br />
+<br />
+The attached java program exhibits the issue; the &quot;Toggle&quot; button toggles the visibility of a dialog (the OK button in the dialog does nothing).<br />
+<br />
+With 3.1, the dialog can be toggled, but any change of focused client makes the dialog pop up if it has ever been visible.<br />
+<br />
+With master, the dialog can be shown and then hidden; it will never be shown again.<br />
+<br />
+Very puzzling...</div></div>
+
+      <div class="attachments">
+          <a title="TestWindow.java" href="?getfile=149" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            TestWindow.java
+                  </a>
+                  (1.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment1022" id="comment1022"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment1022">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=216">Espen Wiborg (espenhw)</a> -
+    Thursday, 15 January 2009, 08:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Bah.  This may be Java doing something stupid.<br />
+<br />
+I normally run with wmname set to &quot;compiz&quot; to trick Java windows into displaying (as I have issues with MToolkit and some applications I need at work).<br />
+<br />
+I just tried the attached program with AWT_TOOLKIT=MToolkit, and it worked just fine.<br />
+<br />
+So don&#039;t expend lots of effort on this issue; but of course, if there&#039;s a simple fix it would be nice... :)<br /></div></div>
+
+  
+    <em>
+    <a name="comment2169" id="comment2169"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2169">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Thursday, 29 July 2010, 18:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">MToolkit is very buggy and doesn&#039;t work for many applications... So problem is still open.</div></div>
+
+  
+    <em>
+    <a name="comment2173" id="comment2173"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2173">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by Anonymous Submitter -
+    Thursday, 29 July 2010, 21:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I think this is awesome bug too. Java dialogs work properly in non-tiled openbox, in tiled xmonad and many other window managers.<br />
+It seems like in awesome everything would be fine if we&#039;ll call c:unmanage() for such windows (or at least c.hidded=true). Maybe this isn&#039;t very beautiful solution, but I want at least to have possibility to implement it in lua - I want some signal, like &#039;onkill&#039; which called when I&#039;m trying to close window.</div></div>
+
+  
+    <em>
+    <a name="comment2174" id="comment2174"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2174">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 29 July 2010, 21:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Meh. Will take a look once I find a stable internet connection and some time. Alternatively, how bad would it be if we added &quot;does not support java&quot; as an official feature for awesome? :/</div></div>
+
+  
+    <em>
+    <a name="comment2175" id="comment2175"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2175">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 30 July 2010, 11:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Java is breaking ICCCM here. A client which wants its windows to be unmanaged has to unmap that window and sent a synthetic unmap notify to the root window. According to xtrace, the test app doesn&#039;t do that (XWithdrawWindow() is the Xlib function for this).<br />
+<br />
+Could somebody write me a java test app that hides its window automatically 10 secs after it was made visible? I&#039;d like someone to test if the following works with other WMs than awesome:<br />
+- Start the test app<br />
+- Switch to another workspace, the java test window is no longer visible<br />
+- Wait until the window should be hidden<br />
+- Go back to the original workspace</div></div>
+
+  
+    <em>
+    <a name="comment2176" id="comment2176"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2176">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 30 July 2010, 12:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">On second thought, scratch that test app. It will work everywhere else. :(<br />
+<br />
+Awesome is the only non-reparenting window manager I know that bans windows by unmapping them. If they are banned by moving them offscreen, java will still work. If the window manager is reparenting, java will still work. X11 is utterly broken. :(</div></div>
+
+  
+    <em>
+    <a name="comment2194" id="comment2194"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2194">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Saturday, 31 July 2010, 17:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Test application you want is in attach. It seems like it works fine in xmonad.<br />
+I think note &quot;does not support java&quot; isn&#039;t proper solution :) If you want do any special for java, let&#039;s add possibility of a dirty hack at least - add corresponding signal which triggered when window unmaping and describe in wiki how to add listener to this signal with c:unmanage() call.<br />
+On hiding dialogs jdk6 do following (from x11trace):<br />
+004:&lt;:0286: 60: Request(18): ChangeProperty mode=Replace(0x00) window=0x04000016 property=0x23(&quot;WM_HINTS&quot;) type=0x23(&quot;WM_HINTS&quot;) data=0x00000041,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x04000007;<br />
+004:&lt;:0287:  8: Request(10): UnmapWindow window=0x04000016<br />
+004:&gt;:0287: Event PropertyNotify(28) window=0x04000016 atom=0x23(&quot;WM_HINTS&quot;) time=0x0131de55 state=NewValue(0x00)<br />
+004:&gt;:0287: Event UnmapNotify(18) event=0x04000016 window=0x04000016 from-configure=false(0x00)<br />
+So, awesome can track this and send corresponding signal in lua.<br />
+<br />
+It seems like last development versions of jdk7 (or openjdk with icedtea patches) is more clever... it do following on hiding dialogs (and it works properly in awesome):<br />
+005:&lt;:0563: 60: Request(18): ChangeProperty mode=Replace(0x00) window=0x04000013 property=0x23(&quot;WM_HINTS&quot;) type=0x23(&quot;WM_HINTS&quot;) data=0x00000041,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x04000007;<br />
+005:&lt;:0564:  8: Request(10): UnmapWindow window=0x04000013<br />
+005:&gt;:0564: Event PropertyNotify(28) window=0x04000013 atom=0x23(&quot;WM_HINTS&quot;) time=0x0132c143 state=NewValue(0x00)<br />
+005:&gt;:0564: Event UnmapNotify(18) event=0x04000013 window=0x04000013 from-configure=false(0x00)<br />
+005:&lt;:0565: 44: Request(25): SendEvent propagate=false(0x00) destination=0x0000015b event-mask=SubstructureNotify,SubstructureRedirect UnmapNotify(18) event=0x0000015b window=0x04000013 from-configure=false(0x00)<br />
+005:&gt;:0565: Event PropertyNotify(28) window=0x0000015b atom=0x12f(unrecognized atom) time=0x0132c147 state=NewValue(0x00)<br />
+005:&gt;:0565: Event PropertyNotify(28) window=0x04000013 atom=0x139(unrecognized atom) time=0x0132c147 state=Deleted(0x01)<br />
+005:&gt;:0565: Event PropertyNotify(28) window=0x04000013 atom=0x11a(&quot;WM_STATE&quot;) time=0x0132c147 state=NewValue(0x00)<br />
+005:&gt;:0565: Event PropertyNotify(28) window=0x0000015b atom=0x12e(unrecognized atom) time=0x0132c147 state=NewValue(0x00)<br />
+005:&lt;:0566: 20: Request(16): InternAtom only-if-exists=true(0x01) name=&#039;XIM_SERVERS&#039;<br />
+005:&gt;:0566:32: Reply to InternAtom: atom=None(0x0)<br />
+005:&lt;:0567: 24: Request(20): GetProperty delete=false(0x00) window=0x04000013 property=0x11a(&quot;WM_STATE&quot;) type=0x11a(&quot;WM_STATE&quot;) long-offset=0x00000000 long-length=0x00000001<br />
+005:&gt;:0567:36: Reply to GetProperty: type=0x11a(&quot;WM_STATE&quot;) bytes-after=0x00000004 data=0x00000000;<br />
+005:&lt;:0568: 20: Request(16): InternAtom only-if-exists=true(0x01) name=&#039;XIM_SERVERS&#039;<br />
+005:&gt;:0568:32: Reply to InternAtom: atom=None(0x0)<br />
+But these versions of jdk isn&#039;t official stable versions and have lack of some features, so many programs don&#039;t work with them or work incorrectly. So I think awesome must have any solution of this problem.<br /></div></div>
+
+      <div class="attachments">
+          <a title="Main.java" href="?getfile=334" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            Main.java
+                  </a>
+                  (0.7 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2197" id="comment2197"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2197">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 31 July 2010, 20:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">jdk6 does an UnmapWindow on the window which causes an UnmapNotify to be sent to awesome. The problem is that awesome also receives an UnmapNotify if you switch to another tag because it hides windows by unmapping them. So awesome can *NOT* track that signal since it can&#039;t tell the difference between those two events.<br />
+<br />
+jdk7 does an UnmapWindow and additionally does this:<br />
+005:&lt;:0565: 44: Request(25): SendEvent propagate=false(0x00) destination=0x0000015b event-mask=SubstructureNotify,SubstructureRedirect UnmapNotify(18) event=0x0000015b window=0x04000013 from-configure=false(0x00)<br />
+<br />
+This is a generated UnmapNotify. ICCCM (this standard is btw older than I am) mandates that java *has* to do this to hide its window. Awesome receives this generated UnmapNotify and then does the right thing. So the bug is in jdk6 not following the standard. There is not much that awesome can do about this since it can&#039;t tell the difference between &quot;I am switching to tag 4&quot; and &quot;java wants this window to be unmanaged&quot;.<br />
+<br />
+This works in all other window managers because awesome is the only non-reparenting WM which bans windows by unmapping them. E.g. dwm bans windows by just moving them outside of the visible region. Awesome doesn&#039;t do this because it breaks pagers.<br />
+Reparenting WMs solve this because they can tell the difference between &quot;I am switching to tag 5&quot; (UnmapNotify for the frame window under which java&#039;s window was reparented) and &quot;Java wants to unmanage its window&quot; (UnmapNotify for java&#039;s own window).<br />
+<br />
+So thanks to X11&#039;s brokeness, all non-reparenting WMs have to choose between breaking all pagers and running into problems with *broken* clients. Awesome has done the second choice, if the client is broken, then the results will be broken, too.</div></div>
+
+  
+    <em>
+    <a name="comment2205" id="comment2205"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2205">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Sunday, 01 August 2010, 14:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; jdk6 does an UnmapWindow on the window which causes an UnmapNotify to be sent to awesome. The problem is that awesome also receives an UnmapNotify if you switch to another tag because it hides windows by unmapping them. So awesome can *NOT* track that signal since it can&#039;t tell the difference between those two events.<br />
+Why? Awesome know what window it is hiding... so it isn&#039;t very big problem to separate true UnmapNotify coming from application and UnmapNotify triggered by awesome request.<br />
+If you don&#039;t want to change anything, at least give to user possibility of dirty hack through lua - send this notify as signal in lua, and user in rc.lua will check if current tag differ from java application&#039;s tag and ignore notify in this case, otherwise do c:unmanage(). Maybe this isn&#039;t so beautiful solution, but it will help to run java applications under awesome with less work on your side.<br /></div></div>
+
+  
+    <em>
+    <a name="comment2207" id="comment2207"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2207">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 02 August 2010, 15:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So if a java apps wants to hide its window while it&#039;s not on the currently visible tag, that will just continue to fail? That doesn&#039;t count as a solution.<br />
+<br />
+And if you want a signal for your rc.lua (no idea what you can do with a signal that cant be done properly from C):<br />
+<br />
+Open event.c and go to event_handle_unmapnotify(). After the following code:<br />
+<br />
+if((c = client_getbywin(ev-&gt;window)))<br />
+{<br />
+<br />
+Add this:<br />
+<br />
+luaA_object_push(globalconf.L, c);<br />
+luaA_object_emit_signal(globalconf.L, -1, &quot;my_foo_signal_with_no_proper_name&quot;, 0);<br />
+lua_pop(globalconf.L, 1);<br />
+<br />
+Once you notice that this doesn&#039;t help you at all, don&#039;t come back and say so in this bug report. It will not work!</div></div>
+
+  
+    <em>
+    <a name="comment2213" id="comment2213"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#comment2213">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 02 August 2010, 21:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I said that this isn&#039;t proper solution, but this will partly resolve very annoying bug, because dialogs usually close by action on this dialog (and this will give possibility to close unnecessary dialogs thought hot-key or close button on title bar, it is impossible to close them now at all). So this is partly dirty-hack solution, that can be very easy implemented and described in the wiki, nothing more.<br />
+If you want proper solution, you should remember the list of windows you are unmaping when tag is changed and filter UnmapNotify on this criteria (with corresponding update of this list).<br /></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=430#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="430" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+#0  0x00007f064a5ac1b5 in raise () from /lib/libc.so.6
+#1  0x00007f064a5ad5e0 in abort () from /lib/libc.so.6
+#2  0x00007f064a5e6e77 in ?? () from /lib/libc.so.6
+#3  0x00007f064a5ec406 in ?? () from /lib/libc.so.6
+#4  0x00007f064a5f11ac in free () from /lib/libc.so.6
+#5  0x00007f064ed02b1b in ?? ()
+   from //usr/lib64/opengl/nvidia/lib/libnvidia-tls.so.1
+#6  0x00000000004124ef in luaA_client_gc (L=0xd06b80)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/client.c:55
+#7  0x00007f064b1c8021 in ?? () from /usr/lib/liblua.so.5
+#8  0x00007f064b1c84a3 in ?? () from /usr/lib/liblua.so.5
+#9  0x00007f064b1c9c06 in ?? () from /usr/lib/liblua.so.5
+#10 0x00007f064b1ca298 in ?? () from /usr/lib/liblua.so.5
+#11 0x00007f064b1c7b97 in ?? () from /usr/lib/liblua.so.5
+#12 0x00007f064b1cef30 in lua_close () from /usr/lib/liblua.so.5
+#13 0x0000000000410bb6 in awesome_atexit ()
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/awesome.c:96
+#14 0x0000000000410be9 in awesome_restart ()
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/awesome.c:276
+#15 0x0000000000424dfe in luaA_panic (L=<value optimized out>)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/luaa.c:680
+#16 0x00007f064b1c7e86 in ?? () from /usr/lib/liblua.so.5
+#17 0x00007f064b1c3489 in lua_error () from /usr/lib/liblua.so.5
+#18 0x00007f064b1d43d2 in luaL_error () from /usr/lib/liblua.so.5
+#19 0x000000000043844f in luaA_object_emit_signal (L=0xd06b80, 
+    oud=<value optimized out>, name=0x43f4fb "property::name", nargs=0)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/common/luaobject.c:234
+#20 0x000000000041d31c in property_update_wm_name (c=0x160d4b8, reply=
+    0x1b8f2b0)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/property.c:68
+#21 0x000000000041d3db in property_handle_wm_name (
+    data=<value optimized out>, connection=<value optimized out>, 
+    state=<value optimized out>, window=<value optimized out>, 
+    name=<value optimized out>, reply=0x1b8f2b0)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/property.c:68
+#22 0x00007f064c505cf9 in ?? () from /usr/lib/libxcb-property.so.1
+#23 0x000000000041087d in a_xcb_check_cb (loop=<value optimized out>, 
+    w=<value optimized out>, revents=<value optimized out>)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/awesome.c:223
+#24 0x00007f064b3ea830 in ev_invoke_pending () from /usr/lib/libev.so.3
+#25 0x00007f064b3ef19d in ev_loop () from /usr/lib/libev.so.3
+#26 0x00000000004113a4 in main (argc=<value optimized out>, 
+    argv=<value optimized out>)
+    at /var/tmp/portage/x11-wm/awesome-3.4.2/work/awesome-3.4.2/awesome.c:572

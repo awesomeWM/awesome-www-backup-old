@@ -1,0 +1,598 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#876 : Libnotify spec requires that we handle some markup</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=876" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=757" title="Fixed | Image/Drawing System Overhaul With Cairo Bias | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#876 - Libnotify spec requires that we handle some markup  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a>     	 - Monday, 14 March 2011, 19:25 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 24 March 2011, 18:12 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 naughty		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.8</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">In an uncommon corner of the libnotify spec lurks this page:<br />
+<br /><a href="
+http://www.galago-project.org/specs/notification/0.9/x161.html">
+http://www.galago-project.org/specs/notification/0.9/x161.html</a><br />
+<br />
+The basic thing thing to take away is that the libnotify spec *optionally* requires that notify clients (such as awesome/naughty) interpret a limited HTML-style markup. Specifically, the &lt;a href=, &lt;b&gt;, &lt;u&gt;, &lt;i&gt;, and &lt;img src= tags. If we don&#039;t support them, they should be instead filtered out. It seems that Awesome supports some of these tags, but not &lt;a&gt;. Probably, what we do is just run the text through pango&#039;s markup system which doesn&#039;t entirely match the libnotify spec.<br />
+<br />
+At the moment, not very many programs seem to use this markup, but you can test that we don&#039;t support it by using notify-send. Ex: notify-send &quot;&lt;a href=\&quot;blah blah\&quot;&gt; test &lt;/a&gt;&quot;<br />
+<br />
+Sorry, don&#039;t want to test against next/master while at work, though I think this bug probably still exists there.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 24 March 2011, 18:12 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Won&#039;t fix<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Sorry, but I guess that all we can agree
+on is that the notification spec is
+ambigious.<br />
+We do work around &quot;broken&quot;
+markup by escaping &quot;&lt;&quot; and
+&quot;&gt;&quot; already for those apps
+that sent stuff like
+&quot;&lt;a&gt;&quot; in their
+notification - before, we just displayed
+an empty box.<br />
+Also, the next release will have
+naughty.config.notify_callback so that
+everyone can have his own
+interpretation.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (15)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2562" id="comment2562"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2562">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Monday, 14 March 2011, 19:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hmm, actually, maybe this was fixed. I guess I should update and see -_-</div></div>
+
+  
+    <em>
+    <a name="comment2563" id="comment2563"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2563">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 14 March 2011, 20:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">No changes in git/master in this regard.<br />
+<br />
+Also, could someone please fix the spec to be unambigious?<br />
+<br />
+The docs for GetCapabilities describe the &quot;body-hyperlinks&quot; cap like this:<br />
+  The server supports hyperlinks in the notifications.<br /><a href="
+http://www.galago-project.org/specs/notification/0.9/x408.html#command-get-capabilities">
+http://www.galago-project.org/specs/notification/0.9/x408.html#command-get-capabilities</a><br />
+<br />
+We return &quot;body&quot;, &quot;body-markup&quot; and &quot;icon-static&quot; from GetCapabilities.<br />
+<br />
+So to my understanding, awesome implements the spec properly and actually announces that it can&#039;t handle hyperlinks.<br />
+(The same applies to &quot;body-images&quot; and &quot;&lt;img src=foo&gt;&quot;)</div></div>
+
+  
+    <em>
+    <a name="comment2564" id="comment2564"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2564">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Monday, 14 March 2011, 23:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This is all kind of guesswork, but I guess the question is &quot;who is it that choses whether or not to send hyperlinks&quot; -- I bet it&#039;s the application. And further, I bet applications frequently can&#039;t be bothered to check what the server&#039;s settings are. As such, I would think that &quot;not supporting something&quot; would entail both announcing that you don&#039;t and enforcing it by filtering out whatever it is.<br />
+<br />
+But yeah, the spec sucks.</div></div>
+
+  
+    <em>
+    <a name="comment2565" id="comment2565"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2565">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 15 March 2011, 15:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Filtering out &lt;a&gt; and &lt;img&gt; tags would require some ugly regex. (Well, doable, but all regex is ugly!)<br />
+Also, so far I didn&#039;t see any reports of apps actually sending any of this tags. And our backup plan of just displaying the &quot;raw&quot; markup works good enough IMHO.<br />
+<br />
+I&#039;m tempted to say that the current state is good enough (for me).</div></div>
+
+  
+    <em>
+    <a name="comment2566" id="comment2566"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2566">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Tuesday, 15 March 2011, 19:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Kind of not cool for me. mumble, which I use daily, does nothing but spam me with &lt;a href tags that are an entire screen in width. I then must scramble to search through the massive ass string for who actually joined my channel or what they said.<br />
+<br />
+I guess I can fix it myself if necessary, though I&#039;m afraid of the master branch atm as it seems to buttrape obvious with some widget changes</div></div>
+
+  
+    <em>
+    <a name="comment2567" id="comment2567"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2567">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 15 March 2011, 20:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">No one mentioned mumble so far. ;-)<br />
+<br />
+What&#039;s the text for that &lt;a&gt; tags? I took a look at mumble&#039;s source and it&#039;s Log::log() which does notifications. However, I couldn&#039;t find anything call that with such a markup (but I didn&#039;t look too closely).</div></div>
+
+  
+    <em>
+    <a name="comment2568" id="comment2568"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2568">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Wednesday, 16 March 2011, 15:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">To be honest, I haven&#039;t looked at it too closely. It&#039;s a pretty long jumbled hash or something. I&#039;ll see if I can grab a screenshot of it later when the opportunity comes up</div></div>
+
+  
+    <em>
+    <a name="comment2569" id="comment2569"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2569">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Wednesday, 16 March 2011, 20:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">HA. CAUGHT ONE. HAH. Ignore my work/emails/whatever<br />
+<br /></div></div>
+
+      <div class="attachments">
+          <a title="message.png" href="?getfile=395" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/png; charset=binary" />
+            &nbsp;&nbsp;
+            message.png
+                  </a>
+                  (57.9 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2570" id="comment2570"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2570">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 16 March 2011, 21:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, &lt;span&gt; isn&#039;t mentioned anywhere in the spec (AFAIK) and I don&#039;t know what could handle the clientid URI-scheme. WTF?</div></div>
+
+  
+    <em>
+    <a name="comment2571" id="comment2571"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2571">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Wednesday, 16 March 2011, 21:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I know, right? Probably some bullshit like Gnome&#039;s notification handler handles some extension bullshit that they didn&#039;t bother documenting because they needed it that one time for some stupid hack and now other idiots caught on.<br />
+<br />
+I&#039;d be content if the span tags stay visible but the a ones get filtered out. Or just filter out all tags except b/u/i.</div></div>
+
+  
+    <em>
+    <a name="comment2572" id="comment2572"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2572">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=581">James (jpike)</a> -
+    Thursday, 17 March 2011, 09:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Andrei: you could use the naughty.config.notity_callback together with a regular expression to strip out the &lt;a&gt; tags.<br />
+<br />
+lua has a pitiful regular expression system but hopefully some bindings are provided to a decent regexp library.</div></div>
+
+  
+    <em>
+    <a name="comment2573" id="comment2573"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2573">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 17 March 2011, 15:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I like the callback idea, but only awesome 3.4.10 will actually have the callback. Anyway, something like this (untested) might work:<br />
+<br />
+naughty.config.notify_callback = function(args) args.text = string.gsub(args.text, &#039;&lt;[^&gt;]+&gt;&#039;, &#039;&#039;) return args end -- Regex always look like a cat slept on the keyboard<br />
+<br />
+For what the clientid:// URLs mean, I asked #mumble: &lt;pcgod&gt; hmm actually you can&#039;t handle them... they&#039;re not useful for anything outside the client...</div></div>
+
+  
+    <em>
+    <a name="comment2574" id="comment2574"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2574">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Friday, 18 March 2011, 20:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">James: yeah, I&#039;m pretty much and old awesome developer come back from the dead. I&#039;m sure I can hack around this if I wanted, but that&#039;s not why I&#039;m raising the bug.<br />
+<br />
+The point is that it&#039;s my interpretation of the spec that we should be stripping out these tags in our core libnotify handler<br />
+<br />
+Though clearly, mumble is doing some sketchy shit on their end also</div></div>
+
+  
+    <em>
+    <a name="comment2581" id="comment2581"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2581">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Thursday, 24 March 2011, 19:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So what&#039;s the decision here? Wontfix?</div></div>
+
+  
+    <em>
+    <a name="comment2582" id="comment2582"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#comment2582">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=180">Andrei Thorp (garoth)</a> -
+    Thursday, 24 March 2011, 19:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, yes it is</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=876#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="876" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

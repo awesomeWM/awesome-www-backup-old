@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>awesome - Error - Watchlist [en]</title>
+		<link>https://awesomewm.org/wiki/Special:Watchlist</link>
+		<description>Watchlist</description>
+		<language>en</language>
+		<generator>MediaWiki 1.24.2</generator>
+		<lastBuildDate>Sun, 15 May 2016 23:32:10 GMT</lastBuildDate>
+		<item>
+			<title>Error (wlnotloggedin)</title>
+			<link></link>
+			<guid isPermaLink="false"></guid>
+			<description>You must be logged-in to have a watchlist</description>
+											</item>
+	</channel>
+</rss>

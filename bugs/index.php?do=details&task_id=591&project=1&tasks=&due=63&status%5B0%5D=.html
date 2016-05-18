@@ -1,0 +1,554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#591 : Rewrite awful.menu using widget layout</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=591&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=636&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=" title="Duplicate | Add reparenting support between wibox and clients | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;tasks=&amp;due=63&amp;status%5B0%5D=">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=571&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=" title="New | Remove c:swap() | 100%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#591 - Rewrite awful.menu using widget layout  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>     	 - Tuesday, 25 August 2009, 16:14 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 31 March 2011, 10:31 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Evolution Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 awful		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 4.0			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">2 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> (2011-02-27)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> (2010-09-27)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">awful.menu currently uses a wibox for each menu entry. It should switch to awful.widget.layout usage to create only one wibox by submenu.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+						<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=873&amp;project=1&amp;tasks=&amp;due=63&amp;status%5B0%5D=" title="Implemented | get widgets geometry from layout | 100%"  class = "closedtasklink">FS#873 - get widgets geometry from layout</a>&#160;</del>				<br />
+		
+		<br class="DoNotPrint" />
+
+				<a class="DoNotPrint" href="https://awesomewm.org/bugs/index.php?do=depends&amp;task_id=591">View Dependency Graph</a>
+		<br />
+		<br />
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 31 March 2011, 10:31 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Implemented<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+ea40a922edaa7f2b50501a16462f30407eeef8d4
+<br />
+Author: dodo
+&lt;dodo@blacksec.org&gt;<br />
+Date:   Wed Mar 30 23:11:41 2011
++0200<br />
+<br />
+    awful.menu: rewrite        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (9)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1517" id="comment1517"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment1517">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 08 November 2009, 10:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just thought about this and wondered: How would the menu find out which menu entry is hovered? It would either need a key grabber or a widget which covers each &quot;item&quot; completely, but this can&#039;t work since we need a text widget and an imagebox...<br />
+<br />
+Thoughts?</div></div>
+
+  
+    <em>
+    <a name="comment1519" id="comment1519"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment1519">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Sunday, 08 November 2009, 13:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t understand the question. Widgets receive mouse::{enter,leave} signals.</div></div>
+
+  
+    <em>
+    <a name="comment2554" id="comment2554"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2554">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> -
+    Wednesday, 02 March 2011, 21:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">i don&#039;t know if this is still needed, but i wrote a rewrite of awful.menu<br />
+<br /><a href="
+https://github.com/dodo/uzful/blob/master/menu/rewrite.lua">
+https://github.com/dodo/uzful/blob/master/menu/rewrite.lua</a><br />
+<br />
+if you like i can generate a patch for you.<br />
+<br />
+there are currently some dirty hacks in it:<br />
+- i doesn&#039;t found a possibility to get the full size of all widgets in a layout or the position of a widget in a layout<br />
+  so i &#039;hard-coded&#039; it →<a href=" https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L141"> https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L141</a><br />
+                      →<a href=" https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L103"> https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L103</a><br />
+- i added code to the wibox.widget.background widget to set the foreground color (not really dirty i guess :p)<br />
+- xpm images causing errors → disabled:<a href=" https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L494"> https://github.com/dodo/uzful/blob/master/menu/rewrite.lua#L494</a><br />
+<br />
+new features:<br />
+- cleaner code (i suppose)<br />
+- better theme inheritance for menus<br />
+- menu entries are theme-able<br />
+- user can build his own menu entry constructor (so different menu entries are possible)<br />
+- only one wibox per menu will be used<br />
+- menu entry cmd function gets the menu and menu entry as arguments (so changing the menu or menu entry by clicking it is possible)<br />
+- menu entries are deletable (even by user)<br />
+- menu entries are addable (even by user)<br />
+<br />
+i hope it fulfills your needs.<br />
+feel free to point out any critism.</div></div>
+
+  
+    <em>
+    <a name="comment2555" id="comment2555"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2555">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 03 March 2011, 09:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I haven&#039;t looked much into your code, but of course we&#039;d still like something like this!<br />
+I&#039;ll try to take a closer look soon.<br />
+<br />
+A patch would surely be nice.</div></div>
+
+  
+    <em>
+    <a name="comment2587" id="comment2587"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2587">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> -
+    Wednesday, 30 March 2011, 02:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">here is the promised rewrite.<br />
+<br />
+all in all there a three patches to get the rewrite work:<br />
+1. a setter for the foreground of a wibox.widget.background widget.<br />
+2. getters for the direction of a layout (https://awesome.naquadah.org/bugs/index.php?getfile=400).<br />
+3. the actually rewrite.<br />
+<br />
+have fun with it!</div></div>
+
+      <div class="attachments">
+          <a title="0001-wibox.widget.background-set-foreground.patch" href="?getfile=401" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0001-wibox.widget.background-...
+                  </a>
+                  (1.2 KiB)
+          <br />
+          <a title="0003-awful.menu-rewrite.patch" href="?getfile=402" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0003-awful.menu-rewrite.patch
+                  </a>
+                  (32.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2588" id="comment2588"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2588">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 30 March 2011, 10:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hi,<br />
+<br />
+thanks for the patch, looks almost good to me. :-) (Only read it, didn&#039;t actually try it out)<br />
+<br />
+Biggest problem that I have so far are table.update and table.merge. require(&quot;awful.menu&quot;) causes these entries to be added the global &quot;table&quot; array and I don&#039;t really like that at all. Can&#039;t those be turned into local functions (or be removed? Especially table.update doesn&#039;t seem too useful to me).<br />
+<br />
+Also, I don&#039;t really like that :set_fg() thingie, but meh, I guess I can live with it.</div></div>
+
+  
+    <em>
+    <a name="comment2589" id="comment2589"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2589">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> -
+    Wednesday, 30 March 2011, 21:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">ah .. sorry about that .. forgot it :p<br />
+table.update and table.merge are now local functions.</div></div>
+
+      <div class="attachments">
+          <a title="0003-awful.menu-rewrite.patch" href="?getfile=403" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0003-awful.menu-rewrite.patch
+                  </a>
+                  (32.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2590" id="comment2590"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2590">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 31 March 2011, 09:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Default config, sky theme errors out during startup (not when a menu is made visible):<br />
+<br />
+Error while creating menu entry: ...me/psychon/projects/awesome/build/lib/awful/menu.lua:524: attempt to compare string with number<br />
+<br />
+The resulting menu has only a &quot;open terminal&quot; entry.</div></div>
+
+  
+    <em>
+    <a name="comment2591" id="comment2591"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#comment2591">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> -
+    Thursday, 31 March 2011, 10:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">ah .. yes .. sorry about that, but i noticed this quite a while ago, the problem is that menu width and height given by the theme are strings by default.<br />
+i think that&#039;s not very beautiful, isn&#039;t it?<br />
+<br />
+does this have a special reason?<br />
+<br />
+anyway .. i added two patches:<br />
+1. converted numbers in themes from string to number<br />
+2. handling strings when getting theme properties<br />
+<br /></div></div>
+
+      <div class="attachments">
+          <a title="0004-convert-menu-width-and-height-from-string-to-number.patch" href="?getfile=404" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0004-convert-menu-width-and-h...
+                  </a>
+                  (2.8 KiB)
+          <br />
+          <a title="0005-awful.menu-handling-with-strings.patch" href="?getfile=405" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0005-awful.menu-handling-with...
+                  </a>
+                  (0.8 KiB)
+          <br />
+    </div>
+  
+
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=591#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="591" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

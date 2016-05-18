@@ -1,0 +1,841 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1259 : Random Cairo assert</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1259&amp;project=0" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#1259 - Random Cairo assert  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Thursday, 17 April 2014, 04:27 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I got this on my work laptop (Ubuntu 13.10, Awesome 3.5.5 from .deb, lua-5.1 (no JIT), stock LGI) and managed to reproduce it on my desktop (Gentoo, Awesome git-master, LGI-jit master, Luajit)<br />
+<br />
+awesome: cairo-surface.c:905: cairo_surface_reference: Assertion `((*&amp;(&amp;surface-&gt;ref_count)-&gt;ref_count) &gt; 0)&#039; failed.<br />
+<br />
+Program received signal SIGABRT, Aborted.<br />
+0x00007ffff489d0d9 in raise () from /lib64/libc.so.6<br />
+(gdb) bt<br />
+#0  0x00007ffff489d0d9 in raise () from /lib64/libc.so.6<br />
+#1  0x00007ffff489e438 in abort () from /lib64/libc.so.6<br />
+#2  0x00007ffff4896276 in __assert_fail_base () from /lib64/libc.so.6<br />
+#3  0x00007ffff4896322 in __assert_fail () from /lib64/libc.so.6<br />
+#4  0x00007ffff571b558 in *INT_cairo_surface_reference (surface=0x84b7d0) at cairo-surface.c:905<br />
+#5  0x00007ffff5794c91 in INT_cairo_surface_reference (surface=surface@entry=0x84b7d0) at cairo-surface.c:900<br />
+#6  0x00007ffff5773068 in _cairo_pattern_init_for_surface (surface=0x84b7d0, pattern=0x9eb970) at cairo-pattern.c:555<br />
+#7  INT_cairo_pattern_create_for_surface (surface=0x84b7d0) at cairo-pattern.c:748<br />
+#8  0x00007ffff2b6ae5c in ffi_call_unix64 () from /usr/lib64/libffi.so.6<br />
+#9  0x00007ffff2b69fb8 in ffi_call () from /usr/lib64/libffi.so.6<br />
+#10 0x00007fffe65098bd in callable_call (L=0x40000378) at callable.c:883<br />
+#11 0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#12 0x00007ffff4e70690 in lua_pcall () from /usr/lib64/libluajit-5.1.so.2<br />
+#13 0x00000000004277ea in luaA_dofunction (nret=0, nargs=1, L=0x40000378) at /home/kde-devel/kde/src/awesome/common/lualib.h:75<br />
+#14 signal_object_emit (L=L@entry=0x40000378, arr=&lt;optimized out&gt;, name=name@entry=0x443e3e &quot;unfocus&quot;, nargs=nargs@entry=1) at /home/kde-devel/kde/src/awesome/common/luaobject.c:236<br />
+#15 0x00000000004265ae in luaA_class_emit_signal (L=L@entry=0x40000378, lua_class=&lt;optimized out&gt;, name=name@entry=0x443e3e &quot;unfocus&quot;, nargs=nargs@entry=1) at /home/kde-devel/kde/src/awesome/common/luaclass.c:287<br />
+#16 0x0000000000427d2e in luaA_object_emit_signal (L=0x40000378, oud=oud@entry=-1, name=name@entry=0x443e3e &quot;unfocus&quot;, nargs=nargs@entry=0) at /home/kde-devel/kde/src/awesome/common/luaobject.c:291<br />
+#17 0x000000000042b679 in client_unfocus_internal (c=0x400fe7c8) at /home/kde-devel/kde/src/awesome/objects/client.c:205<br />
+#18 0x000000000042cc94 in client_focus_update (c=c@entry=0x402e0d48) at /home/kde-devel/kde/src/awesome/objects/client.c:314<br />
+#19 0x000000000042cd6d in client_focus (c=0x402e0d48) at /home/kde-devel/kde/src/awesome/objects/client.c:340<br />
+#20 0x000000000042cdc9 in luaA_client_module_newindex (L=0x40000378) at /home/kde-devel/kde/src/awesome/objects/client.c:2164<br />
+#21 0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#22 0x00007ffff4e70690 in lua_pcall () from /usr/lib64/libluajit-5.1.so.2<br />
+#23 0x0000000000427c77 in luaA_dofunction (nret=0, nargs=1, L=0x40000378) at /home/kde-devel/kde/src/awesome/common/lualib.h:75<br />
+#24 luaA_object_emit_signal (L=0x40000378, oud=oud@entry=-1, name=name@entry=0x443c04 &quot;mouse::enter&quot;, nargs=nargs@entry=0) at /home/kde-devel/kde/src/awesome/common/luaobject.c:283<br />
+#25 0x00000000004130d1 in event_handle_enternotify (ev=0x84b570) at /home/kde-devel/kde/src/awesome/event.c:485<br />
+#26 event_handle (event=event@entry=0x84b570) at /home/kde-devel/kde/src/awesome/event.c:834<br />
+#27 0x000000000040e167 in a_xcb_check () at /home/kde-devel/kde/src/awesome/awesome.c:189<br />
+#28 a_glib_poll (ufds=ufds@entry=0x7168c0, nfsd=nfsd@entry=4, timeout=timeout@entry=536) at /home/kde-devel/kde/src/awesome/awesome.c:236<br />
+#29 0x00007ffff6c30134 in g_main_context_poll (priority=2147483647, n_fds=4, fds=0x7168c0, timeout=536, context=0x6aa430) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:4007<br />
+#30 g_main_context_iterate (context=0x6aa430, block=block@entry=1, dispatch=dispatch@entry=1, self=&lt;optimized out&gt;) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3708<br />
+#31 0x00007ffff6c305fa in g_main_loop_run (loop=0x839370) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3907<br />
+#32 0x000000000040ed54 in main (argc=&lt;optimized out&gt;, argv=&lt;optimized out&gt;) at /home/kde-devel/kde/src/awesome/awesome.c:542<br />
+(gdb) <br />
+<br />
+<br />
+Step to reproduce, usually when I restart Awesome, but something just randomly restart. This suck on Ubuntu because it kind of end the X session and revert to lightdm. I guess I somehow abused to cairo, but as it happen only in the last few commits, this may be a regression.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (7)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment4009" id="comment4009"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4009">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 17 April 2014, 05:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Little more details, moving the mouse in circle long enough triggers it. I tried both and older version of my config and an older version of awesome, I can reproduce with both, so I guess there really is something wrong...</div></div>
+
+  
+    <em>
+    <a name="comment4010" id="comment4010"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4010">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 17 April 2014, 07:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm. Shit.<br />
+<br />
+Which LGI version are you using exactly on both boxes?<br />
+<br />
+The backtrace says that this happens somewhere in the client &quot;unfocus&quot; signal. You are calling cairo_pattern_create_for_surface() / cairo.Pattern.create_for_surface() for a surface with reference count 0 aka &quot;a surface for which the last reference was already dropped and which thus was already destroyed&quot;. This should be impossible to do through lua.<br />
+<br />
+Sadly LGI doesn&#039;t wrap cairo_surface_get_reference_count(). This would help in debugging.<br />
+<br />
+So... awesome itself calls create_for_surface() in gears.color (when loading PNG files), in gears.wallpaper and in wibox.widget.background. This could be gears.color.create_png_pattern(), but the other two places are highly unlikely. Dunno how often your code uses this function.<br />
+<br />
+I hope this information helps you figure out where exactly this happens / which surface does this / coming up with a minimal reproducing example.<br />
+<br />
+Oh, one more idea before I am out of ideas: Since this is the client &quot;unfocus&quot; signal, I would take a closer look at my code handling c.icon.<br />
+<br />
+Edit:<br />
+I am asking for exact LGI versions because of this:<br /><a href="
+https://github.com/pavouk/lgi/issues/70">
+https://github.com/pavouk/lgi/issues/70</a><br />
+<br />
+The fix could have uncovered a previous reference count problem that was just unnoticed due to excessive references. Are both affected machines using an LGI version that contains the fix for this commit? Could you test if older LGI versions don&#039;t cause this issue?</div></div>
+
+  
+    <em>
+    <a name="comment4012" id="comment4012"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4012">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 18 April 2014, 04:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">None of the 2 had the fix, the Ubuntu one was a year old, the Gentoo one a month old. I am in the process of trying to isolate the problem, but I have a (very, very) high number of surfaces at any given time, so isolating one is nearly impossible. I think I am closing in, but I experience a lot of false positive.</div></div>
+
+  
+    <em>
+    <a name="comment4013" id="comment4013"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4013">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 18 April 2014, 06:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yep, I confirm it is related to the client icons...<br />
+<br />
+The problem is that the _less_ code I have, the _more_ problems occur, this doesn&#039;t make any sense...<br />
+<br />
+The problem is related to me removing the old &quot;blind&quot; module (the one with tons of cairo code to draw awful.widgets from scratch). If I remove the module, I have the problem. If I restore it, it is  &quot;fixed&quot; and my awesome works again... If I simply remove the code using the c.icon (and display no icons), the assert happen again. This is totally illogical. The only logic here is that blind is so much of a hack that it prevent Lua for GC-ing icon surfaces, so the problem is somewhere else, but cannot happen due to Blind keeping its caches. I tried disabling other usage of c.icon in my config, but couldn&#039;t pin point the &quot;faulty&quot; one.</div></div>
+
+  
+    <em>
+    <a name="comment4014" id="comment4014"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4014">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 18 April 2014, 09:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You have a bad timing. I recently rewrote quite some code for client icons and thus thought the bug must have been in there. However, that code isn&#039;t in master and I was just confused...<br />
+<br />
+If you want to try something random, edit objects/client.c, function luaA_client_get_icon and replace lua_pushlightuserdata(L, cairo_surface_reference(c-&gt;icon)); with lua_pushlightuserdata(L, draw_dup_image_surface(c-&gt;icon));.<br />
+That way the C code creates a copy of the client&#039;s icon and returns that to lua instead of just getting another reference to the already-used surface.<br />
+<br />
+This should help with &quot;The only logic here is that blind is so much of a hack that it prevent Lua for GC-ing icon surfaces, so the problem is somewhere else, but cannot happen due to Blind keeping its caches.&quot;.</div></div>
+
+  
+    <em>
+    <a name="comment4015" id="comment4015"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4015">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 18 April 2014, 18:57 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It make the problem worst. Awesome now crash almost everytime I unfocus soemthing... Same backtrace<br />
+<br />
+awesome: cairo-surface.c:905: cairo_surface_reference: Assertion `((*&amp;(&amp;surface-&gt;ref_count)-&gt;ref_count) &gt; 0)&#039; failed.<br />
+<br />
+Program received signal SIGABRT, Aborted.<br />
+0x00007ffff489d0d9 in raise () from /lib64/libc.so.6<br />
+(gdb) bt<br />
+#0  0x00007ffff489d0d9 in raise () from /lib64/libc.so.6<br />
+#1  0x00007ffff489e438 in abort () from /lib64/libc.so.6<br />
+#2  0x00007ffff4896276 in __assert_fail_base () from /lib64/libc.so.6<br />
+#3  0x00007ffff4896322 in __assert_fail () from /lib64/libc.so.6<br />
+#4  0x00007ffff571b558 in *INT_cairo_surface_reference (surface=0x852ce0) at cairo-surface.c:905<br />
+#5  0x00007ffff5794c91 in INT_cairo_surface_reference (surface=surface@entry=0x852ce0) at cairo-surface.c:900<br />
+#6  0x00007ffff5773068 in _cairo_pattern_init_for_surface (surface=0x852ce0, pattern=0xace4c0) at cairo-pattern.c:555<br />
+#7  INT_cairo_pattern_create_for_surface (surface=0x852ce0) at cairo-pattern.c:748<br />
+#8  0x00007ffff2b6ae5c in ffi_call_unix64 () from /usr/lib64/libffi.so.6<br />
+#9  0x00007ffff2b69fb8 in ffi_call () from /usr/lib64/libffi.so.6<br />
+#10 0x00007fffe65098bd in callable_call (L=0x40000378) at callable.c:883<br />
+#11 0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#12 0x00007ffff4e70690 in lua_pcall () from /usr/lib64/libluajit-5.1.so.2<br />
+#13 0x000000000042779a in luaA_dofunction (nret=0, nargs=1, L=0x40000378) at /home/kde-devel/kde/src/awesome/common/lualib.h:75<br />
+#14 signal_object_emit (L=L@entry=0x40000378, arr=&lt;optimized out&gt;, name=name@entry=0x443dee &quot;unfocus&quot;, nargs=nargs@entry=1) at /home/kde-devel/kde/src/awesome/common/luaobject.c:236<br />
+#15 0x000000000042655e in luaA_class_emit_signal (L=L@entry=0x40000378, lua_class=&lt;optimized out&gt;, name=name@entry=0x443dee &quot;unfocus&quot;, nargs=nargs@entry=1) at /home/kde-devel/kde/src/awesome/common/luaclass.c:287<br />
+#16 0x0000000000427cde in luaA_object_emit_signal (L=0x40000378, oud=oud@entry=-1, name=name@entry=0x443dee &quot;unfocus&quot;, nargs=nargs@entry=0) at /home/kde-devel/kde/src/awesome/common/luaobject.c:291<br />
+#17 0x000000000042b629 in client_unfocus_internal (c=0x40173238) at /home/kde-devel/kde/src/awesome/objects/client.c:205<br />
+#18 0x000000000042cc44 in client_focus_update (c=c@entry=0x401e3b30) at /home/kde-devel/kde/src/awesome/objects/client.c:314<br />
+#19 0x000000000042cd1d in client_focus (c=0x401e3b30) at /home/kde-devel/kde/src/awesome/objects/client.c:340<br />
+#20 0x000000000042cd79 in luaA_client_module_newindex (L=0x40000378) at /home/kde-devel/kde/src/awesome/objects/client.c:2165<br />
+#21 0x00007ffff4e5cc8b in lj_BC_FUNCC () from /usr/lib64/libluajit-5.1.so.2<br />
+#22 0x00007ffff4e70690 in lua_pcall () from /usr/lib64/libluajit-5.1.so.2<br />
+#23 0x0000000000427c27 in luaA_dofunction (nret=0, nargs=1, L=0x40000378) at /home/kde-devel/kde/src/awesome/common/lualib.h:75<br />
+#24 luaA_object_emit_signal (L=0x40000378, oud=oud@entry=-1, name=name@entry=0x443bc4 &quot;mouse::enter&quot;, nargs=nargs@entry=0) at /home/kde-devel/kde/src/awesome/common/luaobject.c:283<br />
+#25 0x00000000004130d1 in event_handle_enternotify (ev=0x6a0cc0) at /home/kde-devel/kde/src/awesome/event.c:485<br />
+#26 event_handle (event=event@entry=0x6a0cc0) at /home/kde-devel/kde/src/awesome/event.c:834<br />
+#27 0x000000000040e167 in a_xcb_check () at /home/kde-devel/kde/src/awesome/awesome.c:189<br />
+#28 a_glib_poll (ufds=ufds@entry=0x7168c0, nfsd=nfsd@entry=4, timeout=timeout@entry=531) at /home/kde-devel/kde/src/awesome/awesome.c:236<br />
+#29 0x00007ffff6c30134 in g_main_context_poll (priority=2147483647, n_fds=4, fds=0x7168c0, timeout=531, context=0x6aa430) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:4007<br />
+#30 g_main_context_iterate (context=0x6aa430, block=block@entry=1, dispatch=dispatch@entry=1, self=&lt;optimized out&gt;) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3708<br />
+#31 0x00007ffff6c305fa in g_main_loop_run (loop=0x839770) at /var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3907<br />
+#32 0x000000000040ed54 in main (argc=&lt;optimized out&gt;, argv=&lt;optimized out&gt;) at /home/kde-devel/kde/src/awesome/awesome.c:542<br />
+<br />
+<br />
+You might also like<br />
+<br />
+<br />
+==22770== For counts of detected and suppressed errors, rerun with: -v<br />
+==22770== Use --track-origins=yes to see where uninitialised values come from<br />
+==22770== ERROR SUMMARY: 553 errors from 14 contexts (suppressed: 2 from 2)<br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7B2F36E: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B3F1: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x43CFE9: luaA_tag_get_name (tag.c:236)<br />
+==21750==    by 0x42666D: luaA_class_index (luaclass.c:377)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A6D2: luaA_loadrc (luaa.c:505)<br />
+==21750==    by 0x41D003: luaA_parserc (luaa.c:562)<br />
+==21750==    by 0x40EB15: main (awesome.c:524)<br />
+==21750==  Address 0xfe42a04 is 4 bytes inside a block of size 6 alloc&#039;d<br />
+==21750==    at 0x4C2BE04: calloc (vg_replace_malloc.c:593)<br />
+==21750==    by 0x43D070: luaA_tag_set_name (util.h:105)<br />
+==21750==    by 0x4267B5: luaA_class_new (luaclass.c:444)<br />
+==21750==    by 0x43D189: luaA_tag_new (tag.c:174)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B94934: lj_cf_dofile (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A6D2: luaA_loadrc (luaa.c:505)<br />
+==21750==    by 0x41D003: luaA_parserc (luaa.c:562)<br />
+==21750==    by 0x40EB15: main (awesome.c:524)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7B2F36E: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B3F1: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x42AA55: luaA_client_get_class (client.c:1805)<br />
+==21750==    by 0x42666D: luaA_class_index (luaclass.c:377)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==    by 0x42D56D: client_manage (client.c:577)<br />
+==21750==    by 0x40ECCB: main (awesome.c:153)<br />
+==21750==  Address 0x10243674 is 4 bytes inside a block of size 6 alloc&#039;d<br />
+==21750==    at 0x4C2BE04: calloc (vg_replace_malloc.c:593)<br />
+==21750==    by 0x42C7AE: client_set_class_instance (util.h:105)<br />
+==21750==    by 0x41EEF3: property_update_wm_class (property.c:230)<br />
+==21750==    by 0x42D425: client_manage (client.c:416)<br />
+==21750==    by 0x40ECCB: main (awesome.c:153)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7B2F36E: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B3F1: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x42AA7B: luaA_client_get_name (client.c:1794)<br />
+==21750==    by 0x42666D: luaA_class_index (luaclass.c:377)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==    by 0x42D56D: client_manage (client.c:577)<br />
+==21750==    by 0x40ECCB: main (awesome.c:153)<br />
+==21750==  Address 0xff0f6b0 is 32 bytes inside a block of size 35 alloc&#039;d<br />
+==21750==    at 0x4C2BE04: calloc (vg_replace_malloc.c:593)<br />
+==21750==    by 0x41E3CD: property_update_net_wm_name (util.h:105)<br />
+==21750==    by 0x42D401: client_manage (client.c:413)<br />
+==21750==    by 0x40ECCB: main (awesome.c:153)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7B2F36E: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B3F1: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x1810641A: lgi_marshal_2lua (marshal.c:1182)<br />
+==21750==    by 0x180FE928: callable_param_2lua (callable.c:731)<br />
+==21750==    by 0x181009CC: callable_call (callable.c:899)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x181079C9: lgi_marshal_access (marshal.c:1443)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x41D0F9: luaA_emit_refresh (luaa.c:596)<br />
+==21750==    by 0x40E04C: a_glib_poll (event.h:40)<br />
+==21750==  Address 0xfec9364 is 4 bytes inside a block of size 6 alloc&#039;d<br />
+==21750==    at 0x4C29C4B: malloc (vg_replace_malloc.c:270)<br />
+==21750==    by 0x5D439B0: g_malloc (gmem.c:104)<br />
+==21750==    by 0x5D6113E: g_strdup (gstrfuncs.c:364)<br />
+==21750==    by 0x1877301A: pango_layout_set_text (pango-layout.c:1046)<br />
+==21750==    by 0x9EA7E5B: ffi_call_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA6FB7: ffi_call (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x181008BC: callable_call (callable.c:883)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x181079A7: lgi_marshal_access (marshal.c:1449)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A6D2: luaA_loadrc (luaa.c:505)<br />
+==21750== <br />
+==21750== Conditional jump or move depends on uninitialised value(s)<br />
+==21750==    at 0x7B2F372: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2F72F: lj_str_fromnumber (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3AA0B: luaL_checklstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x1810517A: lgi_marshal_2c (marshal.c:872)<br />
+==21750==    by 0x180FEA99: callable_param_2c (callable.c:696)<br />
+==21750==    by 0x18100815: callable_call (callable.c:851)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x181079A7: lgi_marshal_access (marshal.c:1449)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x41D0F9: luaA_emit_refresh (luaa.c:596)<br />
+==21750== <br />
+==21750== Conditional jump or move depends on uninitialised value(s)<br />
+==21750==    at 0x7B2F372: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2F72F: lj_str_fromnumber (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3300A: lj_meta_cat (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B28D54: lj_BC_CAT (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x41D0F9: luaA_emit_refresh (luaa.c:596)<br />
+==21750==    by 0x40E04C: a_glib_poll (event.h:40)<br />
+==21750==    by 0x5D3D133: g_main_context_iterate.isra.24 (gmain.c:4007)<br />
+==21750==    by 0x5D3D5F9: g_main_loop_run (gmain.c:3907)<br />
+==21750==    by 0x40ED53: main (awesome.c:542)<br />
+==21750== <br />
+W: awesome: a_glib_poll:229: Last main loop iteration took 2.408333 seconds! Increasing limit for this warning to that value.<br />
+Serializing data<br />
+==21750== Conditional jump or move depends on uninitialised value(s)<br />
+==21750==    at 0x1810443A: marshal_2lua_int (marshal.c:128)<br />
+==21750==    by 0x181063FE: lgi_marshal_2lua (marshal.c:1281)<br />
+==21750==    by 0x180FE928: callable_param_2lua (callable.c:731)<br />
+==21750==    by 0x18100B73: callable_call (callable.c:944)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x180FEE71: closure_callback (callable.c:1123)<br />
+==21750==    by 0x9EA77BE: ffi_closure_unix64_inner (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA7FC3: ffi_closure_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9451F2F: g_task_return_pointer (gtask.c:1108)<br />
+==21750==    by 0x940B536: g_data_input_stream_read_complete (gdatainputstream.c:983)<br />
+==21750==    by 0x940B7D8: g_data_input_stream_read_line_ready (gdatainputstream.c:1016)<br />
+==21750==    by 0x9405281: async_fill_callback_wrapper (gbufferedinputstream.c:453)<br />
+==21750== <br />
+==21750== Conditional jump or move depends on uninitialised value(s)<br />
+==21750==    at 0x7B3B2E4: lua_pushnumber (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x181063FE: lgi_marshal_2lua (marshal.c:1281)<br />
+==21750==    by 0x180FE928: callable_param_2lua (callable.c:731)<br />
+==21750==    by 0x18100B73: callable_call (callable.c:944)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x180FEE71: closure_callback (callable.c:1123)<br />
+==21750==    by 0x9EA77BE: ffi_closure_unix64_inner (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA7FC3: ffi_closure_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9451F2F: g_task_return_pointer (gtask.c:1108)<br />
+==21750==    by 0x940B536: g_data_input_stream_read_complete (gdatainputstream.c:983)<br />
+==21750==    by 0x940B7D8: g_data_input_stream_read_line_ready (gdatainputstream.c:1016)<br />
+==21750==    by 0x9405281: async_fill_callback_wrapper (gbufferedinputstream.c:453)<br />
+==21750== <br />
+==21750== Conditional jump or move depends on uninitialised value(s)<br />
+==21750==    at 0x7B2F372: lj_str_new (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B3F1: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x1810641A: lgi_marshal_2lua (marshal.c:1182)<br />
+==21750==    by 0x180FE928: callable_param_2lua (callable.c:731)<br />
+==21750==    by 0x18100B73: callable_call (callable.c:944)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427C26: luaA_object_emit_signal (lualib.h:75)<br />
+==21750==    by 0x413943: event_handle (event.c:406)<br />
+==21750==    by 0x40E151: a_glib_poll (awesome.c:186)<br />
+==21750==    by 0x5D3D133: g_main_context_iterate.isra.24 (gmain.c:4007)<br />
+==21750==    by 0x5D3D5F9: g_main_loop_run (gmain.c:3907)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7236A50: cairo_surface_get_type (cairo-surface.c:221)<br />
+==21750==    by 0x9EA7E5B: ffi_call_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA6FB7: ffi_call (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x181008BC: callable_call (callable.c:883)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x18109B4D: lgi_record_2lua (record.c:217)<br />
+==21750==    by 0x1810A153: record_new (record.c:507)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==  Address 0xff30d60 is 16 bytes inside a block of size 384 free&#039;d<br />
+==21750==    at 0x4C2AF7C: free (vg_replace_malloc.c:446)<br />
+==21750==    by 0x5AA311A: g_boxed_free (gboxed.c:410)<br />
+==21750==    by 0x18109759: record_gc (record.c:381)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2D6AA: gc_onestep (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2DC7B: lj_gc_step (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B441: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A369: luaAe_type (luaa.c:175)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7214F70: cairo_pattern_create_for_surface (cairo-pattern.c:733)<br />
+==21750==    by 0x9EA7E5B: ffi_call_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA6FB7: ffi_call (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x181008BC: callable_call (callable.c:883)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==    by 0x42CCC6: client_focus_update (client.c:323)<br />
+==21750==    by 0x42CD1C: client_focus (client.c:340)<br />
+==21750==    by 0x42CD78: luaA_client_module_newindex (client.c:2164)<br />
+==21750==  Address 0xff30d6c is 28 bytes inside a block of size 384 free&#039;d<br />
+==21750==    at 0x4C2AF7C: free (vg_replace_malloc.c:446)<br />
+==21750==    by 0x5AA311A: g_boxed_free (gboxed.c:410)<br />
+==21750==    by 0x18109759: record_gc (record.c:381)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2D6AA: gc_onestep (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2DC7B: lj_gc_step (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B441: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A369: luaAe_type (luaa.c:175)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7215003: cairo_pattern_create_for_surface (cairo-pattern.c:546)<br />
+==21750==    by 0x9EA7E5B: ffi_call_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA6FB7: ffi_call (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x181008BC: callable_call (callable.c:883)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==    by 0x42CCC6: client_focus_update (client.c:323)<br />
+==21750==    by 0x42CD1C: client_focus (client.c:340)<br />
+==21750==    by 0x42CD78: luaA_client_module_newindex (client.c:2164)<br />
+==21750==  Address 0xff30d6c is 28 bytes inside a block of size 384 free&#039;d<br />
+==21750==    at 0x4C2AF7C: free (vg_replace_malloc.c:446)<br />
+==21750==    by 0x5AA311A: g_boxed_free (gboxed.c:410)<br />
+==21750==    by 0x18109759: record_gc (record.c:381)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2D6AA: gc_onestep (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2DC7B: lj_gc_step (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B441: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A369: luaAe_type (luaa.c:175)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750== <br />
+==21750== Invalid read of size 4<br />
+==21750==    at 0x7236C75: cairo_surface_reference (cairo-surface.c:902)<br />
+==21750==    by 0x7215067: cairo_pattern_create_for_surface (cairo-pattern.c:555)<br />
+==21750==    by 0x9EA7E5B: ffi_call_unix64 (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x9EA6FB7: ffi_call (in /usr/lib64/libffi.so.6.0.1)<br />
+==21750==    by 0x181008BC: callable_call (callable.c:883)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750==    by 0x427CDD: luaA_object_emit_signal (luaobject.c:291)<br />
+==21750==    by 0x42CCC6: client_focus_update (client.c:323)<br />
+==21750==    by 0x42CD1C: client_focus (client.c:340)<br />
+==21750==  Address 0xff30d68 is 24 bytes inside a block of size 384 free&#039;d<br />
+==21750==    at 0x4C2AF7C: free (vg_replace_malloc.c:446)<br />
+==21750==    by 0x5AA311A: g_boxed_free (gboxed.c:410)<br />
+==21750==    by 0x18109759: record_gc (record.c:381)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2D6AA: gc_onestep (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B2DC7B: lj_gc_step (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3B441: lua_pushstring (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x41A369: luaAe_type (luaa.c:175)<br />
+==21750==    by 0x7B29C8A: lj_BC_FUNCC (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x7B3D68F: lua_pcall (in /usr/lib64/libluajit-5.1.so.2.0.1)<br />
+==21750==    by 0x427799: signal_object_emit (lualib.h:75)<br />
+==21750==    by 0x42655D: luaA_class_emit_signal (luaclass.c:287)<br />
+==21750== <br />
+awesome: cairo-surface.c:905: cairo_surface_reference: Assertion `((*&amp;(&amp;surface-&gt;ref_count)-&gt;ref_count) &gt; 0)&#039; failed.<br />
+E: awesome: signal_fatal:246: signal 6, dumping backtrace<br />
+awesome(backtrace_get+0x41) [0x424f05]<br />
+awesome() [0x40e1b5]<br />
+/lib64/libc.so.6(+0x35150) [0x8035150]<br />
+/lib64/libc.so.6(gsignal+0x39) [0x80350d9]<br />
+/lib64/libc.so.6(abort+0x148) [0x8036438]<br />
+/lib64/libc.so.6(+0x2e276) [0x802e276]<br />
+/lib64/libc.so.6(+0x2e322) [0x802e322]<br />
+/usr/lib64/libcairo.so.2(+0x14558) [0x71bd558]<br />
+/usr/lib64/libcairo.so.2(+0x8dc91) [0x7236c91]<br />
+/usr/lib64/libcairo.so.2(cairo_pattern_create_for_surface+0x108) [0x7215068]<br />
+/usr/lib64/libffi.so.6(ffi_call_unix64+0x4c) [0x9ea7e5c]<br />
+/usr/lib64/libffi.so.6(ffi_call+0x158) [0x9ea6fb8]<br />
+/usr/local/lib/lua/5.1/lgi/corelgilua51.so(+0xa8bd) [0x181008bd]<br />
+/usr/lib64/libluajit-5.1.so.2(+0x9c8b) [0x7b29c8b]<br />
+/usr/lib64/libluajit-5.1.so.2(lua_pcall+0x30) [0x7b3d690]<br />
+awesome(signal_object_emit+0x379) [0x42779a]<br />
+awesome(luaA_class_emit_signal+0xd) [0x42655e]<br />
+awesome(luaA_object_emit_signal+0x49f) [0x427cde]<br />
+awesome(client_focus_update+0xb3) [0x42ccc7]<br />
+awesome(client_focus+0x3e) [0x42cd1d]<br />
+awesome() [0x42cd79]<br />
+/usr/lib64/libluajit-5.1.so.2(+0x9c8b) [0x7b29c8b]<br />
+/usr/lib64/libluajit-5.1.so.2(lua_pcall+0x30) [0x7b3d690]<br />
+awesome(luaA_object_emit_signal+0x3e8) [0x427c27]<br />
+awesome(event_handle+0x609) [0x4130d1]<br />
+awesome() [0x40e167]<br />
+/usr/lib64/libglib-2.0.so.0(+0x53134) [0x5d3d134]<br />
+/usr/lib64/libglib-2.0.so.0(g_main_loop_run+0x6a) [0x5d3d5fa]<br />
+awesome(main+0xaab) [0x40ed54]<br />
+/lib64/libc.so.6(__libc_start_main+0xf5) [0x8021975]<br />
+awesome() [0x40df19]<br />
+==21750== <br />
+==21750== HEAP SUMMARY:<br />
+==21750==     in use at exit: 2,244,861 bytes in 11,626 blocks<br />
+==21750==   total heap usage: 59,552 allocs, 47,926 frees, 171,635,787 bytes allocated<br />
+==21750== <br />
+==21750== LEAK SUMMARY:<br />
+==21750==    definitely lost: 17,128 bytes in 26 blocks<br />
+==21750==    indirectly lost: 66,711 bytes in 2,835 blocks<br />
+==21750==      possibly lost: 34,904 bytes in 182 blocks<br />
+==21750==    still reachable: 2,120,782 bytes in 8,551 blocks<br />
+==21750==         suppressed: 0 bytes in 0 blocks<br />
+==21750== Rerun with --leak-check=full to see details of leaked memory<br />
+==21750== <br />
+==21750== For counts of detected and suppressed errors, rerun with: -v<br />
+==21750== Use --track-origins=yes to see where uninitialised values come from<br />
+==21750== ERROR SUMMARY: 2408 errors from 27 contexts (suppressed: 41 from 7)<br /></div></div>
+
+  
+    <em>
+    <a name="comment4016" id="comment4016"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#comment4016">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 19 April 2014, 14:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; It make the problem worst. Awesome now crash almost everytime I unfocus soemthing... Same backtrace<br />
+<br />
+Yeah, it&#039;s supposed to make debugging easier since references from &quot;elsewhere&quot; won&#039;t hide the bug anymore. It&#039;s not supposed to fix anything.<br />
+<br />
+You could also add awesome.connect_signal(&quot;refresh&quot;, function() collectgarbage(&quot;collect&quot;) end) to make it even easier to hit this bug.<br />
+<br />
+&gt; You might also like<br />
+<br />
+Not really. The ones in luajit sound like luajit doing the wrong thing (or assuming that char* pointers are 4-byte-aligned, which isn&#039;t necessarily true). I don&#039;t care about the LGI ones either since that could just be a use-after-free due to this bug as well. And the use-after-free in cairo is what this bug is all about.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1259#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1259" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

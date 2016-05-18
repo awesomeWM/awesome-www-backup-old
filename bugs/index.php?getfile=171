@@ -1,0 +1,26 @@
+Author: Gaute Hope <eg@gaute.vetsj.com>
+Reason: Fix needed to link with newer iconv
+Upstream: Bug reported
+diff -ru old/awesomeConfig.cmake new/awesomeConfig.cmake
+--- old/awesomeConfig.cmake	2009-04-04 17:13:18.000000000 +0200
++++ new/awesomeConfig.cmake	2009-04-23 22:31:18.000000000 +0200
+@@ -164,6 +164,9 @@
+ a_find_library(LIB_READLINE readline)
+ a_find_library(LIB_EV ev)
+ 
++# and libiconv
++a_find_library(LIB_ICONV iconv)
++
+ # Error check
+ if(NOT LUA51_FOUND AND NOT LUA50_FOUND) # This is a workaround to a cmake bug
+     message(FATAL_ERROR "lua library not found")
+@@ -173,7 +176,8 @@
+     ${AWESOME_COMMON_REQUIRED_LIBRARIES}
+     ${AWESOME_REQUIRED_LIBRARIES}
+     ${LIB_EV}
+-    ${LUA_LIBRARIES})
++    ${LUA_LIBRARIES}
++    ${LIB_ICONV})
+ 
+ set(AWESOME_REQUIRED_INCLUDE_DIRS
+     ${AWESOME_COMMON_REQUIRED_INCLUDE_DIRS}

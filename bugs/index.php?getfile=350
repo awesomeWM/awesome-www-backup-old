@@ -1,0 +1,12 @@
+diff --git a/lib/awful/widget/layout/linear_common.lua.in b/lib/awful/widget/layout/linear_common.lua.in
+index 278449d..3b30305 100644
+--- a/lib/awful/widget/layout/linear_common.lua.in
++++ b/lib/awful/widget/layout/linear_common.lua.in
+@@ -131,6 +131,7 @@ function linear_common.fixed(idx, bounds, widgets, screen)
+                 end
+ 
+                 insert(geometries, g)
++                insert(geometries, g)
+             end
+         end
+     end

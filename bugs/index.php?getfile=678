@@ -1,0 +1,35 @@
+luaA_spawn (L=0x40000378) at /home/kde-devel/kde/src/awesome/spawn.c:333
+333             while(*first_no_space_char && *first_no_space_char == ' 
+')
+(gdb) bt
+#0  luaA_spawn (L=0x40000378) at 
+/home/kde-devel/kde/src/awesome/spawn.c:333
+#1  0x00007ffff4e5cc8b in lj_BC_FUNCC () from 
+/usr/lib64/libluajit-5.1.so.2
+#2  0x00007ffff4e70690 in lua_pcall () from 
+/usr/lib64/libluajit-5.1.so.2
+#3  0x0000000000412a66 in event_handle_key (ev=0x9d1180)
+    at /home/kde-devel/kde/src/awesome/event.c:566
+#4  0x000000000041339e in event_handle (event=event@entry=0x9d1180)
+    at /home/kde-devel/kde/src/awesome/event.c:838
+#5  0x000000000040e1e7 in a_xcb_check ()
+    at /home/kde-devel/kde/src/awesome/awesome.c:199
+#6  a_glib_poll (ufds=ufds@entry=0x6a4620, nfsd=nfsd@entry=4,
+    timeout=timeout@entry=488) at 
+/home/kde-devel/kde/src/awesome/awesome.c:246
+#7  0x00007ffff6c30134 in g_main_context_poll (priority=2147483647, 
+n_fds=4,
+    fds=0x6a4620, timeout=488, context=0x6a91e0)
+    at 
+/var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:4007
+#8  g_main_context_iterate (context=0x6a91e0, block=block@entry=1,
+    dispatch=dispatch@entry=1, self=<optimized out>)
+    at 
+/var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3708
+#9  0x00007ffff6c305fa in g_main_loop_run (loop=0x7b2da0)
+    at 
+/var/tmp/portage/dev-libs/glib-2.38.2/work/glib-2.38.2/glib/gmain.c:3907
+#10 0x000000000040edfe in main (argc=1, argv=0x7fffffffcc58)
+    at /home/kde-devel/kde/src/awesome/awesome.c:552
+(gdb)
+

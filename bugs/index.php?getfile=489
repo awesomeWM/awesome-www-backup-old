@@ -1,0 +1,69 @@
+$ xprop
+_NET_WM_DESKTOP(CARDINAL) = 2
+WM_STATE(WM_STATE):
+        window state: Normal
+        icon window: 0x0
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 29360362
+_NET_WM_USER_TIME(CARDINAL) = 3204888
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_FULLSCREEN
+_NET_WM_NAME(UTF8_STRING) = "Plone [Running] - Oracle VM VirtualBox"
+_NET_WM_ICON(CARDINAL) =    Icon (32 x 32):
+     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 
+    ░░                            ░░
+    ░                              ░
+    ░                              ░
+    ░                 ░░░░▒░░░░░   ░
+    ░               ░▒░░░    ░░░▒░ ░
+    ░             ░▒░            ░▒░
+    ░            ▒░               ░░
+    ░           ▒░       ░░░░░     ░
+    ░          ▒░     ░░░░▒▒░░░░░░ ░
+    ░         ░░     ░░▒▒▒▒▒▒░░░░░░░
+    ░        ░░     ░▒▒▒▒▒▒▒░░░░░▒░░
+    ░        ░░    ░░▒▒▒▒░░░░░░░░▒▒░
+    ░        ░    ░░░░░░░░░░░░░░░▒▒░
+    ░       ░░    ░░░░░░▒▒▒░▒▒░░░░▒░
+    ░       ░░   ░░░░░░▒▒░   ░▒░░░░░
+    ░       ░    ░░░░░░▒░ ░░░ ░▒░░░░
+    ░       ░    ░▒▒░░░▒░░░░░░░░▒░░░
+    ░       ░░  ░░▒▒░░░▒░░░░░░░░▒░░░
+    ░       ░░  ░░▒░░░░▒░░░░░▒░░░░░░
+    ░       ░░   ░▒░░░░░▒░░░░▒░░░░░░
+    ░        ▒   ░▒▒░░░░░▒░░▒▒░░░░░░
+    ░░       ░░  ░░▒░░░░░░░▒▒▒░░▒░ ░
+    ░▒░      ░░   ░░░░░░░░▒▒▒░░░▒  ░
+    ░░░▒░     ░░   ░░░░░░▒▒▒░░░▒░  ░
+    ░  ░░░░    ▒░  ░░░░░░░░░░░░▒░  ░
+    ░     ░░░░ ░▒░  ░░░░░░░░░░▒░  ░░
+    ░       ░░░▒▒▒░░░░░░░░░░▒▒░  ░░░
+    ░░          ░░▒▒░░░░░░░▒░    ░░░
+    ░░░░           ░░▒▒▒░░░     ░░░░
+    ░░░░                       ░░░░░
+     ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ 
+
+
+XdndAware(ATOM) = BITMAP
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
+WM_CLIENT_LEADER(WINDOW): window id # 0x1c00004
+_NET_WM_PID(CARDINAL) = 5040
+_NET_WM_WINDOW_TYPE(ATOM) = _KDE_NET_WM_WINDOW_TYPE_OVERRIDE, _NET_WM_WINDOW_TYPE_NORMAL
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x2, 0x3, 0x0, 0x0, 0x0
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST
+WM_NAME(STRING) = "Plone [Running] - Oracle VM VirtualBox"
+WM_LOCALE_NAME(STRING) = "en_US.UTF-8"
+WM_CLASS(STRING) = "Qt-subapplication", "VirtualBox"
+WM_HINTS(WM_HINTS):
+        Client accepts input or input focus: True
+        Initial state is Normal State.
+        bitmap id # to use for icon: 0x1c000d7
+        window id # of group leader: 0x1c00004
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+        user specified location: 1920, 0
+        program specified location: 1920, 0
+        user specified size: 1920 by 1080
+        program specified size: 1920 by 1080
+        program specified minimum size: 73 by 73
+        window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = "slacker"
+WM_COMMAND(STRING) = { "/usr/lib64/virtualbox/VirtualBox", "--comment", "Plone", "--startvm", "2e063bcd-ace9-429f-8ce0-9d8628d8a873", "--no-startvm-errormsgbox" }
+

@@ -1,0 +1,725 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1011 : GNOME panel can have focus</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1011&amp;opened=190&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=190&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#1011 - GNOME panel can have focus  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>     	 - Monday, 25 June 2012, 08:49 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 06 July 2012, 15:34 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.12</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">GNOME panel (gnome-panel) can now receive focus from awesome 3.4.12. This used to not happen in 3.4.11. Something changed and caused this regression.<br />
+<br />
+FYI This has been reported by Stefano Zacchiroli &lt;<a href="mailto:zack@upsilon.cc">zack@upsilon.cc</a>&gt; so he can be asked for detail, but it seems easy to reproduce.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Friday, 06 July 2012, 15:34 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;For 3.4, I took the easy way (requiring
+changes in every user&#039;s config is
+just no good option):<br />
+<br />
+commit
+c084eb5b085287e4fb2661e834197cf8cf233215
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Fri Jul 6 17:32:53 2012 +0200<br
+/>
+<br />
+    Revert &quot;Focus history:
+Don&#039;t ignore unfocusable
+clients&quot;<br />
+    <br />
+    This reverts commit
+c0dffca646c1a02276da510bf3587fb7fad8e0e9
+which caused<br />
+    <del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1011&amp;opene
+d=190&amp;status%5B0%5D=" title="Fixed |
+GNOME panel can have focus | 100%" 
+class =
+"closedtasklink">FS#1011</a>&#160;</del>
+. This is just too much breakage which
+can&#039;t easily be fixed in 3.4.<br
+/>
+<br />
+For master I committed the proposed
+patch:<br />
+<br />
+commit
+48c6c11d1721f40ec5136cfbd4a8125e4208277f
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Fri Jul 6 17:30:35 2012 +0200<br
+/>
+<br />
+    awful.rules: Implement callbacks for
+individual properties<br />
+    <br />
+    When a property is now set to a
+function, the function&#039;s return
+value will be<br />
+    used for the value of the property.
+The function gets the new client as its
+only<br />
+    argument.<br />
+    <br />
+    There is no property which accepts a
+function as its value and thus this
+change<br />
+    can&#039;t break anything (yeah,
+famous last words...).<br />
+    <br />
+    This should fix half of
+<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1011&amp;opene
+d=190&amp;status%5B0%5D=" title="Fixed |
+GNOME panel can have focus | 100%" 
+class =
+"closedtasklink">FS#1011</a>&#160;</del>
+. Panels now don&#039;t get focused by
+awful.rules.<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+<br />
+This doesn&#039;t fix this bug for
+git/master. What&#039;s left is a
+duplicate of <a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=574&amp;opened
+=190&amp;status%5B0%5D=" title="New |
+sticky windows mess up focus history |
+0%" >FS#574</a>, so this bug can still
+be closed.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (17)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3058" id="comment3058"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3058">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 25 June 2012, 09:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I bet this is the same problem as seen on this mailing list thread:<br />
+<br /><a href="
+http://article.gmane.org/gmane.comp.window-managers.awesome/8972">
+http://article.gmane.org/gmane.comp.window-managers.awesome/8972</a><br />
+<br />
+That commit makes netbeans (urgh, java) work with the focus history.<br />
+<br />
+So the real bug here most likely is that something is focusing gnome panel. Previously this didn&#039;t hurt, so most likely offender would be awful.autofocus during a tag switch. The problem now would be that awesome actually remembers this action.<br />
+Could someone who can easily reproduce this check if just removing &#039;require(&quot;awful.autofocus&quot;)&#039; from rc.lua makes the problem go away?<br />
+<br />
+If we don&#039;t come up with a good fix soon, I guess said commit could be reverted in the debian package. However, I don&#039;t want to revert that commit upstream. Is there a debian bug report for this?</div></div>
+
+  
+    <em>
+    <a name="comment3059" id="comment3059"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3059">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 25 June 2012, 09:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The problem is not Debian specific so it would be better to fix it upstream.<br />
+<br />
+There&#039;s no bug opened on the Debian side.</div></div>
+
+  
+    <em>
+    <a name="comment3060" id="comment3060"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3060">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=295">Stefano Zacchiroli (zack)</a> -
+    Monday, 25 June 2012, 09:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Could someone who can easily reproduce this check if just removing &#039;require(&quot;awful.autofocus&quot;)&#039; from rc.lua makes the problem go away?<br />
+<br />
+I&#039;ve tried this and it didn&#039;t work for me.<br />
+<br />
+More precisely, to be sure I&#039;ve tested it right:<br />
+<br />
+- (starting from an installed and running 3.4.11 that does not show the bug)<br />
+- I&#039;ve installed 3.4.12<br />
+- commented the above line in my ~/.config/awesome/rc.lua<br />
+- restarted awesome<br />
+- the problem showed up again<br />
+<br />
+going back to 3.4.11 and restarting awesome goes back to the desired behavior.<br />
+<br />
+I&#039;ve noticed a difference between 3.4.12 with the line commented and 3.4.12 with the line uncommented though:<br />
+<br />
+- with the line uncommented, switching workspace focuses the panel, but at that point Mod4+j is enough to focus the main window<br />
+- with the line commented, Mod4+j is not enough (no matter how many times I do that) to focus the main window; only mouse clicking seems to work<br />
+<br />
+Hope this helps,<br />
+Cheers.</div></div>
+
+  
+    <em>
+    <a name="comment3061" id="comment3061"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3061">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 28 June 2012, 12:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve an idea. gnome-panel is a dock so it&#039;s never hidden when switching between tags. When switching to another tag, every window gets hidden and loses focus if it had it. All is left is gnome-panel, which receives the focus. So awful.autofocus (or something else) gives it focus. Now it gets into focus history because of the commit c0dffca646c1a02276da510bf3587fb7fad8e0e9 fixing #778 that does not filter it out. When arriving on the new tag, the focus is gave to the latests client in history: gnome-panel.<br /></div></div>
+
+  
+    <em>
+    <a name="comment3062" id="comment3062"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3062">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 28 June 2012, 12:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">FWIW with gnome-panel running, commenting out awful.autofocus, switching to a tag and coming back shows that no window has the focus (not even gnome-panel actually).<br />
+With awful.autofocus, in the same operation, gnome-panel has the focus.</div></div>
+
+  
+    <em>
+    <a name="comment3063" id="comment3063"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3063">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 29 June 2012, 15:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, I misread what Stefano wrote.<br />
+<br />
+So if this is due to awful.autofocus, how come gnome-panel gets focused? autofocus uses the focus history, too. (And if nothing is found in the history, it uses a client which awful.client.focus.filter() likes, which shouldn&#039;t be true for gnome-panel)<br />
+Focus bugs are evil :-(<br />
+<br />
+Since I dont have any good ideas, let&#039;s try the bad ones: Could someone comment out the individual add_signal() calls in awful.autofocus and find the evil one? This happens on tag switch, so I guess the result will be property::selected which doesn&#039;t help us figure this out.</div></div>
+
+  
+    <em>
+    <a name="comment3064" id="comment3064"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3064">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 29 June 2012, 15:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can&#039;t reproduce with fbpanel (gnome-panel has a metric ton of dependencies). What is fbpanel doing differently?<br />
+<br />
+Could someone else test if this also happens with fbpanel? If not, I&#039;d like to see some xprop output for gnome-panel to figure out why fbpanel isn&#039;t affected.</div></div>
+
+  
+    <em>
+    <a name="comment3065" id="comment3065"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3065">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 29 June 2012, 15:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yeah, I can&#039;t reproduce either with fbpanel.<br />
+<br />
+I don&#039;t see any difference, both dock and focusable.<br />
+<br />
+I think you&#039;re going to need gnome-panel.<br />
+<br />
+/me pats Uli</div></div>
+
+  
+    <em>
+    <a name="comment3097" id="comment3097"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3097">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=718">Heiko Becker (heirecka)</a> -
+    Friday, 06 July 2012, 08:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The same happens when using Plasma under awesome. If I kill Plasma windows are automatically focused.</div></div>
+
+  
+    <em>
+    <a name="comment3098" id="comment3098"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3098">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=461">Sebastian Dörner (sdoerner)</a> -
+    Friday, 06 July 2012, 10:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can confirm that this affects KDE&#039;s plasma as well. Attached xprop output for plasma.</div></div>
+
+      <div class="attachments">
+          <a title="plasma.xprop.txt" href="?getfile=511" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-pascal; charset=us-ascii" />
+            &nbsp;&nbsp;
+            plasma.xprop.txt
+                  </a>
+                  (1.2 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3099" id="comment3099"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3099">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 06 July 2012, 11:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Managed to reproduce this with fbpanel. Don&#039;t ask me what changed.<br />
+<br />
+I threw a luaL_dostring(L, &quot;print(debug.traceback())&quot;); into the code for &quot;client.focus = foo&quot;. This says it is awful.rules which focuses fbpanel.<br />
+<br />
+So patch for the default config:<br />
+Removed the &quot;focus = true&quot; from the default rule and instead add a &quot;callback = function(c) if awful.client.focus.filter(c) then client.focus = c end end&quot;<br />
+<br />
+But this still means that the focus history is broken with sticky clients (which is way this turned into a problem instead of a slight annoyance).</div></div>
+
+  
+    <em>
+    <a name="comment3100" id="comment3100"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3100">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=461">Sebastian Dörner (sdoerner)</a> -
+    Friday, 06 July 2012, 11:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thank you, works for me!</div></div>
+
+  
+    <em>
+    <a name="comment3102" id="comment3102"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3102">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 06 July 2012, 11:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, here is a proper patch for this. It extends awful.rules to call functions for any properties. This seems safe since clients dont have any properties that can be set to functions.<br />
+<br />
+Still, I&#039;d like some review of this patch since it changes semantics in awful.rules. @jd: Ping, what do you think about this patch?</div></div>
+
+      <div class="attachments">
+          <a title="patch.patch" href="?getfile=512" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            patch.patch
+                  </a>
+                  (1.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3103" id="comment3103"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3103">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=461">Sebastian Dörner (sdoerner)</a> -
+    Friday, 06 July 2012, 11:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Maybe I was a bit too soon. In certain cases, the bug is still there:<br />
+<br />
+- Go to a tag that has no windows apart from plasma / gnome panel.<br />
+- click on the plasma panel. It still seems to be focussed this way (which was probably not the case in earlier versions).<br />
+- if you now switch back to a tag with other windows, none of them is focussed. You focus them, but when you switch tags they are again unfocussed.<br />
+- This problem persists until you restart awesome.</div></div>
+
+  
+    <em>
+    <a name="comment3104" id="comment3104"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3104">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=461">Sebastian Dörner (sdoerner)</a> -
+    Friday, 06 July 2012, 11:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">With &quot;You focus them&quot; I mean &quot;you can click on them to focus&quot;</div></div>
+
+  
+    <em>
+    <a name="comment3105" id="comment3105"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3105">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 06 July 2012, 12:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@sdoerner: Yeah, that&#039;s kind-of-expected. This rest of this issue is a duplicate of <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=574&amp;opened=190&amp;status%5B0%5D=" title="New | sticky windows mess up focus history | 0%" >FS#574</a>. No idea what to do about this, but for now I&#039;m just trying to get rid of &quot;panel gets focus on startup&quot;.</div></div>
+
+  
+    <em>
+    <a name="comment3106" id="comment3106"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#comment3106">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=718">Heiko Becker (heirecka)</a> -
+    Friday, 06 July 2012, 12:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks! The attached patch works for me.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1011#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1011" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

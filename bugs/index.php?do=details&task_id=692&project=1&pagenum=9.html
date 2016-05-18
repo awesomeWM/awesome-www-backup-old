@@ -1,0 +1,763 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#692 : Icedove binds to tag on the wrong screen</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=692&amp;project=1&amp;pagenum=9" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=710&amp;project=1&amp;pagenum=9" title="New | Calling an unexisting dbus name should result in an error | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;pagenum=9">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687&amp;project=1&amp;pagenum=9" title="New | Stop restarting on XRandR event | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#692 - Icedove binds to tag on the wrong screen  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a>     	 - Friday, 04 December 2009, 14:56 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.2</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">4 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=935">Not Given (water)</a> (2014-01-10)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> (2010-04-30)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> (2010-04-15)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> (2010-01-02)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">When I start Icedove on for example the right screen, the message/main window and the biff icon both displays on the right screen, but it is bound to the current tag on the left screen, instead of the current tag on the right screen, tag 9 for example.<br />
+<br />
+(My hypothesis is that Icedove is special because it has a systray icon.)<br />
+<br />
+No matter what tag I have selected on the right screen, the visibility of the icedove (thunderbird) window is wholly dependent on whether tag 9 on the left screen is selected.<br />
+<br />
+I see no other problems.<br />
+<br />
+Not sure which Category this should fall under.<br />
+<br />
+I am running Debian testing, with X.org 7.4, using the non-free nvidia-kernel display driver with TwinView providing two screens.<br />
+<br />
+Running awesome 3.4.2 on debian.<br />
+The only modification to the source is:<br />
+--- awesome-3.4.orig/awesomerc.lua.in<br />
++++ awesome-3.4/awesomerc.lua.in<br />
+@@ -7,6 +7,9 @@<br />
+ -- Notification library<br />
+ require(&quot;naughty&quot;)<br />
+ <br />
++-- Load Debian menu entries<br />
++require(&quot;debian.menu&quot;)<br />
++<br />
+ -- {{{ Variable definitions<br />
+ -- Themes define colours, icons, and wallpapers<br />
+ beautiful.init(&quot;@AWESOME_THEMES_PATH@/default/theme.lua&quot;)<br />
+@@ -60,6 +63,7 @@<br />
+ }<br />
+ <br />
+ mymainmenu = awful.menu({ items = { { &quot;awesome&quot;, myawesomemenu, beautiful.awesome_icon },<br />
++                                    { &quot;Debian&quot;, debian.menu.Debian_menu.Debian },<br />
+                                     { &quot;open terminal&quot;, terminal }<br />
+                                   }<br />
+                         })<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (17)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/1)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1561" id="comment1561"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1561">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Friday, 04 December 2009, 15:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not so sure about that hypothesis.  I uninstalled the package providing the tray icon, but the problem remains.</div></div>
+
+  
+    <em>
+    <a name="comment1562" id="comment1562"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1562">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Friday, 04 December 2009, 15:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Aha! there is a workaround.  Once you maximize with Mod4 + m (Mod4 bound to Windows key on my keyboard), Icedove jumps over to the screen on which the tag is bound.</div></div>
+
+  
+    <em>
+    <a name="comment1563" id="comment1563"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1563">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Friday, 04 December 2009, 15:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Note that the problem exists whether you run under Gnome by choosing Gnome from gdm menu and running  sudo killall -9 -r metacity &amp;&amp; awesome to switch to awesome, or whether you simply choose awesome from the gdm menu.</div></div>
+
+  
+    <em>
+    <a name="comment1564" id="comment1564"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1564">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 December 2009, 16:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It&#039;s more than probable that it starts with it top left corner on the other screen.</div></div>
+
+  
+    <em>
+    <a name="comment1617" id="comment1617"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1617">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=424">matt seburn (mattca)</a> -
+    Thursday, 17 December 2009, 16:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m seeing the same behaviour with firefox...</div></div>
+
+  
+    <em>
+    <a name="comment1858" id="comment1858"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1858">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 15 March 2010, 10:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can anyone confirm that the window&#039;s top-left corner is on the other screen? (This corner is what counts)</div></div>
+
+  
+    <em>
+    <a name="comment1863" id="comment1863"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1863">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Monday, 15 March 2010, 17:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hi,<br />
+<br />
+In my environment, I have 2 screens, and the next rc.lua config (only Icedove to tag [2][2]).<br />
+<br />
+When I start icedove with autoconfig setup (from awesome commandline), it works (in sid version).<br />
+<br />
+When it is launched from autostart configuration: two auth windows (asking me user and password to imap and caldav) are in tag[2][2]), but main windows is in the second screen and tag 1, but without any &quot;focus&quot; it appears at all tags in second screen.<br />
+<br />
+The &quot;selector&quot; (the area where you can click and take the focus in the bar on the top) is in screen 1 (sorry for my english)<br />
+<br />
+$ diff -u /etc/xdg/awesome/rc.lua ~/.config/awesome/rc.lua <br />
+--- /etc/xdg/awesome/rc.lua	2010-01-19 14:24:38.000000000 +0100<br />
++++ /home/javi/.config/awesome/rc.lua	2010-03-15 17:26:11.000000000 +0100<br />
+@@ -300,6 +300,8 @@<br />
+       properties = { floating = true } },<br />
+     { rule = { class = &quot;gimp&quot; },<br />
+       properties = { floating = true } },<br />
++    { rule = { class = &quot;Icedove&quot; },<br />
++      properties = { tag = tags[2][2] } },<br />
+     -- Set Firefox to always map on tags number 2 of screen 1.<br />
+     -- { rule = { class = &quot;Firefox&quot; },<br />
+     --   properties = { tag = tags[1][2] } },<br />
+@@ -336,3 +338,33 @@<br />
+ client.add_signal(&quot;focus&quot;, function(c) c.border_color = beautiful.border_focus end)<br />
+ client.add_signal(&quot;unfocus&quot;, function(c) c.border_color = beautiful.border_normal end)<br />
+ -- }}}<br />
++--<br />
++<br />
++-- Autostart<br />
++function autostart(dir)<br />
++    if not dir then<br />
++        do return nil end<br />
++    end<br />
++    local fd = io.popen(&quot;ls -1 -F &quot; .. dir)<br />
++    if not fd then<br />
++        do return nil end<br />
++    end<br />
++    for file in fd:lines() do<br />
++        local c= string.sub(file,-1)   -- last char<br />
++        if c==&#039;*&#039; then  -- executables<br />
++            executable = string.sub( file, 1,-2 )<br />
++            print(&quot;Awesome Autostart: Executing: &quot; .. executable)<br />
++            -- os.execute(dir .. &quot;/&quot; .. executable .. &quot; &amp;&quot;) -- launch in bg<br />
++	    awful.util.spawn(dir .. &quot;/&quot; .. executable)<br />
++        elseif c==&#039;@&#039; then  -- symbolic links<br />
++            print(&quot;Awesome Autostart: Not handling symbolic links: &quot; .. file)<br />
++        else<br />
++            print (&quot;Awesome Autostart: Skipping file &quot; .. file .. &quot; not executable.&quot;)<br />
++        end<br />
++    end<br />
++    io.close(fd)<br />
++end<br />
++<br />
++autostart_dir = os.getenv(&quot;HOME&quot;) .. &quot;/.config/awesome/autostart-icedove&quot;<br />
++autostart(autostart_dir)<br />
++<br />
+<br />
+$ cat ~/.config/awesome/autostart-icedove/icedove <br />
+if ! ps -C icedove<br />
+then<br />
+	icedove<br />
+fi<br />
+<br />
+Thank you very much<br />
+I hope this help<br /></div></div>
+
+  
+    <em>
+    <a name="comment1919" id="comment1919"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1919">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Thursday, 15 April 2010, 16:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">More info:<br />
+<br />
+I usually only see this the first time Icedove is started in a session.<br />
+Once I also saw it happen with Conkeror.<br />
+<br />
+&quot;Can anyone confirm that the window&#039;s top-left corner is on the other screen? (This corner is what counts)&quot;<br />
+Yes - the entire window is either on one screen or the other, I can confirm that for you, it&#039;s quite easy for me to see on the grey background.<br />
+<br />
+To go through the sequence of how to repeat the problem more clearly:<br />
+<br />
+1. I place my mouse in the right screen.<br />
+2. Hit Mod-r and type &quot;icedove&quot; to start icedove<br />
+3. icedove starts.  It is maximized (showing a bird icon in the title bar). The window is on the right screen, the title bar is on the left screen.<br />
+4. As soon as I un-maximize it with Mod-m, the window jumps over to the left screen to be with the title bar.<br />
+5. I can now Mod-drag the window back to the right screen, and after that everything behaves as normal. I can even close and restart icedove.<br />
+<br />
+Latest version I have demonstrated this on in debian, using the default /etc/xdg/awesome/rc.lua:<br />
+awesome 3.4.4-1<br />
+<br />
+~$ awesome --version<br />
+awesome v3.4.4 (Jet Sex)<br />
+ • Build: Mar  9 2010 11:39:21 for i686 by gcc version 4.4.3 (@murphy)<br />
+ • D-Bus support: ?<br /></div></div>
+
+  
+    <em>
+    <a name="comment1920" id="comment1920"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1920">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Thursday, 15 April 2010, 16:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Another potentially useful discovery:<br />
+<br />
+I can now make this happen _at will_ to any of icedove (a.k.a thunderbird), iceweasel (a.k.a firefox) or conkeror (mozilla-based browser with emacs-like interface).<br />
+<br />
+The trick is, it depends on whether the application was maximized when it was last closed.<br />
+<br />
+So try this:<br />
+<br />
+1. Run firefox<br />
+2. Maximize it<br />
+3. Quit it<br />
+4. Run firefox again and you should see the problem.<br />
+<br />
+If instead firefox is not maximized when it is closed, the problem will not appear the next time firefox is started.<br /></div></div>
+
+  
+    <em>
+    <a name="comment1921" id="comment1921"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1921">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> -
+    Thursday, 15 April 2010, 18:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext"><a href=" http://awesome.naquadah.org/wiki/FAQ#Why_some_floating_clients_can_not_be_tiled.3F"> http://awesome.naquadah.org/wiki/FAQ#Why_some_floating_clients_can_not_be_tiled.3F</a></div></div>
+
+  
+    <em>
+    <a name="comment1922" id="comment1922"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1922">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Thursday, 15 April 2010, 18:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ah - I see - it seems this is a known issue.  Glad to see there is a workaround.<br />
+<br />
+I cannot find an existing bug for this.<br />
+<br />
+Perhaps we can rename this bug: &quot;Clients maximized in their previous invocation behave weird&quot;.</div></div>
+
+  
+    <em>
+    <a name="comment1923" id="comment1923"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1923">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Thursday, 15 April 2010, 18:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Unfortunately the workaround doesn&#039;t appear to have any effect.</div></div>
+
+  
+    <em>
+    <a name="comment1924" id="comment1924"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1924">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 15 April 2010, 18:57 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If this indeed happens across client restarts, then it has to be something with client hints.<br />
+<br />
+Can one of you run &quot;xprop&quot; in a terminal, click on a faulty window (that is, after the restart) and paste the result?</div></div>
+
+  
+    <em>
+    <a name="comment1932" id="comment1932"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment1932">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=411">Michael Barkowski (AKBS)</a> -
+    Monday, 26 April 2010, 14:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here&#039;s the xprop outputs:<br />
+<br />
+Log out of X and back in<br />
+Start icedove on right screen (title appears on left screen)<br />
+take xprop capture (xprop-icedove.txt)<br />
+Un-maximize icedove (jumps to left screen)<br />
+Mod-drag icedove back to right screen<br />
+take second xprop capture (xprop-icedove-2.txt)</div></div>
+
+      <div class="attachments">
+          <a title="xprop-icedove.txt" href="?getfile=306" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            xprop-icedove.txt
+                  </a>
+                  (15.3 KiB)
+          <br />
+          <a title="xprop-icedove-2.txt" href="?getfile=307" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            xprop-icedove-2.txt
+                  </a>
+                  (15.2 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2406" id="comment2406"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment2406">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Thursday, 14 October 2010, 06:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Currently I fixed this issue, at least when autostart is configured to run iceweasel/icedove, adding this script to autostart dir:<br />
+cat ~/.config/awesome/autostart/01mousemove<br />
+xdotool mousemove_relative -- -100 0<br />
+<br />
+I discover that:<br />
+<br />
+If I don&#039;t touch the mouse while awesome is configured to &#039;autostart&#039; iceweasel and it (awesome) is starting, the follow behaviour happen:<br />
+<br />
+1. Mouse cursor is in first screen<br />
+2. While iceweasel start mouse cursor changes to second screen (without any human interaction)<br />
+3. Window selector of iceweasel appears in first screen (when I have configured it to appear in second screen)<br />
+4. iceweasel window appear in second screen (this is correct, but 3 not)<br />
+<br />
+If I move in the beggining of awesome start the cursor mouse to the left (first screen), then all work fine<br />
+If I move in the beggining of awesome start the cursor mouse to the right (second screen), then it works like I described from 1 to 4 steps<br />
+<br />
+So If I run xdotool like the first program to move cursor to the left, it works<br />
+<br />
+I hope my bad english won&#039;t confuse you<br />
+<br />
+Thanks!<br /></div></div>
+
+  
+    <em>
+    <a name="comment2837" id="comment2837"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment2837">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=673">Jean-Luc Duflot (jihell78)</a> -
+    Monday, 26 December 2011, 07:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hello, <br />
+<br />
+I just configured awesome with a second monitor : <br />
+-monitor1 : 19&quot; 1280x1024<br />
+- monitor2 : 17&quot; 1024x768<br />
+-virtual screen 2590x1024, same systay in both monitors. <br />
+-I had to configure xorg with &quot;Option &quot;Primary&quot; for monitor1.<br />
+<br />
+I have the same behaviour with icedove (starting maximized automatically on monitor1 with awesome) : opening a menu displays it on the upper left corner of monitor2 ; mod4-M twice then opening the menu makes it displaying normally on monitor1.<br />
+<br />
+Iceweasel, Libreofice work normally.<br />
+<br />
+My config : debian wheezy, awesome v3.4.11, icedove 3.1.16</div></div>
+
+  
+    <em>
+    <a name="comment3789" id="comment3789"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#comment3789">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 10 January 2014, 16:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext"><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1204&amp;project=1&amp;pagenum=9" title="Duplicate | Window not placed on correct screen | 100%"  class = "closedtasklink">FS#1204</a>&#160;</del> is a duplicate of this</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=692#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="692" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (1)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1204&amp;project=1&amp;pagenum=9" title="Duplicate | Window not placed on correct screen | 100%"  class = "closedtasklink">FS#1204 - Window not placed on correct screen</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

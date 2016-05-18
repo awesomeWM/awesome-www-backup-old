@@ -1,0 +1,29 @@
+/* Compile with: gcc timeout.c `pkg-config gtk+-2.0 --cflags --libs` -o timeout */
+
+#include <gtk/gtk.h>
+
+gint timeout_callback(gpointer userdata)
+{
+  g_print("sending signal\n");
+  gtk_window_present(userdata);
+
+  return TRUE;
+}
+
+int main(int argc, char *argv[])
+{
+  GtkWidget *window;
+  gtk_init(&argc, &argv);
+
+  window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  g_signal_connect(window, "destroy",
+                   G_CALLBACK(gtk_main_quit), NULL);
+
+  g_timeout_add(15000, timeout_callback, window);
+
+  gtk_widget_show_all(window);
+
+  gtk_main();
+
+  return 0;
+}

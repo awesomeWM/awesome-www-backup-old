@@ -1,0 +1,10 @@
+W: awesome: luaA_dofunction:78: error while running function
+stack traceback:
+	/usr/share/awesome/lib/awful/layout/suit/tile.lua:69: in function 'tile_group'
+	/usr/share/awesome/lib/awful/layout/suit/tile.lua:124: in function 'arrange'
+	/usr/share/awesome/lib/awful/layout/init.lua:85: in function 'arrange'
+	/usr/share/awesome/lib/awful/layout/init.lua:150: in function </usr/share/awesome/lib/awful/layout/init.lua:148>
+	[C]: in function 'swap'
+	/usr/share/awesome/lib/awful/client.lua:431: in function 'setslave'
+	/home/tim/.config/awesome/rc.lua:575: in function </home/tim/.config/awesome/rc.lua:562>
+error: /usr/share/awesome/lib/awful/layout/suit/tile.lua:69: attempt to perform arithmetic on field '?' (a nil value)

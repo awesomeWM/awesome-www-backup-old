@@ -1,0 +1,32 @@
+From 063b74fbc41036b9f9dd38b346435230604ebd57 Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+Date: Thu, 26 Dec 2013 15:50:10 +0100
+Subject: [PATCH] menu: do not double escape name in 'menu:clients()'
+
+Label of menu entries will be escaped automatically.  Doing it manually
+in menu:clients() will escape it it twice.
+
+Patch removes the util.escape() call in menu:clients()
+
+
+Signed-off-by: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+---
+ lib/awful/menu.lua.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 38c9bcb..7cd0426 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -463,7 +463,7 @@ function menu:clients(args) -- FIXME crude api
+     local cls_t = {}
+     for k, c in pairs(cls) do
+         cls_t[#cls_t + 1] = {
+-            util.escape(c.name) or "",
++            c.name or "",
+             function ()
+                 if not c:isvisible() then
+                     tags.viewmore(c:tags(), c.screen)
+-- 
+1.8.4.2
+

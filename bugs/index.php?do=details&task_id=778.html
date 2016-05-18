@@ -1,0 +1,583 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#778 : Clients with nofocus hint but with TAKE_FOCUS protocol doesn&#039;t hit into focus history</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=778" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity4">
+	 FS#778 - Clients with nofocus hint but with TAKE_FOCUS protocol doesn&#039;t hit into focus history  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a>     	 - Friday, 11 June 2010, 04:43 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Wednesday, 18 July 2012, 08:20 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">High</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.4</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">7 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=688">Mika Fischer (mika.fischer)</a> (2012-03-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=685">Nevermind (nevermind)</a> (2012-03-03)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> (2010-08-05)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=383">Ivan Lyapunov (dront78)</a> (2010-07-14)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=501">Alex (DiRaven)</a> (2010-06-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> (2010-06-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> (2010-06-11)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Such behavior caused my #749 FR. But I have found root of the problem at last.<br />
+<br />
+Following patch against 3.4 branch fixes bug.</div>
+
+         <div class="attachments">
+          <a title="0001-fix-focus-history-loss-for-clients-with-noinput-hint.patch" href="?getfile=319" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            0001-fix-focus-history-loss-f...
+                  </a>
+                  (0.7 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Wednesday, 18 July 2012, 08:20 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Won&#039;t fix<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Stupid flyspray. I wanted to reject to
+reopen this, but it wouldn&#039;t let
+me. So:<br />
+<br />
+This was fixed in 3.4.12, but caused
+<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1011"
+title="Fixed | GNOME panel can have
+focus | 100%"  class =
+"closedtasklink">FS#1011</a>&#160;</del>
+. The fix there was to revert the fix
+for this problem (&quot;Focus History:
+Don&#039;t ignore unfocusable
+clients&quot;), because &#039;The Real
+Fix&#039; seems to require config
+changes. So unless someone comes up with
+a patch that fixes both these problems,
+this one won&#039;t be fixed in the 3.4
+branch. (Oh and yes, both problems are
+fixed in master and thus won&#039;t
+happen in 3.5)        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (13)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/1)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2119" id="comment2119"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2119">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=383">Ivan Lyapunov (dront78)</a> -
+    Wednesday, 14 July 2010, 17:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I have such problem with Netbeans and JDK 1.6<br />
+It looks like no keyboard input available after code-complition manager popup suggestions.<br />
+<br />
+Described with<a href=" http://bugs.sun.com/view_bug.do?bug_id=6798064"> http://bugs.sun.com/view_bug.do?bug_id=6798064</a> and<a href=" http://code.google.com/p/xmonad/issues/detail?id=177"> http://code.google.com/p/xmonad/issues/detail?id=177</a></div></div>
+
+  
+    <em>
+    <a name="comment2120" id="comment2120"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2120">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Wednesday, 14 July 2010, 21:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ivan, I doubt, but keyboard input problems linked with reparenting issues. Do you use proper wmname? Also I had similar inconvenience when use AWT_TOOLKIT=MToolkit.</div></div>
+
+  
+    <em>
+    <a name="comment2135" id="comment2135"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2135">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=383">Ivan Lyapunov (dront78)</a> -
+    Friday, 16 July 2010, 12:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">netbeans doesn&#039;t work without MToolkit on awesome<br />
+but wmname seems fixes the problem - Thanks!<br />
+This drives me crazy - can i set wmname through rc.lua for a specified window?</div></div>
+
+  
+    <em>
+    <a name="comment2136" id="comment2136"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2136">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Friday, 16 July 2010, 12:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Also you can try solutions in<a href=" http://awesome.naquadah.org/wiki/Problems_with_Java"> http://awesome.naquadah.org/wiki/Problems_with_Java</a></div></div>
+
+  
+    <em>
+    <a name="comment2138" id="comment2138"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2138">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=383">Ivan Lyapunov (dront78)</a> -
+    Saturday, 17 July 2010, 07:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tryed them all. Can&#039;t work without MToolKit. wmname fails frequently but not always. Still a lot keyboard focus lost with netbeans 6.9 and jdk 6u20</div></div>
+
+  
+    <em>
+    <a name="comment2225" id="comment2225"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2225">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Friday, 13 August 2010, 15:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">My X11 background is almost zero so please correct me if I am wrong. There are two focus types. Input focus (xcb_set_input_focus) and common focus (sending WM_TAKE_FOCUS event). Swing apps handle input focus by their own, and set no input focus hint. But for awesome no input focus hint == no focus at all. Patch fixes it. I don&#039;t see ICCCM breaking. Again, please correct me.</div></div>
+
+  
+    <em>
+    <a name="comment2226" id="comment2226"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2226">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 13 August 2010, 15:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There are four input types:<a href=" http://tronche.com/gui/x/icccm/sec-4.html#s-4.1.7"> http://tronche.com/gui/x/icccm/sec-4.html#s-4.1.7</a><br />
+<br />
+When the app got the &quot;input field&quot; set to true, the window manager sets the input focus on the app. If the app says it does WM_TAKE_FOCUS, the window manager sends an event to that app and that one then sets the input focus itself. Both of this are done through SetInputFocus aka xcb_set_input_focus(). Via this, the app can e.g. ignore the offer for the focus hint and not set the focus at all or set it to some totally different window. So much for the X11 stuff.<br />
+<br />
+Now for the patch: It makes awesome emit the &quot;focus&quot; signal when it sends the WM_TAKE_FOCUS, even though the app doesn&#039;t have the input focus at that time. It&#039;s not sure that the app will get the focus at some later point of time since it could ignore the WM_TAKE_FOCUS or do other stuff with it. *If* the app does decide to set the input focus later on, awesome will receive a FocusIn event (event.c, event_handle_focusin()) which results in client_focus_update() to be called. So, whenever the input focus changes, it&#039;s pretty much guranteed that the right signal is emitted.<br />
+<br />
+Having just written that: What&#039;s the problem you are trying to fix? I don&#039;t see how any app could avoid being added to the focus history.</div></div>
+
+  
+    <em>
+    <a name="comment2230" id="comment2230"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2230">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Saturday, 14 August 2010, 01:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Now for the patch: It makes awesome emit the &quot;focus&quot; signal when it sends the WM_TAKE_FOCUS, even though the app doesn&#039;t have the input focus at that time<br />
+Patch only places windows with WM_TAKE_FOCUS into focus history. Awesome sent such signal before this fix. For example by clicking window title in tasklist. And swing windows take focus in this case because have WM_TAKE_FOCUS protocol.<br />
+<br />
+&gt; What&#039;s the problem you are trying to fix?<br />
+From by user experience awesome behaves very strange. One allows window focusing by clicking in tasklist but does not place it in history. And I can&#039;t navigate by MOD+k/j.<br />
+<br />
+&gt; I don&#039;t see how any app could avoid being added to the focus history.<br />
+Apps with &quot;No Input&quot; focus model -- input focus = false and without WM_TAKE_FOCUS protocol. xclock and xload as examples.</div></div>
+
+  
+    <em>
+    <a name="comment2231" id="comment2231"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2231">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 14 August 2010, 11:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt;&gt; Now for the patch: It makes awesome emit the &quot;focus&quot; signal when it sends the WM_TAKE_FOCUS, even though the app doesn&#039;t have the input focus at that time<br />
+&gt;Patch only places windows with WM_TAKE_FOCUS into focus history. Awesome sent such signal before this fix. For example by clicking window title in tasklist. And swing windows take focus in this case because have WM_TAKE_FOCUS protocol.<br />
+Windows with WM_TAKE_FOCUS stil get &quot;focus&quot; emitted on their windows through event.c and the focusin event handler.<br />
+<br />
+&gt;&gt; What&#039;s the problem you are trying to fix?<br />
+&gt;From by user experience awesome behaves very strange. One allows window focusing by clicking in tasklist but does not place it in history. And I can&#039;t navigate by MOD+k/j.<br />
+When the window gets the focus (i.e. it&#039;s border color is changed to the &quot;focus&quot; one), then the &quot;focus&quot; signal was emitted. So the appropriate signals in the focus history code have to run then, too. :/ And navigating with MOD+k/j doesn&#039;t seem to have anything to do with your patch.<br />
+<br />
+&gt;&gt; I don&#039;t see how any app could avoid being added to the focus history.<br />
+&gt;Apps with &quot;No Input&quot; focus model -- input focus = false and without WM_TAKE_FOCUS protocol. xclock and xload as examples.<br />
+Well, those apps can&#039;t be focused either. If they cannot be focused, they cannot be added to the focus history either. This sounds a lot like <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=716" title="Fixed | xload can not be focused | 100%"  class = "closedtasklink">FS#716</a>&#160;</del> which was fixed by making awful skip over unfocusable clients in next().</div></div>
+
+  
+    <em>
+    <a name="comment2235" id="comment2235"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2235">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Sunday, 15 August 2010, 02:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Windows with WM_TAKE_FOCUS stil get &quot;focus&quot; emitted on their windows through event.c and the focusin event handler.<br />
+<br />
+Ok. However, I don&#039;t understand why windows with true input focus hint get focus signal before actual focusing (via xcb_set_input_focus and sending event). They also take focus signal through focusin event handler.</div></div>
+
+  
+    <em>
+    <a name="comment2936" id="comment2936"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment2936">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=685">Nevermind (nevermind)</a> -
+    Thursday, 05 April 2012, 07:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">This problem is present again in latest stable version (3.4.11). More info:<a href=" http://comments.gmane.org/gmane.comp.window-managers.awesome/8202"> http://comments.gmane.org/gmane.comp.window-managers.awesome/8202</a></div></div>
+
+  
+    <em>
+    <a name="comment3126" id="comment3126"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment3126">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=685">Nevermind (nevermind)</a> -
+    Wednesday, 18 July 2012, 08:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">still present in 3.4.13</div></div>
+
+  
+    <em>
+    <a name="comment3127" id="comment3127"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#comment3127">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=685">Nevermind (nevermind)</a> -
+    Wednesday, 18 July 2012, 08:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">still present in 3.4.13</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=778#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="778" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (1)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=749" title="Duplicate | Override client focus hint | 100%"  class = "closedtasklink">FS#749 - Override client focus hint</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

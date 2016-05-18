@@ -1,0 +1,482 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1242 : &quot;Client got tagged with wrong tag&quot;</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1242" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#1242 - &quot;Client got tagged with wrong tag&quot;  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a>     	 - Wednesday, 26 March 2014, 19:24 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> (2014-03-28)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">This just popped up (after updating and restarting awesome), when I&#039;ve started a download from Firefox.<br />
+<br />
+The tag has screen=2, but the client (and its parent are on 1):<br />
+<br />
+string : Client got tagged with wrong tag:<br />
+c.screen: 1, c.transient_for.screen: 1, awful.tag.getscreen(t): 2, c.name Opening ignore_enter_leave_on_unmanage.patch,<br />
+stack traceback:<br />
+        /home/daniel/.config/awesome/rc.lua:854: in function &lt;/home/daniel/.config/awesome/rc.lua:852&gt;<br />
+        [C]: in function &#039;tags&#039;<br />
+        /usr/local/share/awesome/lib/awful/tag.lua:571: in function &lt;/usr/local/share/awesome/lib/awful/tag.lua:563&gt; (s<br />
+<br />
+The code is this:<br />
+<br />
+-- Register standards signals<br />
+capi.client.connect_signal(&quot;manage&quot;, function(c, startup)<br />
+    -- If we are not managing this application at startup,<br />
+    -- move it to the screen where the mouse is.<br />
+    -- We only do it for &quot;normal&quot; windows (i.e. no dock, etc).<br />
+    if not startup and c.type ~= &quot;desktop&quot; and c.type ~= &quot;dock&quot; then<br />
+        if c.transient_for then<br />
+            c.screen = c.transient_for.screen<br />
+            if not c.sticky then<br />
+--&gt;             c:tags(c.transient_for:tags())<br />
+            end<br />
+        else<br />
+            c.screen = capi.mouse.screen<br />
+        end<br />
+    end<br />
+    c:connect_signal(&quot;property::screen&quot;, tag.withcurrent)<br />
+end)<br />
+<br />
+<br />
+I use this to track/debug this:<br />
+-- DEBUG<br />
+client.connect_signal(&quot;tagged&quot;, function(c, t)<br />
+    if c.screen == awful.tag.getscreen(t) then return end<br />
+    local msg = debug.traceback(&quot;Client got tagged with wrong tag:\n&quot;<br />
+        .. &quot;c.screen: &quot; .. c.screen<br />
+        .. &quot;, c.transient_for.screen: &quot; .. (c.transient_for and c.transient_for.screen or &quot;not transient&quot;)<br />
+        .. &quot;, awful.tag.getscreen(t): &quot; .. awful.tag.getscreen(t)<br />
+        .. &quot;, c.name &quot; .. c.name<br />
+        .. &quot;, t.name &quot; .. t.name<br />
+        .. &quot;, t &quot; .. tostring(t)<br />
+    )<br />
+    bdebug(msg)<br />
+    bnote(msg)<br />
+end)<br />
+<br />
+<br />
+This is with Awesome master.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/1)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3943" id="comment3943"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3943">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Wednesday, 26 March 2014, 19:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yea, that happen since a few days, I can be fixed with request::tag. My Kate show on screen 2 instead of 1. This pull had a fix<a href=" https://github.com/Elv13/awesome-1/tree/ewmh_desktop_v2"> https://github.com/Elv13/awesome-1/tree/ewmh_desktop_v2</a> , but it cheap and request::tag works better</div></div>
+
+  
+    <em>
+    <a name="comment3945" id="comment3945"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3945">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 26 March 2014, 22:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Quote:<br />
+&gt; c.screen: 1, c.transient_for.screen: 1, awful.tag.getscreen(t): 2, c.name Opening ignore_enter_leave_on_unmanage.patch,<br />
+[...]<br />
+&gt; c.screen = c.transient_for.screen<br />
+&gt; if not c.sticky then<br />
+&gt; --&gt; c:tags(c.transient_for:tags())<br />
+&gt; end<br />
+<br />
+So... we just made sure that the &quot;Opening..&quot; window is on the same screen as its parent (which apparetnly worked) and now want to give it the same tags as its parent. However, one of those tags belongs to the wrong screen.<br />
+Doesn&#039;t that mean that the parent (the main firefox window) must already have had a wrong tag? And that somehow managed to slip by your debugging signal?<br />
+<br />
+Or am I missing something obvious?</div></div>
+
+  
+    <em>
+    <a name="comment3946" id="comment3946"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3946">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Thursday, 27 March 2014, 07:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, it looks odd.<br />
+<br />
+I have just checked the log, and there was not &quot;got tagged with wrong tag&quot; before.<br />
+<br />
+For what it&#039;s worth, the Firefox window behaved very strange (after updating and restarting awesome): it was displayed on screen 1, but above all other clients.<br />
+<br />
+I had used the Firefox client all day on screen 2, and am not sure if it came over to screen 1 because of the restart, or if I moved it before already.<br />
+<br />
+Since there are a few new fixes around this (e.g.<a href=" https://github.com/awesomeWM/awesome/commit/8bddba170b415bb27e71978d5ece4ed820d5c532"> https://github.com/awesomeWM/awesome/commit/8bddba170b415bb27e71978d5ece4ed820d5c532</a>), it might have been resolved by now and/or I&#039;ve been running into some corner case because of restarting with new code.</div></div>
+
+  
+    <em>
+    <a name="comment3947" id="comment3947"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3947">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Thursday, 27 March 2014, 12:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It still happened to another client (GVim): it is tagged with tag &quot;1&quot; from screen 2, but client.screen is 1.<br />
+<br />
+I have checked if the tag object might have been cloned somehow, but it&#039;s the same reference as tags[2][1].<br />
+<br />
+This won&#039;t have happened through the same code path, because there is no parent/transient_for client.<br />
+<br />
+I could not reproduce it yet, but I suspect that my &quot;put_client&quot; code might be involved:<a href=" https://gist.github.com/9805873"> https://gist.github.com/9805873</a><br />
+It uses c:geometry() and I have noticed that this might set client.screen, but not the tag - and sometimes it happens that the function behaves strange, e.g. it is not working the first time, or puts the client left instead of right.<br />
+<br />
+(I have extended my debug signal handler to also look for client.screen property changes now, and found<a href=" https://github.com/awesomeWM/awesome/pull/26"> https://github.com/awesomeWM/awesome/pull/26</a>).</div></div>
+
+  
+    <em>
+    <a name="comment3948" id="comment3948"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3948">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Thursday, 27 March 2014, 13:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Doesn&#039;t that mean that the parent (the main firefox window) must already have had a wrong tag?<br />
+<br />
+It could also mean that a property::screen handler was involved, given that the code was triggered, although awesome was starting up (see the PR above).<br />
+<br />
+Some more thoughts, but maybe irrelevant now:<br />
+<br />
+Couldn&#039;t it be possible that tag.withcurrent is already connected, interfering here?<br />
+<br />
+    c:connect_signal(&quot;property::screen&quot;, tag.withcurrent)<br />
+<br />
+Another source of interference might be the layout handler:<br />
+<br />
+capi.client.connect_signal(&quot;property::screen&quot;, function(c)<br />
+    for screen = 1, capi.screen.count() do layout.arrange(screen) end end)</div></div>
+
+  
+    <em>
+    <a name="comment3949" id="comment3949"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#comment3949">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Thursday, 27 March 2014, 13:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I wasn&#039;t sure if it was the same bug, but I opened<a href=" https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1243&amp;project=1&amp;order=id&amp;sort=desc"> https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1243&amp;project=1&amp;order=id&amp;sort=desc</a><br />
+<br />
+With a reproducible test case. It look the same after all. Yes, it _is_ a regression.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1242#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1242" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (1)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1243" title="Fixed | c.screen change on ctrl+mod4+r | 100%"  class = "closedtasklink">FS#1243 - c.screen change on ctrl+mod4+r</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

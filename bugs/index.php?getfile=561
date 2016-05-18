@@ -1,0 +1,56 @@
+diff -ur /usr/local/share/awesome/lib/awful/tag.lua /home/hint/.config/awesome/awful/tag.lua
+--- /usr/local/share/awesome/lib/awful/tag.lua	2012-12-17 11:52:33.000000000 +0400
++++ /home/hint/.config/awesome/awful/tag.lua	2013-01-01 20:21:58.581930557 +0400
+@@ -55,7 +55,8 @@
+ 
+     table.insert(tmp_tags, new_index, target_tag)
+ 
+-    for _, tmp_tag in ipairs(tmp_tags) do
++    for i, tmp_tag in ipairs(tmp_tags) do
++        tag.setproperty(tmp_tag, "index", i)
+         tag.setscreen(tmp_tag, scr)
+     end
+ end
+@@ -244,6 +245,23 @@
+             table.insert(tags, t)
+         end
+     end
++    
++    local without_index = 0
++    for _, t in ipairs(tags) do
++        if not tag.getproperty(t, "index") then
++            without_index = without_index + 1
++        end
++    end
++    if without_index > 0 then
++        for _, t in ipairs(tags) do
++            if not tag.getproperty(t, "index") then
++                tag.setproperty(t, "index", (#tags - without_index + 1))
++            end
++        end
++    end
++    
++    table.sort(tags, function(a, b) return tag.getproperty(a, "index") < tag.getproperty(b, "index") end)
++    
+     return tags
+ end
+ 
+@@ -563,6 +581,7 @@
+ capi.tag.add_signal("property::nmaster")
+ capi.tag.add_signal("property::windowfact")
+ capi.tag.add_signal("property::screen")
++capi.tag.add_signal("property::index")
+ 
+ for s = 1, capi.screen.count() do
+     capi.screen[s]:add_signal("tag::history::update")
+diff -ur /usr/local/share/awesome/lib/awful/widget/taglist.lua /home/hint/.config/awesome/awful/widget/taglist.lua
+--- /usr/local/share/awesome/lib/awful/widget/taglist.lua	2012-12-17 11:52:33.000000000 +0400
++++ /home/hint/.config/awesome/awful/widget/taglist.lua	2013-01-01 20:00:45.077720055 +0400
+@@ -152,6 +152,7 @@
+     tag.attached_connect_signal(screen, "property::name", ut)
+     tag.attached_connect_signal(screen, "property::activated", ut)
+     tag.attached_connect_signal(screen, "property::screen", ut)
++    tag.attached_connect_signal(screen, "property::index", ut)
+     capi.client.connect_signal("property::urgent", uc)
+     capi.client.connect_signal("property::screen", function(c)
+         -- If client change screen, refresh it anyway since we don't from

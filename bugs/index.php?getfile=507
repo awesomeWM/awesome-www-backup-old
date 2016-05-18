@@ -1,0 +1,86 @@
+From 863f28bf8d4907463ddcdfa2c2eed11db5d5a7c0 Mon Sep 17 00:00:00 2001
+From: "Ignas Anikevicius (gns_ank)" <anikevicius@gmail.com>
+Date: Sat, 30 Jun 2012 20:51:11 +0100
+Subject: [PATCH] Menubar: some more prefixes
+
+Signed-off-by: Ignas Anikevicius (gns_ank) <anikevicius@gmail.com>
+---
+ lib/menubar/init.lua.in     | 8 ++++----
+ lib/menubar/menu_gen.lua.in | 2 +-
+ lib/menubar/utils.lua.in    | 4 ++--
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/lib/menubar/init.lua.in b/lib/menubar/init.lua.in
+index 11de99f..7f917ed 100644
+--- a/lib/menubar/init.lua.in
++++ b/lib/menubar/init.lua.in
+@@ -138,7 +138,7 @@ local function menulist_update(query)
+ 
+     -- Add the categories
+     if show_categories then
+-        for _, v in pairs(menu_gen.all_categories) do
++        for _, v in pairs(menubar.menu_gen.all_categories) do
+             v.focused = false
+             if not current_category and v.use then
+                 if string.match(v.name, nocase(query)) then
+@@ -204,7 +204,7 @@ end
+ 
+ --- Refresh menubar's cache by reloading .desktop files.
+ function menubar.refresh()
+-    menu_entries = menu_gen.generate()
++    menu_entries = menubar.menu_gen.generate()
+ end
+ 
+ -- Awful.prompt keypressed callback to be used when the user presses a key.
+@@ -291,11 +291,11 @@ end
+ -- @return menubar wibox.
+ function menubar.get()
+     if app_folders then
+-        menu_gen.all_menu_dirs = app_folders
++        menubar.menu_gen.all_menu_dirs = app_folders
+     end
+     menubar.refresh()
+     -- Add to each category the name of its key in all_categories
+-    for k, v in pairs(menu_gen.all_categories) do
++    for k, v in pairs(menubar.menu_gen.all_categories) do
+         v.key = k
+     end
+     return common_args.w
+diff --git a/lib/menubar/menu_gen.lua.in b/lib/menubar/menu_gen.lua.in
+index 1571c2a..2aab622 100644
+--- a/lib/menubar/menu_gen.lua.in
++++ b/lib/menubar/menu_gen.lua.in
+@@ -79,7 +79,7 @@ end
+ -- @return all menu entries.
+ function menu_gen.generate()
+     -- Update icons for category entries
+-    lookup_category_icons()
++    menu_gen.lookup_category_icons()
+ 
+     local result = {}
+ 
+diff --git a/lib/menubar/utils.lua.in b/lib/menubar/utils.lua.in
+index 98bab60..71da5e0 100644
+--- a/lib/menubar/utils.lua.in
++++ b/lib/menubar/utils.lua.in
+@@ -143,7 +143,7 @@ function utils.parse(file)
+ 
+     -- Look up for a icon.
+     if program.Icon then
+-        program.icon_path = lookup_icon(program.Icon)
++        program.icon_path = utils.lookup_icon(program.Icon)
+     end
+ 
+     -- Split categories into a table. Categories are written in one
+@@ -183,7 +183,7 @@ function utils.parse_dir(dir)
+     local programs = {}
+     local files = io.popen('find '.. dir ..' -maxdepth 1 -name "*.desktop"')
+     for file in files:lines() do
+-        table.insert(programs, parse(file))
++        table.insert(programs, utils.parse(file))
+     end
+     return programs
+ end
+-- 
+1.7.11.1
+

@@ -1,0 +1,85 @@
+From 4b70f43eb9dc4bbc05460d00187da6dbff55c75f Mon Sep 17 00:00:00 2001
+From: dodo <dodo.the.last@gmail.com>
+Date: Mon, 14 May 2012 17:48:13 +0200
+Subject: [PATCH 1/2] awful.widget.graph: don't draw bg color over fg color
+
+behavior before: draw fg color everywhere and draw each value inverted as bg color.
+if not enough values available "remove" the free area (draw a big rectangle with bg color over it).
+
+i assume that this inverted draw style is because to get rid of antialias.
+
+behavior now: disable antialias and draw each value onto background as fg stroke.
+---
+ lib/awful/widget/graph.lua.in |   32 +++++++++-----------------------
+ 1 file changed, 9 insertions(+), 23 deletions(-)
+
+diff --git a/lib/awful/widget/graph.lua.in b/lib/awful/widget/graph.lua.in
+index bb2e5d0..3a8cd56 100644
+--- a/lib/awful/widget/graph.lua.in
++++ b/lib/awful/widget/graph.lua.in
+@@ -76,6 +76,14 @@ function draw(graph, wibox, cr, width, height)
+     end
+ 
+     cr:set_line_width(1)
++    cr:set_antialias("none")
++
++    -- Draw the background first
++    cr:rectangle(border_width, border_width,
++                    width - (2 * border_width),
++                    height)
++    cr:set_source(color(data[graph].background_color or "#000000aa"))
++    cr:fill()
+ 
+     -- Draw a stacked graph
+     if data[graph].stack then
+@@ -90,13 +98,6 @@ function draw(graph, wibox, cr, width, height)
+             end
+         end
+ 
+-        -- Draw the background first
+-        cr:rectangle(border_width, border_width,
+-                     width - (2 * border_width),
+-                     height)
+-        cr:set_source(color(data[graph].background_color or "#000000aa"))
+-        cr:fill()
+-
+         for i = 0, width - (2 * border_width) do
+             local rel_i = 0
+             local rel_x = width - border_width - i - 0.5
+@@ -127,12 +128,6 @@ function draw(graph, wibox, cr, width, height)
+             end
+         end
+ 
+-        cr:rectangle(border_width, border_width,
+-                     width - (2 * border_width),
+-                     height - (2 * border_width))
+-        cr:set_source(color(data[graph].color or "#ff0000"))
+-        cr:fill()
+-
+         -- Draw the background on no value
+         if #values ~= 0 then
+             -- Draw reverse
+@@ -147,19 +142,10 @@ function draw(graph, wibox, cr, width, height)
+                                border_width - 1)
+                 end
+             end
+-            cr:set_source(color(data[graph].background_color or "#000000aa"))
++            cr:set_source(color(data[graph].color or "#ff0000"))
+             cr:stroke()
+         end
+ 
+-        -- If we didn't draw values in full length, draw a square
+-        -- over the last, left, part to reset everything to 0
+-        if #values < width - (2 * border_width) then
+-            cr:rectangle(border_width, border_width,
+-                         width - (2 * border_width) - #values,
+-                         height - (2 * border_width))
+-            cr:set_source(color(data[graph].background_color or "#000000aa"))
+-            cr:fill()
+-        end
+     end
+ 
+     -- Draw the border last so that it overlaps already drawn values
+-- 
+1.7.10
+

@@ -1,0 +1,550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#926 : Remove 1px border to make scrollbars more easily clickable</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=926&amp;opened=637&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1002&amp;opened=637&amp;status%5B0%5D=" title="Fixed | Java windows minimize but cannot be maximized/restored | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=637&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#926 - Remove 1px border to make scrollbars more easily clickable  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a>     	 - Saturday, 17 September 2011, 05:58 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Saturday, 17 September 2011, 10:51 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Feature Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed                               &nbsp; <strong class="reopened">Reopened</strong>
+               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.10</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">To the right of scrollbars, there is a 1px border. It seems to have no purpose in a tiling WM and prevents me from being able to just yank the mouse to the edge of the screen and click on the scrollbar in a maximized application.<br />
+<br />
+If this border is the WM&#039;s doing, I suggest getting rid of it.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (10)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2729" id="comment2729"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2729">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a> -
+    Saturday, 17 September 2011, 10:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You know how users sometimes abuse bug trackers by asking &quot;How do I..&quot; questions that should really be asked in forums? This is an example of an opposite abuse: developers treating valid bug reports as questions to be answered, and closing them at the first workaround.<br />
+<br />
+In this case there is a clear usability problem, which happens to be in the default theme. If the default theme is considered part of the project, then this is indeed a bug, and the correct solution would be to fix the theme. Providing a workaround does not fix the problem for anyone except the reporter. Closing bugs because there is a workaround is simply robbing the project of feedback. See also Joel Spolsky&#039;s &quot;Fix everything two ways&quot; point at<a href=" http://www.joelonsoftware.com/articles/customerservice.html"> http://www.joelonsoftware.com/articles/customerservice.html</a><br />
+<br />
+Of course it&#039;s your prerogative how you use/abuse this bug tracker, so feel free to ignore the above.<br />
+<br />
+Thank you for the suggested workaround; unfortunately it doesn&#039;t actually work (at least in 3.4.9).</div></div>
+
+  
+    <em>
+    <a name="comment2730" id="comment2730"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2730">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 17 September 2011, 10:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hm, it really should work (tm), no idea what might be wrong.<br />
+Well, ok, let&#039;s try something else:<br />
+How are you fullscreening the client? If you have the default config keybindings: Are you using &quot;fullscreen&quot; (mod+f) or &quot;maximized&quot; (mod+m)? Fullscreen should remove all window border automatically (at least it does so in git/master, not sure about the 3.4 branch).<br />
+<br />
+The difference between fullscreen and maximized is that fullscreen covers the *full* screen, while maximized leaves the wibox (tasklist etc) visible.<br />
+<br />
+In my own config I have some stuff which tries to remove borders if a single client is covering everything...<br /></div></div>
+
+  
+    <em>
+    <a name="comment2731" id="comment2731"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2731">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a> -
+    Saturday, 17 September 2011, 12:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Testing some more, I think the problem is client-specific. I am using the /etc/xdg/awesome/rc.lua that Ubuntu provides, and one of their changes vs. git/master is to set the terminal to gnome-terminal instead of &#039;xterm&#039;. gnome-terminal has the 1px border. Of the other apps I&#039;ve tested:<br />
+ - Chrome doesn&#039;t have a border maximized or fullscreen.<br />
+ - nautilus doesn&#039;t have a border maximized or fullscreen.<br />
+ - urxvt and xterm (specifically &#039;xterm -sb -rightbar&#039;) have a border maximized, but not fullscreen.<br />
+ - firefox has the border maximized and fullscreen.<br />
+<br />
+So I don&#039;t know; can the WM do anything about this? Or is this one of those typical screwed up Linux/X situations where nobody can agree on a standard behaviour, and each library does things differently?</div></div>
+
+  
+    <em>
+    <a name="comment2732" id="comment2732"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2732">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 17 September 2011, 12:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There is a border width option that the WM can influence. Running &quot;xwininfo&quot; in a terminal and clicking on a window will tell you the value for that option (&quot;Border width:&quot;).</div></div>
+
+  
+    <em>
+    <a name="comment2733" id="comment2733"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2733">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a> -
+    Saturday, 17 September 2011, 13:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That&#039;s interesting; the problem is not the border, which is 0, but the window width, which varies by application, sometimes 1080 and sometimes 1078:<br />
+<br />
+[jturner@jturner-desktop ~ ]$ xwininfo <br />
+<br />
+xwininfo: Please select the window about which you<br />
+          would like information by clicking the<br />
+          mouse in that window.<br />
+<br />
+xwininfo: Window id: 0x80001c &quot;Terminal&quot;<br />
+<br />
+  Absolute upper-left X:  0<br />
+  Absolute upper-left Y:  28<br />
+  Relative upper-left X:  0<br />
+  Relative upper-left Y:  28<br />
+  Width: 1078<br />
+  Height: 1891<br />
+  Depth: 24<br />
+  Visual: 0x21<br />
+  Visual Class: TrueColor<br />
+  Border width: 0<br />
+  Class: InputOutput<br />
+  Colormap: 0x20 (installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: no<br />
+  Corners:  +0+28  -2+28  -2-1  +0-1<br />
+  -geometry 106x98+0-1<br />
+<br />
+[jturner@jturner-desktop ~ ]$ xwininfo <br />
+<br />
+xwininfo: Please select the window about which you<br />
+          would like information by clicking the<br />
+          mouse in that window.<br />
+<br />
+xwininfo: Window id: 0xe00047 &quot;New Tab - Google Chrome&quot;<br />
+<br />
+  Absolute upper-left X:  0<br />
+  Absolute upper-left Y:  28<br />
+  Relative upper-left X:  0<br />
+  Relative upper-left Y:  28<br />
+  Width: 1080<br />
+  Height: 946<br />
+  Depth: 24<br />
+  Visual: 0x21<br />
+  Visual Class: TrueColor<br />
+  Border width: 0<br />
+  Class: InputOutput<br />
+  Colormap: 0x20 (installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: no<br />
+  Corners:  +0+28  -0+28  -0-946  +0-946<br />
+  -geometry 1080x946+0+28<br />
+<br />
+<br />
+Additionally I found that Firefox&#039;s width is 1080 but its 1px border to the right of the scrollbar is theme-dependant:<br />
+<br /><a href="
+https://bugs.launchpad.net/ubuntu/+source/firefox/+bug/125734">
+https://bugs.launchpad.net/ubuntu/+source/firefox/+bug/125734</a><br /></div></div>
+
+  
+    <em>
+    <a name="comment2734" id="comment2734"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2734">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=200">Gregor Best (farhaven)</a> -
+    Sunday, 18 September 2011, 08:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Does it work if you tell awesome to ignore client window size hints (There should be a line in the manage hook along the lines of honor_size_hints, commenting that out should do the trick)? If that&#039;s the case, you could either live with e.g. terminals being resized to funky sizes (such as the &quot;terminal&quot; area of them being something and a half letters high) or add a rule that tells awesome to only ignore gnome-terminal via the callback= mechanism.</div></div>
+
+  
+    <em>
+    <a name="comment2735" id="comment2735"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2735">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a> -
+    Sunday, 18 September 2011, 23:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks, Gregor, size_hints_honor (following the FAQ advice[1]) did remove the border for urxvt and xterm. It didn&#039;t for gnome-terminal (see attached blown-up screenshot) or firefox, but I suspect their borders are set in the application or GTK, not the window manager.<br />
+<br />
+[1]<a href=" http://awesome.naquadah.org/wiki/FAQ#How_to_remove_gaps_between_windows.3F"> http://awesome.naquadah.org/wiki/FAQ#How_to_remove_gaps_between_windows.3F</a></div></div>
+
+      <div class="attachments">
+          <a title="topright.png" href="?getfile=442" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/png; charset=binary" />
+            &nbsp;&nbsp;
+            topright.png
+                  </a>
+                  (4.7 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2736" id="comment2736"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2736">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=637">Jeff Turner (jefft)</a> -
+    Monday, 19 September 2011, 00:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, it does actually fix gnome-terminal too, despite the visible border. So in summary, getting easily clickable scrollbars requires setting theme.border_width = &quot;0&quot; in the theme, and size_hints_honor = false in the properties section of awful.rules.rules in rc.lua.<br />
+<br />
+I don&#039;t suppose these these are changes that can be made in the default configuration?</div></div>
+
+  
+    <em>
+    <a name="comment2737" id="comment2737"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2737">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 19 September 2011, 07:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">size_hints_honor = false is an ICCCM violation (and some clients, e.g. urxvt handle it badly) and border_width = 0 makes it harder to see which client has the input focus since that&#039;s indicated by the border color.<br />
+<br />
+But fullscreen clients already should be ignoring size hints and a border doesnt really make sense for them either, so that can be done only while the client is fullscreen&#039;d (in fact, I thought we were already doing so...)</div></div>
+
+  
+    <em>
+    <a name="comment2738" id="comment2738"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#comment2738">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=200">Gregor Best (farhaven)</a> -
+    Monday, 19 September 2011, 08:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Maybe we could add a rule for gnome-terminal to the default config. That way, new users see how to escape the &#039;-&#039; character in the class name, they see how callbacks work and they see how one can set simple window properties with rules.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=926#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="926" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

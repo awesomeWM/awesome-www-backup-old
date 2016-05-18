@@ -1,0 +1,25 @@
+From 411a6c2fb32a2630dd69e593788399422cff8456 Mon Sep 17 00:00:00 2001
+From: dodo <dodo.the.last@gmail.com>
+Date: Tue, 15 May 2012 00:50:31 +0200
+Subject: [PATCH 3/3] awful.widget.graph: disable antialias
+
+each pixel represents a value, so making everything fuzzy doesn't makes sense in a place where you want to draw pixel perfect.
+---
+ lib/awful/widget/graph.lua.in |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/awful/widget/graph.lua.in b/lib/awful/widget/graph.lua.in
+index ade5ee6..1da1bcc 100644
+--- a/lib/awful/widget/graph.lua.in
++++ b/lib/awful/widget/graph.lua.in
+@@ -76,6 +76,7 @@ function draw(graph, wibox, cr, width, height)
+     end
+ 
+     cr:set_line_width(1)
++    cr:set_antialias("none")
+ 
+     -- Draw the background first
+     cr:rectangle(border_width, border_width,
+-- 
+1.7.10
+

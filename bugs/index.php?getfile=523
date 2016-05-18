@@ -1,0 +1,32 @@
+From 940c4f68bedfa08a35339162e6d63a61b7581221 Mon Sep 17 00:00:00 2001
+From: Steven Oliver <oliver.steven@gmail.com>
+Date: Thu, 23 Aug 2012 22:12:03 -0400
+Subject: [PATCH 2/2] Don't strip RPATH on Solaris (FS#744)
+
+
+Signed-off-by: Steven Oliver <oliver.steven@gmail.com>
+---
+ CMakeLists.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c2e0716..50f1b09 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -82,6 +82,13 @@ set(AWE_MAN_SRCS
+     ${SOURCE_DIR}/manpages/awesomerc.5.txt)
+ set(AWE_MAN_LANGS it es fr de ru)
+ 
++# Don't strip RPATH if compiling on Solaris
++if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
++    set(CMAKE_SKIP_BUILD_RPATH FALSE)
++    set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)    
++endif()
++
+ add_executable(${PROJECT_AWE_NAME}
+     ${AWE_SRCS})
+ 
+-- 
+1.7.11.4
+

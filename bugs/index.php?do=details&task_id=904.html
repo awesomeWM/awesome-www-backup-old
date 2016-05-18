@@ -1,0 +1,660 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#904 : Wibox doesn&#039;t appear after awesome.restart</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=904" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1273" title="Unconfirmed | WeeChat Window Getting Destoryed With ModM &amp; Basic Actions... | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#904 - Wibox doesn&#039;t appear after awesome.restart  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a>     	 - Saturday, 14 May 2011, 10:37 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Monday, 16 May 2011, 20:34 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Wibox		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed                               &nbsp; <strong class="reopened">Reopened</strong>
+               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I had another problem. Awesome crashed after i&#039;d restarted it. Today, I&#039;ve updated to latest GIT version, and this bug dissapears.<br />
+Now, I have only one problem: wibox doesn&#039;t appear after I restart awesome. <br />
+I&#039;ve tried original config, but wibox appears not always. You need to restart several times to get wibox appeared.<br />
+Also, windows on some workspaces appear not always too.<br />
+<br />
+Info about my system: <br />
+Archlinux x64<br />
+ATI Radeon HD 4225<br />
+1366x768 screen<br />
+<br />
+awesome-git latest<br />
+vicious-git latest<br />
+lua-oopango-git latest<br />
+lua-oocairo-git latest<br />
+lua 5.1.4<br />
+xcb-util 3.6.8<br />
+cairo-xcb 1.10.2<br />
+xorg-server 1.10.1<br />
+catalyst 11.5<br />
+<br /></div>
+
+         <div class="attachments">
+          <a title="rc.lua" href="?getfile=417" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=utf-8" />
+            &nbsp;&nbsp;
+            rc.lua
+                  </a>
+                  (17.6 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (14)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2641" id="comment2641"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2641">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 10:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">After several restarts, awesome can crash with this output:<br />
+<br />
+E: awesome: signal_fatal:264: dumping backtrace<br />
+awesome(backtrace_get+0x41) [0x4227a1]<br />
+awesome() [0x40cafc]<br />
+/lib/libpthread.so.0(+0xf750) [0x7f5f30acb750]<br />
+awesome() [0x4245c0]<br />
+/lib/libc.so.6(bsearch+0x62) [0x7f5f30793cf2]<br />
+awesome(luaA_object_emit_signal+0xae) [0x42527e]<br />
+awesome(client_resize+0x364) [0x42b664]<br />
+awesome() [0x42bafc]<br />
+/usr/lib/liblua.so(+0xc79d) [0x7f5f30f2979d]<br />
+/usr/lib/liblua.so(+0x175e1) [0x7f5f30f345e1]<br />
+/usr/lib/liblua.so(+0xcc6d) [0x7f5f30f29c6d]<br />
+/usr/lib/liblua.so(+0xbef7) [0x7f5f30f28ef7]<br />
+/usr/lib/liblua.so(+0xce32) [0x7f5f30f29e32]<br />
+/usr/lib/liblua.so(lua_pcall+0x51) [0x7f5f30f25851]<br />
+awesome(signal_object_emit+0x1ee) [0x42512e]<br />
+awesome() [0x43043f]<br />
+awesome() [0x422f7f]<br />
+/usr/lib/liblua.so(+0xc79d) [0x7f5f30f2979d]<br />
+/usr/lib/liblua.so(+0xcc24) [0x7f5f30f29c24]<br />
+/usr/lib/liblua.so(+0xe5ea) [0x7f5f30f2b5ea]<br />
+/usr/lib/liblua.so(+0xeb38) [0x7f5f30f2bb38]<br />
+/usr/lib/liblua.so(+0xbef7) [0x7f5f30f28ef7]<br />
+/usr/lib/liblua.so(lua_close+0x60) [0x7f5f30f30ee0]<br />
+awesome(awesome_restart+0x46) [0x40cc96]<br />
+awesome() [0x417799]<br />
+/usr/lib/liblua.so(+0xc79d) [0x7f5f30f2979d]<br />
+/usr/lib/liblua.so(+0x175e1) [0x7f5f30f345e1]<br />
+/usr/lib/liblua.so(+0xcc6d) [0x7f5f30f29c6d]<br />
+/usr/lib/liblua.so(+0xbef7) [0x7f5f30f28ef7]<br />
+/usr/lib/liblua.so(+0xce32) [0x7f5f30f29e32]<br />
+/usr/lib/liblua.so(lua_pcall+0x51) [0x7f5f30f25851]<br />
+awesome(luaA_object_emit_signal+0x21b) [0x4253eb]<br />
+<br />
+Say me, how can i build debug version of awesome, and I try and paste here more complete stacktrace<br /></div></div>
+
+  
+    <em>
+    <a name="comment2644" id="comment2644"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2644">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 14 May 2011, 11:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The wiki says it all:<br /><a href="
+https://awesome.naquadah.org/wiki/Debugging">
+https://awesome.naquadah.org/wiki/Debugging</a><br />
+<br />
+Besides this crash, there are no other error messages in awesome&#039;s output?</div></div>
+
+  
+    <em>
+    <a name="comment2647" id="comment2647"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2647">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 12:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There is nothing another output when I start awesome.</div></div>
+
+      <div class="attachments">
+          <a title="gdb" href="?getfile=420" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            gdb
+                  </a>
+                  (19.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2648" id="comment2648"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2648">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 14 May 2011, 13:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could you attach your config?<br />
+<br />
+Awesome crashes during shutdown, not after the restart.<br />
+<br />
+Stack frames 41-36 are the main loop and event handling. Frames 35-33 are the input handling which call into your lua code. At frame 23 this calls the restart function which then tries to clean up lua.<br />
+However, since we were called from lua, this look a little invalid....<br />
+Anyway, starting from frame 22, all the lua state is destroyed, but while destroying a drawin, a client is resized but apparently the state needed for that was already destroyed.<br />
+<br />
+I guess it&#039;s something specific to your config which is why I&#039;d like to take a look into it.<br />
+<br />
+For the &quot;no screen&quot; problem: It appeared right after an upgrade. Which version did you use before? Since March 27, the &quot;screen&quot; property of drawins is removed and thus has no effect anymore. Perhaps your config is still using &quot;screen&quot; instead of visible?</div></div>
+
+  
+    <em>
+    <a name="comment2649" id="comment2649"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2649">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 13:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">my config is attached in bug report. i&#039;ll try to make this procedure with clean config<br /></div></div>
+
+  
+    <em>
+    <a name="comment2650" id="comment2650"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2650">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 14 May 2011, 13:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, I missed that.<br />
+<br />
+With this config (after removing all the vicious stuff since I dont have vicious available here) I get a wibox and restarting with mod+ctrl+r doesn&#039;t crash. Can&#039;t reproduce.</div></div>
+
+  
+    <em>
+    <a name="comment2651" id="comment2651"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2651">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 13:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve tried default config. I couldn&#039;t call segfault many times, restart works without crashed ( anyway, wibox and some workplaces appears not always ). I&#039;ve spent some time reading your text again, tried to restart and got segfault. I&#039;ve attached new gdb2 file. <br />
+<br />
+Also, i&#039;ve attached screen without visible workplace. As you can see, there are two window, but they aren&#039;t visible, however I can move mouse pointer across they, and it changes ( if I mouseover textfield, mouse pointer changes ). And window focus follows mouse cursor. But I can&#039;t see this windows.<br />
+<br />
+Second screenshot is workplace without wibox</div></div>
+
+      <div class="attachments">
+          <a title="gdb2" href="?getfile=421" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            gdb2
+                  </a>
+                  (23.9 KiB)
+          <br />
+          <a title="screen1.jpg" href="?getfile=422" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            screen1.jpg
+                  </a>
+                  (51.1 KiB)
+          <br />
+          <a title="screen2.jpg" href="?getfile=423" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            screen2.jpg
+                  </a>
+                  (98.9 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2652" id="comment2652"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2652">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 13:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">forgot to say, screenshots above made with default config.</div></div>
+
+  
+    <em>
+    <a name="comment2653" id="comment2653"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2653">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Saturday, 14 May 2011, 13:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can get persistent crashes. <br />
+On third workplace. I have xterm there. If workplace&#039;s layout is floating, then awesome restarts normal<br />
+If workplace&#039;s layout is tile, then awesome crashes.</div></div>
+
+  
+    <em>
+    <a name="comment2654" id="comment2654"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2654">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Monday, 16 May 2011, 20:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hey. Very thanks for you. You&#039;ve rock.<br />
+But, another bug is still present: wibox doesn&#039;t always appear. I&#039;ve got new info: wibox is present ( I can click in area with workspace switcher, and workspace will be switched ), but it invisible. Same behaviour with some windows: they are present, but they are invisible. I can get info by xprop from this windows. Can you reproduce this bug? Can i provide you more info?</div></div>
+
+  
+    <em>
+    <a name="comment2655" id="comment2655"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2655">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 16 May 2011, 20:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Since I don&#039;t have any idea yet:<br />
+<br />
+What&#039;s the output of xprop (which was your idea) and xwininfo -frame -all (which is my idea :P)?</div></div>
+
+  
+    <em>
+    <a name="comment2657" id="comment2657"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2657">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Monday, 16 May 2011, 22:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve restarted awesome several times, and I have not visible wibox and lxterminal window. I&#039;ve attach xprop and xwininfo of this invisible window</div></div>
+
+      <div class="attachments">
+          <a title="debug" href="?getfile=424" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-pascal; charset=utf-8" />
+            &nbsp;&nbsp;
+            debug
+                  </a>
+                  (33.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2660" id="comment2660"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2660">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 17 May 2011, 18:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, all that I notice is that no one has registered ExposeMask registered on this window and that it is override-redirect (= it tells the window manager to ignore it). WTF?<br />
+<br />
+Does the same happen with a non-override-redirect window? Can you move that window with awesome? What happens?</div></div>
+
+  
+    <em>
+    <a name="comment2661" id="comment2661"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#comment2661">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=616">Sergey Kukunin (kukunin)</a> -
+    Tuesday, 17 May 2011, 19:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, I can control invisible window as same as visible. I can move it, change layout, tiling options.<br />
+I&#039;ve attached two outputs of xwininit -frame -all, first of visible window, second of invisible window.</div></div>
+
+      <div class="attachments">
+          <a title="debug" href="?getfile=425" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            debug
+                  </a>
+                  (3.3 KiB)
+          <br />
+    </div>
+  
+
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="904" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,554 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1087 : Awesome 3.5 take over 30 seconds to load with multiple screens</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1087&amp;opened=655&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1141&amp;opened=655&amp;status%5B0%5D=" title="Duplicate | Really bad display corruption when using EFI xorg driver (fbdev) | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=655&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084&amp;opened=655&amp;status%5B0%5D=" title="Fixed | Input loss, focus loss, black flickering and way to many redraw  | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1087 - Awesome 3.5 take over 30 seconds to load with multiple screens  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Sunday, 06 January 2013, 23:10 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 13 March 2014, 11:28 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Widgets		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.3			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> (2013-01-17)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">for s = 1, screen.count() do --BUG make my config take 1 minute to load<br />
+    gears.wallpaper.maximized(beautiful.wallpaper, s, true)<br />
+end<br />
+<br />
+Take more then 30 seconds to execute on my 5 screens setup while feh can set the bg in less than a second. This is a bug with the default config.<br />
+<br />
+Why is it bad:<br />
+Because it make awesome unusable and input blocked for half a minute!<br />
+<br />
+Solutions can be:<br />
+1) Optimise the code. 30 seconds? lets go, there must be a better way...<br />
+2) Use coroutine or theads to load the bg in parallel while the rest of awesome work normally.<br />
+<br />
+This bug is not that important because it only effect a bunch of idiot who thing having a 10000 pixels wide desktop is useful :P. There is also easy workaround (using feh), but it make a bad first impression to new users.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 13 March 2014, 11:28 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Works for me<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Apparently either no one cares about
+this any more or it works good enough
+now.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (10)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3343" id="comment3343"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3343">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 07 January 2013, 14:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could you figure out what the heck awesome is doing in these 30 seconds? E.g. attach gdb during the freeze and get a backtrace, strace it, do something else which figures out what this is.</div></div>
+
+  
+    <em>
+    <a name="comment3357" id="comment3357"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3357">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 11 January 2013, 07:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here come strace</div></div>
+
+      <div class="attachments">
+          <a title="strace" href="?getfile=575" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-c; charset=us-ascii" />
+            &nbsp;&nbsp;
+            strace
+                  </a>
+                  (1.65 MiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3358" id="comment3358"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3358">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 11 January 2013, 07:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">And here come the lua profile. Apparently, &quot;prepare&quot; take just about 100% of the startup time</div></div>
+
+      <div class="attachments">
+          <a title="awesome_profile___send_to_elv1313_at_gmail_com___.debug" href="?getfile=576" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            awesome_profile___send_to_elv...
+                  </a>
+                  (341 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3361" id="comment3361"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3361">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 January 2013, 15:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">First: No idea what to do with the profile file.<br />
+<br />
+Argh (I use this word way too often lately).<br />
+<br />
+Could you test the attached patch? It uses our &quot;main&quot; X11 connection for setting the wallpaper. This should help cairo to notice that both connections go to the same X11 server and it thus doesn&#039;t have to download and re-upload the 47 MiB large wallpaper (do you have a screen size of something like 1226x10000 pixels?!?).</div></div>
+
+      <div class="attachments">
+          <a title="wallpaper.patch" href="?getfile=578" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wallpaper.patch
+                  </a>
+                  (1.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3363" id="comment3363"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3363">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 11 January 2013, 20:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The profile file is for KCacheGrind or any Valgrind/CallGrind GUI, but KCacheGrind, while far from perfect, is the best one. If you don&#039;t want the 1000 dependencies, you can always install it in an user account, isolated from your system.</div></div>
+
+  
+    <em>
+    <a name="comment3364" id="comment3364"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3364">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Saturday, 12 January 2013, 00:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, as said on IRC, it help a lot. I am not so sure if it is the best thing to do, but it work well enough so it doesn&#039;t &quot;look&quot; like a bug anymore.</div></div>
+
+  
+    <em>
+    <a name="comment3368" id="comment3368"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3368">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 14 January 2013, 12:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, here is a newer patch (I worked on this because my wallpaper was broken).<br />
+<br />
+This adds a missing xcb_aux_sync() into root.c. The other changes in root.c should be identical to the previous patch.<br />
+<br />
+The change in lib/gears/wallpaper.lua.in are new. Instead of creating one big image surface which covers all the 5(?) screens, this now just creates just one image surface which covers the part that we are going to change. Some matrix-magic makes sure that this smaller image surface will be drawn to the expected part of the screen.<br />
+<br />
+Since this now doesn&#039;t upload a big image which is mostly black, startup is hopefully faster.<br />
+<br />
+Still, I wonder what feh does all that differently... Are you using the same wallpaper on all 5 screens? Perhaps feh is intelligent enough to only upload it once...</div></div>
+
+      <div class="attachments">
+          <a title="faster_wallpaper.patch" href="?getfile=579" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            faster_wallpaper.patch
+                  </a>
+                  (2.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3387" id="comment3387"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3387">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 24 January 2013, 19:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">First part of this is in git, so only lua changes are left. Do those changes in the last patch help?<br />
+<br />
+commit 5024843e95b91a664128ccc082a980a1a25f5d5d<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Thu Jan 24 18:54:35 2013 +0100<br />
+<br />
+    root.wallpaper: Use main connection for pixmap filling (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087&amp;opened=655&amp;status%5B0%5D=" title="Works for me | Awesome 3.5 take over 30 seconds to load with multiple screens | 100%"  class = "closedtasklink">FS#1087</a>&#160;</del>)<br />
+    <br />
+    Previously, cairo would often have to download the old wallpaper from the X11<br />
+    server and then upload it again. It did this because it couldn&#039;t see that the<br />
+    two X11 connections involved are actually connected to the same X11 server.<br />
+    <br />
+    This commit fixes this by setting up the pixmap from our main X11 connection.<br />
+    This is the same connection that we use for accessing the &quot;old&quot; wallpaper and<br />
+    thus cairo doesn&#039;t have to do stupid things.<br />
+    <br />
+    The big improvement with this is that this speeds up wallpaper setup a lot.<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;</div></div>
+
+  
+    <em>
+    <a name="comment3445" id="comment3445"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3445">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 12 February 2013, 14:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m curious how slow this still is and what others are doing differently...<br />
+<br />
+commit f86a9c896cddc215704ddfe3779ad03545e71e72<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Tue Feb 12 15:15:16 2013 +0100<br />
+<br />
+    gears.wallpaper: Create smaller image surface (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087&amp;opened=655&amp;status%5B0%5D=" title="Works for me | Awesome 3.5 take over 30 seconds to load with multiple screens | 100%"  class = "closedtasklink">FS#1087</a>&#160;</del>)<br />
+    <br />
+    When no wallpaper exists yet, instead of creating a black image surface which<br />
+    covers all the screens, just create a surface for the screen which we need. This<br />
+    means that way less pixels have to be uploaded to the X11 server, which should<br />
+    be faster.<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;</div></div>
+
+  
+    <em>
+    <a name="comment3693" id="comment3693"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#comment3693">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 October 2013, 09:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ping? What&#039;s the current startup time? (And when replying, please include which awesome version you are using)</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1087" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

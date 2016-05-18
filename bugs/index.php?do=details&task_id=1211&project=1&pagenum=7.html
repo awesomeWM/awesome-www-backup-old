@@ -1,0 +1,545 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1211 : Support touchscreen</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1211&amp;project=1&amp;pagenum=7" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1213&amp;project=1&amp;pagenum=7" title="Unconfirmed | Focus a client by mouse enter a tasklist item | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;pagenum=7">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1208&amp;project=1&amp;pagenum=7" title="Unconfirmed | theme.wallpaper_cmd with one item cause an issue in beautiful li | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1211 - Support touchscreen  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a>     	 - Tuesday, 18 February 2014, 18:09 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.15</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Awesome could enable touchscreen for window movement and resizing. Now touchscreen doesn&#039;t work well with awesome for moving a window.<br />
+<br />
+Steps to reproduce:<br />
+<br />
+1. Mod+Touch on a window<br />
+2. Keep touch and move<br />
+3. Stop touch<br />
+4. Touch again<br />
+<br />
+Actual result:<br />
+<br />
+After step 4, the window gets moved to the new touch position.<br />
+<br />
+Expected result:<br />
+<br />
+The window doesn&#039;t get moved by new touch.<br />
+<br />
+<br />
+Currently the event handler treats button press and release as the same, and only stops the mouse grabber when a new MotionNotify event comes in. So after button release the mouse is still grabbed. The problem for touchscreen is that there is no motion at all after touch stops (button release).<br />
+<br />
+A similar bug with the same root cause is <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1008&amp;project=1&amp;pagenum=7" title="Unconfirmed | Mouse function (move/resize) persists until mouse cursor is move | 0%" >FS#1008</a>, which I can reproduce with mouse.<br />
+<br />
+Mouse grabbing should stop when the button is released. Attached is a two-line patch that works for my case.<br />
+<br />
+Although this is reported against 3.4.15, related code isn&#039;t changed in 3.5.<br /></div>
+
+         <div class="attachments">
+          <a title="stop-mousegrabbar-on-button-release.patch" href="?getfile=665" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            stop-mousegrabbar-on-button-r...
+                  </a>
+                  (0.5 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (10)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3810" id="comment3810"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3810">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 18 February 2014, 20:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;d prefer patches as git-formatted patches (clone the git repo, commit your change to git (with a good commit message referencing <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211&amp;project=1&amp;pagenum=7" title="Unconfirmed | Support touchscreen | 0%" >FS#1211</a>), git format-patch origin/master.. and attach the resulting file). That way you are tracked as the author of this patch (and I don&#039;t have to come up with a commit message).<br />
+<br />
+Now on to the patch: What would you say why this does the right thing? All that the patch does is to make all button releases refer to the first(?) button, no matter which button was actually released. I *guess* that replacing &quot; 1 &lt;&lt; (ev-&gt;detail - 1 + 8))&quot; with something like &quot;ev-&gt;response_type == XCB_BUTTON_RELEASE ? 0 :  1 &lt;&lt; (ev-&gt;detail - 1 + 8))&quot; should work better. I guess it would be best to have some lua code (in the commit message?) that runs a keygrabber and prints all reported events so that it can be verified that lua gets called with the right arguments.<br />
+<br />
+(Of course, using the trinary operator for this results in ugly code and I guess it would be better to introduce a new uint16_t mask local variable for this.... But that doesn&#039;t matter for the actual idea.)</div></div>
+
+  
+    <em>
+    <a name="comment3812" id="comment3812"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3812">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a> -
+    Thursday, 20 February 2014, 05:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes I intended to create a proper patch after a proper solution is confirmed.<br />
+<br />
+ev-&gt;detail = 0 means no button by xcb docs. The 0 could be coded as XCB_BUTTON_INDEX_ANY (&quot;Any of the following (or none)&quot;) but it doesn&#039;t make more sense either. I did test it with lua logging code in awful.mouse.client.move. Let me describe the code flow to make sure: 1) when button 1 is pressed, the button callback client.move installs the mousegrabber callback and grabs the mouse but not calls the callback; 2) when more motion or button events come in, the mousegrabber callback is called; 3) when the mousegrabber callback gets an event of no button it returns false, the the mouse grab is stopped.<br />
+<br />
+You did point out an issue with the current approach: if the user grabs mouse with button 1 pressed and then release button 2, the grab is stopped. I can&#039;t imagine a valid use case for such behavior, but I&#039;m willing to discuss about how to patch this.<br />
+<br />
+So if we want to make sure the grab is stopped only on the right button release, then we have to keep track of which button is pressed when the mouse is grabbed. Keeping track of states complicates things. See if you like it.</div></div>
+
+      <div class="attachments">
+          <a title="patch.txt" href="?getfile=666" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            patch.txt
+                  </a>
+                  (1.3 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3813" id="comment3813"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3813">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 20 February 2014, 09:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ah, I see now where that 0 comes from. However, the &quot;1 &lt;&lt; (ev-&gt;detail - 1 + 8)&quot; turns that into some weird button mask. This weird mask will later be ignored by luaA_mouse_pushstatus(), but this is still weird IMO.<br />
+<br />
+On your patch: The lua API doesn&#039;t require that the mouse grab is activated on a button press and gets stopped when that button is released. If the lua code would start a mouse grab outside of a button press event, with your code grabbed_button would stay 0 and all following release events would be ignored. Sorry for being so clueless and unhelpful. :-(<br />
+<br />
+I wonder why we have to create our own button mask instead of using ev-&gt;state like we do for motion notify events. git blame says this comes from the following commit, but sadly this doesn&#039;t describe what the issue was nor why the new code is more correct:<a href=" http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=63a7b50531c8e3873e5ddf7b9f226eb3aa634cea"> http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=63a7b50531c8e3873e5ddf7b9f226eb3aa634cea</a><br />
+<br />
+I was going to suggest to use ev-&gt;state instead, but that commit makes that sound like a bad idea.<br />
+<br />
+From<a href=" http://www.x.org/releases/X11R7.6/doc/xproto/x11protocol.html#events:input"> http://www.x.org/releases/X11R7.6/doc/xproto/x11protocol.html#events:input</a> we learn &quot;The state component gives the logical state of the buttons and modifier keys just before the event.&quot;. However, it seems like we want the state after the event instead so that the lua code works correctly.<br />
+How about adding this code at the beginning of the event handler (with a suitable comment explaining that the mask in -&gt;state only supports five buttons and that we want the button mask after the event):<br />
+<br />
+   uint16_t state_after, mask = (ev-&gt;detail &gt;= XCB_BUTTON_INDEX_1 &amp;&amp; ev-&gt;detail &lt;= XCB_BUTTON_INDEX_5) ? 1 &lt;&lt; (ev-&gt;detail - 1 + 8) : 0; if (ev-&gt;type == XCB_BUTTON_PRESS) state_after = ev-&gt;state | mask; else state_after = ev-&gt;state &amp; ~mask;<br />
+<br />
+The idea would be to turn ev-&gt;detail into the button mask after the event and to feed that mask into event_handle_mousegrabber(). That way the lua code would already see that no button is pressed anymore when it gets told about the button release event. (However, I think that the &quot;normal, non-grab&quot; event code (mostly in event_key_match()) needs ev-&gt;state as before the button event which is why I didn&#039;t modify ev-&gt;state).<br />
+<br />
+I haven&#039;t tested any of this and I don&#039;t have time for this right now. Feel free to tell me that this idea is bad and wrong.</div></div>
+
+  
+    <em>
+    <a name="comment3814" id="comment3814"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3814">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a> -
+    Friday, 21 February 2014, 18:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; grabbed_button would stay 0 and all following release events would be ignored<br />
+<br />
+No it won&#039;t. When grabbed_button is 0 the ignoring return is skipped. But it should really clear grabbed_button after event_handle_mousegrabber. Note that it&#039;s safe to clear ev-&gt;detail here because ev-&gt;detail isn&#039;t used below when the mouse is grabbed.<br />
+<br />
+Your method of returning the state of all buttons would let irrelevant buttons prevent the mouse grab from releasing, resulting in similar behavior as in <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1008&amp;project=1&amp;pagenum=7" title="Unconfirmed | Mouse function (move/resize) persists until mouse cursor is move | 0%" >FS#1008</a>.<br />
+<br /></div></div>
+
+      <div class="attachments">
+          <a title="patch.txt" href="?getfile=667" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            patch.txt
+                  </a>
+                  (1.5 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3815" id="comment3815"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3815">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 22 February 2014, 15:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Your method of returning the state of all buttons would let irrelevant buttons prevent the mouse grab from releasing, resulting in similar behavior as in <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1008&amp;project=1&amp;pagenum=7" title="Unconfirmed | Mouse function (move/resize) persists until mouse cursor is move | 0%" >FS#1008</a>.<br />
+<br />
+That&#039;s a bug in awful.client.move and has nothing to do with this bug. The mousegrabber grabs all mouse input and feeds it to lua. Notice the &quot;all&quot;, not &quot;all except for some random release events&quot;. If an API for grabbing just one mouse button is needed, we would need new API for that.</div></div>
+
+  
+    <em>
+    <a name="comment3817" id="comment3817"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3817">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a> -
+    Saturday, 22 February 2014, 16:20 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, the status quo of the API is that the mousegrabber sends the state of only one button to lua upon button events. And there are 5 places in lua that assume that and read mousegrabber state like `for k, v in ipairs(_mouse.buttons) do if v then ...`. If both of them are wrong and a large chunk of changes in both places are required, that could be done later. I would suggest not destabilize the behavior of the API for now.</div></div>
+
+  
+    <em>
+    <a name="comment3818" id="comment3818"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3818">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 22 February 2014, 16:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Well, the status quo of the API is that the mousegrabber sends the state of only one button to lua upon button events. <br />
+<br />
+What do you mean? I added the following code at the end of the config and it happily printed information about any button, not just one.<br />
+<br />
+local t = timer({timeout = 5})<br />
+t:connect_signal(&quot;timeout&quot;, function()<br />
+   t:stop()<br />
+   mousegrabber.run(function (_mouse)<br />
+      gears.debug.dump(_mouse)<br />
+      return true<br />
+   end, &quot;fleur&quot;)<br />
+end)<br />
+t:start()<br /></div></div>
+
+  
+    <em>
+    <a name="comment3819" id="comment3819"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3819">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 22 February 2014, 16:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">(Oh and putting that code into root.buttons() as a key binding on button 1 works fine, too, even after I release button 1 again)</div></div>
+
+  
+    <em>
+    <a name="comment3820" id="comment3820"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3820">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a> -
+    Saturday, 22 February 2014, 16:57 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I mean the code in lib/awful/mouse/init.lua.in.</div></div>
+
+  
+    <em>
+    <a name="comment3821" id="comment3821"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#comment3821">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=946">Lingzhu Xiang (xlz)</a> -
+    Saturday, 22 February 2014, 18:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Information about any button, right; Effective information about only one button, also right. You&#039;re seeing only one button at a time, because 1 &lt;&lt; (ev-&gt;detail - 1 + 8)) is converting the index of one button into a mask of all buttons.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1211#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1211" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 6fb714b..de87cde 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -208,11 +208,23 @@ local function add_item(data, num, item_info)
+     -- Create the item label widget
+     local label = widget({ type = "textbox" })
+     local key = ''
+-    label.text = string.gsub(util.escape(item_info[1]), "&amp;(%w)",
+-                             function (l)
+-                                 key = string.lower(l)
+-                                 return "<u>"..l.."</u>"
+-                             end, 1)
++    -- search for ampersand not starting xml_entity
++    local pos_amp=0
++    local s= item_info[1]
++    while true do
++       local pos_ent= string.find(s, '&%w+;', pos_amp)
++       pos_amp=string.find(s, '&%w', pos_amp)
++       if pos_amp == nil then break end
++       if pos_ent == pos_amp then
++          pos_amp= pos_amp+1
++       else
++          key= string.lower(string.sub(s, pos_amp+1,pos_amp+1))
++          s = string.sub(s, 1,pos_amp-1) .. "<u>" .. string.sub(s, pos_amp+1,pos_amp+1) .."</u>" .. string.sub(s, pos_amp+2)
++          break
++       end
++    end
++    label.text= s
++
+     -- Set icon if needed
+     local iconbox
+     if item_info[3] then

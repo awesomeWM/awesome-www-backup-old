@@ -1,0 +1,10 @@
+--- lib/naughty.lua.in
++++ lib/naughty.lua.in
+@@ -357,6 +357,7 @@
+     layout.margins[textbox] = { right = margin, left = margin, bottom = margin, top = margin }
+     textbox.valign = "middle"
+ 
++    text = text:gsub("<qt>", ""):gsub("<html>", ""):gsub("</qt>", ""):gsub("</html>", "")
+     local function setText(pattern, replacements)
+         textbox.text = string.format('<span font_desc="%s"><b>%s</b>%s</span>', font, title, text:gsub(pattern, replacements))
+     end

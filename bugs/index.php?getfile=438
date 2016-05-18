@@ -1,0 +1,16 @@
+diff -urB -x '.*' -x xepyhr.sh ORG2_awesome-3.4.10/event.c awesome-3.4.10/event.c
+--- ORG2_awesome-3.4.10/event.c	2011-08-27 00:00:38.502871060 +0200
++++ awesome-3.4.10/event.c	2011-08-26 23:55:30.280869733 +0200
+@@ -582,8 +582,9 @@
+     }
+     else
+     {
+-        /* get keysym ignoring all modifiers */
+-        xcb_keysym_t keysym = key_getkeysym(ev->detail, 0);
++        /* get keysym ignoring all EXCEPT NumLock modifiers */
++        xcb_keysym_t keysym = key_getkeysym(ev->detail,
++                        (ev->state & globalconf.numlockmask ? ev->state : 0 ));
+         client_t *c;
+         if((c = client_getbywin(ev->event)))
+         {
+Only in awesome-3.4.10: numkeys.patch

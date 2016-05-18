@@ -1,0 +1,195 @@
+Section "ServerLayout"
+    Identifier     "Simple Layout"
+    Screen          0 "Screen0" 0 0
+#    Screen          1 "Screen1" RightOf "Screen0"
+    InputDevice    "Mouse0"
+    InputDevice    "Touchpad0"
+    InputDevice    "Keyboard0"
+    Option         "AIGLX" "True"
+    Option         "Xinerama" "True"
+    Option         "Clone" "True"
+EndSection
+
+Section "Files"
+    RgbPath         "/usr/local/lib/X11/rgb"
+    FontPath        "/usr/local/lib/X11/fonts/100dpi/"
+    FontPath        "/usr/local/lib/X11/fonts/75dpi/"
+    FontPath        "/usr/local/lib/X11/fonts/OTF/"
+    FontPath        "/usr/local/lib/X11/fonts/TTF/"
+    FontPath        "/usr/local/lib/X11/fonts/Type1/"
+    FontPath        "/usr/local/lib/X11/fonts/bitstream-vera/"
+    FontPath        "/usr/local/lib/X11/fonts/cyrillic/"
+    FontPath        "/usr/local/lib/X11/fonts/encodings/"
+    FontPath        "/usr/local/lib/X11/fonts/local/"
+    FontPath        "/usr/local/lib/X11/fonts/misc/"
+    FontPath        "/usr/local/lib/X11/fonts/util/"
+    FontPath        "/usr/local/lib/X11/fonts/win/"
+    FontPath        "/usr/local/lib/X11/fonts/mathfonts/"
+    FontPath        "/usr/local/lib/X11/fonts/texcm-ttf/"
+    FontPath        "/usr/local/lib/X11/fonts/terminus-font/"
+    FontPath        "/usr/local/share/apps/konsole/fonts/"
+
+    ModulePath      "/usr/local/lib/xorg/modules"
+EndSection
+
+Section "Module"
+    Load           "synaptics"
+    Load           "dbe"  	# Double buffer extension
+    SubSection     "extmod"
+        Option         "omit xfree86-dga"   # don't initialise the DGA extension
+    EndSubSection
+    Load           "type1"
+    Load           "freetype"
+    Load           "glx"
+    Load           "dri"
+EndSection
+
+Section "InputDevice"
+    Identifier     "Keyboard0"
+    Driver         "keyboard"
+    Option         "CoreKeyboard"
+    Option         "AutoRepeat" "500 30"
+    Option         "XkbRules" "xorg"
+    Option         "XkbModel" "hpmm"
+    Option         "XkbLayout" "us,ru(enchanced)"
+    Option         "XkbOptions" "grp:caps_toggle,grp_led:caps"
+EndSection
+
+Section "InputDevice"
+    Identifier     "Mouse0"
+    Driver         "mouse"
+    Option         "Protocol" "auto"	# Auto detect
+    Option         "Device" "/dev/sysmouse"
+    Option         "CorePointer" "True"
+    Option         "ZAxisMapping" "4 5 6 7"
+    Option         "Emulate3Buttons"
+    Option         "UseShm" "True"
+EndSection
+
+Section "InputDevice"
+    Identifier     "Touchpad0"
+    Driver         "synaptics"
+    Option         "Device" "/dev/psm0"
+    Option         "Protocol" "psm"
+    Option         "SendCoreEvents" "True"
+    Option         "SHMConfig" "True"
+    Option         "UseShm" "True"
+
+    Option         "LeftEdge" "1400"
+    Option         "RightEdge" "4700"
+    Option         "TopEdge" "1400"
+    Option         "BottomEdge" "5600"
+
+    Option         "FingerLow" "18"
+    Option         "FingerHigh" "23"
+
+    Option         "MaxTapTime" "150"
+    Option         "MaxTapMove" "220"
+    Option         "MaxDoubleTapTime" "180"
+    Option         "SingleTapTimeout" "180"
+    Option         "ClickTime" "100"
+    Option         "FastTaps" "1"
+
+    Option         "EmulateMidButtonTime" "75"
+
+    Option         "VertScrollDelta" "100"
+    Option         "HorizScrollDelta" "100"
+    Option         "VertEdgeScroll" "1"
+    Option         "HorizEdgeScroll" "1"
+    Option         "VertTwoFingerScroll" "0"
+    Option         "HorizTwoFingerScroll" "0"
+
+    Option         "MinSpeed" "0.05"
+    Option         "MaxSpeed" "0.1"
+    Option         "AccelFactor" "0.01"
+    Option         "EdgeMotionMinZ" "30"
+    Option         "EdgeMotionMaxZ" "160"
+    Option         "EdgeMotionMinSpeed" "1"
+    Option         "EdgeMotionMaxSpeed" "400"
+    Option         "EdgeMotionUseAlways" "1"
+
+    Option         "UpDownScrolling" "1"
+    Option         "LeftRightScrolling" "1"
+
+    Option         "UpDownRepeat" "1"
+    Option         "LeftRightRepeat" "1"
+    Option         "ScrollButtonRepeat" "100"
+
+    Option         "TouchpadOff" "0"
+    Option         "GuestMouseOff" "0"
+
+    Option         "LockedDrags" "0"
+    Option         "RTCornerButton" "0"
+    Option         "RBCornerButton" "0"
+    Option         "LTCornerButton" "0"
+    Option         "LBCornerButton" "0"
+    Option         "TapButton1" "1"
+    Option         "TapButton2" "3"
+    Option         "TapButton3" "2"
+
+    Option         "CircularScrolling" "1"
+    Option         "CircScrollDelta" "0.05"
+    Option         "CircScrollTrigger" "3"
+    Option         "CircularPad" "0"
+
+    Option         "PalmDetect" "1"
+    Option         "PalmMinWidth" "10"
+    Option         "PalmMinZ" "200"
+
+    Option         "CoastingSpeed" "0"
+
+    Option         "PressureMotionMinZ" "30"
+    Option         "PressureMotionMaxZ" "160"
+    Option         "PressureMotionMinFactor" "1"
+    Option         "PressureMotionMaxFactor" "1"
+EndSection
+
+Section "Monitor"
+    Identifier     "Monitor0"
+    HorizSync       28.0 - 110.0
+    VertRefresh     43.0 - 90.0
+    ModeLine       "1280x800@60" 83.9 1280 1312 1624 1656 800 816 824 841
+	Option         "DPMS"
+EndSection
+
+Section "Monitor"
+    Identifier     "Monitor1"
+	Option         "DPMS"
+EndSection
+
+Section "Device"
+    Identifier     "Videocard0"
+    Driver         "nvidia"
+
+	Option         "NoLogo" "True"
+	Option         "HWcursor"
+
+	Option         "TwinView" "True"
+	Option         "TwinViewOrientation" "Clone"
+	Option         "TwinViewXineramaInfoOrder" "DFP-0,CRT-0"
+	Option         "MonitorLayout" "LFP,LFP+CRT,CRT"
+	#Option         "MetaModes" "1280x800,1024x1024;1280x800,1280x1024;"
+	Option         "MetaModes" "DFP: 1280x800 +0+0, CRT: NULL; DFP: 1280x800 +0+0, CRT: 1280x1024 +0+0; DFP: NULL, CRT: 1280x1024 +0+0;"
+	Option         "Mobile" "3"
+EndSection
+
+Section "Screen"
+    Identifier     "Screen0"
+    Device         "Videocard0"
+    Monitor        "Monitor0"
+    DefaultDepth    24
+    Option         "RenderAccel" "True"
+    Option         "RandRRotation" "True"
+    Option         "AddARGBGLXVisuals" "True"
+    Option         "AllowGLXWithComposite" "True"
+    Option         "DisableGLXRootClipping" "True"
+    SubSection     "Display"
+        Viewport    0 0
+        Depth       24
+        Modes      "1280x1024" "1280x800" "1024x768" "800x600" "640x480"
+    EndSubSection
+EndSection
+
+Section "Extensions"
+    Option         "Composite" "Enable"
+EndSection

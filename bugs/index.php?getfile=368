@@ -1,0 +1,28 @@
+From 1172f5ff6a3a3a59afb3ccc1af1d2aca297220fa Mon Sep 17 00:00:00 2001
+From: Michael Abbott <michael.abbott@diamond.ac.uk>
+Date: Tue, 14 Dec 2010 18:50:59 +0000
+Subject: [PATCH 2/2] Keep the RPATH for installed executables
+
+---
+ CMakeLists.txt |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 64be9b9..6547334 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -82,6 +82,11 @@ set(AWE_MAN_SRCS
+     ${SOURCE_DIR}/manpages/awesomerc.5.txt)
+ set(AWE_MAN_LANGS es fr de)
+ 
++# Ensure that any required RPATH is preserved in the installed executable
++set(CMAKE_SKIP_BUILD_RPATH FALSE)
++set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
++set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
++
+ add_executable(${PROJECT_AWE_NAME}
+     ${AWE_SRCS})
+ 
+-- 
+1.6.6.1
+

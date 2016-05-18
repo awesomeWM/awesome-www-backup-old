@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Использование нескольких экранов - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<meta name="robots" content="noindex,follow" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Using_Multiple_Screens/ru&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Using_Multiple_Screens/ru&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Using_Multiple_Screens/ru" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;printable=1&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Using_Multiple_Screens/ru","wgTitle":"Using Multiple Screens/ru","wgCurRevisionId":6741,"wgRevisionId":6741,"wgArticleId":1109,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Using_Multiple_Screens/ru","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Using_Multiple_Screens_ru skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Использование нескольких экранов</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><a href="/wiki/Using_Multiple_Screens" title="Using Multiple Screens">English</a></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="ru"><strong class="selflink">русский</strong></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p><br />
+Люди часто спрашивают, как настроить X для использования на нескольких мониторах на IRC канале. Поэтому здесь приведено краткое руководство охватывающее несколько различных драверов и методов доступных в GNU/Linux.
+</p><p>Если вас интересует как управлять несколькими монитормаи, после того как вы их настроите смотрите <a href="/wiki/Awesome_3.x#DEFAULT_KEY_BINDINGS" title="Awesome 3.x">awesome 3 key bindings</a> (смотрите те, которые управляют экранами, также вы можете открыть man страницу в терминале) и если вы хотите управлять виджетами(например системным треем) на каждом экране, то вам необходимо изучить страницу <a href="/wiki/Widgets_in_awesome/ru" title="Widgets in awesome/ru">Виджеты в Awesome</a>, конкретно <a href="/wiki/Widgets_in_awesome/ru#.D0.A3.D0.BF.D1.80.D0.B0.D0.B2.D0.BB.D0.B5.D0.BD.D0.B8.D0.B5_.D0.B2.D0.B8.D0.B4.D0.B6.D0.B5.D1.82.D0.B0.D0.BC.D0.B8" title="Widgets in awesome/ru">Управление виджетами</a> секцию.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.D0.9E.D1.81.D0.BD.D0.BE.D0.B2.D1.8B"><span class="tocnumber">1</span> <span class="toctext">Основы</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#XRandR"><span class="tocnumber">2</span> <span class="toctext">XRandR</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#.D0.A6.D0.B8.D0.BA.D0.BB.D0.B8.D1.87.D0.B5.D1.81.D0.BA.D0.BE.D0.B5_.D0.BF.D0.B5.D1.80.D0.B5.D0.BA.D0.BB.D1.8E.D1.87.D0.B5.D0.BD.D0.B8.D0.B5_.D0.B2.D0.BE.D0.B7.D0.BC.D0.BE.D0.B6.D0.BD.D1.8B.D1.85_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D0.B9"><span class="tocnumber">2.1</span> <span class="toctext">Циклическое переключение возможных конфигураций</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#.D0.9F.D0.BE.D1.81.D1.82.D0.BE.D1.8F.D0.BD.D0.BD.D0.B0.D1.8F_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D1.8F"><span class="tocnumber">2.2</span> <span class="toctext">Постоянная конфигурация</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-5"><a href="#nvidia"><span class="tocnumber">3</span> <span class="toctext">nvidia</span></a>
+<ul>
+<li class="toclevel-2 tocsection-6"><a href="#TwinView"><span class="tocnumber">3.1</span> <span class="toctext">TwinView</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Xinerama"><span class="tocnumber">3.2</span> <span class="toctext">Xinerama</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#Disper"><span class="tocnumber">3.3</span> <span class="toctext">Disper</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id=".D0.9E.D1.81.D0.BD.D0.BE.D0.B2.D1.8B">Основы</span></h2>
+<p>Самым простым способом является использование <b>XRandR</b> (X Resize и Rotate) расширения, которое позволяет динамически контролировать ваши выходы, разрешения, ориентацию... и добавлять новые дисплеи на лету, без перезапуска X-сервера. Но пока еще не все драйверы поддерживаются в нем. Вот список поддерживаемых драйверов:  <b>intel</b>, <b>ati</b> (OpenSource driver), <b>radeonhd</b> (OpenSource driver), <b>nv</b> (nvidia 2D driver) и <b>nouveau</b> (OpenSource nvidia driver). Я также захвачу драйвер <b>nvidia</b>, как наиболее часто используемый людьми, использующий  <b>TwinView</b> и <b>Xinerama</b> (которые могут быть использованы также и с другими драйверами, например с <b>fglrx</b>).
+</p><p>Помиом этого, Awesome имеет: <i>Реальную поддержку нескольких экранов (XRandR, Xinerama и Zaphod режимы) на десктопных экранах (tags)</i>; Awesome поставляется с примером конфигурационного файла (/etc/xdg/awesome/rc.lua начиная с v3.0 и старше) которая уже настроена на несколько дисплеев; касающаяся wiboxes, taskbars и widgets, но также имеет и клавиатурные сочетания, которые позволяют вам перемещать клиенты между несколькими экранами и переключать фокус между ними.
+</p>
+<h2><span class="mw-headline" id="XRandR">XRandR</span></h2>
+<p>Для начала я покажу вам несколько примеров использования xrandr для динамической настройки на лету (и перенастройки).
+</p><p>Итак первой командой мы запросим список нашего оборудования:
+</p>
+<pre>   $ xrandr -q
+</pre>
+<p>После получения вывода, давайте предположим, что у вас есть ноутбук с панелью <b>LVDS</b> и внешним портом VGA, который мы будем рассматривать как  <b>VGA</b>, мы выполним: 
+</p>
+<pre>   $ xrandr --output VGA --mode 1280x1024 --right-of LVDS
+</pre>
+<p>Команда приведенная выше проста, ваш VGA монитор инициализируется с разрешением 1280х1024 и размещается и размещается с права от вашего экрана LVDS screen (допустим что разрешение LVDS равно 1280x800). Важно помнить, что у вас теперь одни большой экран, размер которого будет <b>2560x1024</b>. Если команда выше завершится с ошибкой, то вы вероятно не примете это в расчет когда будете настраивать ваш <b>xorg.conf</b> (вам необходимо настроить ваш <b>Virtual</b> размер), подробнее об этом чуть ниже.
+</p><p>Довольно часто случается, что Xrandr не может найти 'наилучшее' разрешение для вашего внешнего монитора. Не говоря уже о правильно частоте его обновления. Когда это происходит, вам необходимо создать modeline (gtf), затем добавить его к выводу. Вот несколько простых команд, которые создадут новую конфигурацию 1280x800 с частотой обновления 68Hz и прикрепят его к выводу VGA:
+</p>
+<pre>   $ xrandr --newmode $(gtf 1280 800 68 | grep Modeline | sed s/Modeline\ // | tr -d '"')
+   $ xrandr --addmode VGA 1280x800_68.00
+</pre>
+<p>Для других способов использования Xrandr прочитайте man. Здесь я покажу только один пример, отключения внешнего монитора: 
+</p>
+<pre>   $ xrandr --output VGA --off
+</pre>
+<p>Здесь вы можете найти простой скрипт который несколько упрощает задачу правильного выбора частоты обновления, а затем настраивает ваши экраны <a rel="nofollow" class="external text" href="http://github.com/bioe007/bioe007configs/blob/master/.bin/stupid.sh">stupid.sh</a>
+</p>
+<h3><span class="mw-headline" id=".D0.A6.D0.B8.D0.BA.D0.BB.D0.B8.D1.87.D0.B5.D1.81.D0.BA.D0.BE.D0.B5_.D0.BF.D0.B5.D1.80.D0.B5.D0.BA.D0.BB.D1.8E.D1.87.D0.B5.D0.BD.D0.B8.D0.B5_.D0.B2.D0.BE.D0.B7.D0.BC.D0.BE.D0.B6.D0.BD.D1.8B.D1.85_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D0.B9">Циклическое переключение возможных конфигураций</span></h3>
+<p>Есть возможность циклически переключаться между различными конфигурациями с помощью клавиатуры (например XF86Display). Вот фрагмент кода, который использует уведомления для отображения предложенной конфигурации. Каждый раз при нажатии клавиш, предлагается другая конфигурация в зависимости от активных выходов. После обхода всех возможных конфигурация, мы предполагаем что менять нечего. Чтобы принять конфигурацию, пользователь просто не должен переключаться на другие конфигурации:
+</p>
+<ul><li> Only LVDS1</li>
+<li> Only VGA1</li>
+<li> LVDS1 + VGA1</li>
+<li> VGA1 + LVDS1</li>
+<li> No change</li>
+<li> Only LVDS1</li>
+<li> ...</li></ul>
+<pre>
+-- Get active outputs
+local function outputs()
+   local outputs = {}
+   local xrandr = io.popen(&quot;xrandr -q&quot;)
+   if xrandr then
+      for line in xrandr:lines() do
+	 output = line:match(&quot;^([%w-]+) connected &quot;)
+	 if output then
+	    outputs[#outputs + 1] = output
+	 end
+      end
+      xrandr:close()
+   end
+
+   return outputs
+end
+
+local function arrange(out)
+   -- We need to enumerate all the way to combinate output. We assume
+   -- we want only an horizontal layout.
+   local choices  = {}
+   local previous = { {} }
+   for i = 1, #out do
+      -- Find all permutation of length `i`: we take the permutation
+      -- of length `i-1` and for each of them, we create new
+      -- permutations by adding each output at the end of it if it is
+      -- not already present.
+      local new = {}
+      for _, p in pairs(previous) do
+	 for _, o in pairs(out) do
+	    if not awful.util.table.hasitem(p, o) then
+	       new[#new + 1] = awful.util.table.join(p, {o})
+	    end
+	 end
+      end
+      choices = awful.util.table.join(choices, new)
+      previous = new
+   end
+
+   return choices
+end
+
+-- Build available choices
+local function menu()
+   local menu = {}
+   local out = outputs()
+   local choices = arrange(out)
+
+   for _, choice in pairs(choices) do
+      local cmd = &quot;xrandr&quot;
+      -- Enabled outputs
+      for i, o in pairs(choice) do
+	 cmd = cmd .. &quot; --output &quot; .. o .. &quot; --auto&quot;
+	 if i &gt; 1 then
+	    cmd = cmd .. &quot; --right-of &quot; .. choice[i-1]
+	 end
+      end
+      -- Disabled outputs
+      for _, o in pairs(out) do
+	 if not awful.util.table.hasitem(choice, o) then
+	    cmd = cmd .. &quot; --output &quot; .. o .. &quot; --off&quot;
+	 end
+      end
+
+      local label = &quot;&quot;
+      if #choice == 1 then
+	 label = 'Only &lt;span weight=&quot;bold&quot;&gt;' .. choice[1] .. '&lt;/span&gt;'
+      else
+	 for i, o in pairs(choice) do
+	    if i &gt; 1 then label = label .. &quot; + &quot; end
+	    label = label .. '&lt;span weight=&quot;bold&quot;&gt;' .. o .. '&lt;/span&gt;'
+	 end
+      end
+
+      menu[#menu + 1] = { label,
+			  cmd,
+                          &quot;/usr/share/icons/Tango/32x32/devices/display.png&quot;}
+   end
+
+   return menu
+end
+
+-- Display xrandr notifications from choices
+local state = { iterator = nil,
+		timer = nil,
+		cid = nil }
+local function xrandr()
+   -- Stop any previous timer
+   if state.timer then
+      state.timer:stop()
+      state.timer = nil
+   end
+
+   -- Build the list of choices
+   if not state.iterator then
+      state.iterator = awful.util.table.iterate(menu(),
+					function() return true end)
+   end
+
+   -- Select one and display the appropriate notification
+   local next  = state.iterator()
+   local label, action, icon
+   if not next then
+      label, icon = &quot;Keep the current configuration&quot;, &quot;/usr/share/icons/Tango/32x32/devices/display.png&quot;
+      state.iterator = nil
+   else
+      label, action, icon = unpack(next)
+   end
+   state.cid = naughty.notify({ text = label,
+				icon = icon,
+				timeout = 4,
+				screen = mouse.screen, -- Important, not all screens may be visible
+				font = &quot;Free Sans 18&quot;,
+				replaces_id = state.cid }).id
+
+   -- Setup the timer
+   state.timer = timer { timeout = 4 }
+   state.timer:connect_signal(&quot;timeout&quot;,
+			  function()
+			     state.timer:stop()
+			     state.timer = nil
+			     state.iterator = nil
+			     if action then
+				awful.util.spawn(action, false)
+			     end
+			  end)
+   state.timer:start()
+end
+
+config.keys.global = awful.util.table.join(
+   config.keys.global,
+   awful.key({}, &quot;XF86Display&quot;, xrandr))
+</pre>
+<h3><span class="mw-headline" id=".D0.9F.D0.BE.D1.81.D1.82.D0.BE.D1.8F.D0.BD.D0.BD.D0.B0.D1.8F_.D0.BA.D0.BE.D0.BD.D1.84.D0.B8.D0.B3.D1.83.D1.80.D0.B0.D1.86.D0.B8.D1.8F">Постоянная конфигурация</span></h3>
+<p>Если вы хотите использовать постоянные настройки для ваших дисплеев, то вы можете сделать по следующему примеру. У вас уже есть одна <b>Section "Monitor"</b> для вашего первого дисплей (и в этом примере, предполагается, что его идентификатор <b>LCD-Monitor</b> и наш VGA будет <b>CRT-Monitor</b>). И первым шагом нам необходимо добавить еще одну, с настройками для второго дисплея (мы продолжим пример с VGA): 
+</p>
+<pre>   # This is for a static setup of the external display
+   #
+   Section "Monitor"
+       Identifier   "CRT-Monitor"
+       VendorName   "FUS"
+       ModelName    "19P4"
+       HorizSync    30-96
+       VertRefresh  50-160
+       Option       "DPMS"
+       Option       "PreferredMode" "1280x1024"
+       Option       "RightOf"       "LVDS"
+       ##Option     "Position"      "1280 0"
+   EndSection
+</pre>
+<p>Затем в вашей <b>Section "Device"</b> вы делаете актуальные настройки: 
+</p>
+<pre>   # Graphics configuration
+   # 
+   Section "Device"
+       Identifier   "intel"
+       Driver       "intel"
+       VendorName   "Intel Corporation"
+       BoardName    "Mobile GM965/GL960 Integrated Graphics Controller"
+       # VGA display options
+       Option       "monitor-VGA"     "CRT-Monitor"
+       ##Option     "MonitorLayout"   "CRT,LFP"
+       ##Option     "MonitorLayout"   "NONE,CRT+LFP"
+   EndSection
+</pre>
+<p>Это самые основные настройки, некоторые другие, которые заслуживают упоминания это: <b>CheckLid</b>, <b>DevicePresence</b> и <b>Clone</b>. Вы можете найти все опции с объяснениями на странице руководства драйвера intel (для ознакомления с ней вы можете набрать в терминале: <b>man intel</b> или заменить intel на название драйвера, которым пользуетесь вы).
+</p><p>Последний шаг включает настройку вашего <b>Virtual</b> размера, как я упоминал ранее. В вашей <b>Section "Screen"</b> подразделе <b>"Display"</b> вам необходимо настроить виртуальный размер вашего desktop (обычно его размещают после строк <b>Modes</b>). Итак, после наших действий, раздел "Screen" будет выглядеть следующим образом:
+</p>
+<pre>   # Screen configuration
+   #
+   Section "Screen"
+       Identifier  "LCD Screen"
+       Device      "intel"
+       Monitor     "LCD-Monitor"
+       DefaultDepth 24
+       Subsection "Display"
+           Depth       24
+           Modes       "1280x800" "1280x768" "1280x720" "1024x768" "800x600" "640x480"
+           ViewPort    0 0
+           <b>Virtual     2560 1024</b>
+       EndSubsection
+   EndSection
+</pre>
+<h2><span class="mw-headline" id="nvidia">nvidia</span></h2>
+<p>Итак, <b>nvidia</b> все еще не поддерживается XRandR. Все что они сделали, это разработали собственную технологию называемую  <b>TwinView</b> которая в его простейшей конфигурации, не так уж хороша для нас в стандартном виде, так как Awesome видит экран как один большой desktop (таким образом вы не сможете перемещать приложения между экранами, поскольку нет другого экрана, куда можно было бы переместить их). Но я полагаю, здесь могут быть некоторые случаи использования, где это будет востребовано, поэтому я также опишу это. Тогда, немного настроив, мы получим то поведение, которое ожидаем. Наш последний пример будет использовать <b>Xinerama</b> который будет иметь тот же результат, как и в наших предыдущих примерах.
+</p>
+<h3><span class="mw-headline" id="TwinView">TwinView</span></h3>
+<p>Используя TwinView у вас будет только один Section "Monitor", для первого дисплея. Полная настройка второго дисплея осуществляется в <b>Section "Device"</b>. Простейший способ сделать это, это <b>nvidia-settings</b>, и если это не будет работать, вы можете отредактировать ваш Xorg.conf вручную. Давайте посмотрим, как она может выглядеть (в этом случае я использую два одинаковых CRT монитора):
+</p>
+<pre>   Section "Device"
+       Identifier  "Card0"
+       Driver      "nvidia"
+       VendorName  "nVidia Corporation"
+       BoardName   "NV34 [GeForce FX 5500]"
+       #
+       Option      "ConnectedMonitor"     "CRT-0, CRT-1"
+       ##Option    "IgnoreDisplayDevices" "TV-0"
+       #
+       # This is the important part
+       Option      "TwinView"            "true"
+       # Possible options are: Right-Of, Left-Of, Above, Below, Clone
+       Option      "TwinViewOrientation" "Right-Of"
+       #
+       Option      "SecondMonitorHorizSync"   "30-96"
+       Option      "SecondMonitorVertRefresh" "50-160"
+       #
+       # Metamodes tell us when: 
+       # monitor A is using resolution X then monitor B will use resolution Y; second lower A reolution, second lower B resolution...
+       Option      "MetaModes" "1280x1024, 1280x1024; 1024x768, 1024x768; 800x600, 800x600; 640x480, 640x480"
+       # Example when monitor B is using a lower resolution
+       #Option     "MetaModes" "1280x1024, 1024x768@1280x1024; 1024x768, 1024x768; 800x600, 800x600"
+   EndSection
+</pre>
+<p>Теперь давайте рассмотрим другой пример предоставленый другим пользователем, где он использует два дисплея ведущих себя независимо под Awesome с использованием TwinView. Здесь мы перемещаем несколько опций, делегируя их другим секциям, но не позволяйте этому сбить себя с толку. В данном примере, мы будет использовать два одинаковых LCD монитора (назовем их <b>DFP-0</b> и <b>DFP-1</b>):
+</p>
+<pre>    Section "Monitor"
+        Identifier    "Monitor0"
+        HorizSync     30-100
+        VertRefresh   60
+        ModeLine      "1680x1050" 147.1 1680 1784 1968 2256 1050 1051 1054 1087 +Hsync -Vsync
+    EndSection
+    
+    Section "Monitor"
+        Identifier    "Monitor1"
+        HorizSync     30-100
+        VertRefresh   60
+        ModeLine      "1680x1050" 147.1 1680 1784 1968 2256 1050 1051 1054 1087 +Hsync -Vsync
+    EndSection
+    
+    Section "Device"
+        Identifier      "Card0"
+        Driver          "nvidia"
+        VendorName      "nVidia"
+        BoardName       "NVIDIA GeForce 7800GS"
+        
+        Option          "AllowDDCCI"            "true"
+        Option          "FlatPanelProperties"   "Scaling = aspect-scaled"
+        Option          "RandRRotation"         "true"
+        Option          "TripleBuffer"          "true"
+        
+        # Multiple display configuration
+        ##Option        "ConnectedMonitor"          "DFP-0, DFP-1"
+        Option          "PrimaryMonitor"            "DFP-0"
+        Option          "UseDisplayDevice"          "DFP-0, DFP-1"
+        # According to their docs, this is what makes the difference
+        #   <a rel="nofollow" class="external free" href="http://us.download.nvidia.com/XFree86/Linux-x86/180.29/README/chapter-13.html">http://us.download.nvidia.com/XFree86/Linux-x86/180.29/README/chapter-13.html</a>
+        Option          "TwinViewOrientation"       "DFP-0  LeftOf DFP-1"
+        Option          "TwinViewXineramaInfoOrder" "DFP-0, DFP-1"
+    EndSection
+    
+    
+    Section "Screen"
+        Identifier    "Screen0"
+        Device        "Card0"
+        Monitor       "Monitor0"
+        DefaultDepth  24
+        Subsection    "Display"
+            Modes            "1680x1050"
+        EndSubsection
+        Option "MetaModes"   "DFP-0: 1680x1050 +0+0, DFP-1: 1680x1050 +1680+0;"
+        Option "HorizSync"   "DFP-0: 30-100; DFP-1: 30-100"
+        Option "VertRefresh" "DFP-0: 60; DFP-1: 60"
+        Option "TwinView"    "true"
+    EndSection
+    
+    Section "ServerLayout"
+        Identifier    "TwinView Screen"
+        Screen        0 "Screen0" 0 0
+        Option        "Xinerama"  "false"
+    EndSection
+</pre>
+<p>Чтобы получить больше информации о TwinView (называя устройства (CRT, DFP, TV...), которые объединены, могут быть использованы в то же время и для чего то еще) ссылки на последний nvidia <b>README</b> файл, который который распространяется со всеми драйверами, но с ним также можно ознакомиться и онлайн: <a rel="nofollow" class="external free" href="http://www.nvidia.com/object/unix.html">http://www.nvidia.com/object/unix.html</a>
+</p>
+<h3><span class="mw-headline" id="Xinerama">Xinerama</span></h3>
+<p>Xinerama это расширения для X, которое позволяет multi-headed X приложениям и оконным менеджерам использовать два или больше физических дисплея как один большой виртуальный дисплей. Обратите внимание, что вы можете использовать Xinerama таким же способом также и с другими драйверам (например с <b>fglrx</b>). Когда используется Xinerama нам необходимо иметь секцию для каждого <b>Monitor</b>, две секции <b>Device</b>, две секции <b>Screen</b> (каждая из которых использует свой собственный Device и Monitor) и поэтому мы настраиваем ориентацию наших экранов в главной секции  <b>ServerLayout</b> (где мы также разрешаем использовать Xinerama). Это наиболее простой пример, показывающий о чем я говорю (используются два однинаковых LCD дисплея):
+</p>
+<pre>    # Out Monitor sections
+    #
+    Section "Monitor"
+        Identifier   "Monitor0"
+        VendorName   "Monitor Vendor"
+        ModelName    "Monitor Model"
+    EndSection
+
+    Section "Monitor"
+        Identifier   "Monitor1"
+        VendorName   "Monitor Vendor"
+        ModelName    "Monitor Model"
+    EndSection
+    
+    
+    # Our Device sections
+    # 
+    Section "Device"
+        Identifier  "Card0"
+        Driver      "nvidia"
+        VendorName  "nVidia Corporation"
+        BoardName   "G70 [GeForce 7800 GS]"
+        Screen      0
+    EndSection
+    
+    Section "Device"
+        Identifier  "Card1"
+        Driver      "nvidia"
+        VendorName  "nVidia Corporation"
+        BoardName   "G70 [GeForce 7800 GS]"
+        Screen      1
+    EndSection
+    
+    
+    # Our Screen sections
+    #
+    Section "Screen"
+        Identifier    "Screen0"
+        Device        "Card0"
+        Monitor       "Monitor0"
+        DefaultDepth  24
+        SubSection    "Display"
+            Viewport  0 0
+            Depth     24
+            Modes     "1680x1050"
+        EndSubSection
+    EndSection
+
+    Section "Screen"
+        Identifier    "Screen1"
+        Device        "Card1"
+        Monitor       "Monitor1"
+        DefaultDepth  24
+        SubSection    "Display"
+            Viewport  0 0
+            Depth     24
+            Modes     "1680x1050"
+        EndSubSection
+    EndSection
+    
+    
+    # Finally our ServerLayout that does the work
+    # 
+    Section "ServerLayout"
+        Identifier     "Xinerama Screen"
+        Screen         0  "Screen0" 0 0
+        Screen         1  "Screen1" RightOf "Screen0"
+        Option         "Xinerama"   "true"
+    EndSection
+</pre>
+<p>У вас также будут собственные настройки Keyboard и Mouse в этом файле,  и ссылаться на них в вашем server layout и т.д.. (если вы все еще не испльзуете HAL разрещите X.org). Вы уже должны знать все это. Я пишу только о дисплеях. Говоря об этом, существует еще несколько способов использования нескольких дисплеев, такие как запуск двух независимых X сессий, каждой на своем мониторе, также можно упомянуть о , <b>Zaphod</b> и <b>MergedFB</b>, последний используется для <b>ATi</b>, а у nVidia, есть свой собственный, называемый <b>BigDesktop</b> (драйвер fglrx). Researching into those is up to you, reader. Этим я завершаю эту статью, я надеюсь вы немного просветились и теперь у вас есть огромный рабочий стол (и Awesome контролирует его&#160;:).
+</p>
+<h3><span class="mw-headline" id="Disper">Disper</span></h3>
+<p>Простейшая утилита: позволяющая переключать конфигурации мониторов через командную строку <a rel="nofollow" class="external free" href="http://willem.engen.nl/projects/disper/">http://willem.engen.nl/projects/disper/</a>
+</p><p>Это также позволяет работать в обход запроса диалога перезагрузки nvidia-settings, которое будет скрыто awesome's, когда nvidia-settings изменяет режим монитора.
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.132 seconds
+Real time usage: 0.150 seconds
+Preprocessor visited node count: 651/1000000
+Preprocessor generated node count: 1384/1000000
+Post‐expand include size: 3758/2097152 bytes
+Template argument size: 3420/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 48/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:1109-0!*!0!!en!5!* and timestamp 20160515125352 and revision id 6741
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Using_Multiple_Screens/ru&amp;oldid=6741">https://awesomewm.org/w/index.php?title=Using_Multiple_Screens/ru&amp;oldid=6741</a>"</div>
+					<div id='catlinks' class='catlinks catlinks-allhidden'></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Using_Multiple_Screens/ru" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Using_Multiple_Screens/ru&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Using_Multiple_Screens/ru&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Using_Multiple_Screens/ru&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Using+Multiple+Screens%2Fru&amp;returntoquery=printable%3Dyes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Using_Multiple_Screens/ru" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Using_Multiple_Screens/ru" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Using_Multiple_Screens/ru&amp;oldid=6741" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Using_Multiple_Screens/ru&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 9 June 2014, at 15:08.</li>
+									<li id="viewcount">This page has been accessed 5,990 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;printable=1\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":82});
+}</script></body></html>

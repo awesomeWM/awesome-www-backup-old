@@ -1,0 +1,737 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1084 : Input loss, focus loss, black flickering and way to many redraw in awesome 3.5</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1084&amp;project=1&amp;opened=655&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1087&amp;project=1&amp;opened=655&amp;status%5B0%5D=" title="Works for me | Awesome 3.5 take over 30 seconds to load with multiple screens | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=655&amp;status%5B0%5D=">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1292&amp;project=1&amp;opened=655&amp;status%5B0%5D=" title="Unconfirmed | capi.client.swap doesn&#039;t support swapping between screen | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity4">
+	 FS#1084 - Input loss, focus loss, black flickering and way to many redraw in awesome 3.5  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a>     	 - Saturday, 05 January 2013, 08:12 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Tuesday, 18 March 2014, 14:59 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">High</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.3			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">3 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=557">Johannes (vali)</a> (2013-02-12)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=816">Quentin (Quentin)</a> (2013-01-28)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=592">Tim Y (tdy)</a> (2013-01-23)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">As discussed on IRC:<br />
+<br />
+<br />
+<br />
+[Thursday, January 03, 2013] [07:30:06 PM] &lt;Aleks&gt;	Hey guys, after upgrading form 3.4 to 3.5 I get flickering when I close windows (terminals, firefox option window etc), anyone experiencing the same problem ?<br />
+[Thursday, January 03, 2013] [07:30:32 PM] &lt;bob2&gt;	are you using hte default config<br />
+[Thursday, January 03, 2013] [07:31:16 PM] &lt;Aleks&gt;	bob2, not really, I changed my old config to work with 3.5<br />
+[Thursday, January 03, 2013] [07:31:25 PM] &lt;bob2&gt;	does it happen with the default config?<br />
+[Thursday, January 03, 2013] [07:31:40 PM] &lt;Aleks&gt;	haven&#039;t tried it<br />
+[Thursday, January 03, 2013] [07:31:54 PM] &lt;schinken&gt;	could it be possible that awesome 3.5 changes the default layout all the time to &quot;floating&quot;<br />
+[Thursday, January 03, 2013] [07:34:50 PM] &lt;Aleks&gt;	bob2, it does the same thing with the default config at /etc/xdg/awesome/rc.lua<br />
+[Thursday, January 03, 2013] [07:37:11 PM] &lt;tdy&gt;	it&#039;s been mentioned a couple times in here<br />
+[Thursday, January 03, 2013] [07:37:17 PM] &lt;tdy&gt;	not sure if anyone filed a report though<br />
+[Thursday, January 03, 2013] [07:37:38 PM] &lt;tdy&gt;	there are several open issues that people have brought up in here but never made it to the tracker<br />
+[Thursday, January 03, 2013] [07:37:47 PM] &lt;tdy&gt;	i might open up a couple soon<br />
+[Thursday, January 03, 2013] [07:38:16 PM] &lt;shox&gt;	 konni it works very well ! Thx !<br />
+[Thursday, January 03, 2013] [07:57:10 PM] &lt;damjan&gt;	does awesome 3.5 now restart when a new screen is added/removed?<br />
+[Thursday, January 03, 2013] [07:58:09 PM] &lt;kacH3L&gt;	how often do you plug new displays in? o.O<br />
+[Thursday, January 03, 2013] [07:58:16 PM] &lt;kacH3L&gt;	just restart it manually<br />
+[Thursday, January 03, 2013] [07:59:05 PM] &lt;damjan&gt;	why does it matter? I don&#039;t want it to restart<br />
+[Thursday, January 03, 2013] [08:00:53 PM] &lt;kacH3L&gt;	you could still modify your rc.lua<br />
+<br />
+<br />
+<br />
+________________________<br />
+<br />
+[02:24] &lt;psychon&gt; Elv13: finally!<br />
+[02:24] &lt;Elv13&gt; hi<br />
+[02:24] &lt;psychon&gt; hi<br />
+[02:24] &lt;psychon&gt; this is several days old: 23:20:33 &lt;Elv13&gt; psychon: Hi, I am dong some cleanup in awful to complement what lukas did, can type(tag.geticon(t)) == &quot;image&quot; still happen or is it dead code?<br />
+[02:24] &lt;psychon&gt; nope, type == &quot;image&quot; cannot happen, it&#039;s dead code<br />
+[02:25] &lt;Elv13&gt; good<br />
+[02:25] &lt;Elv13&gt; that will make things a little faster<br />
+[02:25] &lt;Elv13&gt; (type() call are expensive)<br />
+[02:25] &lt;psychon&gt; and I can live with pull requests, but I&#039;d rather get &quot;real&quot; patches because they are easier to look at and get properly archived in the mailing list archives<br />
+[02:25] &lt;Elv13&gt; ok, so I ca send both<br />
+[02:25] &lt;psychon&gt; (I guess this applies to linux, too; linus just gets pull requests for subsystems with lots of commits?)<br />
+[02:27] &lt;Elv13&gt; saw the little miracle I did with my magic in the yesterday screenshot?<br />
+[02:27] &lt;psychon&gt; this type() == &quot;image&quot; check is from 2009 and wasn&#039;t touched since then (back then jd split up awful.widget into several files, so it might be older than that)<br />
+[02:28] &lt;psychon&gt; yesterday? I don&#039;t think so<br />
+[02:28] &lt;danon&gt; hey all<br />
+[02:29] &lt;Elv13&gt;<a href=" http://i.imgur.com/tgUew.png"> http://i.imgur.com/tgUew.png</a><br />
+[02:30] &lt;psychon&gt; lots of blue and some kde app<br />
+[02:30] &lt;Elv13&gt; see the tag and task list<br />
+[02:30] &lt;psychon&gt; how much unicode is involved in these arrows?<br />
+[02:30] &lt;Elv13&gt; none<br />
+[02:30] &lt;Elv13&gt; its the point<br />
+[02:31] &lt;psychon&gt; not even for the world? nice<br />
+[02:31] &lt;Elv13&gt; I gave a 3 line patch to allow that<br />
+[02:31] &lt;psychon&gt; looks fantastic then :-)<br />
+[02:31] &lt;Elv13&gt; it check if bg_image is a function, then call it<br />
+[02:31] &lt;psychon&gt; yeah, 3.4&#039;s taglist and tasklist were much more customizable, lots of that got lost<br />
+[02:31] &lt;Elv13&gt; so it allow hooks to be set to make custom task/tag/tab list drawing<br />
+[02:32] &lt;psychon&gt; sorry, but can&#039;t you do that drawing &quot;normally&quot; and then set the result as the bg_image?<br />
+[02:32] &lt;Elv13&gt; with that, it is possible to do anything, even fading animations for tag switch<br />
+[02:33] &lt;psychon&gt; I don&#039;t want to know the cpu usage of that, but nice idea :-)<br />
+[02:33] &lt;Elv13&gt; no, because bg_image, like mine have different width and if you look at the screenshot again, I restored the old &quot;floating&quot; thing<br />
+[02:33] &lt;Elv13&gt; the CPU usage is very low, as I do agressive chaching<br />
+[02:33] &lt;Elv13&gt; I profiled the thing, after 2 minutes, it stop taking CPU<br />
+[02:34] &lt;Elv13&gt; it just recompose the image from the cached bits<br />
+[02:34] &lt;psychon&gt; nice<br />
+[02:35] &lt;psychon&gt; (even nicer is that cairo-xcb contains magic so that it caches images in the X server, too)<br />
+[02:35] &lt;Elv13&gt; psychon: lets move on, I fixed a bug when client tag.screen and c.screen are different, that happen with the default config<br />
+[02:35] &lt;psychon&gt; (so if you draw it once to the wibox, it gets uploaded to the X11 server, if you draw it again, the cached copy is used)<br />
+[02:35] &lt;Elv13&gt; and the thing you are actually talking about is my next point<br />
+[02:35] &lt;psychon&gt; I should have used the default config more :-(<br />
+[02:36] &lt;Elv13&gt; there is _very_ bad bug reported by many users<br />
+[02:36] &lt;psychon&gt; which of the many bug reports are you refering to?<br />
+[02:37] &lt;danon&gt; im using lxde<br />
+[02:37] &lt;Elv13&gt; some users report layouts using high CPU, some other report flickering and some other report failed focus, so you can click on an app, but the keyboard is still attached to an other<br />
+[02:37] &lt;Elv13&gt; that<br />
+[02:37] &lt;Elv13&gt; &#039;s the same bug<br />
+[02:37] &lt;Elv13&gt; with different consequences<br />
+[02:37] &lt;danon&gt; the first release of mint 14 did that<br />
+[02:38] &lt;psychon&gt; that is all the same bug? Oo<br />
+[02:38] &lt;danon&gt; likely? ubuntu does it to i think<br />
+[02:38] &lt;danon&gt; and im running on a apu<br />
+[02:38] &lt;Elv13&gt; psychon: yes, to reproduce (Xephyr) open 5 xterm in the same tag and set one floating. Enable titlebars, then move the floating client around<br />
+[02:39] &lt;psychon&gt; danon: hi &amp; what the heck are you trying to say? Oo<br />
+[02:39] &lt;psychon&gt; &quot;enable titlebars&quot; is step 1 (edit rc.lua, set the boolean to &quot;true&quot;)?<br />
+[02:39] &lt;danon&gt; psychon, idk lol im bored<br />
+[02:39] &lt;Elv13&gt; the whole screen will become black for a few ms every time the floating term move. If the focus change during that time, it is lost for ever<br />
+[02:40] &lt;Elv13&gt; I profiled the thing and it is caused by blocking LGI calls<br />
+[02:41] &lt;Elv13&gt; apparently, LGI use a very suboptimal way of accessing introspection, causing about a million introspection call every second when a wibox move<br />
+[02:41] &lt;Elv13&gt; very, very bad<br />
+[02:43] &lt;psychon&gt; so, what do I do? enable titlebars in the default config, start awesome<br />
+[02:43] &lt;Elv13&gt; yes, open 5 xterm, it have to be xterm<br />
+[02:43] &lt;psychon&gt; open 5 urxvt and make one explictily floating (but we are in a floating layout...?)<br />
+[02:43] &lt;Elv13&gt; it happen with all apps, but is visible with xterm<br />
+[02:45] &lt;psychon&gt; no blinking here<br />
+[02:45] &lt;psychon&gt; and moving a client shouldn&#039;t cause any redraws IMHO<br />
+[02:46] &lt;Elv13&gt; psychon: you are using Xephyr, with 5 xterm, 4 tiled and 1 floating and moving it using the titlebar?<br />
+[02:46] &lt;psychon&gt; yes<br />
+[02:46] &lt;Elv13&gt; I profiled and it does redraw the whole screen<br />
+[02:47] &lt;Elv13&gt; it really does<br />
+[02:47] &lt;psychon&gt; and just due local idoticy, awesome is running under xtrace, so possibly extra slow...? (but perhaps this causes some changes in the request batching that hide this, I&#039;ll retry without)<br />
+[02:47] &lt;psychon&gt; &quot;the whole screen&quot; = &quot;every visible wibox&quot;?<br />
+[02:47] &lt;Elv13&gt; indeed, at least it look like it does<br />
+[02:47] &lt;psychon&gt; oh, true, xtrace confirms that it redraws at least something<br />
+[02:48] &lt;psychon&gt; but why? :-/<br />
+[02:49] &lt;psychon&gt; oh, that can easily be fixed on the C side (which is causing the redraws)<br />
+[02:49] &lt;Elv13&gt; I know lukkash is looking into it too<br />
+[02:49] &lt;Elv13&gt; at least the lua part<br />
+[02:50] &lt;psychon&gt; still no flickering here without xtrace (but some mouse pointer artefact from Xephyr)<br />
+[02:50] &lt;psychon&gt; but changing the focus flickers<br />
+[02:50] &lt;Elv13&gt; lukkash == Lukas in the ML<br />
+[02:51] &lt;psychon&gt; oh, I know why titlebars are redrawn on focus change (I just don&#039;t know why it flickers)<br />
+[02:52] &lt;Elv13&gt; the problem is that _all_ of them are, and then some more<br />
+[02:52] &lt;Elv13&gt; I have 5 screen, imagine the pain :P<br />
+[02:52] &lt;psychon&gt; awful.titlebar.widget.button shouldn&#039;t use capi.client.connect_signal(&quot;(un)focus&quot;), but do so via c:connect_signal()<br />
+[02:53] &lt;psychon&gt; hm, no<br />
+[02:53] &lt;Elv13&gt; is there a connect_signal focus and unfocus? I had to invent one in 3.4<br />
+[02:53] &lt;psychon&gt; that function already checks if the right client was focused/unfocused (what the heck did I write here?!?)<br />
+[02:53] &lt;psychon&gt; oh, good point<br />
+[02:53] &lt;psychon&gt; there isn&#039;t -.-<br />
+[02:54] &lt;psychon&gt; so no clue why that redraw happens<br />
+[02:54] &lt;psychon&gt; nor why it flickers although it shouldnt<br />
+[02:54] &lt;Elv13&gt; 2 users, plus me complained<br />
+[02:55] &lt;Elv13&gt; and then there is the 2 other bug caused by that<br />
+[02:55] &lt;Elv13&gt; (or more)<br />
+[02:56] &lt;Elv13&gt; then there is the whole LGI mess, it need to at least cache enums<br />
+[02:56] &lt;Elv13&gt; there is no point in doing introspection 10000 time for the same enum value<br />
+[02:57] &lt;Elv13&gt; lua metatable make it easy to cache<br />
+[02:57] &lt;psychon&gt; sounds like you actually looked into lgi, I never understood it that far<br />
+[02:58] &lt;psychon&gt; looking forward to read your lgi pull request with some synethetic benchmark which gets a lot faster :-)<br />
+[02:58] &lt;psychon&gt; so, redrawing a titlebar shouldn&#039;t flicker unless the X11 server is being stupid<br />
+[02:58] &lt;psychon&gt; awesome draws it to a pixmap (= not on screen) and then copies the content over in a single CopyArea request<br />
+[02:59] &lt;Elv13&gt; but it does, an I have a synethetic to prove it<br />
+[02:59] &lt;psychon&gt; ...so perhaps this is something on the lua side? the titlebar is redrawn twice and the first redraw goes foobar?<br />
+[02:59] &lt;psychon&gt; although that doesnt make much sense<br />
+[03:00] &lt;psychon&gt; hm, resizing one of those urxvt doesnt flicker<br />
+[03:00] &lt;Elv13&gt; users reported it, I reproduced it and I have the complexe execution trace<br />
+[03:00] &lt;Elv13&gt; xterm have a tendency to flicker more badly, but it happen with other apps too<br />
+[03:00] &lt;Elv13&gt; s/complexe/complete<br />
+[03:01] * Elv13 3:00AM<br />
+[03:01] &lt;psychon&gt; well, ok, resizing looks bad on the right end of the titlebar (the icons are first shifted to the left/right and then properly redrawn)<br />
+[03:01] &lt;psychon&gt; good night<br />
+[03:01] &lt;psychon&gt; 9:00AM :p<br />
+[03:01] &lt;Elv13&gt; i have a 80mb trace if you want it<br />
+[03:02] &lt;psychon&gt; nah, that&#039;s lots to dick through<br />
+[03:02] &lt;Elv13&gt; kcachegrind?<br />
+[03:02] &lt;psychon&gt; let&#039;s just (somehow) hunt and eliminate unneeded redraws<br />
+[03:02] &lt;psychon&gt; &lt;psychon&gt; nah, that&#039;s lots to dick through &lt;- what the heck did I just write?<br />
+[03:02] &lt;psychon&gt; s/dick/dig/<br />
+[03:02] &lt;psychon&gt; doesnt it just blame liblua.so and thus lua code?<br />
+[03:02] * Elv13 3 am, didn&#039;t even notice<br />
+[03:03] &lt;Elv13&gt; I profile lua calls, not C<br />
+[03:03] &lt;Elv13&gt; about C, there is a segfault when setting the wrong type of surfaces to masks<br />
+[03:03] &lt;psychon&gt; ah, ok then<br />
+[03:03] &lt;Elv13&gt; ei, not adding ._native<br />
+[03:03] &lt;psychon&gt; yeah, lgi is terribly type-unsafe there, the C side just gets a void* pointer and hopes<br />
+[03:04] &lt;Elv13&gt; I am fine with that, is there any hope for the redraw bug?<br />
+[03:04] &lt;psychon&gt; so unless the &quot;thing without _native&quot; becomes something else than a userdata, nothing can be done about that crash<br />
+[03:04] &lt;Elv13&gt; I suffer with the focus issue a lot<br />
+[03:04] &lt;psychon&gt; when someone figures it out, sure :-P<br />
+[03:05] &lt;Elv13&gt; no idea how that part of the code work, your the wizard<br />
+[03:05] &lt;psychon&gt; I don&#039;t have much time currently, lots of little patches are piling up here :-(<br />
+[03:06] &lt;Elv13&gt; how does it feel to have so many contributors?<br />
+[03:06] &lt;psychon&gt; I&#039;ll do my best, but dunno when<br />
+[03:06] &lt;psychon&gt; even reading the mailing list takes awfully long these days<br />
+[03:06] &lt;psychon&gt; heh :-)<br />
+[03:06] &lt;psychon&gt; it would be great if it stayed this way<br />
+[03:06] &lt;Elv13&gt; it&#039;s all the peoples who used 3.4 and patched their own thing seeing an opportunity to upstream some stuff<br />
+[03:06] &lt;psychon&gt; oh shit<br />
+[03:07] &lt;psychon&gt; the titlebar redraw on move is necessary :-(<br />
+[03:07] &lt;Elv13&gt; all of them?<br />
+[03:07] &lt;psychon&gt; it could have a &quot;fake transparent&quot; backround with the wallpaper visible<br />
+[03:07] &lt;psychon&gt; nah, just the one that I figured out so far<br />
+[03:07] &lt;psychon&gt; so now I&#039;m back at &quot;no idea (yet) why it happens)<br />
+[03:08] &lt;Elv13&gt; can&#039;t you get_source_rgba() and see if there is a &quot;a&quot;?<br />
+[03:08] &lt;Elv13&gt; or it wont work because awesome convert everything into pattern and you can&#039;t know...<br />
+[03:08] &lt;psychon&gt; could you open an entry in the bug tracker about this eventually? I&#039;m moving and building ikea furniture takes so much time that I can&#039;t do any university stuff currently which will then eat a whole lot of time and... meh<br />
+[03:09] * Elv13 remove the rgba line from Uli mind<br />
+[03:09] &lt;psychon&gt; well, it could definitely be optimized, but not quite easily<br />
+[03:09] &lt;Elv13&gt; but that&#039;s only for the one actually moving, why are all the others redrwan too?<br />
+[03:10] &lt;psychon&gt; I&#039;ll figure it out, but please open a bug report so that I don&#039;t forget :-)<br />
+[03:11] &lt;Elv13&gt; ok<br />
+[03:12] &lt;psychon&gt; oh, I know where the black flickering comes from (I just dont know yet why it happens on all of the titlebars yet)<br />
+[03:12] &lt;Elv13&gt; and to spare you reading the backlog, many peoples are asking how to set a fixed width for textbox, while I know your :fit() hack, don&#039;t you think there should be a better way?<br />
+[03:12] &lt;psychon&gt; the C code does the resize and gets a new pixmap for double-buffering and then an Expose event comes in before lua did the redraw yet<br />
+[03:12] &lt;psychon&gt; at this point the pixmap is still filled with all-black<br />
+[03:12] &lt;psychon&gt; there already is a patch for a better way on the mailing list<br />
+[03:12] &lt;psychon&gt; wibox.layout.constraint or something like that<br />
+[03:13] &lt;Elv13&gt; does not exist<br />
+[03:13] &lt;psychon&gt; if I remember correctly, it can do exact size, max size and min size<br />
+[03:13] &lt;psychon&gt; yeah, hence I said &quot;on the mailing list&quot; :-P<br />
+[03:13] &lt;psychon&gt; Lukas wrote that in his 9-patches patch series<br />
+[03:13] &lt;psychon&gt; ...which he will resent this weekend<br />
+[03:14] &lt;Elv13&gt; I was thing it was a reference to the black flickering<br />
+[03:14] * Elv13 my hopes are broken<br />
+[03:14] &lt;Elv13&gt; thing/thinking<br />
+[03:14] &lt;psychon&gt; oh, sorry, let me retry: I think I have the black flickering figured out at least halfway (still open a bug report!)<br />
+[03:14] &lt;psychon&gt; and for the &quot;fixed width&quot;: Lukas has patches for that<br />
+[03:15] * Elv13 ... this focus thing is killing me<br />
+[03:15] &lt;psychon&gt; ok, I&#039;ll try to attach a patch for you to test to this bug report before I have to go<br />
+[03:17] &lt;Elv13&gt; do I copy paste the IRC in my report<br />
+[03:18] &lt;Elv13&gt; and the IRC from the other users if I can find it<br />
+[03:18] &lt;psychon&gt; heh, sure</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Tuesday, 18 March 2014, 14:59 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (9)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3329" id="comment3329"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3329">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 05 January 2013, 10:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here are some patches for you to test. Either of them should fix (some of) this black flickering, so please test each on its own.<br />
+<br />
+force_redraw.patch makes lua redraw a drawable immediately when the surface for double-buffering change.<br />
+<br />
+only_on_resize.patch makes the C code change the double-buffering surface only when it really has to.</div></div>
+
+      <div class="attachments">
+          <a title="force_redraw.patch" href="?getfile=566" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            force_redraw.patch
+                  </a>
+                  (0.4 KiB)
+          <br />
+          <a title="only_on_resize.patch" href="?getfile=567" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            only_on_resize.patch
+                  </a>
+                  (2.7 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3335" id="comment3335"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3335">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Saturday, 05 January 2013, 20:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for the patches<br />
+<br />
+only_on_resize.patch seem to have little to no effect as far as I can see, but if it prevent some redraw, then great.<br />
+<br />
+force_redraw.patch make things a little better. Most of the titlebar flickering is no more, but the first 10 pixels on the left of the titlebar still flicker as much as before, like if it was moving, then moving back. There is also about 10% as much flickering everywhere else.<br />
+<br />
+The force_redraw patch also make a lot of stuff print on stdout/stderr with liblua.so &lt;pointer&gt; &lt;pointer&gt; so it slow down awesome a lot.<br />
+<br />
+Finally, all titlebars are still being redrawn, on focus change. Why not redraw only the affected ones? The focus is still as unstable.</div></div>
+
+  
+    <em>
+    <a name="comment3336" id="comment3336"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3336">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Saturday, 05 January 2013, 20:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">After a little more digging (ok, totally by accident), at least part of the problem have something to do with size_hints_honor = true, at least for urxvt and xterm. Disabling it make the problem a lot less, umm, problematic. This is true without the patches</div></div>
+
+  
+    <em>
+    <a name="comment3379" id="comment3379"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3379">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Sunday, 20 January 2013, 20:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Early tests of the mailing list patch (Uli one) seem to improve the situation, but does not totally solve the problem. While a _lot_ better (or is it confirmation bias or the fact that I restarted awesome, only time will tell). Focussing Xephyr while ontop and floating still cause a few miss if trying to shift+ctrl on it while the mouse is moving. At least, moving fast in the same screen does not seem to cause the error anymore (again, only time will tell) and this is a very welcome improvment.</div></div>
+
+  
+    <em>
+    <a name="comment3386" id="comment3386"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3386">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=592">Tim Y (tdy)</a> -
+    Wednesday, 23 January 2013, 18:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m late on applying these patches, so I might not be caught up if there&#039;s been progress on this in the mailing list. I applied force_redraw.patch and only_on_resize.patch to v3.5-15-g6608b0a<br />
+<br />
+The liblua.so.log is the stdout/stderr stuff that elv13 mentioned a few posts above.<br />
+<br />
+The tile.lua.log error happens when my size_hints_honor is set to false. If size_hints_honor is true, I don&#039;t get the layout error.<br />
+<br />
+For me, the redraws are much quicker, but the flickering still happens.</div></div>
+
+      <div class="attachments">
+          <a title="liblua.so.log" href="?getfile=580" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            liblua.so.log
+                  </a>
+                  (2.6 KiB)
+          <br />
+          <a title="tile.lua.log" href="?getfile=581" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            tile.lua.log
+                  </a>
+                  (0.7 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3507" id="comment3507"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3507">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=847">M. Cadilhac (cadilhac)</a> -
+    Thursday, 14 March 2013, 15:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Any news?  I can confirm the bug on Arch Linux fully updated and on Intel Atom.  Switching from one xterm to another in a fullscreen tag takes up to 2 seconds, during which screen flickers.  Launching an evince takes up to 7 seconds, with heavy flickering.  This really is an annoyance. :(<br />
+<br />
+Happy hacking!</div></div>
+
+  
+    <em>
+    <a name="comment3909" id="comment3909"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3909">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 15 March 2014, 22:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">No one complained about this for a year. Does that mean that the input loss / focus loss is gone?<br />
+<br />
+For the &quot;black flickering&quot;: I&#039;ll run the attached patch for a while and see if it catches anything interesting. If not, then this black flickering should be impossible...<br />
+<br /></div></div>
+
+      <div class="attachments">
+          <a title="black-flicker.patch" href="?getfile=679" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            black-flicker.patch
+                  </a>
+                  (2.9 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3912" id="comment3912"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3912">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 16 March 2014, 14:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The redraw-on-move should be fixed with: <br />
+<br />
+commit 1924ee9e6ec0f90e2fa9716555e947870661553d<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Sun Mar 16 14:58:14 2014 +0100<br />
+<br />
+    drawin: Only redraw on move with translucent background<br />
+    <br />
+    If a drawable has an opaque background, we don&#039;t need pseudo transparency and<br />
+    thus its content don&#039;t change when it is moved. However, when we need pseudo<br />
+    transparency, then we have to redraw the drawable to apply the new background.<br />
+    <br />
+    Previously we just always did the redraw. This commit adds a helper function<br />
+    gears.color.create_opaque_pattern() that analyzes a cairo pattern for<br />
+    transparency. We use this new function to only redraw-on-move when there is<br />
+    actual pseudo transparency in effect. Otherwise, this redraw can be skipped.<br /></div></div>
+
+  
+    <em>
+    <a name="comment3916" id="comment3916"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#comment3916">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 17 March 2014, 15:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The above-mentioned patch for the black flickering is committed:<br />
+<br />
+commit 86f3b7f11fdde0df0a0d886046fd3d792c1239c5<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Mon Mar 17 16:27:10 2014 +0100<br />
+<br />
+    Drawable: Ignore exposes when we have nothing to draw<br />
+    <br />
+    The X11 server tells us about things that need to be redrawn via expose events.<br />
+    When we get such an expose event before lua drew the drawable, we just fill the<br />
+    exposed area with old data (which is black for newly-created drawables).<br />
+    <br />
+    Fix this by tracking if we have any usable data in a drawable&#039;s double buffering<br />
+    pixmap. This flag is unset whenever we throw away the old content (e.g. due to a<br />
+    resize) and is set when lua gave us some new content to display.<br />
+<br />
+(And I just noticed that I forgot to mentioned: Ignoring the expose event doesn&#039;t mean that we don&#039;t display the right content, because lua is (hopefully) already redrawing the needed parts.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1084#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1084" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+awful           = require("awful")
+require("awful.autofocus")
+awful.rules     = require("awful.rules")
+wibox           = require("wibox")
+
+rightwibox = awful.wibox({
+	position = "right",
+	screen = 1,
+	width = 18
+})
+
+right_bottom_layout = wibox.layout.fixed.horizontal()
+right_top_layout = wibox.layout.fixed.horizontal()
+
+right_layout = wibox.layout.align.horizontal()
+right_layout:set_left(right_top_layout)
+right_layout:set_right(right_bottom_layout)
+
+rightrotate = wibox.layout.rotate()
+rightrotate:set_direction('west')
+rightrotate:set_widget(right_layout)
+rightwibox:set_widget(rightrotate)
+
+right_top_layout:add(awful.widget.textclock())
+
+mysystray = wibox.widget.systray()
+mysystray:set_horizontal(false)
+mysystray:set_base_size(18) -- does not change anything
+right_top_layout:add(mysystray)
+
+filler = wibox.widget.textbox()
+filler:set_text("||||")
+right_top_layout:add(filler)
+mypromptbox = awful.widget.prompt()
+right_top_layout:add(filler)
+right_top_layout:add(mypromptbox)
+
+
+--{{{ below is just stuff to be able to start and focus some programs
+-- and to restart awesome (default bindings)
+tags = {}
+for s = 1, screen.count() do
+    -- Each screen has its own tag table.
+    tags[s] = awful.tag({ 1 }, s, awful.layout.suit.tile)
+end
+
+modkey = "Mod4"
+
+globalkeys = awful.util.table.join(
+    awful.key({ modkey },            "r",     function () mypromptbox:run() end),
+    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit)
+)
+root.keys(globalkeys)
+
+clientkeys = awful.util.table.join(
+    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end)
+)
+
+awful.rules.rules = {
+    -- All clients will match this rule.
+    { rule = { },
+      properties = { 
+                     focus = awful.client.focus.filter,
+                     keys = clientkeys,
+                     buttons = clientbuttons } },
+}
+
+client.connect_signal("manage", function (c, startup)
+    -- Enable sloppy focus
+    c:connect_signal("mouse::enter", function(c)
+        if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
+            and awful.client.focus.filter(c) then
+            client.focus = c
+        end
+    end)
+end)
+-- }}}
+-- vim: fdm=marker

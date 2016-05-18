@@ -1,0 +1,37 @@
+From a0329622c22c9e0acbd4ace54f77fdb3b9b0f23a Mon Sep 17 00:00:00 2001
+From: Uli Schlachter <psychon@znc.in>
+Date: Wed, 10 Mar 2010 11:42:28 +0100
+Subject: [PATCH] Use libiconv if available
+
+Signed-off-by: Uli Schlachter <psychon@znc.in>
+---
+ awesomeConfig.cmake |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/awesomeConfig.cmake b/awesomeConfig.cmake
+index bb16e3c..f16abf5 100644
+--- a/awesomeConfig.cmake
++++ b/awesomeConfig.cmake
+@@ -167,6 +167,11 @@ endmacro()
+ 
+ # Check for libev
+ a_find_library(LIB_EV ev)
++
++# Solaris has iconv in a seperate library
++set(LIB_ICONV "")
++find_library(LIB_ICONV iconv)
++
+ # GNU libc has <execinfo.h> and backtrace() stuff. If this is not available, we
+ # need libexecinfo.
+ try_compile(HAS_EXECINFO
+@@ -188,6 +193,7 @@ set(AWESOME_REQUIRED_LIBRARIES
+     ${AWESOME_COMMON_REQUIRED_LDFLAGS}
+     ${AWESOME_REQUIRED_LIBRARIES}
+     ${LIB_EV}
++    ${LIB_ICONV}
+     ${LUA_LIBRARIES})
+ 
+ set(AWESOME_REQUIRED_INCLUDE_DIRS
+-- 
+1.7.0
+

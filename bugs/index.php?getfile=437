@@ -1,0 +1,13 @@
+diff --git a/rc.lua b/rc.lua
+index 49e8543..9c355f0 100644
+--- a/rc.lua
++++ b/rc.lua
+@@ -56,7 +56,7 @@ end
+ -- {{{ Menu
+ -- Create a laucher widget and a main menu
+ myawesomemenu = {
+-   { "manual", terminal .. " -e man awesome" },
++   { "manual", terminal .. " -e 'man awesome'" },
+    { "edit config", editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua" },
+    { "restart", awesome.restart },
+    { "quit", awesome.quit }

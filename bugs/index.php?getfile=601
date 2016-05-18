@@ -1,0 +1,21 @@
+diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
+index cbaed18..be888d6 100644
+--- a/lib/awful/tag.lua.in
++++ b/lib/awful/tag.lua.in
+@@ -6,6 +6,7 @@
+ 
+ -- Grab environment we need
+ local util = require("awful.util")
++local sort = require("gears.sort")
+ local tostring = tostring
+ local pairs = pairs
+ local ipairs = ipairs
+@@ -260,7 +261,7 @@ function tag.gettags(s)
+         end
+     end
+ 
+-    table.sort(tags, function(a, b) return tag.getproperty(a, "index") < tag.getproperty(b, "index") end)
++    sort(tags, function(a, b) return tag.getproperty(a, "index") < tag.getproperty(b, "index") end)
+     return tags
+ end
+ 

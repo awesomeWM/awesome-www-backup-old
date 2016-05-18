@@ -1,0 +1,62 @@
+diff --git a/lib/awful/titlebar.lua.in b/lib/awful/titlebar.lua.in
+index 2b00bbe..b749355 100644
+--- a/lib/awful/titlebar.lua.in
++++ b/lib/awful/titlebar.lua.in
+@@ -70,24 +70,28 @@ local function new(c, args)
+ 
+     local ret
+     if not bars[position] then
+-        ret = drawable(d, nil, function()
+-            -- On redraw, update the fg and bg colors of the titlebar
+-            local args = bars[position].args
+-            ret:set_bg(get_color("bg", c, args))
+-            ret:set_fg(get_color("fg", c, args))
+-        end)
++        ret = drawable(d, nil)
+ 
+         bars[position] = {
+             args = args,
+             drawable = ret
+         }
++
++        -- Update the colors when focus changes
++        function update_colors()
++            local args = bars[position].args
++            ret:set_bg(get_color("bg", c, args))
++            ret:set_fg(get_color("fg", c, args))
++        end
++        c:connect_signal("focus", update_colors)
++        c:connect_signal("unfocus", update_colors)
+     else
+         bars[position].args = args
+         ret = bars[position].drawable
+     end
+ 
+-    -- Make sure the titlebar is (re-)drawn
+-    ret.draw()
++    -- Make sure the titlebar has the right colors applied
++    update_colors()
+ 
+     return ret
+ end
+diff --git a/lib/wibox/drawable.lua.in b/lib/wibox/drawable.lua.in
+index 8f019f5..6728f4e 100644
+--- a/lib/wibox/drawable.lua.in
++++ b/lib/wibox/drawable.lua.in
+@@ -198,7 +198,7 @@ local function setup_signals(_drawable)
+     clone_signal("property::y")
+ end
+ 
+-function drawable.new(d, widget_arg, redraw_hook)
++function drawable.new(d, widget_arg)
+     local ret = object()
+     ret.drawable = d
+     ret.widget_arg = widget_arg or ret
+@@ -213,7 +213,6 @@ function drawable.new(d, widget_arg, redraw_hook)
+     -- Only redraw a drawable once, even when we get told to do so multiple times.
+     ret._redraw_pending = false
+     ret._do_redraw = function()
+-        if redraw_hook then redraw_hook(ret) end
+         ret._redraw_pending = false
+         capi.awesome.disconnect_signal("refresh", ret._do_redraw)
+         do_redraw(ret)

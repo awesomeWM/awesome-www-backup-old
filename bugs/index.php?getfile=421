@@ -1,0 +1,405 @@
+[kukman@archbook awesome-build]$ gdb -p `pidof awesome`
+GNU gdb (GDB) 7.2
+Copyright (C) 2010 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-unknown-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Attaching to process 21254
+Reading symbols from /usr/bin/awesome...done.
+Reading symbols from /usr/lib/libxcb.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb.so.1
+Reading symbols from /usr/lib/libglib-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libglib-2.0.so.0
+Reading symbols from /usr/lib/libX11.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libX11.so.6
+Reading symbols from /usr/lib/liboocairo.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/liboocairo.so.0
+Reading symbols from /usr/lib/liboopango.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/liboopango.so.0
+Reading symbols from /usr/lib/libxcb-randr.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-randr.so.0
+Reading symbols from /usr/lib/libxcb-xtest.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-xtest.so.0
+Reading symbols from /usr/lib/libxcb-xinerama.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-xinerama.so.0
+Reading symbols from /usr/lib/libxcb-util.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-util.so.0
+Reading symbols from /usr/lib/libxcb-keysyms.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-keysyms.so.1
+Reading symbols from /usr/lib/libxcb-icccm.so.4...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-icccm.so.4
+Reading symbols from /usr/lib/libxcb-image.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-image.so.0
+Reading symbols from /usr/lib/libcairo.so.2...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libcairo.so.2
+Reading symbols from /usr/lib/libstartup-notification-1.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libstartup-notification-1.so.0
+Reading symbols from /usr/lib/libxdg-basedir.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxdg-basedir.so.1
+Reading symbols from /usr/lib/libev.so.4...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libev.so.4
+Reading symbols from /usr/lib/liblua.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/liblua.so
+Reading symbols from /usr/lib/libdbus-1.so.3...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libdbus-1.so.3
+Reading symbols from /lib/libpthread.so.0...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Loaded symbols for /lib/libpthread.so.0
+Reading symbols from /lib/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /usr/lib/libXau.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXau.so.6
+Reading symbols from /usr/lib/libXdmcp.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXdmcp.so.6
+Reading symbols from /lib/libpcre.so.0...(no debugging symbols found)...done.
+Loaded symbols for /lib/libpcre.so.0
+Reading symbols from /lib/librt.so.1...(no debugging symbols found)...done.
+Loaded symbols for /lib/librt.so.1
+Reading symbols from /lib/libdl.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libdl.so.2
+Reading symbols from /lib/libm.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libm.so.6
+Reading symbols from /usr/lib/libpangocairo-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpangocairo-1.0.so.0
+Reading symbols from /usr/lib/libpango-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpango-1.0.so.0
+Reading symbols from /usr/lib/libgobject-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgobject-2.0.so.0
+Reading symbols from /usr/lib/libgmodule-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgmodule-2.0.so.0
+Reading symbols from /usr/lib/libgthread-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgthread-2.0.so.0
+Reading symbols from /usr/lib/libxcb-shm.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-shm.so.0
+Reading symbols from /usr/lib/libpixman-1.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpixman-1.so.0
+Reading symbols from /usr/lib/libfontconfig.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libfontconfig.so.1
+Reading symbols from /usr/lib/libfreetype.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libfreetype.so.6
+Reading symbols from /usr/lib/libpng14.so.14...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpng14.so.14
+Reading symbols from /usr/lib/libxcb-render.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-render.so.0
+Reading symbols from /usr/lib/libXrender.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXrender.so.1
+Reading symbols from /usr/lib/libz.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libz.so.1
+Reading symbols from /usr/lib/libX11-xcb.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libX11-xcb.so.1
+Reading symbols from /lib/ld-linux-x86-64.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/ld-linux-x86-64.so.2
+Reading symbols from /usr/lib/libpangoft2-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpangoft2-1.0.so.0
+Reading symbols from /usr/lib/libexpat.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libexpat.so.1
+Reading symbols from /lib/libnss_files.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libnss_files.so.2
+0x00007f623e48b073 in epoll_wait () from /lib/libc.so.6
+(gdb) continue
+Continuing.
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+process 21254 is executing new program: /bin/bash
+process 21254 is executing new program: /usr/bin/awesome
+[Thread debugging using libthread_db enabled]
+
+Program received signal SIGSEGV, Segmentation fault.
+signal_cmp (a=0x7fff76cb97c0, b=0x2a0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:40
+40      return x->id > y->id ? 1 : (x->id < y->id ? -1 : 0);
+(gdb) bt
+#0  signal_cmp (a=0x7fff76cb97c0, b=0x2a0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:40
+#1  0x00007f3cf165acf2 in bsearch () from /lib/libc.so.6
+#2  0x000000000042527e in signal_array_lookup (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:49
+#3  signal_array_getbyid (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:55
+#4  luaA_object_emit_signal (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:260
+#5  0x000000000042b664 in client_resize (c=0x12e9418, geometry=...) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/client.c:596
+#6  0x000000000042bafc in luaA_client_geometry (L=0x102a0b0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/client.c:1182
+#7  0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+#8  0x00007f3cf1dfb5e1 in ?? () from /usr/lib/liblua.so
+#9  0x00007f3cf1df0c6d in ?? () from /usr/lib/liblua.so
+#10 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+#11 0x00007f3cf1df0e32 in ?? () from /usr/lib/liblua.so
+#12 0x00007f3cf1dec851 in lua_pcall () from /usr/lib/liblua.so
+#13 0x000000000042512e in luaA_dofunction (L=0x102a0b0, arr=<value optimized out>, name=<value optimized out>, nargs=1)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/lualib.h:106
+#14 signal_object_emit (L=0x102a0b0, arr=<value optimized out>, name=<value optimized out>, nargs=1)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:236
+#15 0x000000000043043f in drawin_wipe (w=0x1245298) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/drawin.c:67
+#16 0x0000000000422f7f in luaA_class_gc (L=0x102a0b0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaclass.c:181
+#17 0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+#18 0x00007f3cf1df0c24 in ?? () from /usr/lib/liblua.so
+#19 0x00007f3cf1df25ea in ?? () from /usr/lib/liblua.so
+#20 0x00007f3cf1df2b38 in ?? () from /usr/lib/liblua.so
+#21 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+#22 0x00007f3cf1df7ee0 in lua_close () from /usr/lib/liblua.so
+#23 0x000000000040cc96 in awesome_atexit () at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:70
+#24 awesome_restart () at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:280
+#25 0x0000000000417799 in luaA_restart (L=<value optimized out>) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/luaa.c:101
+#26 0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+#27 0x00007f3cf1dfb5e1 in ?? () from /usr/lib/liblua.so
+#28 0x00007f3cf1df0c6d in ?? () from /usr/lib/liblua.so
+#29 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+#30 0x00007f3cf1df0e32 in ?? () from /usr/lib/liblua.so
+#31 0x00007f3cf1dec851 in lua_pcall () from /usr/lib/liblua.so
+---Type <return> to continue, or q <return> to quit---
+#32 0x00000000004253eb in luaA_dofunction (L=0x102a0b0, oud=-1, name=0x43a8d8 "press", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/lualib.h:106
+#33 luaA_object_emit_signal (L=0x102a0b0, oud=-1, name=0x43a8d8 "press", nargs=0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:282
+#34 0x000000000040f8bd in event_key_callback (ev=0x1562b20, arr=<value optimized out>, oud=0, nargs=0, data=<value optimized out>)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:102
+#35 0x000000000040fdb6 in event_handle_key (ev=0x1562b20) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:502
+#36 0x00000000004100b5 in event_handle (event=0x1562b20) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:736
+#37 0x000000000040c7f4 in a_xcb_check_cb (loop=<value optimized out>, w=<value optimized out>, revents=<value optimized out>)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:238
+#38 0x00007f3cf201416f in ev_invoke_pending () from /usr/lib/libev.so.4
+#39 0x00007f3cf20181bd in ev_run () from /usr/lib/libev.so.4
+#40 0x000000000040c4c0 in ev_loop (argc=1, argv=<value optimized out>) at /usr/include/ev.h:810
+#41 main (argc=1, argv=<value optimized out>) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:578
+(gdb) bt full
+#0  signal_cmp (a=0x7fff76cb97c0, b=0x2a0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:40
+        x = 0x7fff76cb97c0
+        y = 0x2a0
+#1  0x00007f3cf165acf2 in bsearch () from /lib/libc.so.6
+No symbol table info available.
+#2  0x000000000042527e in signal_array_lookup (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:49
+No locals.
+#3  signal_array_getbyid (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/signal.h:55
+        sig = {id = 11256236538449678794, sigfuncs = {tab = 0x0, len = 0, size = 0}}
+#4  luaA_object_emit_signal (L=0x102a0b0, oud=-1, name=0x440c76 "property::geometry", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:260
+        sigfound = 0x2eb055400130000
+        oud_abs = 3
+        obj = <value optimized out>
+#5  0x000000000042b664 in client_resize (c=0x12e9418, geometry=...) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/client.c:596
+        send_notice = false
+        new_screen = 0x10557a0
+        old_geometry = {x = 0, y = 19, width = 1358, height = 747}
+        area = <value optimized out>
+#6  0x000000000042bafc in luaA_client_geometry (L=0x102a0b0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/client.c:1182
+        geometry = {x = 0, y = 19, width = 1364, height = 747}
+        c = 0x12e9418
+#7  0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#8  0x00007f3cf1dfb5e1 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#9  0x00007f3cf1df0c6d in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#10 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#11 0x00007f3cf1df0e32 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#12 0x00007f3cf1dec851 in lua_pcall () from /usr/lib/liblua.so
+No symbol table info available.
+#13 0x000000000042512e in luaA_dofunction (L=0x102a0b0, arr=<value optimized out>, name=<value optimized out>, nargs=1)
+---Type <return> to continue, or q <return> to quit---
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/lualib.h:106
+        error_func_pos = 3
+        nret = 0
+#14 signal_object_emit (L=0x102a0b0, arr=<value optimized out>, name=<value optimized out>, nargs=1)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:236
+        i = <value optimized out>
+        nbfunc = 1
+        sigfound = 0xfffffffd
+        __FUNCTION__ = "signal_object_emit"
+#15 0x000000000043043f in drawin_wipe (w=0x1245298) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/objects/drawin.c:67
+        screen = <value optimized out>
+#16 0x0000000000422f7f in luaA_class_gc (L=0x102a0b0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaclass.c:181
+        item = 0x1245298
+        class = 0x649660
+#17 0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#18 0x00007f3cf1df0c24 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#19 0x00007f3cf1df25ea in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#20 0x00007f3cf1df2b38 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#21 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#22 0x00007f3cf1df7ee0 in lua_close () from /usr/lib/liblua.so
+No symbol table info available.
+#23 0x000000000040cc96 in awesome_atexit () at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:70
+No locals.
+#24 awesome_restart () at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:280
+No locals.
+#25 0x0000000000417799 in luaA_restart (L=<value optimized out>) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/luaa.c:101
+No locals.
+#26 0x00007f3cf1df079d in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#27 0x00007f3cf1dfb5e1 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#28 0x00007f3cf1df0c6d in ?? () from /usr/lib/liblua.so
+---Type <return> to continue, or q <return> to quit---
+No symbol table info available.
+#29 0x00007f3cf1defef7 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#30 0x00007f3cf1df0e32 in ?? () from /usr/lib/liblua.so
+No symbol table info available.
+#31 0x00007f3cf1dec851 in lua_pcall () from /usr/lib/liblua.so
+No symbol table info available.
+#32 0x00000000004253eb in luaA_dofunction (L=0x102a0b0, oud=-1, name=0x43a8d8 "press", nargs=0)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/lualib.h:106
+        error_func_pos = 2
+        nret = 0
+#33 luaA_object_emit_signal (L=0x102a0b0, oud=-1, name=0x43a8d8 "press", nargs=0) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/common/luaobject.c:282
+        i = <value optimized out>
+        nbfunc = -1
+        sigfound = 0xfffffffe
+        oud_abs = 1
+        obj = <value optimized out>
+#34 0x000000000040f8bd in event_key_callback (ev=0x1562b20, arr=<value optimized out>, oud=0, nargs=0, data=<value optimized out>)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:102
+        abs_oud = 0
+        item_matching = 1
+#35 0x000000000040fdb6 in event_handle_key (ev=0x1562b20) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:502
+        keysym = 114
+        c = 0x0
+        __FUNCTION__ = "event_handle_key"
+#36 0x00000000004100b5 in event_handle (event=0x1562b20) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/event.c:736
+        response_type = <value optimized out>
+        randr_screen_change_notify = 118 'v'
+#37 0x000000000040c7f4 in a_xcb_check_cb (loop=<value optimized out>, w=<value optimized out>, revents=<value optimized out>)
+    at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:238
+        type = <value optimized out>
+        mouse = 0x0
+        event = 0x1562b20
+#38 0x00007f3cf201416f in ev_invoke_pending () from /usr/lib/libev.so.4
+No symbol table info available.
+#39 0x00007f3cf20181bd in ev_run () from /usr/lib/libev.so.4
+No symbol table info available.
+---Type <return> to continue, or q <return> to quit---
+#40 0x000000000040c4c0 in ev_loop (argc=1, argv=<value optimized out>) at /usr/include/ev.h:810
+No locals.
+#41 main (argc=1, argv=<value optimized out>) at /tmp/yaourt-tmp-kukman/aur-awesome-git/src/awesome-build/awesome.c:578
+        confpath = 0x0
+        xfd = <value optimized out>
+        i = <value optimized out>
+        opt = <value optimized out>
+        cmdlen = <value optimized out>
+        xdg = {reserved = 0x1029f40}
+        no_argb = false
+        event = <value optimized out>
+        long_options = {{name = 0x439b86 "help", has_arg = 0, flag = 0x0, val = 104}, {name = 0x439b8b "version", has_arg = 0, flag = 0x0, val = 118}, {
+            name = 0x439b93 "config", has_arg = 1, flag = 0x0, val = 99}, {name = 0x439b9a "check", has_arg = 0, flag = 0x0, val = 107}, {name = 0x439ba0 "no-argb", 
+            has_arg = 0, flag = 0x0, val = 97}, {name = 0x0, has_arg = 0, flag = 0x0, val = 0}}
+        xio = {active = 1, pending = 1, priority = 0, data = 0x0, cb = 0x40cb30 <a_xcb_io_cb>, next = 0x0, fd = 5, events = 1}
+        xcheck = {active = 1, pending = 0, priority = 0, data = 0x1f1b9abe0, cb = 0x40c7b0 <a_xcb_check_cb>}
+        a_refresh = {active = 1, pending = 0, priority = 0, data = 0x7fff76dff188, cb = 0x40cac0 <a_refresh_cb>}
+        sigint = {active = 1, pending = 0, priority = 0, data = 0x7f3cf4553540, cb = 0x40cb20 <exit_on_signal>, next = 0x0, signum = 2}
+        sigterm = {active = 1, pending = 0, priority = 0, data = 0x1, cb = 0x40cb20 <exit_on_signal>, next = 0x0, signum = 15}
+        sighup = {active = 1, pending = 0, priority = 0, data = 0x7fff76cba7f8, cb = 0x40cb60 <restart_on_signal>, next = 0x0, signum = 1}
+        __FUNCTION__ = "main"
+        sa = {__sigaction_handler = {sa_handler = 0x40caf0 <signal_fatal>, sa_sigaction = 0x40caf0 <signal_fatal>}, sa_mask = {__val = {0 <repeats 16 times>}}, 
+          sa_flags = 0, sa_restorer = 0}
+        xtest_query = <value optimized out>
+        xmapping_cookie = <value optimized out>
+        tmp_win = 12582914
+(gdb) quit
+A debugging session is active.
+
+    Inferior 1 [process 21254] will be detached.
+
+Quit anyway? (y or n) y
+Detaching from program: /usr/bin/awesome, process 21254
+

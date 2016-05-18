@@ -1,0 +1,538 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#796 : Prompts (&quot;Run Lua Code&quot; and &quot;Run&quot;) doesn&#039;t accept accented letters</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=796&amp;project=1&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=3" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=807&amp;project=1&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=3" title="Won&#039;t fix | awesome does not render properly in Xnest | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=3">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=769&amp;project=1&amp;opened=1&amp;status%5B0%5D=&amp;pagenum=3" title="Works for me | applications are killed when all windows don&#039;t fit on the screen | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity2">
+	 FS#796 - Prompts (&quot;Run Lua Code&quot; and &quot;Run&quot;) doesn&#039;t accept accented letters  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a>     	 - Tuesday, 03 August 2010, 06:30 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Thursday, 16 September 2010, 21:53 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> (2010-09-14)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Press Mod4-F4 and try to type á for example<br />
+<br />
+Thank you!<br />
+<br />
+awesome rocks!</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Thursday, 16 September 2010, 21:53 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Duplicate<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Duplicate of <del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=303&amp;projec
+t=1&amp;opened=1&amp;status%5B0%5D=&amp;
+pagenum=3" title="Won&#039;t fix |
+prompt uses wrong keyboard layout |
+100%"  class =
+"closedtasklink">FS#303</a>&#160;</del>        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (8)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2332" id="comment2332"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2332">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 14 September 2010, 09:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Too little information here and promptbox doesn&#039;t seem to be broken:<br />
+  * there was a bug fixed on deleting unicode in prompts. <br />
+  * you can type in an accented character. <br />
+  * a promptbox can execute script with multibyte characters (e.g. žž.sh, I have just tested it)<br />
+<br />
+So I guess, it would be wise to close it.</div></div>
+
+  
+    <em>
+    <a name="comment2334" id="comment2334"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2334">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Tuesday, 14 September 2010, 10:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here, in debian sid, and LANG=es_ES.UTF-8,  I can&#039;t type &#039;á&#039; nor &quot;ü&quot; in prompts.<br />
+<br />
+<br />
+$ awesome -v<br />
+awesome devel (Left Of Center)<br />
+ • Build: Aug 31 2010 20:44:21 for i686 by gcc version 4.4.5 (@biber)<br />
+ • D-Bus support: this character is not loved by flyspray :(<br />
+<br />
+So, please don&#039;t close this bug, or tell what is I&#039;m doing wrong<br />
+<br />
+Thank you!</div></div>
+
+  
+    <em>
+    <a name="comment2335" id="comment2335"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2335">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 14 September 2010, 10:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">OK, it gets interesting. What do you use for changing languages?</div></div>
+
+  
+    <em>
+    <a name="comment2336" id="comment2336"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2336">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 14 September 2010, 10:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">the git commit I was talking about is here:<br /><a href="
+http://git.naquadah.org/?p=awesome.git;a=commit;h=1cab627d5d48d17f466ce7c58a8932b6b48ca994">
+http://git.naquadah.org/?p=awesome.git;a=commit;h=1cab627d5d48d17f466ce7c58a8932b6b48ca994</a><br />
+<br />
+Can you try this:<br />
+&quot;setxkbmap de&quot; in shell <br />
+open a prompt and try entering some unicode characters?</div></div>
+
+  
+    <em>
+    <a name="comment2337" id="comment2337"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2337">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Tuesday, 14 September 2010, 10:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m using es keymap (xsetkbmap es)<br />
+<br />
+With &#039;de&#039; keymap , I can write äü ... but I can&#039;t write &#039;á&#039; (I can write it in my terminal and here , but not in prompt)<br />
+<br />
+Thanks!</div></div>
+
+  
+    <em>
+    <a name="comment2338" id="comment2338"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2338">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 14 September 2010, 10:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Now I get what this bug is about. <br />
+Prompt can not handle characters produced with a keystroke sequence (i.e. to write á at first a key producing accent is pressed and later letter a is pressed). <br />
+Prompt does not have support for so called deadkeys.<br />
+<br />
+Related wiki article:<br /><a href="
+http://en.wikipedia.org/wiki/Dead_keys">
+http://en.wikipedia.org/wiki/Dead_keys</a><br />
+<br />
+I guess, that the promptbox tries to interpret any key press it detects and deadkeys are not being interpreted as they should.</div></div>
+
+  
+    <em>
+    <a name="comment2339" id="comment2339"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2339">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 14 September 2010, 11:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If it helps, here is a xev output of typical press of a dead_key:<br />
+<br />
+KeyPress event, serial 28, synthetic NO, window 0x1a00001,<br />
+    root 0xff, subw 0x0, time 122243952, (401,472), root:(402,492),<br />
+    state 0x80, keycode 48 (keysym 0xfe52, dead_circumflex), same_screen YES,<br />
+    XLookupString gives 1 bytes: (5e) &quot;^&quot;<br />
+    XmbLookupString gives 0 bytes: <br />
+    XFilterEvent returns: True<br />
+<br />
+KeyRelease event, serial 28, synthetic NO, window 0x1a00001,<br />
+    root 0xff, subw 0x0, time 122244071, (401,472), root:(402,492),<br />
+    state 0x80, keycode 48 (keysym 0xfe52, dead_circumflex), same_screen YES,<br />
+    XLookupString gives 1 bytes: (5e) &quot;^&quot;<br />
+    XFilterEvent returns: False</div></div>
+
+  
+    <em>
+    <a name="comment2355" id="comment2355"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#comment2355">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Thursday, 16 September 2010, 21:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">some updates:<br />
+<br />
+I have devised a simple function to show what is being discovered buy a keygrabber and compared it to xev. And the results differ.<br />
+<br />
+Xev output:<br />
+KeyPress event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94044528, (126,470), root:(127,490),<br />
+    state 0x0, keycode 108 (keysym 0xfe03, ISO_Level3_Shift), same_screen YES,<br />
+    XKeysymToKeycode returns keycode: 92<br />
+    XLookupString gives 0 bytes: <br />
+    XmbLookupString gives 0 bytes: <br />
+    XFilterEvent returns: False<br />
+<br />
+KeyPress event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045355, (126,470), root:(127,490),<br />
+    state 0x80, keycode 48 (keysym 0xfe52, dead_circumflex), same_screen YES,<br />
+    XLookupString gives 1 bytes: (5e) &quot;^&quot;<br />
+    XmbLookupString gives 0 bytes: <br />
+    XFilterEvent returns: True<br />
+<br />
+KeyRelease event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045458, (126,470), root:(127,490),<br />
+    state 0x80, keycode 48 (keysym 0xfe52, dead_circumflex), same_screen YES,<br />
+    XLookupString gives 1 bytes: (5e) &quot;^&quot;<br />
+    XFilterEvent returns: False<br />
+<br />
+KeyRelease event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045628, (126,470), root:(127,490),<br />
+    state 0x80, keycode 108 (keysym 0xfe03, ISO_Level3_Shift), same_screen YES,<br />
+    XKeysymToKeycode returns keycode: 92<br />
+    XLookupString gives 0 bytes: <br />
+    XFilterEvent returns: False<br />
+<br />
+KeyPress event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045843, (126,470), root:(127,490),<br />
+    state 0x0, keycode 38 (keysym 0x61, a), same_screen YES,<br />
+    XLookupString gives 1 bytes: (61) &quot;a&quot;<br />
+    XmbLookupString gives 1 bytes: (61) &quot;a&quot;<br />
+    XFilterEvent returns: True<br />
+<br />
+KeyPress event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045843, (126,470), root:(127,490),<br />
+    state 0x0, keycode 0 (keysym 0xe2, acircumflex), same_screen YES,<br />
+    XLookupString gives 0 bytes: <br />
+    XmbLookupString gives 2 bytes: (c3 a2) &quot;â&quot;<br />
+    XFilterEvent returns: False<br />
+<br />
+KeyRelease event, serial 32, synthetic NO, window 0xc00001,<br />
+    root 0xff, subw 0x0, time 94045899, (126,470), root:(127,490),<br />
+    state 0x0, keycode 38 (keysym 0x61, a), same_screen YES,<br />
+    XLookupString gives 1 bytes: (61) &quot;a&quot;<br />
+    XFilterEvent returns: False<br />
+<br />
+as you see, the &quot;dead_circumflex&quot; and &quot;a&quot; are combined to produce &quot;acircumflex&quot;. The keygrabber is different. It discovers &quot;dead_circumflex&quot; and &quot;a&quot;, but these are not combined and &quot;acircumflex&quot; is not produced in this case.<br />
+<br />
+So now I have some questions:<br />
+ * Is it is a problem of xcb_key_press_event or keygrabber code? <br />
+ * Because if not, perhaps it can potentialy be implemented it in the keygrabbers code?</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=796#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="796" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

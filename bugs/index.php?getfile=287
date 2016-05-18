@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+#---------------------------------------------------------------------------
+# @ Author: Dr. Erdal Suvar, Stockholm, Sweden.
+# @ Filename: awesome_mpc.sh
+# @ Purpose: Control mpd (via mpc and awesome window manager 3.4, awesomeWM)
+# @ Copyright 2010 ErdalSuvar
+# @ History: 	2010/02/16: First relase.
+#---------------------------------------------------------------------------
+
+# 
+
+# Get parameter
+case $1 in
+0)
+        mpc stop 
+        ;;
+1)
+        mpc toggle
+        ;;
+*)
+        echo "No correct parameter were given."
+		echo "Correct parameters are:"
+		echo "'0' to stop playing"
+		echo "'1' to toggle play/pause"
+		exit
+        ;;
+esac
+
+
+# Player is stopped
+if [ `mpc | wc -l` -lt 2 ]; then
+#	echo "0 widget_tell WidPanel1 mpcPlay image /home/suvar/.config/icons/player3_stop.png" | awesome-client;	# this is for Awesome version 2.x
+	echo "WidMpdPlay[\"image\"] = image(\"/home/suvar/.config/icons/player3_stop.png\") " | awesome-client  	# this is for Awesome version 3.x
+	exit;
+fi
+
+# player is paused
+if [ "`mpc | sed -n -e '2{p;q;}' | cut -c 2-7`"  == "paused" ]; then 
+	echo "WidMpdPlay[\"image\"] = image(\"/home/suvar/.config/icons/player3_pause.png\") " | awesome-client  
+	exit;
+fi	
+
+# player is playing
+if [ "`mpc | sed -n -e '2{p;q;}' | cut -c 2-8`"  == "playing" ]; then 
+	echo "WidMpdPlay[\"image\"] = image(\"/home/suvar/.config/icons/player3_play.png\") " | awesome-client 
+	exit;
+fi	
+
+# Unknown state
+#echo -1
+exit;
+

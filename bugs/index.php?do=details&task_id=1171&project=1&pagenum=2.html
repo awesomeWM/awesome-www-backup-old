@@ -1,0 +1,366 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1171 : Workspace mouse input blocked by transparent layer of Cairo-dock</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1171&amp;project=1&amp;pagenum=2" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1172&amp;project=1&amp;pagenum=2" title="Unconfirmed | Integrating sudo with awful.widget.prompt | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;pagenum=2">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170&amp;project=1&amp;pagenum=2" title="Unconfirmed | java + dialogs = no output | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1171 - Workspace mouse input blocked by transparent layer of Cairo-dock  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=889">Zak (Wh4tThe)</a>     	 - Sunday, 11 August 2013, 16:57 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5.1</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I decided to report this here instead of to Cairo-dock on account of this post from two years ago, in which a seemingly identical issue was described for Fluxbox:<a href=" http://glx-dock.org/bg_topic.php?t=5775"> http://glx-dock.org/bg_topic.php?t=5775</a><br />
+<br />
+Description:<br />
+When running cairo-dock, bottom portion of screen is unclickable (i.e clicks do not pass through transparent layer of cairo-dock), mouse movements in that region will not affect focus changes.<br />
+<br />
+Steps to reproduce:<br />
+1. Install Cairo-dock<br />
+2. disable any compositing managers (to make the problem region more obvious)<br />
+3. set cairo-dock visibility to anything except &quot;keep dock below&quot; or &quot;reserve space for dock&quot;<br />
+4. open two programs side by side, make sure they are vertically maximized.<br />
+5. This is easiest to see with dock set to any of the &quot;hide the dock when..&quot; options, and compositing enabled: In the dock area, but without popping the dock up, move mouse between the two windows -- no focus changes will occur. Try clicking -- Now niether window is focused. Reproduceable so long as &quot;below = true&quot; is not set for cairo-dock in rules of rc.lua. Setting &quot;focusable = false&quot; does not fix problem. Also try right clicking on the desktop in this area -- no desktop menu.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (3)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3649" id="comment3649"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1171#comment3649">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 11 August 2013, 17:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm. You say that there is a window in that area and that clicks should pass through that area. I cannot really see how that would work. Looking at metacity (just a random other WM, normally I look at fluxbox, but apparently fluxbox doesn&#039;t work in this case either) doesn&#039;t find anything of interest either.<br />
+<br />
+If you claim that this is a bug in awesome, I need some more details on what we are doing wrong.<br />
+<br />
+(Also, focusable is read-only so focusable=false doesn&#039;t actually do anything)</div></div>
+
+  
+    <em>
+    <a name="comment3650" id="comment3650"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1171#comment3650">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=889">Zak (Wh4tThe)</a> -
+    Sunday, 11 August 2013, 18:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">When you say you didn&#039;t find anything of interest, do you mean that you could not reproduce the problem? What other details could I give? My rc.lua?<br />
+<br />
+Let me try and reword the problem then: the purpose of a dock that hides itself is to not get in the way. If it is hidden, yet the windows that it would overlap if it were not hidden are still not getting the mouse input, then what is the point? In OpenBox, if I move a terminal into the dock zone, the dock will minimize itself (as it does in Awesome WM). If I shift focus away from that terminal, I can click where the dock would be if it were not minimized. The terminal window recieves the click and regains focus. This does not happen in Awesome. I came to the conclusion it must be a bug in Awesome WM since this doesn&#039;t seem to be a problem with other WMs, and because of this post from the link by someone who &#039;appears&#039; to be a Cairo-dock dev: <br />
+<br />
+&quot;yep, that means the WM doesn&#039;t honor its duty (which is to use the bitmap we sent to X to define the transparency zone).<br />
+since this works on any other WM, I believe the best is to report this to the Fluxbox devs.&quot; -- post #6 by fabounet<br />
+<br />
+For example, in Awesome I have two instances of urxvtc running side by side. I am typing on the left one, I have cairo-dock set to hide itself when it would overlap any window. I would like to type in the rightmost terminal and use my mouse to change focus. My mouse is on the lowest inch of the screen, but not low enough to trigger the cairo-dock to show itself. I move the mouse to the right and nothing happens -- I am still typing in the leftmost terminal.<br />
+<br />
+I would be glad to provide more info, just let me know what you need. I don&#039;t know a whole lot about X other than some configuring in xorg.conf.d and the stuff I&#039;ve gleaned from using xprop and xwinfo since switching to awesome a couple weeks ago.</div></div>
+
+  
+    <em>
+    <a name="comment3651" id="comment3651"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1171#comment3651">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 11 August 2013, 20:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">No, cairo-dock&#039;s dependencies scared me enough that I didn&#039;t try to reproduce this.<br />
+<br />
+You said &quot;clicks do not pass through transparent layer of cairo-dock&quot; which sounds like &quot;cairo-dock is still there, but does some magic to pretend it isn&#039;t&quot; which sounds really weird. There must be a window in that area that gets the input and that window must be cairo-dock. In other words, cairo-dock fails at getting its window out of the way and that&#039;s cairo-dock&#039;s problem.<br />
+<br />
+Do you have a bug report or a fix or something like that for fluxbox? &quot;Honor its duty&quot; is quite a generic statement, I would rather hear something more X11-related. I have no idea what bitmap should define some transparency zone and the term &quot;transparency zone&quot; sounds weird and like nothing that is defined in ICCCM and EWMH (these are the relevant standards about what a WM&#039;s duty is).<br />
+<br />
+<br />
+You could run xwininfo and/or xprop in a terminal and click on the unresponsive area. That should tell you which window is there and steals input. I bet it will say that the input goes to cairo-dock and I have no idea what that information would tell us.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1171#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1171" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

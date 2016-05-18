@@ -1,0 +1,28 @@
+From d54d4fd74736ffb0c7c2b7e4f89f1f026791c88b Mon Sep 17 00:00:00 2001
+From: Perry Hargrave <resixian@gmail.com>
+Date: Tue, 8 Nov 2011 14:19:53 -0800
+Subject: [PATCH] Only run wallpaper command if it exists.
+
+Setting theme.wallpaper_cmd to empty table causes high CPU usage.
+
+Signed-off-by: Perry Hargrave <resixian@gmail.com>
+---
+ lib/beautiful.lua.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/lib/beautiful.lua.in b/lib/beautiful.lua.in
+index 476747d..dee3f84 100644
+--- a/lib/beautiful.lua.in
++++ b/lib/beautiful.lua.in
+@@ -49,7 +49,7 @@ function init(path)
+             end
+ 
+             -- setup wallpaper
+-            if theme.wallpaper_cmd then
++            if theme.wallpaper_cmd and #theme.wallpaper_cmd > 0 then
+                 for s = 1, capi.screen.count() do
+                     util.spawn(theme.wallpaper_cmd[util.cycle(#theme.wallpaper_cmd, s)], false, s)
+                 end
+-- 
+1.7.7.2
+

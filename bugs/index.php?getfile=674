@@ -1,0 +1,184 @@
+From dc0cad7057466e9f944937d331056eafc8bee886 Mon Sep 17 00:00:00 2001
+From: doraneko <grishkokot@gmail.com>
+Date: Fri, 7 Mar 2014 13:05:57 +0400
+Subject: [PATCH] New wibox.layout.scroll
+
+This layout allow to scroll multiple widgets.
+---
+ lib/wibox/layout/init.lua.in   |   1 +
+ lib/wibox/layout/scroll.lua.in | 151 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 152 insertions(+)
+ create mode 100644 lib/wibox/layout/scroll.lua.in
+
+diff --git a/lib/wibox/layout/init.lua.in b/lib/wibox/layout/init.lua.in
+index c89297e..7f465f4 100644
+--- a/lib/wibox/layout/init.lua.in
++++ b/lib/wibox/layout/init.lua.in
+@@ -17,6 +17,7 @@ return
+     margin = require("wibox.layout.margin");
+     mirror = require("wibox.layout.mirror");
+     constraint = require("wibox.layout.constraint");
++    scroll = require("wibox.layout.scroll");
+ }
+ 
+ -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
+diff --git a/lib/wibox/layout/scroll.lua.in b/lib/wibox/layout/scroll.lua.in
+new file mode 100644
+index 0000000..8dc9d18
+--- /dev/null
++++ b/lib/wibox/layout/scroll.lua.in
+@@ -0,0 +1,151 @@
++---------------------------------------------------------------------------
++-- @author Grigory Mishchenko
++-- @copyright 2014 Grigory Mishchenko
++-- @release @AWESOME_VERSION@
++---------------------------------------------------------------------------
++
++local type = type
++local pairs = pairs
++local setmetatable = setmetatable
++local base = require("wibox.layout.base")
++local widget_base = require("wibox.widget.base")
++local table = table
++
++-- wibox.layout.scroll
++local scroll = { mt = {} } 
++
++--- Draw a scroll layout.
++-- @param wibox The wibox that this widget is drawn to.
++-- @param cr The cairo context to use.
++-- @param width The available width.
++-- @param height The available height.
++function scroll:draw(wibox, cr, width, height)
++    local pos = 0
++    local max_offset = {x = 0, y = 0}
++    local drawing = {}
++
++    for k, v in pairs(self.widgets) do
++        local x, y, w, h, _
++
++        if self.dir == "y" then
++            x, y, w = 0, pos + self._offset, width
++            _, h = base.fit_widget(v, w, height);
++            if k == #self.widgets then
++                if y + h < height then
++                    max_offset.y = height - (y + h)
++                    self._offset = self._offset + max_offset.y
++                end
++                self._max_offset = self._offset + height - (y + h)
++            end
++            pos = pos + h
++        else
++            x, y, h = pos + self._offset, 0, height
++            w, _ = base.fit_widget(v, width, h);
++            if k == #self.widgets then
++                if x + w < width then
++                    max_offset.x = width - (x + w)
++                    self._offset = self._offset + max_offset.x
++                end
++                self._max_offset = self._offset + width - (x + w)
++            end
++            pos = pos + w
++        end
++        drawing[k] = {widget = v, w = w, h = h, x = x, y = y}
++    end
++
++    for k,v in pairs(drawing) do
++        v.x = v.x + max_offset.x
++        v.y = v.y + max_offset.y
++        -- Draw only visible widgets
++        if (self.dir == "y" and v.y + v.h > 0 and v.y - v.h < height) or
++            (self.dir ~= "y" and v.x + v.w > 0 and v.x - v.w < width) then
++            base.draw_widget(wibox, cr, v.widget, v.x, v.y , v.w, v.h)
++        end
++    end
++end
++
++--- Fit the scroll layout into the given area.
++-- @param w The available width.
++-- @param h The available height.
++-- @return The width and height that the widget wants to use.
++function scroll:fit(w, h)
++    return w, h
++end
++
++--- Add a widget to the given scroll layout.
++-- @param widget
++function scroll:add(widget)
++    widget_base.check_widget(widget)
++    table.insert(self.widgets, widget)
++    widget:connect_signal("widget::updated", self._emit_updated)
++    self._emit_updated()
++end
++
++--- Reset a scroll layout. This removes all widgets from the layout.
++function scroll:reset()
++    for k, v in pairs(self.widgets) do
++        v:disconnect_signal("widget::updated", self._emit_updated)
++    end
++    self.widgets = {}
++    self._offset = 0
++    self._max_offset = 0
++    self:emit_signal("widget::updated")
++end
++
++--- Scroll layout content by val. 
++-- @param val The value in pixels to scroll. 
++function scroll:scroll(val)
++    self._offset = self._offset + val
++    if self._offset > 0 then
++        self._offset = 0
++    end
++    self:emit_signal("widget::updated")
++end
++
++--- Scroll to first widget.
++function scroll:to_begin()
++    self._offset = 0
++    self:emit_signal("widget::updated")
++end
++
++--- Scroll to last widget.
++function scroll:to_end()
++    self._offset = self._max_offset
++    self:emit_signal("widget::updated")
++end
++
++local function get_layout(dir)
++    local ret = widget_base.make_widget()
++
++    for k, v in pairs(scroll) do
++        if type(v) == "function" then
++            ret[k] = v
++        end
++    end
++
++    ret.dir = dir
++    ret.widgets = {}
++    ret._offset = 0 
++    ret._max_offset = 0
++    ret._emit_updated = function()
++        ret:emit_signal("widget::updated")
++    end
++
++    return ret
++end
++
++--- Returns a new horizontal scroll layout. This layout can scroll content inside.
++-- Widgets can be added via :add() and scrolled via :scroll().
++function scroll.horizontal()
++    return get_layout("x")
++end
++
++--- Returns a new vertical scroll layout. This layout can scroll content inside.
++-- Widgets can be added via :add() and scrolled via :scroll().
++function scroll.vertical()
++    return get_layout("y")
++end
++
++return setmetatable(scroll, scroll.mt)
++
++-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
+-- 
+1.9.0
+

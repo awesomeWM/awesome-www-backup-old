@@ -1,0 +1,7 @@
+#!/bin/bash
+while true; do
+	hora=`date '+%H:%M %a, %d %b'`
+	echo "0 widget_tell data text $hora"
+	echo ""
+	sleep 5
+done | awesome-client

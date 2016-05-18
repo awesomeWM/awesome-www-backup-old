@@ -1,0 +1,805 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#39 : Special characters in textboxes</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=39&amp;opened=18&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=44&amp;opened=18&amp;status%5B0%5D=" title="Implemented | Title rules | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=18&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#39 - Special characters in textboxes  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a>     	 - Wednesday, 16 January 2008, 21:01 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Monday, 04 February 2008, 12:29 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Statusbars		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">2.1-rc2</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 2.2			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">&quot;echo 0 widget_tell &lt;textbox&gt;&quot; doesn&#039;t work when in &quot;message&quot; are &quot;special&quot; (hungarian) characters. <br />
+E.g. doesn&#039;t work (doesn&#039;t display anything):<br />
+echo 0 widget_tell &lt;textbox&gt; álom <br />
+(álom means &quot;dream&quot; in hungarian).</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Monday, 04 February 2008, 12:29 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+1b4a1e7c9ee3a37bc751c202cfcff1946a18ac36
+<br />
+Author: Julien Danjou
+&lt;julien@danjou.info&gt;<br />
+Date:   Mon Feb 4 13:28:20 2008 +0100<br
+/>
+<br />
+    convert text to draw to UTF-8<br />        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (19)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment66" id="comment66"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment66">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 17 January 2008, 07:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Works fine here, this is probably a font problem.<br />
+Try with vera-10.</div></div>
+
+  
+    <em>
+    <a name="comment67" id="comment67"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment67">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Thursday, 17 January 2008, 18:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Doesn&#039;t work with vera-10 :(<br />
+$ grep font .awesomerc<br />
+                font = &quot;vera-10&quot;                # Status bar font (Xft)<br />
+<br />
+&#039;echo 0 widget_tell tb_gmail &quot;alom&quot; | awesome-client&#039; works fine but &#039;echo 0 widget_tell tb_gmail &quot;alom&quot; | awesome-client&#039; doesn&#039;t (difference: _a_lom and _á_lom).<br /></div></div>
+
+  
+    <em>
+    <a name="comment68" id="comment68"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment68">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=5">Nikos Ntarmos (ntarmos)</a> -
+    Thursday, 17 January 2008, 20:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">What&#039;s the value of LC_CTYPE and LC_COLLATE in your wm&#039;s environment?</div></div>
+
+  
+    <em>
+    <a name="comment69" id="comment69"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment69">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Thursday, 17 January 2008, 21:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">They are empty (undefinied). What is the good settings? My LANG is hu_HU.</div></div>
+
+  
+    <em>
+    <a name="comment70" id="comment70"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment70">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=5">Nikos Ntarmos (ntarmos)</a> -
+    Thursday, 17 January 2008, 21:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve been using el_GR.UTF-8 on my Desktop for it to show greek characters. Perhaps you could try with hu_HU.UTF-8 too. Note that awesome drops any such binding to locales on startup (this is indeed needed), but you need a sane environment in the shell from where you echo &#039;blah&#039; | awesome-client. Could you try with something like:<br />
+   env LC_CTYPE=hu_HU.UTF-8 LC_COLLATE=hu_HU.UTF-8 echo &#039;0 widget_tell tb_gmail álom&#039; | awesome-client<br />
+and see if it works?</div></div>
+
+  
+    <em>
+    <a name="comment71" id="comment71"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment71">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Saturday, 19 January 2008, 18:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It doesn&#039;t work (with LC_CTYPE and LC_COLLATE) :(</div></div>
+
+  
+    <em>
+    <a name="comment72" id="comment72"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment72">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=5">Nikos Ntarmos (ntarmos)</a> -
+    Saturday, 19 January 2008, 20:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Something must be broken with locales and your environment. That exact incantation works just fine on my system with the DejaVu font set. Perhaps you&#039;re not using UTF-8 but the ISO hu_HU variant? Try setting LC_CTYPE and LC_COLLATE to hu_HU.ISO8859-2 or hu_HU.ISO-8859-2. What system is this on and what shell are you using? Can you write hungarian in an xterm and if yes, what&#039;s the value of these variables there?</div></div>
+
+  
+    <em>
+    <a name="comment73" id="comment73"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment73">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Saturday, 19 January 2008, 20:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">My system is an LFS (Linux From Scratch) and the shell is bash. <br />
+In mrxvt (http://materm.sourceforge.net/wiki/) and in xterm (and in console) all characters are OK.<br />
+The LANG is hu_HU (iso8859-2 coding) and other &quot;language-specific&quot; variables aren&#039;t set.</div></div>
+
+  
+    <em>
+    <a name="comment83" id="comment83"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment83">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Wednesday, 23 January 2008, 16:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can you check if your system locales are set before you start awesome ?<br />
+<br />
+Maybe add env &gt; /tmp/env.log before running awesome in your .xsession or something like that.</div></div>
+
+  
+    <em>
+    <a name="comment84" id="comment84"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment84">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Wednesday, 23 January 2008, 17:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I wrote it to ~/.xinitrc, before &#039;awesome&#039;.<br />
+The result:<br />
+HZ=100<br />
+SHELL=/bin/sh<br />
+TERM=linux<br />
+HUSHLOGIN=FALSE<br />
+LC_ALL=hu_HU<br />
+USER=zsolt<br />
+MAIL=/var/spool/mail/zsolt<br />
+PATH=/bin:/usr/bin:/home/zsolt/bin<br />
+LC_COLLATE=hu_HU<br />
+INPUTRC=/etc/inputrc<br />
+PWD=/home/zsolt<br />
+JAVA_HOME=/usr/progs/devel/jdk/1.5.0_07<br />
+LANG=hu_HU<br />
+PS1=\u:\w<br />
+SHLVL=3<br />
+HOME=/home/zsolt<br />
+LESS=-Ri<br />
+LOGNAME=zsolt<br />
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RvLrK5a9rm,guid=4ef3835dbc4af1032fe1de0047977274<br />
+LC_CTYPE=hu_HU<br />
+WINDOWPATH=7<br />
+DISPLAY=:0<br />
+XAUTHORITY=/home/zsolt/.Xauthority<br />
+_=/bin/env<br />
+<br />
+The hu_HU is iso-8859-2 coding.</div></div>
+
+  
+    <em>
+    <a name="comment85" id="comment85"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment85">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Wednesday, 23 January 2008, 17:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I wrote it to ~/.xinitrc, before &#039;awesome&#039;.<br />
+The result:<br />
+HZ=100<br />
+SHELL=/bin/sh<br />
+TERM=linux<br />
+HUSHLOGIN=FALSE<br />
+LC_ALL=hu_HU<br />
+USER=zsolt<br />
+MAIL=/var/spool/mail/zsolt<br />
+PATH=/bin:/usr/bin:/home/zsolt/bin<br />
+LC_COLLATE=hu_HU<br />
+INPUTRC=/etc/inputrc<br />
+PWD=/home/zsolt<br />
+JAVA_HOME=/usr/progs/devel/jdk/1.5.0_07<br />
+LANG=hu_HU<br />
+PS1=\u:\w<br />
+SHLVL=3<br />
+HOME=/home/zsolt<br />
+LESS=-Ri<br />
+LOGNAME=zsolt<br />
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-RvLrK5a9rm,guid=4ef3835dbc4af1032fe1de0047977274<br />
+LC_CTYPE=hu_HU<br />
+WINDOWPATH=7<br />
+DISPLAY=:0<br />
+XAUTHORITY=/home/zsolt/.Xauthority<br />
+_=/bin/env<br />
+<br />
+The hu_HU is iso-8859-2 coding.</div></div>
+
+  
+    <em>
+    <a name="comment98" id="comment98"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment98">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Friday, 25 January 2008, 14:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">An other hungarian man&#039;ve good characters:<br /><a href="
+http://quickshare.extra.hu/awesome_bacsi2.png">
+http://quickshare.extra.hu/awesome_bacsi2.png</a><br />
+I&#039;ve tried his sets and not good :(((<br />
+So I&#039;m sure this is not awesome-bug, I&#039;ve made something wrong with BLFS. <br />
+I&#039;ve send this &quot;bug&quot; to the BLFS-list. I hope they can say anything...<br /><a href="
+http://linuxfromscratch.org/pipermail/blfs-support/2008-January/064239.html">
+http://linuxfromscratch.org/pipermail/blfs-support/2008-January/064239.html</a></div></div>
+
+  
+    <em>
+    <a name="comment105" id="comment105"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment105">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Sunday, 27 January 2008, 08:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve debugged the awesome-source (I inserted some printf in the source-code) and the problem: the cairo_show_text function doesn&#039;t handle the iso-8859-2... <br />
+Its declaration:<br />
+cairo_show_text (cairo_t *cr, const char *utf8)<br />
+<br />
+I&#039;ve probed &quot;echo 0 widget_tell tb_gmail Ã¡lom | awesome-client&quot; (&quot;Ã¡&quot; is the utf8-coding of &quot;á&quot; char) and it displayed in tb_gmail!<br />
+<br />
+The solution (maybe): convert the &quot;simple&quot; string to utf8-coding (replace the characters) before calling &#039;cairo_show_text&#039;. I&#039;m probing this (I&#039;m not good c-programmer - only can write simple (hello-word-style and a bit complicated) programs).<br /></div></div>
+
+  
+    <em>
+    <a name="comment106" id="comment106"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment106">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Sunday, 27 January 2008, 09:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">My advise would be to switch to UTF-8. There&#039;s no good reason to stay with ISO8859.</div></div>
+
+  
+    <em>
+    <a name="comment107" id="comment107"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment107">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Monday, 28 January 2008, 08:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, it&#039;s very difficult because I&#039;m using an LFS (Linux From Scratch) (the current &quot;version&quot; is used since 1.5 years) and imho I shall recompile/reinstall the full system. And I&#039;m using some programs that doesn&#039;t support utf8.<br />
+<br />
+The root of problem is &quot;utf8 vs. iso&quot;, because:<br />
+&quot;A drawing operator that generates the shape from a string of UTF-8 characters&quot; (http://cairographics.org/manual/cairo-Text.html#cairo-show-text).<br />
+<br />
+I&#039;ve probed create utf8-strings from iso-texts but I&#039;m very beginner in coding and in c-programming. <br />
+Other people show<a href=" http://www.triptico.com/software/unicode.html#converting_posix_locale_strings_into_wchar_t_(c"> http://www.triptico.com/software/unicode.html#converting_posix_locale_strings_into_wchar_t_(c</a> webpage. <br />
+<br />
+But when I change all LC and LANG to hu_HU.utf8 and ran unicode_start and after that startx (awesome) in all textboxes (see above example and via mpc&#039;s output...) the texts appear well.<br />
+But in tasklist displayed nothing - the titles with full simple latin characters too!</div></div>
+
+  
+    <em>
+    <a name="comment108" id="comment108"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment108">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Monday, 28 January 2008, 17:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve founded the solution. If you accept the patch I&#039;ll send it (in some days because I&#039;ve wrote to my specific case so must overwrite to the general cases - maybe configfile, ...)<br />
+It uses iconv what&#039;s part of the glibc library so every system contains this (so doesn&#039;t mean more deps).<br />
+<br />
+Main idea:<br /><a href="
+http://linuxtnt.wordpress.com/2007/10/14/example-of-iconv-convert-euc-to-utf-8/">
+http://linuxtnt.wordpress.com/2007/10/14/example-of-iconv-convert-euc-to-utf-8/</a></div></div>
+
+  
+    <em>
+    <a name="comment109" id="comment109"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment109">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 28 January 2008, 17:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, bug reopened.<br />
+We&#039;re waiting for your patch. :-)</div></div>
+
+  
+    <em>
+    <a name="comment110" id="comment110"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment110">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=18">Zsolt Udvari (uzsolt)</a> -
+    Monday, 28 January 2008, 20:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, but I worked with version 2.1 not with git :(<br />
+I now see that&#039;s big changes in draw.c (moved to &#039;common&#039; directory).<br />
+Should I try modify the git-version or it&#039;s enough the 2.1 diff? I hope, because the changes are very simple:<br />
+added some #include, #define, and two function (bug and iso2utf8) and some changes in draw_text.<br />
+<br />
+diff a/draw.c b/draw.c<br />
+<br />
+28c28,39<br />
+&lt;<br />
+---<br />
+&gt; #include &lt;langinfo.h&gt;<br />
+&gt; #include &lt;iconv.h&gt;<br />
+&gt; #include &lt;errno.h&gt;<br />
+&gt;<br />
+&gt; #define HERE __FILE__, __LINE__<br />
+&gt;<br />
+&gt; #define DO_PRINT(file) \<br />
+&gt;   va_start (a, format); \<br />
+&gt;   vfprintf (file, format, a); \<br />
+&gt;   fprintf (file, &quot;.\n&quot;); \<br />
+&gt;   va_end (a)<br />
+&gt;<br />
+63a75,150<br />
+&gt;<br />
+&gt;<br />
+&gt; const char* program_name=&quot;tryconv&quot;;<br />
+&gt; void bug (const char * file, unsigned line, const char * format, ... );<br />
+&gt;<br />
+&gt; void bug (const char * file, unsigned line, const char * format, ... )<br />
+&gt; {<br />
+&gt;   va_list a;<br />
+&gt;   fprintf ( stderr, &quot;%s:%s:%u: internal error: &quot;,<br />
+&gt;             program_name, file, line );<br />
+&gt;   DO_PRINT (stderr);<br />
+&gt; }<br />
+&gt;<br />
+&gt; const char * OUTSET = &quot;UTF-8&quot;;<br />
+&gt;<br />
+&gt; char *<br />
+&gt; iso2utf8 (char * iso)<br />
+&gt; {<br />
+&gt;   char * iso_start = iso;<br />
+&gt;   unsigned start_len;<br />
+&gt;   static iconv_t iso2utf8t;<br />
+&gt;   int init = 0;<br />
+&gt;   size_t iconv_value;<br />
+&gt;   char * utf8, * utf8start;<br />
+&gt;   unsigned len, utf8len, utf8lenstart;<br />
+&gt;   int v;<br />
+&gt;<br />
+&gt;   if (strcmp(nl_langinfo(CODESET),&quot;UTF-8&quot;)==0) return iso;<br />
+&gt;   if (init == 0)<br />
+&gt;     {<br />
+&gt;       init = 1;<br />
+&gt;       iso2utf8t = iconv_open (OUTSET, nl_langinfo(CODESET));<br />
+&gt;       if (iso2utf8 == (iconv_t) -1)<br />
+&gt;         {<br />
+&gt;           if (errno == EINVAL)<br />
+&gt;             bug (HERE, &quot;conversion from &#039;%s&#039; to &#039;%s&#039; not available&quot;,<br />
+&gt;                    nl_langinfo(CODESET), OUTSET);<br />
+&gt;           else<br />
+&gt;             bug (HERE, &quot;Conversion setup failed&quot;);<br />
+&gt;           return NULL;<br />
+&gt;         }<br />
+&gt;     }<br />
+&gt;   start_len = len  = strlen (iso);<br />
+&gt;   if (!len)<br />
+&gt;     {<br />
+&gt;       bug (HERE, &quot;Empty string passed to iso2utf8&quot;);<br />
+&gt;     }<br />
+&gt;   utf8lenstart = utf8len = (3*len)/2 + 1;<br />
+&gt;   utf8start =   utf8 = (char *) calloc (utf8len, 1);<br />
+&gt;   iconv_value = iconv (iso2utf8t, &amp; iso, &amp; len, &amp; utf8, &amp; utf8len);<br />
+&gt;   if (iconv_value == (size_t) -1)<br />
+&gt;     {<br />
+&gt;       printf (&quot;failed: in string &#039;%s&#039;, length %d, &quot;<br />
+&gt;               &quot;out string &#039;%s&#039;, length %d\n&quot;,<br />
+&gt;               iso, len, utf8start, utf8len);<br />
+&gt;       switch (errno)<br />
+&gt;         {<br />
+&gt;         case EILSEQ:<br />
+&gt;           printf (&quot;Invalid character sequence\n&quot;);<br />
+&gt;           break;<br />
+&gt;         case EINVAL:<br />
+&gt;           printf (&quot;EINVAL\n&quot;);<br />
+&gt;           break;<br />
+&gt;         case E2BIG:<br />
+&gt;           printf (&quot;E2BIG\n&quot;);<br />
+&gt;           break;<br />
+&gt;         default:<br />
+&gt;           printf (&quot;unknown error&quot;);<br />
+&gt;         }<br />
+&gt;     }<br />
+&gt;   v = iconv_close (iso2utf8t);<br />
+&gt;   if (v != 0)<br />
+&gt;     bug (HERE, &quot;Error returned by iconv_close\n&quot;);<br />
+&gt;   return utf8start;<br />
+&gt; }<br />
+&gt;<br />
+93c180,181<br />
+&lt;<br />
+---<br />
+&gt;     if (text==NULL) {return;}<br />
+&gt;     text=iso2utf8(text);<br />
+<br />
+Maybe(?) it isn&#039;t perfect and beautiful because I&#039;m not C-programmer but I hope you can use it.</div></div>
+
+  
+    <em>
+    <a name="comment111" id="comment111"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#comment111">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Tuesday, 29 January 2008, 06:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for your job, it&#039;s plan to integrate it in 2.2 version.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=39#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="39" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

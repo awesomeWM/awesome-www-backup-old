@@ -1,0 +1,31 @@
+From d63bc04c4c18fc8f92fb257f99a47bc33a2ee922 Mon Sep 17 00:00:00 2001
+From: Hiltjo Posthuma <hiltjo@codemadness.org>
+Date: Wed, 18 Nov 2009 14:22:50 +0100
+Subject: [PATCH 2/2] Menu.lua: use actual wibox border width
+
+We check the wibox border width for inappropiate values now, if we set
+border_width to a negative value (invalid) in our theme and draw it, the
+actual border_width will be 0 so the menu will be drawn incorrectly.
+This fixed this.
+
+Signed-off-by: Hiltjo Posthuma <hiltjo@codemadness.org>
+---
+ lib/awful/menu.lua.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 1eaca26..a13bd5e 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -316,7 +316,7 @@ function show(menu, keygrabber)
+         wibox.width = menu.w
+         wibox.height = menu.h
+         wibox.x = menu.x
+-        wibox.y = menu.y + (num - 1) * (menu.h + menu.theme.border_width)
++        wibox.y = menu.y + (num - 1) * (menu.h + wibox.border_width)
+         wibox.screen = screen_index
+     end
+ 
+-- 
+1.6.5.2
+

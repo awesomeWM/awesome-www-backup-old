@@ -1,0 +1,1066 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#982 : Mouse events under non-English keyboard layout</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=982&amp;opened=6&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=6&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#982 - Mouse events under non-English keyboard layout  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a>     	 - Monday, 26 March 2012, 12:38 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Sunday, 05 July 2015, 14:48 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.4</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">23 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1026">Eugene Apollonsky (chessman)</a> (2015-01-13)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1018">Galkin Vasily (galkin-vv)</a> (2014-11-27)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=919">Renato Alves (unode)</a> (2014-07-17)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=561">Oleg Kulabukhov (olegon)</a> (2014-04-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=669">cac2s (cac2s)</a> (2014-03-30)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=938">umod.47 (umod.47)</a> (2014-02-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=939">Sergey Yakovlev (klay)</a> (2014-01-21)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=937">Jakub Valenta (polaroid)</a> (2014-01-13)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=930">Bohdan Trach (bvt)</a> (2013-12-17)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=906">Panos M. (pmav99)</a> (2013-10-08)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=904">Andrew (GriwMF)</a> (2013-10-01)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=901">Boris Petrov (Alien282)</a> (2013-09-23)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a> (2013-08-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=884">Ivan Osadchii (iosadchii)</a> (2013-07-24)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=870">Oleg Shparber (trollixx)</a> (2013-06-07)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=841">Lukas (lukaso666)</a> (2013-03-05)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=713">korjavin (korjavin)</a> (2012-05-23)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> (2012-04-25)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=661">Konata Izumi (Kona-chan)</a> (2012-04-25)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> (2012-04-13)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=647">Ari Becker (sol)</a> (2012-04-12)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=257">ilgiz (kegf)</a> (2012-04-11)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=598">alorewotik (alorewotik)</a> (2012-04-06)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">After recent updates of ArchLinux (that include some xorg-* packages and a bit early lua and xcb) awesome WM became ignore all mouse clicks on wiboxes (that are mapped using awful.button) when I change keyboard layout to some non-English one. Keyboard bindings (awful.key(...)) work fine at the same time. Have anybody noticed such behavior?</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Sunday, 05 July 2015, 14:48 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Should be fixed by the switch to proper
+XKB support via libxkbcommon        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (40)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/5)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2911" id="comment2911"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2911">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 26 March 2012, 13:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I understand the reason - that&#039;s because (ev-&gt;state == 132) for such events. Why?</div></div>
+
+  
+    <em>
+    <a name="comment2912" id="comment2912"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2912">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 13:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">132 is 128 + 4 is XCB_MOD_MASK_5 + XCB_MOD_MASK_CONTROL. According to that you are pressing modifier 5 and ctrl. The default config wants the key events to be without any modifiers. However, that doesn&#039;t explain what arch did to break your keyboard layout.</div></div>
+
+  
+    <em>
+    <a name="comment2913" id="comment2913"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2913">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 26 March 2012, 13:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I know that this is XCB_MOD_MASK_5 | XCB_MOD_MASK_CONTROL. But I doesn&#039;t press Control. And my keyboard layout is not broken - all other applications work fine. If I use xev (that use xcb through xlib) to see keycodes, there are no ControlMask or Mod5Mask in state mask.</div></div>
+
+  
+    <em>
+    <a name="comment2914" id="comment2914"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2914">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 13:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">How did you get that info from awesome? gdb?<br />
+And what does awesome do differently that makes it deserve wrong events? :-/</div></div>
+
+  
+    <em>
+    <a name="comment2915" id="comment2915"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2915">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 26 March 2012, 14:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; How did you get that info from awesome? gdb?<br />
+No, insert printf in event_button_match() and compile as release.<br />
+<br />
+xlib event state for left button in english layout: 0x100 == Button1Mask<br />
+xlib event state for left button in russian layout: 0x2100 == Button1Mask | (1&lt;&lt;13)<br />
+I didn&#039;t find any mention of (1&lt;&lt;13) for result event in X.h<br />
+May this superfluous bit influence and is misinterpreted?</div></div>
+
+  
+    <em>
+    <a name="comment2916" id="comment2916"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2916">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 14:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">0x2100 would mean that button 1 and button 6 are pressed. The protocol only allows 5 mouse buttons, but where possible the server inserts foo for higher mouse buttons, too.<br />
+<br />
+However, in event.c awesome does:<br />
+<br />
+    /* ev-&gt;state is<br />
+     * button status (8 bits) + modifiers status (8 bits)<br />
+     * we don&#039;t care for button status that we get, especially on release, so<br />
+     * drop them */<br />
+    ev-&gt;state &amp;= 0x00ff;<br />
+<br />
+So those high bits shouldn&#039;t influence any mouse button bindings...?</div></div>
+
+  
+    <em>
+    <a name="comment2918" id="comment2918"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2918">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 26 March 2012, 14:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If xcb event is so wrong, how xlib can almost rightly interpret it?</div></div>
+
+  
+    <em>
+    <a name="comment2921" id="comment2921"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2921">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Monday, 26 March 2012, 16:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I found that this is occurs after updating xorg-xkbcomp 1.2.3-&gt;1.2.4.<br />
+Bit XCB_MOD_MASK_CONTROL occurs in case when in xorg.conf there is Option &quot;XkbOptions&quot; &quot;ctrl:nocaps,grp:lctrl_toggle&quot;<br />
+But how xlib understand this and doesn&#039;t set ControlMask, Mod5Mask?</div></div>
+
+  
+    <em>
+    <a name="comment2934" id="comment2934"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2934">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=203">Damjan (gdamjan)</a> -
+    Tuesday, 03 April 2012, 21:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Having the same problem, also on Arch but...<br />
+<br />
+I just noticed another change that might help in figuring this out. <br />
+<br />
+Previously in the run prompt (mod4-r) when I typed with my cyrillic (mk) layout nothing would show up. <br />
+<br />
+Now, I get some strange characters (they look as they are from latin1 but have no idea on the layout).</div></div>
+
+  
+    <em>
+    <a name="comment2935" id="comment2935"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2935">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Tuesday, 03 April 2012, 21:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I have posted bugreport to Arch -<a href=" https://bugs.archlinux.org/task/29123"> https://bugs.archlinux.org/task/29123</a><br />
+You can use patch from there to fix this issue.</div></div>
+
+  
+    <em>
+    <a name="comment2939" id="comment2939"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2939">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 06 April 2012, 10:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So does that mean this is a bug in xkbcomp and not in awesome?</div></div>
+
+  
+    <em>
+    <a name="comment2943" id="comment2943"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2943">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Wednesday, 11 April 2012, 16:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The same in Gentoo Linux, by the way.</div></div>
+
+  
+    <em>
+    <a name="comment2944" id="comment2944"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2944">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 11 April 2012, 16:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So does the patch from arch work on gentoo then?</div></div>
+
+  
+    <em>
+    <a name="comment2950" id="comment2950"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2950">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Friday, 13 April 2012, 11:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I confirm that the downgrading to xorg-xkbcomp to 1.2.3 fixes the issue in Arch Linux.</div></div>
+
+  
+    <em>
+    <a name="comment2952" id="comment2952"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment2952">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Sunday, 15 April 2012, 14:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; So does that mean this is a bug in xkbcomp and not in awesome?<br />
+It seems so... But other applications work fine - awesome is one of a few applications that directly use xcb. Xlib uses xcb in some other way and there are no problems.</div></div>
+
+  
+    <em>
+    <a name="comment3043" id="comment3043"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3043">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Tuesday, 05 June 2012, 08:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hello,<br />
+<br />
+I&#039;ve just tried the patch from arch bug on Gentoo, against xkbcomp 1.2.4. It seems to work fine, I&#039;ll report if something goes wrong.<br />
+<br />
+Also, here are some other bugs tracking this issue:<br /><a href="
+https://bugs.gentoo.org/show_bug.cgi?id=415267">
+https://bugs.gentoo.org/show_bug.cgi?id=415267</a><br /><a href="
+https://bugs.freedesktop.org/show_bug.cgi?id=50611">
+https://bugs.freedesktop.org/show_bug.cgi?id=50611</a></div></div>
+
+  
+    <em>
+    <a name="comment3244" id="comment3244"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3244">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Tuesday, 27 November 2012, 16:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This bug magically disappeared for me at some point. I guess something in X itself was changed because xorg-xkbcomp is still at its old version.<br />
+<br />
+Anyways, I guess we can close this now; but just to be sure let someone report this issue to be solved as well.</div></div>
+
+  
+    <em>
+    <a name="comment3245" id="comment3245"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3245">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=203">Damjan (gdamjan)</a> -
+    Tuesday, 27 November 2012, 16:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">When did it disappear? <br />
+As recently as 2 weeks ago we had to recompile xorg-xkbcomp with a patch in order to fix this issue. On Archlinux.</div></div>
+
+  
+    <em>
+    <a name="comment3247" id="comment3247"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3247">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Tuesday, 27 November 2012, 16:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not sure, I just tried it now and it worked.</div></div>
+
+  
+    <em>
+    <a name="comment3249" id="comment3249"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3249">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Tuesday, 27 November 2012, 18:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Alexander Yakushev, what distro do you use?</div></div>
+
+  
+    <em>
+    <a name="comment3250" id="comment3250"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3250">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Tuesday, 27 November 2012, 18:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Arch Linux as well.</div></div>
+
+  
+    <em>
+    <a name="comment3256" id="comment3256"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3256">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Wednesday, 28 November 2012, 16:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I guess I should provide more info about my setup. So:<br />
+* Arch Linux, kernel 3.5.6-1-ARCH<br />
+* Awesome from git, built today<br />
+* xorg-server 1.13.0-4<br />
+* xorg-xkbcomp 1.2.4-1<br />
+<br />
+I don&#039;t know what else might matter, but recently I switched to systemd. Could it be the case?</div></div>
+
+  
+    <em>
+    <a name="comment3582" id="comment3582"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3582">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Sunday, 12 May 2013, 12:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Bug persists in Gentoo, and Xorg guys conclude that bug lurks in awesome:<a href=" https://bugs.freedesktop.org/show_bug.cgi?id=50611#c7"> https://bugs.freedesktop.org/show_bug.cgi?id=50611#c7</a></div></div>
+
+  
+    <em>
+    <a name="comment3677" id="comment3677"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3677">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=901">Boris Petrov (Alien282)</a> -
+    Monday, 23 September 2013, 11:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m on Arch Linux too. This was fixed for me in the version before 3.5.0, then 3.5.0 broke it again and it&#039;s still an issue on 3.5.1. It&#039;s definitely really annoying so please fix it! :)</div></div>
+
+  
+    <em>
+    <a name="comment3689" id="comment3689"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3689">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=904">Andrew (GriwMF)</a> -
+    Tuesday, 01 October 2013, 08:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Have same issue on arch. really annoying indeed</div></div>
+
+  
+    <em>
+    <a name="comment3712" id="comment3712"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3712">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=906">Panos M. (pmav99)</a> -
+    Tuesday, 08 October 2013, 13:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I confirm this too on Archlinux.<br />
+<br />
+$ awesome -v<br />
+awesome v3.5.1 (Ruby Tuesday)<br />
+ • Build: Sep 25 2013 21:15:32 for x86_64 by gcc version 4.8.1 (nobody@)<br />
+ • Compiled against Lua 5.2.2 (running with Lua 5.2)<br />
+ • D-Bus support: ✔<br />
+<br />
+If you need help on debugging/reproducing please tell us what you need.</div></div>
+
+  
+    <em>
+    <a name="comment3715" id="comment3715"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3715">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=906">Panos M. (pmav99)</a> -
+    Saturday, 12 October 2013, 22:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Just tried the workaround proposed here and it seems to work fine.<br /><a href="
+https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6">
+https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6</a></div></div>
+
+  
+    <em>
+    <a name="comment3716" id="comment3716"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3716">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=901">Boris Petrov (Alien282)</a> -
+    Monday, 14 October 2013, 10:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yep, I can confirm this fixes the issue in my case too, but this seems like a &quot;hack&quot; (not that I understand what this &quot;fix&quot; does). As I said, the version of awesome before 3.5.0 fixed it without requiring such changes to X11 files, so I guess the problem is elsewhere... :)</div></div>
+
+  
+    <em>
+    <a name="comment3717" id="comment3717"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3717">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 14 October 2013, 13:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Are you really sure that this does not affect 3.4? Did you try 3.5, noticed that things were broken, then restarted into 3.4 and everything worked?<br />
+<br />
+(Answering &quot;but it used to work a year ago when I was using 3.4&quot; doesn&#039;t count. The xkbcomp change could be newer than that)</div></div>
+
+  
+    <em>
+    <a name="comment3718" id="comment3718"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3718">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=901">Boris Petrov (Alien282)</a> -
+    Monday, 14 October 2013, 14:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m just sure that it was broken since I started using awesome until the last version before 3.5.0 (which was 3.4.something) where it suddenly started working. After that 3.5.0 came and it broke again. So that particular version was the only one where this worked fine. I&#039;m really not sure whether it has anything to do with anything else, sorry.</div></div>
+
+  
+    <em>
+    <a name="comment3719" id="comment3719"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3719">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Monday, 14 October 2013, 14:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not upgrading xkbcomp lets me not to expirience this issue with 3.5.* just like with 3.4.</div></div>
+
+  
+    <em>
+    <a name="comment3760" id="comment3760"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3760">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=924">J. Stamp (Yu-Yu)</a> -
+    Thursday, 28 November 2013, 21:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Affects me also.<br />
+<br />
+Ubuntu 13.10, x86_32, reproduced transparently as filed in this bug.<br />
+<br />
+$ awesome --version<br />
+<br />
+awesome v3.4.15 (Never Gonna Give You Up)<br />
+ • Build: Apr 28 2013 18:50:10 for i686 by gcc version 4.8.0 (buildd@komainu)<br />
+ • D-Bus support: ✔<br />
+<br />
+xkbcomp 1.2.4</div></div>
+
+  
+    <em>
+    <a name="comment3761" id="comment3761"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3761">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=924">J. Stamp (Yu-Yu)</a> -
+    Thursday, 28 November 2013, 21:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Looks like actually it&#039;s all about xkbcomp.</div></div>
+
+  
+    <em>
+    <a name="comment3768" id="comment3768"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3768">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> -
+    Saturday, 07 December 2013, 14:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">At some point the bug appeared again, and I fixed it by following the link provided by Panos M.:<a href=" https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6"> https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6</a></div></div>
+
+  
+    <em>
+    <a name="comment3788" id="comment3788"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3788">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 05 January 2014, 12:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not a fix, but a work around:<br />
+<br />
+Edit /usr/share/awesome/lib/awful/key.lua and button.lua. Change this line<br />
+<br />
+ local ignore_modifiers = { &quot;Lock&quot;, &quot;Mod2&quot; }<br />
+<br />
+into this:<br />
+<br />
+  local ignore_modifiers = { &quot;Lock&quot;, &quot;Mod2&quot;, &quot;Ctrl&quot;, &quot;Mod5&quot; }<br />
+<br />
+(&quot;Ctrl&quot; and &quot;Mod5&quot; come from the first and second comment to this bug)<br />
+(Please note that completely ignoring the Ctrl key sounds like a stupid idea...)</div></div>
+
+  
+    <em>
+    <a name="comment3797" id="comment3797"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3797">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=938">umod.47 (umod.47)</a> -
+    Wednesday, 05 February 2014, 11:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The problem exists. The best solution for now is the link, provided by Alexander Yakushev (Alex.yakushev):<br />
+<br />
+&gt;&gt; At some point the bug appeared again, and I fixed it by following the link provided by Panos M.:<a href=" https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6"> https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6</a><br />
+<br />
+But after every system update I have to fix this file again, as long as update rewrites it back.</div></div>
+
+  
+    <em>
+    <a name="comment3798" id="comment3798"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment3798">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=938">umod.47 (umod.47)</a> -
+    Thursday, 06 February 2014, 10:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The problem exists. The best solution for now is the link, provided by Alexander Yakushev (Alex.yakushev):<br />
+<br />
+&gt;&gt; At some point the bug appeared again, and I fixed it by following the link provided by Panos M.:<a href=" https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6"> https://bugs.freedesktop.org/show_bug.cgi?id=50611#c6</a><br />
+<br />
+But after every system update I have to fix this file again, as long as update rewrites it back.</div></div>
+
+  
+    <em>
+    <a name="comment4194" id="comment4194"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment4194">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1018">Galkin Vasily (galkin-vv)</a> -
+    Thursday, 27 November 2014, 08:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Having this issue on Debian when synergy 1.6.1 (input devices sharing utility) is running in server mode.<br />
+awesome 3.5.5<br />
+<br />
+After executing <br />
+xkbcomp $DISPLAY - | egrep -v &quot;group . = AltGr;&quot; | xkbcomp - $DISPLAY<br />
+awesome become reacting to mouse clicks in any layout.<br />
+<br />
+Problem doesn&#039;t appear while synergy server is not running.</div></div>
+
+  
+    <em>
+    <a name="comment4195" id="comment4195"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment4195">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=203">Damjan (gdamjan)</a> -
+    Thursday, 27 November 2014, 10:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The above patch applies to 1.3.0 too if modified slightly (attached).</div></div>
+
+      <div class="attachments">
+          <a title="compat.diff" href="?getfile=709" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            compat.diff
+                  </a>
+                  (0.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4231" id="comment4231"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#comment4231">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 04 April 2015, 08:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This was now also reported at GitHub:<a href=" https://github.com/awesomeWM/awesome/issues/196"> https://github.com/awesomeWM/awesome/issues/196</a></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=982#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="982" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (5)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=935&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | keybindings with english letters not accessible after keyboard l | 100%"  class = "closedtasklink">FS#935 - keybindings with english letters not accessible after keyboard l</a>&#160;</del></td></tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=984&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Buttons (mouse clicks) don&#039;t work when non-first keyboard layout | 100%"  class = "closedtasklink">FS#984 - Buttons (mouse clicks) don&#039;t work when non-first keyboard layout</a>&#160;</del></td></tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=986&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | change windows (tags) with mouse | 100%"  class = "closedtasklink">FS#986 - change windows (tags) with mouse</a>&#160;</del></td></tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1004&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Mouse click on tab doesnt work if current keyboard layout non en | 100%"  class = "closedtasklink">FS#1004 - Mouse click on tab doesnt work if current keyboard layout non en</a>&#160;</del></td></tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1122&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Mouse support and xkbmap switching - failed | 100%"  class = "closedtasklink">FS#1122 - Mouse support and xkbmap switching - failed</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

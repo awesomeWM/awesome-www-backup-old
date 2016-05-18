@@ -1,0 +1,50 @@
+From 86fb49c8f29368c19a4362040ccfd2a72eacd493 Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Wed, 30 Mar 2011 04:05:59 +0200
+Subject: [PATCH 2/3] wibox.layout.*: add get direction method
+
+---
+ lib/wibox/layout/align.lua.in |    1 +
+ lib/wibox/layout/fixed.lua.in |    1 +
+ lib/wibox/layout/flex.lua.in  |    1 +
+ 3 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/lib/wibox/layout/align.lua.in b/lib/wibox/layout/align.lua.in
+index a3c7561..5b05d24 100644
+--- a/lib/wibox/layout/align.lua.in
++++ b/lib/wibox/layout/align.lua.in
+@@ -105,6 +105,7 @@ local function get_layout(dir)
+     local ret = widget_base.make_widget()
+     ret.draw = draw_dir
+     ret.fit = function(box, ...) return ... end
++    ret.get_dir = function () return dir end
+     ret._emit_updated = function()
+         ret:emit_signal("widget::updated")
+     end
+diff --git a/lib/wibox/layout/fixed.lua.in b/lib/wibox/layout/fixed.lua.in
+index ba04b17..bc956f0 100644
+--- a/lib/wibox/layout/fixed.lua.in
++++ b/lib/wibox/layout/fixed.lua.in
+@@ -132,6 +132,7 @@ local function get_layout(dir)
+     ret.reset = reset
+     ret.fill_space = fill_space
+     ret.widgets = {}
++    ret.get_dir = function () return dir end
+     ret._emit_updated = function()
+         ret:emit_signal("widget::updated")
+     end
+diff --git a/lib/wibox/layout/flex.lua.in b/lib/wibox/layout/flex.lua.in
+index 219ff35..a8ef0f6 100644
+--- a/lib/wibox/layout/flex.lua.in
++++ b/lib/wibox/layout/flex.lua.in
+@@ -85,6 +85,7 @@ local function get_layout(dir)
+     ret.add = add
+     ret.reset = reset
+     ret.widgets = {}
++    ret.get_dir = function () return dir end
+     ret._emit_updated = function()
+         ret:emit_signal("widget::updated")
+     end
+-- 
+1.7.4.1
+

@@ -1,0 +1,30 @@
+_NET_WM_USER_TIME(CARDINAL) = 1635987
+WM_STATE(WM_STATE):
+		window state: Normal
+		icon window: 0x0
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 35651979
+_NET_STARTUP_ID(UTF8_STRING) = "0"
+_NET_WM_DESKTOP(CARDINAL) = 4294967295
+XdndAware(ATOM) = BITMAP
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
+WM_CLIENT_LEADER(WINDOW): window id # 0x2200003
+_NET_WM_PID(CARDINAL) = 1576
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_DESKTOP
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x2, 0x1, 0x0, 0x0, 0x0
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST
+WM_NAME(STRING) = "plasma-desktop"
+WM_LOCALE_NAME(STRING) = "en_US.UTF-8"
+WM_CLASS(STRING) = "Plasma", "Plasma"
+WM_HINTS(WM_HINTS):
+		Client accepts input or input focus: True
+		Initial state is Normal State.
+		bitmap id # to use for icon: 0x2200189
+		window id # of group leader: 0x2200003
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+		user specified location: 0, 0
+		program specified location: 0, 0
+		user specified size: 1366 by 768
+		program specified size: 1366 by 768
+		window gravity: Static
+WM_CLIENT_MACHINE(STRING) = "aayla"
+WM_COMMAND(STRING) = { "/usr/bin/plasma-desktop" }

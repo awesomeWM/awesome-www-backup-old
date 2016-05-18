@@ -1,0 +1,16 @@
+ event.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/event.c b/event.c
+index 9532c48..ebc5a1b 100644
+--- a/event.c
++++ b/event.c
+@@ -160,7 +160,7 @@ handle_event_configurerequest(XEvent * e)
+         {
+             old_screen = c->screen;
+ 
+-            if(get_current_layout(c->screen)->arrange != layout_floating)
++            if(get_current_layout(c->screen)->arrange == layout_floating)
+                 c->isfloating = True;
+             client_resize(c, geometry, False);
+ 

@@ -1,0 +1,13 @@
+diff -Naur a/awesomerc.lua.in b/awesomerc.lua.in
+--- a/awesomerc.lua.in	2011-01-17 12:38:13.000000000 +0100
++++ b/awesomerc.lua.in	2011-05-31 13:03:32.000000000 +0200
+@@ -323,7 +323,8 @@
+         -- awful.client.setslave(c)
+ 
+         -- Put windows in a smart way, only if they does not set an initial position.
+-        if not c.size_hints.user_position and not c.size_hints.program_position then
++        if not c.size_hints.user_position and not c.size_hints.program_position
++            and not c.fullscreen then
+             awful.placement.no_overlap(c)
+             awful.placement.no_offscreen(c)
+         end

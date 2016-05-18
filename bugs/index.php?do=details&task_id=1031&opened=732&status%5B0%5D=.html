@@ -1,0 +1,563 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1031 : Awesome Desktop file should include &quot;Hidden&quot; line</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1031&amp;opened=732&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=732&amp;status%5B0%5D=">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1033&amp;opened=732&amp;status%5B0%5D=" title="Unconfirmed | Add checksum values to dist.sh for download verification | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1031 - Awesome Desktop file should include &quot;Hidden&quot; line  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a>     	 - Monday, 20 August 2012, 14:18 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Monday, 25 February 2013, 10:51 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.1			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I&#039;m using Awesome on Fedora 16. After install Awesome through Yum, which worked fine, Awesome is now showing up in Gnome&#039;s application menu. I filed a bug with Gnome&#039;s bug tracker[1] about this and the response was that Awesome&#039;s .desktop file should include a line to mark it as &quot;Hidden&quot; so it won&#039;t show up in Application menus.<br />
+<br />
+I looked through Awesome&#039;s git repository and found the .desktop file [2]. It does not include this line. The expected resolution to be include this line to prevent this issue.<br />
+<br />
+[1]<a href=" https://bugzilla.gnome.org/show_bug.cgi?id=682132"> https://bugzilla.gnome.org/show_bug.cgi?id=682132</a><br />
+[2]<a href=" http://git.naquadah.org/?p=awesome.git;a=blob;f=awesome.desktop;h=8a7f354cbd286c5acc31ce517cf3e9efb4676a38;hb=HEAD"> http://git.naquadah.org/?p=awesome.git;a=blob;f=awesome.desktop;h=8a7f354cbd286c5acc31ce517cf3e9efb4676a38;hb=HEAD</a><br />
+<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Monday, 25 February 2013, 10:51 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+5a2c4fa928554801dfbd807ec0d1f2a62ef25a4e
+<br />
+Author: Julien Danjou
+&lt;julien@danjou.info&gt;<br />
+Date:   Mon Feb 25 11:49:43 2013
++0100<br />
+<br />
+    Remove NoDisplay from desktop
+file<br />
+    <br />
+    Signed-off-by: Julien Danjou
+&lt;julien@danjou.info&gt;<br />        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (12)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3139" id="comment3139"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3139">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Monday, 20 August 2012, 18:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hope this fixes the bug.</div></div>
+
+      <div class="attachments">
+          <a title="0001-Add-Hidden-true-to-fix-1031.patch" href="?getfile=520" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0001-Add-Hidden-true-to-fix-1...
+                  </a>
+                  (0.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3140" id="comment3140"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3140">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a> -
+    Monday, 20 August 2012, 18:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I feel like an ass for not writing that myself... thank you though!</div></div>
+
+  
+    <em>
+    <a name="comment3142" id="comment3142"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3142">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 21 August 2012, 18:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Does anyone know where the official specification for this .desktop files hide?<br />
+Or perhaps some desktop files for other WMs for comparision?</div></div>
+
+  
+    <em>
+    <a name="comment3143" id="comment3143"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3143">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Tuesday, 21 August 2012, 18:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The all-mighty google gave me this:<br /><a href="
+http://standards.freedesktop.org/desktop-entry-spec/latest/">
+http://standards.freedesktop.org/desktop-entry-spec/latest/</a><br />
+<br />
+And the values are here:<br /><a href="
+http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s05.html">
+http://standards.freedesktop.org/desktop-entry-spec/latest/ar01s05.html</a><br />
+<br />
+Reading on the Hidden parameter specification makes me wonder whether we want that. Also, not all WMs are doing this:<br />
+<br />
+This is for Openbox:<br /><a href="
+http://git.openbox.org/?p=dana/openbox.git;a=blob;f=data/openbox.desktop;h=d49ae2275c60e7fadf9b194dc5be13e30cf72e9a;hb=HEAD">
+http://git.openbox.org/?p=dana/openbox.git;a=blob;f=data/openbox.desktop;h=d49ae2275c60e7fadf9b194dc5be13e30cf72e9a;hb=HEAD</a><br />
+<br />
+This is for i3:<br /><a href="
+http://code.stapelberg.de/git/i3/tree/i3.xsession.desktop">
+http://code.stapelberg.de/git/i3/tree/i3.xsession.desktop</a><br /><a href="
+http://code.stapelberg.de/git/i3/tree/i3.applications.desktop">
+http://code.stapelberg.de/git/i3/tree/i3.applications.desktop</a><br />
+<br />
+And a more heavy-weight example, Gnome-Shell:<br /><a href="
+http://git.gnome.org/browse/gnome-shell/tree/data/gnome-shell.desktop.in.in">
+http://git.gnome.org/browse/gnome-shell/tree/data/gnome-shell.desktop.in.in</a><br />
+<br />
+What do you think, Uli?</div></div>
+
+  
+    <em>
+    <a name="comment3144" id="comment3144"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3144">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a> -
+    Tuesday, 21 August 2012, 18:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Looking at the spec it looks you should pick &quot;NoDisplay&quot; over &quot;Hidden.&quot; It also appears that&#039;s OpenBox did.<br />
+<br />
+I&#039;d be more curious as where the X-GNOME-* values are documents.</div></div>
+
+  
+    <em>
+    <a name="comment3145" id="comment3145"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3145">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=732">Steven Oliver (steveno)</a> -
+    Wednesday, 22 August 2012, 01:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Attach patch to use NoDisplay as described in FreeDesktop standards document</div></div>
+
+      <div class="attachments">
+          <a title="0001-Add-NoDisplay-to-.desktop-file.patch" href="?getfile=521" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            0001-Add-NoDisplay-to-.deskto...
+                  </a>
+                  (0.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3372" id="comment3372"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3372">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=588">Thomas Moschny (thm)</a> -
+    Friday, 18 January 2013, 11:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Please revert that commit, it is wrong imho.<br />
+<br />
+We (Fedora) pack the desktop file here:<br />
+  /usr/share/xsessions/awesome.desktop<br />
+and *not* here:<br />
+  /usr/share/applications/awesome.desktop<br />
+<br />
+The Hidden=true entry causes GDM to not list Awesome as valid session anymore. We already got a ticket about that:<br /><a href="
+https://bugzilla.redhat.com/show_bug.cgi?id=901434">
+https://bugzilla.redhat.com/show_bug.cgi?id=901434</a></div></div>
+
+  
+    <em>
+    <a name="comment3373" id="comment3373"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3373">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=588">Thomas Moschny (thm)</a> -
+    Friday, 18 January 2013, 11:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I meant NoDisplay=true, of course.</div></div>
+
+  
+    <em>
+    <a name="comment3375" id="comment3375"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3375">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=588">Thomas Moschny (thm)</a> -
+    Friday, 18 January 2013, 13:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">See my last comment.</div></div>
+
+  
+    <em>
+    <a name="comment3376" id="comment3376"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3376">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 18 January 2013, 13:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Note to whoever (=me) handles this: This bug also affects the 3.4 branch!</div></div>
+
+  
+    <em>
+    <a name="comment3378" id="comment3378"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3378">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=514">Ignas Anikevicius (gns_ank)</a> -
+    Saturday, 19 January 2013, 13:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Please, do not remove the lines from awesome.desktop. What we actually need is a different desktop file for keeping it in /usr/share/xsessions. There is a mailing list post, which nicely documents everything. I think we also need to modify the current desktop file a bit.<br />
+<br /><a href="
+http://permalink.gmane.org/gmane.comp.window-managers.awesome/5946">
+http://permalink.gmane.org/gmane.comp.window-managers.awesome/5946</a></div></div>
+
+  
+    <em>
+    <a name="comment3462" id="comment3462"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#comment3462">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 24 February 2013, 14:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Urgh, does anyone else feel like coming up with some good patches for this? I don&#039;t use the desktop files for anything and there seems to be too much magic involved...</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1031#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1031" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

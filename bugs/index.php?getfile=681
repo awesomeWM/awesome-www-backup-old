@@ -1,0 +1,18 @@
+diff --git a/objects/client.c b/objects/client.c
+index 6f220fe..4b6f07f 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -1176,7 +1176,13 @@ client_unmanage(client_t *c, bool window_valid)
+         xcb_reparent_window(globalconf.connection, c->window, globalconf.screen->root,
+                 c->geometry.x, c->geometry.y);
+     }
++
++    /* Ignore all spurious enter/leave notify events */
++    /* FIXME: If window_valid == false, this will cause a BadWindow error (which
++     * our error handler will just ignore, but still...) */
++    client_ignore_enterleave_events();
+     xcb_destroy_window(globalconf.connection, c->frame_window);
++    client_restore_enterleave_events();
+ 
+     if(window_valid)
+     {

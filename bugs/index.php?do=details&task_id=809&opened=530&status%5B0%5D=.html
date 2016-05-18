@@ -1,0 +1,635 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#809 : Lost icons in titlebar except close icon</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=809&amp;opened=530&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=530&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#809 - Lost icons in titlebar except close icon  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=530">Raphaël Hertzog (rhertzog)</a>     	 - Thursday, 09 September 2010, 19:38 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Monday, 13 September 2010, 14:42 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.7</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I&#039;m running the Debian package 3.4.7+git-4-g92183ca-1. In titlebars of windows I have lost all the icons except the one used to close the window.<br />
+<br />
+In my rc.lua I have uncommented the line &quot;awful.titlebar.add(c, { modkey = modkey })&quot; within the function registered as in the &quot;manage&quot; signal (at the end of the file). I have not changed my configuration in the last upgrade.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Monday, 13 September 2010, 14:42 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+9a34c4567b81d9671e79acf9cbb710eb5e919bce
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Mon Sep 13 16:36:26 2010
++0200<br />
+<br />
+    Use relative paths for the titlebar
+icons (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=809&amp;opened
+=530&amp;status%5B0%5D=" title="Fixed |
+Lost icons in titlebar except close icon
+| 100%"  class =
+"closedtasklink">FS#809</a>&#160;</del>)
+<br />
+    <br />
+    The current code used
+&quot;if(MATCHES)&quot; to decide if a
+path was inside the source<br />
+    directory or the build directory.
+MATCHES uses regular expressions and so
+this<br />
+    check failed miserably if the path
+contained any characters that have a
+special<br />
+    meaning in regular expressions (e.g.
+&quot;+&quot;).<br />
+    <br />
+    Fix this by only using paths inside
+the build dir for the icons. All icons
+are<br />
+    copied from the source dir to the
+build dir so that we can freely assume
+that<br />
+    everything is inside the build
+directory.<br />
+    <br />
+    Instead of trying to
+&quot;transform&quot; the existing paths
+from the source dir to the<br />
+    build dir, we use
+&quot;file(GLOB)&quot;&#039;s RELATIVE
+option that gives us relative path.<br
+/>
+    Together with the way
+&quot;file(COPY)&quot; interprets its
+arguments, that&#039;s all we need.<br
+/>
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (11)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2312" id="comment2312"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2312">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 10 September 2010, 09:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Works fine here with awesome 3.4.6-1 from debian.<br />
+<br />
+I went with the default config and only changed the modkey and enabled titlebars. Looking at the git history, there were no changes to anything titlebar related since then.<br />
+<br />
+<br />
+Are you seeing any error messages on awesome&#039;s stderr? What is the last known-to-be-working version? Would you have the time to &quot;git bisect&quot; this issue?</div></div>
+
+  
+    <em>
+    <a name="comment2313" id="comment2313"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2313">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=530">Raphaël Hertzog (rhertzog)</a> -
+    Friday, 10 September 2010, 10:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It works fine with 3.4.6-1 (the version in squeeze). It no longer works with the version in sid. I just verified it once more. There&#039;s no intermediary Debian version that I could test:<a href=" http://snapshot.debian.org/binary/awesome/"> http://snapshot.debian.org/binary/awesome/</a><br />
+<br />
+I have no time to do git bisect currently but indeed I found warnings from awesome in my .xsession-errors. They are probably related:<br />
+W: awesome: image_new_from_file:288: cannot load image /usr/share/awesome/themes/default/titlebar/ontop_normal_inactive.png: no such file or directory<br />
+W: awesome: image_new_from_file:288: cannot load image /usr/share/awesome/themes/default/titlebar/sticky_normal_inactive.png: no such file or directory<br />
+W: awesome: image_new_from_file:288: cannot load image /usr/share/awesome/themes/default/titlebar/maximized_normal_inactive.png: no such file or directory<br />
+W: awesome: image_new_from_file:288: cannot load image /usr/share/awesome/themes/default/titlebar/floating_normal_inactive.png: no such file or directory<br />
+<br />
+And comparing both packages indeed show files that disappeared:<br />
+$ debdiff /var/cache/apt/archives/awesome_3.4.6-1_i386.deb /var/cache/apt/archives/awesome_3.4.7+git-4-g92183ca-1_i386.deb <br />
+[The following lists of changes regard files as different if they have<br />
+different names, permissions or owners.]<br />
+<br />
+Files in first .deb but not in second<br />
+-------------------------------------<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/default/titlebar/floating_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/default/titlebar/maximized_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/default/titlebar/ontop_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/default/titlebar/sticky_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/zenburn/titlebar/floating_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/zenburn/titlebar/maximized_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/zenburn/titlebar/ontop_normal_inactive.png<br />
+-rw-r--r--  root/root   /usr/share/awesome/themes/zenburn/titlebar/sticky_normal_inactive.png<br />
+<br />
+Control files: lines which differ (wdiff format)<br />
+------------------------------------------------<br />
+Installed-Size: [-2720-] {+2692+}<br />
+Version: [-3.4.6-1-] {+3.4.7+git-4-g92183ca-1+}<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment2314" id="comment2314"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2314">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 10 September 2010, 10:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I bet Uli has amd64 like me, and amd64 has been built by me so it seems ok. Maybe something changed in awesome CMake files so autobuilders missed that icons.</div></div>
+
+  
+    <em>
+    <a name="comment2315" id="comment2315"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2315">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 10 September 2010, 10:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yeah, amd64 here.<br />
+<br />
+@rhertzog: Yeah, &quot;no such file&quot; is a good explanation for why the images would be missing.<br />
+<br />
+According to [1], the missing files were built but not installed.<br /><a href="
+https://buildd.debian.org/fetch.cgi?pkg=awesome;ver=3.4.7%2Bgit-4-g92183ca-1;arch=i386;stamp=1283287554">
+https://buildd.debian.org/fetch.cgi?pkg=awesome;ver=3.4.7%2Bgit-4-g92183ca-1;arch=i386;stamp=1283287554</a><br />
+<br />
+I just tested with latest 3.4 branch and &quot;make &amp;&amp; make install DESTDIR=/tmp/aw-inst&quot; and the files in question where installed correctly.<br />
+I&#039;ll assume the buildd in question was hit by cosmic rays and close this as WORKSFORME. Let&#039;s see how long it takes for some to open a bug report at debian.</div></div>
+
+  
+    <em>
+    <a name="comment2317" id="comment2317"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2317">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=530">Raphaël Hertzog (rhertzog)</a> -
+    Friday, 10 September 2010, 13:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Actually there&#039;s an error in the log:<br />
+[ 41%] Generating .build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_inactive.png<br />
+/usr/bin/convert /build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_active.png -colorspace Gray /build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/.build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_inactive.png<br />
+incorrect gamma=(0/100000)<br />
+convert: Ignoring incorrect gAMA value when sRGB is also present `/build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_active.png&#039; @ warning/png.c/PNGWarningHandler/1472.<br />
+/usr/bin/cmake -E cmake_progress_report /build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/CMakeFiles <br />
+<br />
+I have rebuilt the package on sid/i386 and the problem is reproducible. So it&#039;s not a bad buildd.<br />
+It looks like it&#039;s a bad imagemagick, the packages changed on August:<a href=" http://packages.qa.debian.org/i/imagemagick.html"> http://packages.qa.debian.org/i/imagemagick.html</a><br />
+<br />
+Imagemagick is at least partly at fault because it returns &quot;0&quot; despite the failure:<br />
+(sid) rivendell:~/tmp/awesome-3.4.7+git-4-g92183ca<br />
+(504)$ convert .build-rivendell-i486-linux-gnu-4.4.5/themes/zenburn/titlebar/sticky_normal_active.png -colorspace Gray .build-rivendell-i486-linux-gnu-4.4.5/themes/zenburn/titlebar/sticky_normal_inactive.png<br />
+incorrect gamma=(0/100000)<br />
+convert: Ignoring incorrect gAMA value when sRGB is also present `.build-rivendell-i486-linux-gnu-4.4.5/themes/zenburn/titlebar/sticky_normal_active.png&#039; @ warning/png.c/PNGWarningHandler/1472.<br />
+(sid) rivendell:~/tmp/awesome-3.4.7+git-4-g92183ca<br />
+(505)$ echo $?<br />
+0<br />
+<br />
+As a work-around, you could verify that convert really created the file.<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment2325" id="comment2325"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2325">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 10:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Are you sure that &quot;convert&quot; failed? It does create the file here despite the warning:<br />
+<br />
+$ LC_ALL=C ls sticky_normal_inactive.png<br />
+ls: cannot access sticky_normal_inactive.png: No such file or directory<br />
+$ convert /home/psychon/projects/awesome/.build-psytux-x86_64-linux-gnu-4.4.5//themes/zenburn/titlebar/sticky_normal_active.png -colorspace Gray sticky_normal_inactive.png<br />
+incorrect gamma=(0/100000)<br />
+convert: Ignoring incorrect gAMA value when sRGB is also present `/home/psychon/projects/awesome/.build-psytux-x86_64-linux-gnu-4.4.5//themes/zenburn/titlebar/sticky_normal_active.png&#039; @ warning/png.c/PNGWarningHandler/1472.<br />
+$ LC_ALL=C ls sticky_normal_inactive.png<br />
+sticky_normal_inactive.png</div></div>
+
+  
+    <em>
+    <a name="comment2326" id="comment2326"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2326">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=530">Raphaël Hertzog (rhertzog)</a> -
+    Monday, 13 September 2010, 12:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes I noticed that later... so we&#039;re back to a weird cmake related problem because the file are not installed.<br />
+<br />
+Those weird problems are frequent when &quot;make -j 2&quot; but I have seen no sign that this was the case here.</div></div>
+
+  
+    <em>
+    <a name="comment2327" id="comment2327"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2327">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 12:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The icons are installed via these two commands in CMakeLists.txt:<br />
+<br />
+install(DIRECTORY ${BUILD_DIR}/themes DESTINATION ${AWESOME_DATA_PATH} PATTERN &quot;*.in&quot; EXCLUDE)<br />
+install(DIRECTORY ${SOURCE_DIR}/themes DESTINATION ${AWESOME_DATA_PATH} PATTERN &quot;*.in&quot; EXCLUDE)<br />
+<br />
+The first line is for the generated files, the second one are the files shipped with awesome. There isn&#039;t really any error checking here, cmake just takes the directories and installs whatever is in there. So for some reason the generated icons arent available during &quot;make install&quot;?</div></div>
+
+  
+    <em>
+    <a name="comment2328" id="comment2328"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2328">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 12:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just spotted this (convert command copied from rhertzog&#039;s comment from above and added line breaks):<br />
+/usr/bin/convert<br />
+/build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_active.png -colorspace Gray<br />
+/build/buildd-awesome_3.4.7+git-4-g92183ca-1-i386-k9awrp/awesome-3.4.7+git-4-g92183ca/.build-biber-i486-linux-gnu-4.4.5/.build-biber-i486-linux-gnu-4.4.5/themes/zenburn//titlebar//sticky_normal_inactive.png<br />
+<br />
+(Notice that &quot;.build-biber-i486-linux-gnu-4.4.5&quot; is twice in the output path)<br />
+<br />
+Ok, so I figured out what happens. Who wants to figure out *why* this happens?</div></div>
+
+  
+    <em>
+    <a name="comment2329" id="comment2329"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2329">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 12:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">We ship these icons with awesome:<br />
+<br />
+close_focus.png  floating_focus_active.png  maximized_focus_active.png  ontop_focus_active.png  sticky_focus_active.png<br />
+<br />
+This should show what is generated from which icon (&quot;*&quot; marks generated icons):<br />
+<br />
+(Generate &quot;_normal&quot; from &quot;_focus&quot;)<br />
+close_focus.png -&gt; close_normal.png*<br />
+floating_focus_active.png -&gt; floating_normal_active.png*<br />
+maximized_focus_active.png -&gt; maximized_normal_active.png*<br />
+ontop_focus_active.png -&gt; ontop_normal_active.png*<br />
+sticky_focus_active.png -&gt; sticky_normal_active.png*<br />
+(Generate &quot;_inactive&quot; from &quot;_active)<br />
+floating_focus_active.png -&gt; floating_focus_inactive.png*<br />
+floating_normal_active.png* -&gt; floating_normal_inactive.png*<br />
+maximized_focus_active.png -&gt; maximized_focus_inactive.png*<br />
+maximized_normal_active.png* -&gt; maximized_normal_inactive.png*<br />
+ontop_focus_active.png -&gt; ontop_focus_inactive.png*<br />
+ontop_normal_active.png* -&gt; ontop_normal_inactive.png*<br />
+sticky_focus_active.png -&gt; sticky_focus_inactive.png*<br />
+sticky_normal_active.png* -&gt; sticky_normal_inactive.png*<br />
+<br />
+If I&#039;m not completely wrong, the icons that are generated from icons which are themselves generated are the ones that are missing (= those with a &quot;*&quot; on the left side of the arrow). So these should be the missing ones: floating_normal_inactive.png, maximized_n_i.p, ontop_n_i.p, sticky_n_i.p.<br />
+<br />
+Now on why this happens: CMakeLists.txt, line 254:<br />
+string(REPLACE ${SOURCE_DIR} ${BUILD_DIR} output ${output})<br />
+<br />
+Our &quot;standard&quot; build dir is $(SOURCE_DIR)/.build_some_foo_here, so when we do this replace on some path that is already in $(BUILD_DIR), we end up with the situation this bug is above.<br />
+<br />
+Ok, where is the local cmake expert that can explain why this worked before, why it broke and how to fix this...?</div></div>
+
+  
+    <em>
+    <a name="comment2330" id="comment2330"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#comment2330">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 13 September 2010, 13:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Finally figure out why this broke: We use IF(foo MATCHES bar) for determining if we got a path that is already in the build dir. MATCHES uses regular expressions and the path used by the buildd in question contains &quot;3.4.7+git&quot;. This regular expresion would match &quot;3344777777git&quot;, but it doesnt match &quot;3.4.7+git&quot;. From there on, everything goes downhill.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=809#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="809" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+diff -rup awesome-3.4.15.orig/event.c awesome-3.4.15/event.c
+--- awesome-3.4.15.orig/event.c	2013-02-11 13:50:21.000000000 +0000
++++ awesome-3.4.15/event.c	2014-02-20 05:01:46.899819805 +0000
+@@ -138,9 +138,17 @@ event_handle_button(xcb_button_press_eve
+     const int nb_screen = xcb_setup_roots_length(xcb_get_setup(globalconf.connection));
+     client_t *c;
+     wibox_t *wibox;
++    static xcb_button_t grabbed_button;
+ 
+     globalconf.timestamp = ev->time;
+ 
++    if(globalconf.mousegrabber == LUA_REFNIL)
++        grabbed_button = 0;
++    /* Ignore irrelevant buttons during mouse grab */
++    if(grabbed_button && ev->detail != grabbed_button)
++        return;
++    if(ev->response_type == XCB_BUTTON_RELEASE && ev->detail == grabbed_button)
++        ev->detail = 0;
+     if(event_handle_mousegrabber(ev->root_x, ev->root_y, 1 << (ev->detail - 1 + 8)))
+         return;
+ 
+@@ -199,8 +207,11 @@ event_handle_button(xcb_button_press_eve
+             if(xutil_screen_get(globalconf.connection, screen)->root == ev->event)
+             {
+                 event_button_callback(ev, &globalconf.buttons, 0, 0, NULL);
+-                return;
++                goto out;
+             }
++out:
++    if(globalconf.mousegrabber != LUA_REFNIL)
++        grabbed_button = ev->detail;
+ }
+ 
+ static void

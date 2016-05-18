@@ -1,0 +1,127 @@
+commit 4628b15235612848c6e71329701973dcdbecac41
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Sun Mar 6 15:05:54 2016 +0100
+
+    change codename
+    
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit e54d911a94697eb5fd5b7d5ac2a72e4d3be6194b
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Sun Feb 28 13:29:25 2016 +0100
+
+    Make client key bindings for e.g. xeyes work again
+    
+    Instead of focusing the root window, we now create a "focus window" inside of
+    our frame window. This window is placed so that it is not visible, but we can
+    grab key bindings on it to simulate the window having the input focus.
+    
+    Fixes: https://github.com/awesomeWM/awesome/issues/699
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit 89a29b540426feefc8546cd47fc60a7d9e49f3f0
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Wed Feb 17 19:07:06 2016 +0100
+
+    Fix arguments to luaL_checkstack()
+    
+    The argument to luaL_checkstack() is the amount of new stack to make available,
+    not the new size of the stack. Thus, remove the addition of lua_gettop(L) here.
+    
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit 333cfaf0a580c78ad92c7215dc46517b4c349e62
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Wed Feb 17 19:03:48 2016 +0100
+
+    Balance the stack in luaA_loadrc()
+    
+    In various conditions, luaA_loadrc() left luaA_dofunction_on_error and an error
+    message on the Lua stack. Also, it used LUA_MULTRET without looking at the
+    return values. Fix all of this and reorder the code a bit to make it easier to
+    follow.
+    
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit a181bee46533f92d573f7a4622391ae58320cda8
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Wed Feb 17 18:52:35 2016 +0100
+
+    Fix unbalance Lua stack usage in event_handle_leavenotify()
+    
+    Commit 42e00819584c removed a call to lua_pop(L,1) that was still necessary.
+    This commit adds that call again.
+    
+    Fixes: https://github.com/awesomeWM/awesome/issues/703
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit bf73f78eea61d4a0e93e5da5e6d89e1bdca2e816
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Wed Feb 17 18:40:01 2016 +0100
+
+    Check that the Lua stack is empty in the main loop
+    
+    The Lua stack is a finite resource and everything that pushes something there
+    should also clean up. This is not a problem for functions that are called by
+    Lua, because their "stack frame" is freed when they return. However, in global
+    context, Lua does not and cannot automatically clean up for us. Thus, it makes
+    sense to print a warning in this case.
+    
+    (Additionally, this cleans up the stack if something is left)
+    
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit 9d34f2dc030a2bb95ad1e3d9ffdd27b9da039419
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Mon Feb 15 21:15:41 2016 +0100
+
+    Fix awful.ewmh to handle window gravities
+    
+    Since commit b2aaefd095c964491f2c93a, we correctly handle window gravities when
+    the border width of a client changes. Since most windows out there have a
+    NorthWest gravity, this means that most windows do not have this problem.
+    However, e.g. mplayer uses gravity "Static" and this causes this issue (any
+    gravity other than NorthWest will do).
+    
+    This affects the fullscreen handling in awful.ewmh. The code has to set the
+    border width before it changes a client's geometry so that the move when the
+    border width changes doesn't matter.
+    
+    No new integration test for this since I didn't find anything usable with a
+    non-NorthWest gravity. A test would be easy to write, just test if `c.fullscreen
+    = true ; c.fullscreen = false` restores the previous window geometry.
+    
+    Fixes: https://github.com/awesomeWM/awesome/issues/697
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit 64748671cd8de154092be76e28b4a06080712d76
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Tue Feb 16 19:31:20 2016 +0100
+
+    Don't modify WM_HINTS in client_set_urgent()
+    
+    To quote from ICCCM (§4.1.2): "The window manager will not change properties
+    written by the client."
+    
+    We tried to do this anyway to update WM_HINTS so that the current urgency state
+    is reflected. Apparently, Chrome does a similar read-modify-set cycle and the
+    resulting race condition meant that the "accepts input" hint on Chromium's
+    window was permanently disabled.
+    
+    This helps with https://github.com/awesomeWM/awesome/issues/670, but I still
+    think that Chrome shouldn't try to implement "please don't focus me when I do
+    the following" by temporarily claiming "please don't ever focus me".
+    
+    Signed-off-by: Uli Schlachter <psychon@znc.in>
+
+commit dfe44a15711eef0c236cea48c0ab30ec6bf764a3
+Author: Uli Schlachter <psychon@znc.in>
+Date:   Thu Feb 4 18:21:25 2016 +0100
+
+    Always send ConfigureNotifies
+    
+    ICCCM specifies when the WM has to send a ConfigureNotify. Java does not care
+    and wants one all the time. Meh.
+    
+    Fixes: #248
+    Signed-off-by: Uli Schlachter <psychon@znc.in>

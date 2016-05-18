@@ -1,0 +1,32 @@
+Reading symbols from /home/psychon/projects/awesome/.build-psytux-x86_64-linux-gnu-4.3.4/awesome...done.
+[Thread debugging using libthread_db enabled]
+
+Program received signal SIGSEGV, Segmentation fault.
+0x000000300047b53f in memset () at ../sysdeps/x86_64/memset.S:519
+519	../sysdeps/x86_64/memset.S: Datei oder Verzeichnis nicht gefunden.
+	in ../sysdeps/x86_64/memset.S
+Current language:  auto
+The current source language is "auto; currently asm".
+#0  0x000000300047b53f in memset () at ../sysdeps/x86_64/memset.S:519
+No locals.
+#1  0x000000300ce29895 in ?? () from /lib/libdbus-1.so.3
+No symbol table info available.
+#2  0x000000300ce15b8f in ?? () from /lib/libdbus-1.so.3
+No symbol table info available.
+#3  0x000000300ce15cb6 in ?? () from /lib/libdbus-1.so.3
+No symbol table info available.
+#4  0x000000300ce19b01 in dbus_message_iter_open_container () from /lib/libdbus-1.so.3
+No symbol table info available.
+#5  0x0000000000417364 in a_dbus_convert_value (L=0x64d100, idx=-2, iter=0x7fffffffdc90) at /home/psychon/projects/awesome/dbus.c:275
+        subiter = {dummy1 = 0x664e70, dummy2 = 0x1e00000, dummy3 = 6775148, dummy4 = 0, dummy5 = 7516128, dummy6 = 0, dummy7 = 1, dummy8 = 0, dummy9 = 6704824, 
+          dummy10 = 0, dummy11 = 4, pad1 = 48, pad2 = 0, pad3 = 0x0}
+        arraylen = <value optimized out>
+        len = 1
+        type = <value optimized out>
+#6  0x0000000000417aa5 in a_dbus_process_request (dbus_connection=0x664960, dbusio=0x649460) at /home/psychon/projects/awesome/dbus.c:420
+No locals.
+#7  a_dbus_process_requests_on_bus (dbus_connection=0x664960, dbusio=0x649460) at /home/psychon/projects/awesome/dbus.c:457
+        msg = 0x6665c0
+        nmsg = 0
+#8  0x0000003005803481 in ev_invoke_pending () from /usr/lib/libev.so.3
+No symbol table info available.

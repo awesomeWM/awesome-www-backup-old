@@ -1,0 +1,50 @@
+diff --git a/awesome.c b/awesome.c
+index b2657a1..9aee0b5 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -339,7 +339,7 @@ int
+ main(int argc, char **argv)
+ {
+     char *confpath = NULL;
+-    int xfd, i, screen_nbr, opt, colors_nbr;
++    int xfd, i, screen_nbr, opt, colors_nbr, nosystray = 0;
+     xcolor_init_request_t colors_reqs[2];
+     ssize_t cmdlen = 1;
+     xdgHandle xdg;
+@@ -349,6 +349,7 @@ main(int argc, char **argv)
+         { "version", 0, NULL, 'v' },
+         { "config",  1, NULL, 'c' },
+         { "check",   0, NULL, 'k' },
++        { "nosystray", 0, NULL, 't' },
+         { NULL,      0, NULL, 0 }
+     };
+ 
+@@ -388,7 +389,7 @@ main(int argc, char **argv)
+     luaA_init(&xdg);
+ 
+     /* check args */
+-    while((opt = getopt_long(argc, argv, "vhkc:",
++    while((opt = getopt_long(argc, argv, "vhkct:",
+                              long_options, NULL)) != -1)
+         switch(opt)
+         {
+@@ -409,6 +410,9 @@ main(int argc, char **argv)
+                 fprintf(stderr, "✔ Configuration file syntax OK.\n");
+                 return EXIT_SUCCESS;
+             }
++          case 't':
++            nosystray = 1;
++            break;
+           case 'c':
+             if(a_strlen(optarg))
+                 confpath = a_strdup(optarg);
+@@ -537,7 +541,8 @@ main(int argc, char **argv)
+                                      XCB_CW_EVENT_MASK,
+                                      change_win_vals);
+         ewmh_init(screen_nbr);
+-        systray_init(screen_nbr);
++        if (!nosystray)
++            systray_init(screen_nbr);
+     }
+ 
+     /* init spawn (sn) */

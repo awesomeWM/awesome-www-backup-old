@@ -1,0 +1,67 @@
+/* stolen from wikipedia and modified a bit,
+ * compile like this:
+ * gcc -o test test.c -lxcb -std=c99
+ *
+ * stolen from farhaven and modified a bit again.
+ */
+
+#include <xcb/xcb.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main()
+{
+    xcb_connection_t    *c;
+    xcb_screen_t        *s;
+    xcb_window_t         w;
+    xcb_generic_event_t *e;
+
+    c = xcb_connect(NULL,NULL);
+    if (xcb_connection_has_error(c))
+    {
+        printf("Cannot open display\n");
+        exit(1);
+    }
+
+    s = xcb_setup_roots_iterator(xcb_get_setup(c)).data;
+    fprintf(stderr, "width=%d height=%d\n", s->width_in_pixels, s->height_in_pixels);
+
+    xcb_intern_atom_cookie_t cookie;
+    xcb_intern_atom_reply_t *reply;
+
+#define C(name) \
+    xcb_atom_t name; \
+    cookie = xcb_intern_atom_unchecked(c, 0, strlen(#name), #name); \
+    reply = xcb_intern_atom_reply(c, cookie, NULL); \
+    name = reply->atom; \
+    free(reply);
+
+    C(WM_TRANSIENT_FOR);
+    C(WINDOW);
+
+#undef C
+
+    w = xcb_generate_id(c);
+    xcb_create_window(c, s->root_depth, w, s->root, 0, 0, 100, 100, 1,
+                        XCB_WINDOW_CLASS_INPUT_OUTPUT, s->root_visual,
+                        0, NULL);
+
+    xcb_map_window(c, w);
+
+    // This sets ourselves as transient_for which might kill some WMs!
+    xcb_change_property(c, XCB_PROP_MODE_REPLACE, w, WM_TRANSIENT_FOR, WINDOW, 32, 1, &w);
+
+    xcb_flush(c);
+
+    printf("Done with setup\n");
+
+    while (e = xcb_wait_for_event(c))
+    {
+        free(e);
+    }
+
+    xcb_disconnect(c);
+
+    return 0;
+}

@@ -1,0 +1,59 @@
+From d8f0bd13bf4299a0efdce2f49d8cf7150cc187a9 Mon Sep 17 00:00:00 2001
+From: Uli Schlachter <psychon@znc.in>
+Date: Wed, 19 Oct 2011 19:05:25 +0200
+Subject: [PATCH] textbox: Actually tell pango which space we have (FS#933)
+
+In the textbox' draw() callback we forgot to set the pango layout's width and
+height. Whoops.
+
+This was tested with the following code which makes it visible when the textbox
+draws outside of its assigned space:
+
+local w = wibox({ screen = 1 })
+w.y = 10
+w.x = 10
+w.width = 150
+w.height = 150
+w.visible = true
+
+local wi = wibox.widget.base.make_widget()
+local t = wibox.widget.textbox()
+t:set_markup("Foo <b>bar</b> <i>Foobar</i> und so weiter")
+
+wi.draw = function(d, wibox, cr, width, height)
+	cr:move_to(24.5, 0)
+	cr:line_to(24.5, 150)
+	cr:move_to(0, 24.5)
+	cr:line_to(150, 24.5)
+	cr:move_to(124.5, 0)
+	cr:line_to(124.5, 150)
+	cr:move_to(0, 124.5)
+	cr:line_to(150, 124.5)
+	cr:set_line_width(1)
+	cr:stroke()
+
+	cr:translate(25, 25)
+	t.draw(t, wibox, cr, 100, 100)
+end
+w:set_widget(wi)
+
+Signed-off-by: Uli Schlachter <psychon@znc.in>
+---
+ lib/wibox/widget/textbox.lua.in |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/lib/wibox/widget/textbox.lua.in b/lib/wibox/widget/textbox.lua.in
+index 39b9dd5..49f3958 100644
+--- a/lib/wibox/widget/textbox.lua.in
++++ b/lib/wibox/widget/textbox.lua.in
+@@ -49,6 +49,7 @@ end
+ --- Draw the given textbox on the given cairo context in the given geometry
+ function draw(box, wibox, cr, width, height)
+     layout_update(cr, box._layout)
++    setup_layout(box, width, height)
+     local ink, logical = box._layout:get_pixel_extents()
+     local offset = 0
+     if box._valign == "center" then
+-- 
+1.7.6.3
+

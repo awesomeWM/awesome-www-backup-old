@@ -1,0 +1,102 @@
+# Conky, a system monitor, based on torsmo
+#
+# Any original torsmo code is licensed under the BSD license
+#
+# All code written since the fork of torsmo is licensed under the GPL
+#
+# Please see COPYING for details
+#
+# Copyright (c) 2004, Hannu Saransaari and Lauri Hakkarainen
+# Copyright (c) 2005-2010 Brenden Matthews, Philip Kovacs, et. al. (see AUTHORS)
+# All rights reserved.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+alignment top_right
+background yes
+border_width 1
+cpu_avg_samples 2
+default_color white
+default_outline_color blue
+default_shade_color blue
+draw_borders no
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+use_xft yes
+xftfont DejaVu Sans Mono:size=10
+gap_x 0
+gap_y 0
+minimum_size 5 5
+net_avg_samples 2
+no_buffers yes
+out_to_console no
+out_to_stderr no
+extra_newline no
+own_window yes
+own_window_colour 000040
+#own_window_transparent true
+own_window_argb_visual true
+own_window_argb_value 128
+double_buffer yes
+own_window_class Conky
+own_window_type desktop
+own_window_hints undecorated,skip_taskbar,skip_pager
+stippled_borders 0
+update_interval 2.0
+uppercase no
+use_spacer none
+show_graph_scale no
+show_graph_range no
+top_cpu_separate true
+TEXT
+GER ${tztime Europe/Berlin %b %d %R}
+${font Ubuntu:size=12}${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EDDR temperature}°C ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EDDR humidity}% ${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EDDR pressure}mbar
+${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EDDR cloud_cover}
+${weather http://weather.noaa.gov/pub/data/observations/metar/stations/ EDDR weather}$font
+$hr
+${color green}RAM%: $memperc%$color
+${color green}RAM : $mem$color
+${color #FFC0C0}CPU1: ${freq 1} ${cpu cpu1}%$color
+${color #FFC0C0}CPU2: ${freq 2} ${cpu cpu2}%$color
+${color brown}Batt: $battery_short $battery_time $color
+$hr
+#${color grey}GFX:$color${hwmon 0 temp 1}
+${color grey}SKN:$color${hwmon 0 temp 4} ${color grey}CPU:$color${hwmon 0 temp 3}
+${color grey}DTS:$color${hwmon 0 temp 2} ${color grey}FDT:$color${hwmon 0 temp 6}
+#${color grey}BAT:$color${hwmon 0 temp 5}
+$hr
+${font DejaVu Sans:size=10}$alignc NET
+$alignc${color #C0C020}eth$color
+${addrs eth0}
+↑${upspeed eth0} ↓${downspeed eth0}
+↑${totalup eth0} ↓${totaldown eth0}
+$alignc${color #C0C020}wlan$color
+${addrs wlan0}
+↑${upspeed wlan0} ↓${downspeed wlan0}
+↑${totalup wlan0} ↓${totaldown wlan0}
+$alignc${color #C0C020}ppp$color
+${addrs ppp0}
+↑${upspeed ppp0} ↓${downspeed ppp0}
+↑${totalup ppp0} ↓${totaldown ppp0}
+#${color grey}Name                CPU%   MEM%
+$alignc${color grey}\#Procs:$color ($processes)
+${color #FFC0C0}${top cpu 1}$color ${top name 1}
+${color #FFC0C0}${top cpu 2}$color ${top name 2}
+${color #FFC0C0}${top cpu 3}$color ${top name 3}
+${color #FFC0C0}${top cpu 4}$color ${top name 4}$color
+${color green}${top_mem mem 1}$color ${top_mem name 1}
+${color green}${top_mem mem 2}$color ${top_mem name 2}
+${color green}${top_mem mem 3}$color ${top_mem name 3}
+${color green}${top_mem mem 4}$color ${top_mem name 4}$color$font

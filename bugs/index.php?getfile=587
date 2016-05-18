@@ -1,0 +1,26 @@
+
+The geometry is such that the visible area of both screens is not rectangular.
+If the top-left corner of a floating client is in the shaded area, the client
+will unexpectedly appear in the task list on screen[2].
+
+        ┄───────╔═══════════════════════════╤══════════════════╗
+        ░░░░░░░░║                           │                  ║
+        ░░░░░░░░║                           │                  ║
+        ┄───────╟───────────────────────────┤                  ║
+                ║                           │                  ║
+                ║                           │                  ║
+                ║                           │                  ║
+                ║         screen[1]         │    screen[2]     ║
+                ║                           │                  ║
+                ║                           │                  ║
+                ║                           │                  ║
+        ┄───────╟───────────────────────────┤                  ║
+        ░░░░░░░░║                           │                  ║
+        ░░░░░░░░║                           │                  ║
+        ┄───────╚═══════════════════════════╧══════════════════╝
+
+It is simple to move a client such that its top-left corner is in the upper
+shaded area; it is possible to do the same with the lower shaded area by
+resizing a client such that it is wider than screen[1] and moving the client
+by its right side to the lower portion of screen[2].
+

@@ -1,0 +1,13 @@
+--- /usr/share/awesome/lib/awful/widget/common.lua.orig	2013-12-14 13:46:28.503247870 +0100
++++ /usr/share/awesome/lib/awful/widget/common.lua	2013-12-14 13:46:36.393010562 +0100
+@@ -59,7 +59,9 @@
+             -- All of this is added in a fixed widget
+             l:fill_space(true)
+             l:add(ib)
+-            l:add(m)
++            if o.icon_only == false then
++                l:add(m)
++            end
+ 
+             -- And all of this gets a background
+             bgb:set_widget(l)

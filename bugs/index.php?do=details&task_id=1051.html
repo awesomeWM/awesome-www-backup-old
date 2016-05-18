@@ -1,0 +1,485 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1051 : (Properly) re-add window shapes</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1051" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1135" title="Assigned | Properly support window gravity | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=764" title="Unconfirmed | Maximized window state becomes confused when moved between scree | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1051 - (Properly) re-add window shapes  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>     	 - Monday, 05 November 2012, 17:15 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Monday, 14 April 2014, 08:06 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.6			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">The following commit readded window shapes for drawins:<br />
+<br />
+commit 37d074f8817d5ed6dce34d7cf62020c066ad5a3b<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Mon Nov 5 17:56:56 2012 +0100<br />
+<br />
+    Drawin: Re-add shape support<br />
+<br />
+<br />
+However, we still need some way to read shapes. It would also be great if we could read client window&#039;s shapes and thus make xeyes look less bad.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Monday, 14 April 2014, 08:06 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+e998e3fe207e22050087ba93821294f80d3a52e2
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Mon Apr 14 10:04:56 2014
++0200<br />
+<br />
+    awful.client.shape: Import client
+shape handling (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1051"
+title="Fixed | (Properly) re-add window
+shapes | 100%"  class =
+"closedtasklink">FS#1051</a>&#160;</del>
+)<br />
+    <br />
+    This new awful module reacts to
+shapes that a client sets on itself and
+sets the<br />
+    shape of awesome&#039;s frame window
+to match. This way, xeyes really gets<br
+/>
+    transparent parts again.<br />
+    <br />
+    Signed-off-by: Uli Schlachter
+&lt;psychon@znc.in&gt;        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (2)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3785" id="comment3785"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1051#comment3785">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 03 January 2014, 16:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The following commit should finish the implementation of the C side for this:<br />
+<br />
+commit 56c57979056ec23cbd4982f3b81f6d80895fbe46<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Fri Jan 3 16:51:16 2014 +0100<br />
+<br />
+    Finish C-side support for window shapes (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1051" title="Fixed | (Properly) re-add window shapes | 100%"  class = "closedtasklink">FS#1051</a>&#160;</del>)<br />
+    <br />
+    A drawin&#039;s and a client&#039;s bounding and clip shape can now be queried and is<br />
+    returned as a cairo surface.  Also, a client window&#039;s shape (e.g. xeyes setting<br />
+    its own shape) can be queried via c.shape_client_bounding and<br />
+    c.shape_client_clip.  All of these properties now emit signals when changed.<br />
+    <br />
+    (This also silently fixes a bug in luaA_drawin_set_shape_bounding() which forgot<br />
+    to include the drawin&#039;s border in its size calculation)<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+<br />
+What is still missing is the lua side of things. Something should automatically handle client shapes and apply them to clients, so that xeyes looks more sane. Here is my local hack for this which I dumped into the manage hook:<br />
+<br />
+    local gears = require(&quot;gears&quot;)<br />
+    local cairo = require(&quot;lgi&quot;).cairo<br />
+    local translate = function(shape, geom, border)<br />
+       if not shape then return end<br />
+       local s = gears.surface(shape)<br />
+       local cr = cairo.Context(s)<br />
+       local _, t = c:titlebar_top()<br />
+       local _, b = c:titlebar_bottom()<br />
+       local _, l = c:titlebar_left()<br />
+       local _, r = c:titlebar_right()<br />
+       print(t,b,l,r)<br />
+       local img_width = geom.width + 2*border<br />
+       local img_height = geom.height + 2*border<br />
+       local result = cairo.ImageSurface(cairo.Format.ARGB32, img_width, img_height)<br />
+       local cr = cairo.Context(result)<br />
+<br />
+       -- Fill everything (this paints the titlebars and border)<br />
+       cr:paint()<br />
+       cr:set_operator(cairo.Operator.SOURCE)<br />
+<br />
+       -- Draw the client&#039;s shape in the middle<br />
+       cr:translate(border + l, border + t)<br />
+       cr:set_source_surface(s, 0, 0)<br />
+       cr:rectangle(0, 0, geom.width - l - r, geom.height - t - b)<br />
+       cr:fill()<br />
+<br />
+       local c = cairo.Context(cairo.ImageSurface(cairo.Format.RGB24, img_width, img_height))<br />
+       c:set_source_rgb(1, 1, 1)<br />
+       c:mask(cairo.Pattern.create_for_surface(result, 0, 0))<br />
+       print(c:get_group_target():write_to_png(&quot;/tmp/t.png&quot;))<br />
+<br />
+       return result<br />
+    end<br />
+    local update_bounding = function()<br />
+       local res = translate(c.client_shape_bounding, c:geometry(), c.border_width)<br />
+       c.shape_bounding = res and res._native<br />
+       if res then res:finish() end<br />
+    end<br />
+    local update_clip = function()<br />
+       local res = translate(c.client_shape_clip, c:geometry(), 0)<br />
+       c.shape_clip = res and res._native<br />
+       if res then res:finish() end<br />
+    end<br />
+    local update_shapes = function()<br />
+       update_bounding()<br />
+       update_clip()<br />
+    end<br />
+    c:connect_signal(&quot;property::shape_client_bounding&quot;, function()<br />
+       update_bounding()<br />
+    end)<br />
+    c:connect_signal(&quot;property::shape_client_clip&quot;, function()<br />
+       update_clip()<br />
+    end)<br />
+    c:connect_signal(&quot;property::width&quot;, update_shapes)<br />
+    c:connect_signal(&quot;property::height&quot;, update_shapes)<br />
+    update_shapes()<br /></div></div>
+
+  
+    <em>
+    <a name="comment3790" id="comment3790"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1051#comment3790">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 16 January 2014, 15:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">And another one, this times implementing &quot;cut of corners&quot;:<br />
+<br />
+local gears = require(&quot;gears&quot;)<br />
+local cairo = require(&quot;lgi&quot;).cairo<br />
+local corner_size = 5<br />
+local function set_bounding_shape(c)<br />
+   local g = c:geometry()<br />
+   local width = g.width + 2*c.border_width<br />
+   local height = g.height + 2*c.border_width<br />
+   if width == 0 or height == 0 then<br />
+      -- ?!?!<br />
+      return<br />
+   end<br />
+<br />
+   local result = cairo.ImageSurface(cairo.Format.A1, width, height)<br />
+   local cr = cairo.Context(result)<br />
+<br />
+   -- Top left corner<br />
+   cr:move_to(0, corner_size)<br />
+   cr:line_to(corner_size, 0)<br />
+<br />
+   -- Top right corner<br />
+   cr:line_to(width - corner_size, 0)<br />
+   cr:line_to(width, corner_size)<br />
+<br />
+   -- Bottom right corner<br />
+   cr:line_to(width, height - corner_size)<br />
+   cr:line_to(width - corner_size, height)<br />
+<br />
+   -- Bottom left corner<br />
+   cr:line_to(corner_size, height);<br />
+   cr:line_to(0, height-corner_size);<br />
+<br />
+   -- Paint it<br />
+   cr:close_path()<br />
+   cr:set_source_rgba(1, 1, 1, 1)<br />
+   cr:set_operator(cairo.Operator.SOURCE)<br />
+   cr:fill()<br />
+<br />
+   c.shape_bounding = result._native<br />
+   result:finish()<br />
+end<br />
+client.connect_signal(&quot;property::width&quot;, set_bounding_shape)<br />
+client.connect_signal(&quot;property::height&quot;, set_bounding_shape)<br />
+client.connect_signal(&quot;new&quot;, function(c)<br />
+   -- Wait for setup to be done<br />
+   local t = timer({timeout = 0})<br />
+   t:connect_signal(&quot;timeout&quot;, function()<br />
+      t:stop()<br />
+      set_bounding_shape(c)<br />
+   end)<br />
+   t:start()<br />
+end)<br /></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1051#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1051" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

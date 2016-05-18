@@ -1,0 +1,26 @@
+From c7c240484d6ae45e336fee120440cf28500f3fce Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Thu, 31 Mar 2011 11:56:11 +0200
+Subject: [PATCH 5/5] awful.menu: handling with strings
+
+---
+ lib/awful/menu.lua.in |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index b27d42d..b222747 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -88,6 +88,9 @@ local function load_theme(a, b)
+                  fallback.menu_height or 16
+     ret.width = a.width or b.menu_width or b.width or
+                 fallback.menu_width or 100
++    for _, prop in ipairs({"width", "height", "menu_width"}) do
++        if type(ret[prop]) ~= "number" then ret[prop] = tonumber(ret[prop]) end
++    end
+     return ret
+ end
+ 
+-- 
+1.7.4.1
+

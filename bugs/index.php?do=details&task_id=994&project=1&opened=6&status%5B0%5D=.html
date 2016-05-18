@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#994 : flash player bleeding between tags</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=994&amp;project=1&amp;opened=6&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1122&amp;project=1&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Mouse support and xkbmap switching - failed | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=6&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=956&amp;project=1&amp;opened=6&amp;status%5B0%5D=" title="Fixed | In awful.tooltip, update geometry after set_text | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#994 - flash player bleeding between tags  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=707">jerry klein (jk121960)</a>     	 - Monday, 07 May 2012, 13:57 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>	 - Tuesday, 24 July 2012, 07:34 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Hi, I just recently over the last couple of days moved up to git. It&#039;s been good but today I ran into an unusual behavior. I am a web developer, I had 2 sites as reference loaded in 2 different tags on 3rd screen<br />
+<br /><a href="
+http://goodharbor.net">
+http://goodharbor.net</a><br /><a href="
+http://delta-risk.net">
+http://delta-risk.net</a> <br />
+<br />
+delta-risk I am redesigning and goodharbor is a competitor. delta-risk has a flash image app on front page. This image was bleeding into the web page of the competitors site, I could see portions of it in the other website. <br />
+<br />
+So I changed up browsers I was using Jumanji, I also tried with Lukit and I also tried with chrome same thing. OK that was webkit, so I tried opera with goodharbor and firefox with delta-risk same thing.So I reversed and tried opera delta-risk site and firefox goodharbor.net site. Same thing. <br />
+<br />
+I have 3 screens and tests were same across all three screens. <br />
+<br />
+I have extra/flashplugin 11.2.202.235-1 as plugin. <br />
+Strange thing is that it wasn&#039;t happening yesterday, so here is pacman for the last couple of days. <br />
+<br />
+I tried to remove a flash package that I installed yesterday but it didn&#039;t help. I included my rc.lua (bit of mess I just converted). <br />
+<br />
+if there is anything else you need please let me know. Thanks for all the hard work with awesome it&#039;s the best desktop I have ever used. <br />
+<br />
+thanks <br />
+<br />
+--jerry<br />
+<br />
+4320 [2012-05-06 05:09] Running &#039;pacman -Sy&#039;<br />
+4321 [2012-05-06 05:09] synchronizing package lists<br />
+4322 [2012-05-06 05:09] starting full system upgrade<br />
+4323 [2012-05-06 05:10] Running &#039;pacman -U /tmp/yaourt-tmp-root/PKGDEST.aJo/libjpeg6-tur<br />
+4324 [2012-05-06 05:10] upgraded libjpeg6-turbo (1.2.0-1 -&gt; 1.2.0-2)<br />
+4325 [2012-05-06 05:10] Running &#039;pacman -Syy&#039;<br />
+4326 [2012-05-06 05:10] synchronizing package lists<br />
+4327 [2012-05-06 18:20] Running &#039;pacman -S --asdeps --needed extra/liboil&#039;<br />
+4328 [2012-05-06 18:21] installed liboil (0.3.17-2)<br />
+4329 [2012-05-06 18:22] Running &#039;pacman -U --asdeps /tmp/yaourt-tmp-root/PKGDEST.FQ1/swf<br />
+4330 [2012-05-06 18:22] installed swfdec (0.8.4-3)<br />
+4331 [2012-05-06 18:23] Running &#039;pacman -U /tmp/yaourt-tmp-root/PKGDEST.HcX/swfdec-gnome<br />
+4332 [2012-05-06 18:23] installed swfdec-gnome (2.30.1-1)<br />
+4333 [2012-05-06 19:49] Running &#039;pacman -Sy&#039;<br />
+4334 [2012-05-06 19:49] synchronizing package lists<br />
+4335 [2012-05-06 19:49] starting full system upgrade<br />
+4336 [2012-05-06 19:49] Running &#039;pacman -S -u&#039;<br />
+4337 [2012-05-06 19:49] starting full system upgrade<br />
+4338 [2012-05-06 19:49] upgraded bash (4.2.024-2 -&gt; 4.2.028-1)<br />
+4339 [2012-05-06 19:50] Running &#039;pacman -U /tmp/yaourt-tmp-root/PKGDEST.94T/foo2zjs-2012<br />
+4340 [2012-05-06 19:51] -----------------------------------------------------------<br />
+4341 [2012-05-06 19:51] -                                                         -<br />
+4342 [2012-05-06 19:51] -                You need to restart cups.                -<br />
+4343 [2012-05-06 19:51] -                                                         -<br />
+4344 [2012-05-06 19:51] -----------------------------------------------------------<br />
+4345 [2012-05-06 19:51] -                                                         -<br />
+4346 [2012-05-06 19:51] -Remember to check for foomatic-db-foo2zjs updates as well-<br />
+4347 [2012-05-06 19:51] -                                                         -<br />
+4348 [2012-05-06 19:51] -----------------------------------------------------------<br />
+4349 [2012-05-06 19:51] upgraded foo2zjs (20120404-1 -&gt; 20120504-1)<br />
+4350 [2012-05-06 17:35] Running &#039;pacman -Sy&#039;<br />
+4351 [2012-05-06 17:35] synchronizing package lists<br />
+4352 [2012-05-06 17:35] starting full system upgrade<br />
+4353 [2012-05-06 17:35] Running &#039;pacman -S -u&#039;<br />
+4354 [2012-05-06 17:35] starting full system upgrade<br />
+4355 [2012-05-06 17:35] upgraded gnome-control-center (3.4.1-1 -&gt; 3.4.1-2)<br />
+4356 [2012-05-06 17:35] upgraded pygobject2-devel (2.28.6-5 -&gt; 2.28.6-6)<br />
+4357 [2012-05-06 17:35] upgraded python2-gobject2 (2.28.6-5 -&gt; 2.28.6-6)<br />
+4358 [2012-05-07 07:55] Running &#039;pacman -Sy&#039;<br />
+4359 [2012-05-07 07:55] synchronizing package lists<br />
+4360 [2012-05-07 07:55] starting full system upgrade</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a><br />
+      Tuesday, 24 July 2012, 07:34 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Not a bug<br />
+            <strong>Additional comments about closing:</strong> &nbsp;It&#039;s a bug in the video drivers
+(nvidia) or flash, not in Awesome.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2998" id="comment2998"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment2998">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=707">jerry klein (jk121960)</a> -
+    Monday, 07 May 2012, 14:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry one thing it doesn&#039;t happen between screens only on tags on the same screen</div></div>
+
+  
+    <em>
+    <a name="comment2999" id="comment2999"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment2999">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 07 May 2012, 14:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Which video driver do you use? This sounds a lot like a bug in the X11 server or your graphics driver (a window manager only tells the X11 server where to put the windows, it&#039;s not involved with the window contents and thus can&#039;t really cause &quot;stuff&quot;).<br />
+<br />
+Oh and: Can you try to get a screenshot of the issue?</div></div>
+
+  
+    <em>
+    <a name="comment3000" id="comment3000"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment3000">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=707">jerry klein (jk121960)</a> -
+    Monday, 07 May 2012, 14:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">My video driver is nvidia 295.49-1 but this wasn&#039;t happening yesterday and I didn&#039;t upgrade driver since then, I included my pacman.log to show last couple of days activity.</div></div>
+
+  
+    <em>
+    <a name="comment3001" id="comment3001"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment3001">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=707">jerry klein (jk121960)</a> -
+    Monday, 07 May 2012, 14:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I went and also logged into xfce on same box and no problem.</div></div>
+
+  
+    <em>
+    <a name="comment3002" id="comment3002"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment3002">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=630">Arvydas Sidorenko (Asido)</a> -
+    Monday, 07 May 2012, 14:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I happened to me too after some updates on gentoo. Not sure which since it started like a month ago. Same drivers, same flash. Adobe actually released the last quite broken flash release for linux. Disable HW acceleration and all should be good. It&#039;s definitely not AwesomeWM fault.</div></div>
+
+  
+    <em>
+    <a name="comment3128" id="comment3128"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#comment3128">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=705">Lauri Niskanen (Ape)</a> -
+    Friday, 20 July 2012, 07:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This is not a bug in Awesome. It&#039;s caused by the combination of buggy video drivers (nvidia) and flash.<br />
+<br />
+It&#039;s possible that we could apply some hacky workaround on Awesome to &quot;fix&quot; this, but I don&#039;t think it&#039;s worth it. Instead the video drivers and flash should be fixed (or replaced with something else).<br />
+<br />
+I&#039;d close this bug.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=994#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="994" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

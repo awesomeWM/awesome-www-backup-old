@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+		<id>https://awesomewm.org/w/index.php?title=Special:NewPages&amp;feed=atom&amp;hideliu=1&amp;hidebots=1&amp;hideredirs=1&amp;limit=50&amp;offset=&amp;namespace=0&amp;username=&amp;tagfilter=</id>
+		<title>awesome - New pages [en]</title>
+		<link rel="self" type="application/atom+xml" href="https://awesomewm.org/w/index.php?title=Special:NewPages&amp;feed=atom&amp;hideliu=1&amp;hidebots=1&amp;hideredirs=1&amp;limit=50&amp;offset=&amp;namespace=0&amp;username=&amp;tagfilter="/>
+		<link rel="alternate" type="text/html" href="https://awesomewm.org/wiki/Special:NewPages"/>
+		<updated>2016-05-16T10:51:02Z</updated>
+		<subtitle>From awesome</subtitle>
+		<generator>MediaWiki 1.24.2</generator>
+
+	</feed>

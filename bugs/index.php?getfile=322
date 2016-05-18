@@ -1,0 +1,14 @@
+#!/bin/sh
+
+rm -rf /tmp/awesome*
+cp -rp ~sterkrig/tmp/awesome /tmp/awesome-3.4.999
+rm -rf /tmp/awesome-3.4.999/.*
+cd /tmp 
+tar cjf awesome-3.4.999.tar.bz2 awesome-3.4.999
+mv -f awesome-3.4.999.tar.bz2 /usr/portage/distfiles
+chown portage:portage /usr/portage/distfiles/awesome-3.4.999.tar.bz2
+chmod 664 /usr/portage/distfiles/awesome-3.4.999.tar.bz2
+ebuild --force /usr/local/portage/x11-wm/awesome/awesome-3.4.999.ebuild manifest
+emerge awesome
+cd ~
+

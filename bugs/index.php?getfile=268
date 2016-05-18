@@ -1,0 +1,12 @@
+--- util.lua.orig	2009-12-19 17:31:58.000000000 -0330
++++ util.lua	2009-12-19 17:26:38.000000000 -0330
+@@ -74,6 +74,9 @@
+ function spawn(cmd, sn, screen)
+     if cmd and cmd ~= "" then
+         if sn == nil then sn = true end
++        if cmd:sub(1,1) == ":" then
++           cmd = "xterm -e "  .. cmd:sub(2)
++        end
+         return capi.awesome.spawn(cmd, sn, screen or capi.mouse.screen)
+     end
+ end

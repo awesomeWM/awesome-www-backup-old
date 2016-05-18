@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>awesome BTS - All Projects: Tasklist</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=0" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=0" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=0" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/index.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">All Projects</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0" selected="selected">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="index" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=0">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=0&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+      
+
+
+<div id="tasklist">
+  <form action="https://awesomewm.org/bugs/index.php?project=0&amp;do=index" id="massops" method="post">
+    <div>
+      <table id="tasklist_table">
+        <thead>
+          <tr>
+            <th class="caret">
+            </th>
+                                    <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=id&amp;sort=desc">ID</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=project&amp;sort=asc">Project</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=category&amp;sort=asc">Category</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=tasktype&amp;sort=asc">Task Type</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=severity&amp;sort=desc">Severity</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=summary&amp;sort=desc">Summary</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=status&amp;sort=desc">Status</a></th>                        <th><a title="Sort by this column" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=8&amp;order=progress&amp;sort=desc">Progress</a></th>                      </tr>
+        </thead>
+        <tbody>
+                <tr id="task922" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=922&amp;project=0&amp;pagenum=8" title="Unconfirmed | &quot;manual&quot; menu entry in default rc.lua is incompatible with Termi | 0%" >922</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=922&amp;project=0&amp;pagenum=8" title="Unconfirmed | &quot;manual&quot; menu entry in default rc.lua is incompatible with Termi | 0%" >&quot;manual&quot; menu entry in default rc.lua is incompatible w</a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task920" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=920&amp;project=0&amp;pagenum=8" title="Unconfirmed | Horizontal widgets in vertical wibox | 0%" >920</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Wibox</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=920&amp;project=0&amp;pagenum=8" title="Unconfirmed | Horizontal widgets in vertical wibox | 0%" >Horizontal widgets in vertical wibox</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task918" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=918&amp;project=0&amp;pagenum=8" title="Unconfirmed | mplayer moves by itself in a diagonal direction when Movie-Aspec | 0%" >918</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=918&amp;project=0&amp;pagenum=8" title="Unconfirmed | mplayer moves by itself in a diagonal direction when Movie-Aspec | 0%" >mplayer moves by itself in a diagonal direction when Mo</a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task911" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=911&amp;project=0&amp;pagenum=8" title="New | Add support for links in naughty | 0%" >911</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>naughty</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=911&amp;project=0&amp;pagenum=8" title="New | Add support for links in naughty | 0%" >Add support for links in naughty</a></td>                    <td class='task_status'>New</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task909" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=909&amp;project=0&amp;pagenum=8" title="Unconfirmed | tag-switching keycodes broken on OS X | 0%" >909</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=909&amp;project=0&amp;pagenum=8" title="Unconfirmed | tag-switching keycodes broken on OS X | 0%" >tag-switching keycodes broken on OS X</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task908" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=908&amp;project=0&amp;pagenum=8" title="Unconfirmed | Can&#039;t exit fullscreen mode in xvnc4viewer | 0%" >908</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=908&amp;project=0&amp;pagenum=8" title="Unconfirmed | Can&#039;t exit fullscreen mode in xvnc4viewer | 0%" >Can&#039;t exit fullscreen mode in xvnc4viewer</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task904" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904&amp;project=0&amp;pagenum=8" title="Unconfirmed | Wibox doesn&#039;t appear after awesome.restart | 0%" >904</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Wibox</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=904&amp;project=0&amp;pagenum=8" title="Unconfirmed | Wibox doesn&#039;t appear after awesome.restart | 0%" >Wibox doesn&#039;t appear after awesome.restart</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task903" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=903&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.client.focus.history.previous() will only switch to the pr | 0%" >903</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>awful</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=903&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.client.focus.history.previous() will only switch to the pr | 0%" >awful.client.focus.history.previous() will only switch </a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task900" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=900&amp;project=0&amp;pagenum=8" title="Unconfirmed | Using double click events in rc.lua | 0%" >900</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>awful</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=900&amp;project=0&amp;pagenum=8" title="Unconfirmed | Using double click events in rc.lua | 0%" >Using double click events in rc.lua</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task898" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=898&amp;project=0&amp;pagenum=8" title="Unconfirmed | VLC doesn&#039;t full screen completelly - can still see the awesomeb | 0%" >898</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=898&amp;project=0&amp;pagenum=8" title="Unconfirmed | VLC doesn&#039;t full screen completelly - can still see the awesomeb | 0%" >VLC doesn&#039;t full screen completelly - can still see the</a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task897" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=897&amp;project=0&amp;pagenum=8" title="Unconfirmed | Awesome misinterprets _NET_WM_STRUT_PARTIAL | 0%" >897</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=897&amp;project=0&amp;pagenum=8" title="Unconfirmed | Awesome misinterprets _NET_WM_STRUT_PARTIAL | 0%" >Awesome misinterprets _NET_WM_STRUT_PARTIAL</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task893" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=893&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.placement: padding support | 0%" >893</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>awful</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=893&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.placement: padding support | 0%" >awful.placement: padding support</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task889" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=889&amp;project=0&amp;pagenum=8" title="Unconfirmed | disable click-propagation | 0%" >889</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>awful</td>                    <td class='task_tasktype'>Evolution Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=889&amp;project=0&amp;pagenum=8" title="Unconfirmed | disable click-propagation | 0%" >disable click-propagation</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task880" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=880&amp;project=0&amp;pagenum=8" title="New | Border width computing wrong when moving clients between screens | 0%" >880</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=880&amp;project=0&amp;pagenum=8" title="New | Border width computing wrong when moving clients between screens | 0%" >Border width computing wrong when moving clients betwee</a>...</td>                    <td class='task_status'>New</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task879" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=879&amp;project=0&amp;pagenum=8" title="Unconfirmed | Flash fullscreen not working with bottom wibar | 0%" >879</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=879&amp;project=0&amp;pagenum=8" title="Unconfirmed | Flash fullscreen not working with bottom wibar | 0%" >Flash fullscreen not working with bottom wibar</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task859" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=859&amp;project=0&amp;pagenum=8" title="Unconfirmed | Tab completion in prompt: problems with escaping | 0%" >859</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Widgets</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=859&amp;project=0&amp;pagenum=8" title="Unconfirmed | Tab completion in prompt: problems with escaping | 0%" >Tab completion in prompt: problems with escaping</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task853" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=853&amp;project=0&amp;pagenum=8" title="Unconfirmed | Can&#039;t recognize active monitor when one of them is empty | 0%" >853</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=853&amp;project=0&amp;pagenum=8" title="Unconfirmed | Can&#039;t recognize active monitor when one of them is empty | 0%" >Can&#039;t recognize active monitor when one of them is empt</a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task849" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=849&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.tag.history.restore toggles one tag if it&#039;s clicked twice | 0%" >849</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>awful</td>                    <td class='task_tasktype'>Bug Report</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=849&amp;project=0&amp;pagenum=8" title="Unconfirmed | awful.tag.history.restore toggles one tag if it&#039;s clicked twice | 0%" >awful.tag.history.restore toggles one tag if it&#039;s click</a>...</td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task846" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=846&amp;project=0&amp;pagenum=8" title="Unconfirmed | Adding Screen Changes Tag Focus | 0%" >846</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=846&amp;project=0&amp;pagenum=8" title="Unconfirmed | Adding Screen Changes Tag Focus | 0%" >Adding Screen Changes Tag Focus</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                <tr id="task843" class="severity2">
+          <td class="caret">
+          </td>
+                              <td class='task_id'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=843&amp;project=0&amp;pagenum=8" title="Unconfirmed | systray doesn&#039;t not obey WM_NORMAL_HINTS | 0%" >843</a></td>                    <td class='task_project'>awesome</td>                    <td class='task_category'>Core</td>                    <td class='task_tasktype'>Feature Request</td>                    <td class='task_severity'>Low</td>                    <td class='task_summary'><a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=843&amp;project=0&amp;pagenum=8" title="Unconfirmed | systray doesn&#039;t not obey WM_NORMAL_HINTS | 0%" >systray doesn&#039;t not obey WM_NORMAL_HINTS</a></td>                    <td class='task_status'>Unconfirmed</td>                    <td class='task_progress'><img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png" alt="0%" /></td>                  </tr>
+                </tbody>
+      </table>
+      <table id="pagenumbers">
+        <tr>
+                    <td id="taskrange">
+            Showing tasks 141 - 160 of 200          </td>
+          <td id="numbers">
+            Page 8 of 10<span class="DoNotPrint"> &nbsp;&nbsp;--&nbsp;&nbsp; <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=1">&lt;&lt;First </a><a id="previous" accesskey="p" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=7">&lt; Previous</a> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=6">6</a> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=7">7</a> - <strong>8</strong> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=9">9</a> - <a href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=10">10</a> - <a id="next" accesskey="n" href="https://awesomewm.org/bugs/index.php?do=index&amp;project=0&amp;do=index&amp;project=0&amp;pagenum=9">Next &gt;</a></span>          </td>
+                  </tr>
+      </table>
+          </div>
+  </form>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

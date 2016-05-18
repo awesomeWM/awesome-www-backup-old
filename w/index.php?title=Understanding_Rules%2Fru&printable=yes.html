@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Разбираем правила(rules) - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<meta name="robots" content="noindex,follow" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Understanding_Rules/ru&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Understanding_Rules/ru&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Understanding_Rules/ru" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;printable=1&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;printable=1&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Understanding_Rules/ru","wgTitle":"Understanding Rules/ru","wgCurRevisionId":7297,"wgRevisionId":7297,"wgArticleId":1036,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["Awesome3"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Understanding_Rules/ru","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Understanding_Rules_ru skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Разбираем правила(rules)</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><a href="/wiki/Understanding_Rules" title="Understanding Rules">English</a></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="ru"><strong class="selflink">русский</strong></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p><br />
+Примечания переводчика, для полного понимания материала приведенного на этой странице рекомендуется знание основ языка Lua. Для ознакомления с Lua на русском языке, есть [<a rel="nofollow" class="external text" href="http://www.lua.ru/doc/">руководство</a>].
+</p><p><br />
+В этой статье описываются правила(<i>rules</i>) которые появились в Awesome и способы работы с ними.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.D0.9F.D1.80.D0.B8.D1.81.D1.82.D1.83.D0.BF.D0.B0.D1.8F_.D0.BA_.D1.80.D0.B0.D0.B1.D0.BE.D1.82.D0.B5"><span class="tocnumber">1</span> <span class="toctext">Приступая к работе</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.D0.9E.D1.81.D0.BD.D0.BE.D0.B2.D0.BD.D1.8B.D0.B5_.D0.BF.D1.80.D0.B8.D0.BD.D1.86.D0.B8.D0.BF.D1.8B"><span class="tocnumber">2</span> <span class="toctext">Основные принципы</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#.D0.92.D1.8B.D0.B1.D0.BE.D1.80_.D0.BE.D0.BA.D0.BD.D0.B0"><span class="tocnumber">2.1</span> <span class="toctext">Выбор окна</span></a>
+<ul>
+<li class="toclevel-3 tocsection-4"><a href="#rule"><span class="tocnumber">2.1.1</span> <span class="toctext">rule</span></a></li>
+<li class="toclevel-3 tocsection-5"><a href="#rule_any"><span class="tocnumber">2.1.2</span> <span class="toctext">rule_any</span></a></li>
+<li class="toclevel-3 tocsection-6"><a href="#except"><span class="tocnumber">2.1.3</span> <span class="toctext">except</span></a></li>
+<li class="toclevel-3 tocsection-7"><a href="#except_any"><span class="tocnumber">2.1.4</span> <span class="toctext">except_any</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-8"><a href="#.D0.9C.D0.BE.D0.B4.D0.B8.D1.84.D0.B8.D0.BA.D0.B0.D1.86.D0.B8.D1.8F_.D0.BE.D0.BA.D0.BE.D0.BD"><span class="tocnumber">2.2</span> <span class="toctext">Модификация окон</span></a>
+<ul>
+<li class="toclevel-3 tocsection-9"><a href="#properties"><span class="tocnumber">2.2.1</span> <span class="toctext"><i>properties</i></span></a></li>
+<li class="toclevel-3 tocsection-10"><a href="#callback"><span class="tocnumber">2.2.2</span> <span class="toctext">callback</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-11"><a href="#.D0.A1.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0_.D0.BE.D0.BA.D0.BE.D0.BD"><span class="tocnumber">3</span> <span class="toctext">Свойства окон</span></a>
+<ul>
+<li class="toclevel-2 tocsection-12"><a href="#name"><span class="tocnumber">3.1</span> <span class="toctext">name</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#class"><span class="tocnumber">3.2</span> <span class="toctext">class</span></a></li>
+<li class="toclevel-2 tocsection-14"><a href="#instance"><span class="tocnumber">3.3</span> <span class="toctext">instance</span></a></li>
+<li class="toclevel-2 tocsection-15"><a href="#type"><span class="tocnumber">3.4</span> <span class="toctext">type</span></a></li>
+<li class="toclevel-2 tocsection-16"><a href="#window"><span class="tocnumber">3.5</span> <span class="toctext">window</span></a></li>
+<li class="toclevel-2 tocsection-17"><a href="#role"><span class="tocnumber">3.6</span> <span class="toctext">role</span></a></li>
+<li class="toclevel-2 tocsection-18"><a href="#.D0.94.D0.BE.D0.BF.D0.BE.D0.BB.D0.BD.D0.B8.D1.82.D0.B5.D0.BB.D1.8C.D0.BD.D1.8B.D0.B5_.D1.81.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0"><span class="tocnumber">3.7</span> <span class="toctext">Дополнительные свойства</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-19"><a href="#.D0.A0.D0.B0.D0.B7.D0.B1.D0.B8.D1.80.D0.B0.D0.B5.D0.BC_rc.lua"><span class="tocnumber">4</span> <span class="toctext">Разбираем rc.lua</span></a></li>
+<li class="toclevel-1 tocsection-20"><a href="#.D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80.D1.8B"><span class="tocnumber">5</span> <span class="toctext">Примеры</span></a>
+<ul>
+<li class="toclevel-2 tocsection-21"><a href="#.D0.98.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_except"><span class="tocnumber">5.1</span> <span class="toctext">Использование except</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-22"><a href="#.D0.9F.D0.BE.D1.85.D0.BE.D0.B6.D0.B8.D0.B5_.D1.81.D1.82.D1.80.D0.B0.D0.BD.D0.B8.D1.86.D1.8B"><span class="tocnumber">6</span> <span class="toctext">Похожие страницы</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id=".D0.9F.D1.80.D0.B8.D1.81.D1.82.D1.83.D0.BF.D0.B0.D1.8F_.D0.BA_.D1.80.D0.B0.D0.B1.D0.BE.D1.82.D0.B5">Приступая к работе</span></h2>
+<p>Когда вы впервые открыли <i>rc.lua</i> для ознакомления или редактирования, вы наверняка обратили внимание на следующий код:
+</p>
+<pre>awful.rules.rules = {
+    -- All clients will match this rule.
+    { rule = { },
+      properties = { border_width = beautiful.border_width,
+                     border_color = beautiful.border_normal,
+                     focus = true,
+                     keys = clientkeys,
+                     buttons = clientbuttons } },
+    { rule = { class = &quot;MPlayer&quot; },
+      properties = { floating = true } },
+    { rule = { class = &quot;pinentry&quot; },
+      properties = { floating = true } },
+    { rule = { class = &quot;gimp&quot; },
+      properties = { floating = true } },
+    -- Set Firefox to always map on tags number 2 of screen 1.
+    -- { rule = { class = &quot;Firefox&quot; },
+    --   properties = { tag = tags[1][2] } },
+}
+</pre>
+<p>Вы конечно можете догадываться, что этот код делает, но если вы по настоящему хотите настроить Awesome, в соответсвии с вашими потребностями, вам необходимо узнать больше как создавать свои собственные правила. 
+</p>
+<h2><span class="mw-headline" id=".D0.9E.D1.81.D0.BD.D0.BE.D0.B2.D0.BD.D1.8B.D0.B5_.D0.BF.D1.80.D0.B8.D0.BD.D1.86.D0.B8.D0.BF.D1.8B">Основные принципы</span></h2>
+<p>В своей основе, 'awful.rules.rules' содержит массив инструкций, где каждая инструкция состоит из двух частей.
+</p><p>Первая часть используется как "поисковый шаблон" который говорит Awesome, какие атрибуты окон нас интересуют. Вторую часть можно описать, как "команды", которые говорят Awesome, что нужно делать при нахождении окна, которое соотвествует заданному шаблону поиска.
+</p>
+<h3><span class="mw-headline" id=".D0.92.D1.8B.D0.B1.D0.BE.D1.80_.D0.BE.D0.BA.D0.BD.D0.B0">Выбор окна</span></h3>
+<p>Awesome может проверять различные свойства<i>(properties)</i> окон, чтобы найти нужное нам окно для дальнейших действий над ним. Существует четыре способа, которыми вы можете выйти на нужное вам окно:
+</p>
+<h4><span class="mw-headline" id="rule">rule</span></h4>
+<dl><dd>  При сравнении окон, они должны соотвестовать <i>всем</i> свойствам, определенным в массиве<i>(array)</i> данного правила<i>(rule)</i>.</dd></dl>
+<pre>{ rule = { class = {"MPlayer", "pinentry", "Gimp"} },   
+</pre>
+<p><i>в данном случае не будет выбрано ни одно окно, так как не может быть 3х приложений являющихся родителями одного окна </i>
+</p>
+<h4><span class="mw-headline" id="rule_any">rule_any</span></h4>
+<dl><dd>  При сравнении окон, они должны соответсвовать <i>одному или более</i> свойствам определенным в массиве данного правила, т.е. по принципу "любое из"</dd></dl>
+<pre>{ rule_any = { class = {"MPlayer", "pinentry", "Gimp"} },   
+</pre>
+<p><i>в данном случае будет выбрано любое из окон, родителями которого являются указанные в списке приложения </i>
+</p>
+<h4><span class="mw-headline" id="except">except</span></h4>
+<dl><dd>  Из найденных окон, попадающие под правило <i>rule</i> или <i>rule_only</i> исключаются окна, которые попадают под <i>все </i>свойства которые прописаны в массиве <i>except</i>, т.е. по принципу "все кроме ...всех перечисленных".</dd></dl>
+<pre>{ rule_any = { class = { "psi", "Psi" } }, except = { instance = "main" },   
+</pre>
+<p><i>в данном случае будут выбраны все окна приложения Psi, кроме главного</i>
+</p>
+<h4><span class="mw-headline" id="except_any">except_any</span></h4>
+<dl><dd>  Из найденных окон, попадающие под правило <i>rule</i> или <i>rule_any</i> исключаются окна, которые попадают под <i>одно или более </i>свойств которые прописаны в массиве <i>except</i>, т.е. по принципу "все кроме одного/нескольких из перечисленных"</dd></dl>
+<pre>{ rule = { class = { "XTerm" } }, except_any = { instance = "mail", instance = "vim" },  
+</pre>
+<p><i>в этом примере будут выбраны окна всех терминалов, кроме имеющих свойство mail или vim</i>
+</p><p>Значения 'rule' <i>и другие</i> являются множеством(array), в которых перечисляются все необходимые вам свойства окон Awesome для их сравнения. Этот массив(array) может быть любой длинны, включая нулевую(пустое). И имеет следующий синтаксис:
+</p>
+<pre>{ rule = { [ <var>property</var> = <var>value</var> [, <var>property</var> = <var>value</var>, ... ] ] } }
+</pre>
+<p>Где  <b>property</b> это имя из списка <a href="#.D0.A1.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0_.D0.BE.D0.BA.D0.BE.D0.BD">свойства окон</a>.
+</p><p>Если правило(<i>rule</i>) имеет нулевое(пустое) значение, то оно соотвествует всем окнам.  А 'except' с нулевыми значениями вообще не исключает окна.
+</p><p>При сравнении, каждое правило, сравнивается с каждым окном, без завершения при нахождении первого подходящего значения.  Все <i>rule</i> сравниваются со всеми окнами; окно может соотвестовать более чем одному <i>rule</i>.  Для каждого подходящего 'rule'(правила) соотвествующему окну посылаются указанные модификации. До тех пор пока не будет пройден весь список правил.
+</p><p>Для свойств окна, являющихся строками, значения свойств установленные в <i>rule  и прочих</i> сравниваются со свойствами окон используя функцию Lua <i>string.match()</i>, которая производит сравнение подстроки и шаблона. Таким образом <i>rule</i>(правилу) содержащему '{ class = "x" }' будут соответсвовать все окна у которых символ "x" присутсвует где либо в свойстве окна 'class'.
+</p>
+<h3><span class="mw-headline" id=".D0.9C.D0.BE.D0.B4.D0.B8.D1.84.D0.B8.D0.BA.D0.B0.D1.86.D0.B8.D1.8F_.D0.BE.D0.BA.D0.BE.D0.BD">Модификация окон</span></h3>
+<p>После того, как нужное нам окно найдено, обычно мы хотим сделать с ним что либо. Для этого существует 2 способа указать Awesome как изменить окно.
+</p>
+<h4><span class="mw-headline" id="properties"><i>properties</i></span></h4>
+<p>На сегодняшний день, наиболее распространным способом является массив(array) свойств(<i>properties</i>) и значений окна. Для каждого значнения в массиве свойств(<i>properties</i>) Awesome присваивает значение соответсвующему свойству в найденных окнах.
+</p><p>Синтаксис для <i>properties</i> следующий:
+</p>
+<pre>{ properties = { <var>property</var> = <var>value</var> [, <var>property</var> = <var>value</var>, ... ] } }
+</pre>
+<p>Где  <var>property</var> это название <a href="#.D0.A1.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0_.D0.BE.D0.BA.D0.BE.D0.BD">свойств окна</a>.
+</p><p><b>property</b> также можется являться и функция Lua. Функция вызывается Awesome как первый аргумент, а <var>value</var> это второй аргумент. 
+</p>
+<h4><span class="mw-headline" id="callback">callback</span></h4>
+<p>(Функция <b>callback</b> считается устаревшей.)
+</p><p>Вы можете определить функцию Lua, которая будет вызвана когда окно будет подходить по параметрам; в этом случае клиентское окно передается в функцию как аргумент. Это можно использовать для создания более сложных операций с окном, чем при использовании простых свойст. Как <var>properties</var>, так и <var>callback</var> принимает масссив, в котором вы можете определить любое колличество функций, которые вызываются при нахождении соотвествующего окна.
+</p><p>Синтаксис для  <var>callback</var> слудующий:
+</p>
+<pre>{ callback = { <b>function</b> [, <b>function</b>, ... ] }
+</pre>
+<p>Где <b>function</b> это любые функции Lua которые Awesome принимает в качестве аргументов.
+</p>
+<h2><span class="mw-headline" id=".D0.A1.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0_.D0.BE.D0.BA.D0.BE.D0.BD">Свойства окон</span></h2>
+<p><a rel="nofollow" class="external text" href="http://awesome.naquadah.org/doc/api/modules/client.html">Полный список всех properties которые известны Awesome и могут быть изменены</a>, также их можно найти конце страницы <a rel="nofollow" class="external text" href="http://awesome.naquadah.org/doc/api">Документация Lua API</a>.  Имена большинства этих свойств интуитивно понятны.
+</p><p>К сожалению, некоторые из этих свойств, являются встроенными значениями X Windows, некоторые из которых сравнительно мало понятны и описание на странице Lua API довольно скудное. Однако для создания эффективных правил(<i>rule</i>), вам необходимо понимать некоторые из них. Программа <i>xprop</i>, которая является стандартной, для всех X Windows-based систем, может быть полезной для понимания некоторых из них. Для использвания 'xprop' необходимо:
+</p>
+<ul><li> Откройте терминал.</li>
+<li> Наберите команду <i>xprop</i> и нажмите Enter.  Переместите курсор мыши на нужное вам окно.</li>
+<li> Используя мышь, щелкните на заинтересовавшей вас точке окна. После этого, свойства X Windows для этого окна будут напечатаны в терминале.</li></ul>
+<p>В частности 'xprop', может быть чрезычайно полезен для понимания разницы между <var>class</var>, <var>name</var>, и <var>instance</var> свойствами.
+</p><p>Ниже описан небольшой список поддерживаемых в Awesome window properties, а также их краткое описание.
+</p>
+<h4><span class="mw-headline" id="name"><code>name</code></span></h4>
+<p>Как правило содержит заголовок окна, в любой заданный момент.  Свойство <var>name</var> окна, это строка, которая может быть изменена программой в любое время.  Поскольку многие программы, как известно, часто изменяют это свойство (наглядным примером может являться Firefox), это <i>rule</i>(правило) имеет ограниченное применение.
+</p><p>В выводе <i>xprop</i>, значением соответсвующим этому свойству(property) будет <b>WM_NAME</b>.
+</p>
+<h4><span class="mw-headline" id="class"><code>class</code></span></h4>
+<p>Это имя является уникальным для программы -- обычно это имя программы записанное в <i>Camel(верблюжей/горбатой)-версии</i> (Firefox, XTerm, Nm-manager, Keepassx и т.д.). <b>class</b> - этот параметр является строкой, только для чтения, и жестко определяется программой создавшей его -- это значит, что программа определяет какое значение <i>class</i> у нее будет, и после этого значение не может быть изменено. Т.е. независимо от того, сколько экзепмляров терминала XTerm вы запустили, и какие они имеют заголовки, все его окна будут иметь одинаковое значение <i>class</i> ("XTerm"). Таким образом, <i>class</i> можно использовать, для того чтобы однозначно ассоциировать 'rule'(правило) с конкретной программой.
+</p><p>В выводе <b>xprop</b>, свойству <i>class</i> будет соответствовать <b>второе</b> значение <b>WM_CLASS</b>.
+</p>
+<h4><span class="mw-headline" id="instance"><code>instance</code></span></h4>
+<p>Довольно интересный параметр. <b>instance</b> - также является строкой. Может быть установлено любое значение при запуске программы.
+</p><p><b>instance</b> является особенностью системы X Windows. В настоящее время данный параметр практически не используется.  Он позволяет разделять окна, которые имеют общий исполняемый файл, но используются в различных целях/ролях. Например, у вас есть окно XTerm, которое вы испльзуете только для чтения почты, поэтому вы можете изменить его <i>property</i>(свойство) <b>instance</b>, таким образом, чтобы отличать его от других окон XTerm.
+</p><p>Большинство программ X Windows, позволяют изменять значение 'instance' используя аргумент командной строки <i>-name</i>. Если вы не измените значение <i>instance</i>, оно по умолчанию будет установлено как argv[0] (имя используемое вами для запуска программы).
+</p><p>Есть исключения из этого правила, в первую очередь, Firefox. <var>class</var> для Firefox "Firefox". Тем не менее, <i>instance</i> для всех окон браузера Firefox установлен "Navigator". Вероятно, это историческое отступление от Mozilla (прародителя Firefox), когда он был не только браузером, но также и почтовым клиетом и редактором HTML. Все окна открытые в Mozilla, будут иметь <i>class</i> Mozilla, но окна почтовика и редактора HTML, будут иметь другие значения в 'instance'. Так что, если вы хотите изменить <i>properties</i> для окон браузера, но не трогать почтовик, вы должны использовать значение <i>instance</i> равным "Navigator".
+</p><p>Другим ярким примером, может служить Chrome (или Chromium). Например, окна в Chromium будут иметь <i>class</i> "Chromium-Browser". Но в нем <i>instance</i> используется чтобы отличать различные расширения или приложения друг от друга. Если открытое окно/вкладка является просым окном браузера, то его значение <i>instance</i> будет равно значению<i>class</i>. Если же оно принадлежит плагину/расширению/приложения (например плагину Hangout), то значение <i>instance</i> будет иметь название идентификатора плагина(в нашем случае "crx_nckgahadagoaajjgafhacjanaoiihapd").
+</p><p>В выводе <b>xprop</b>, свойству <i>class</i> будет соответсвовать <b>первое</b> значение <b>WM_CLASS</b>.
+</p><p>Вы можете поиграться с <i>xprop</i> и посмотреть как взаимосвязаны между собой <b>instance</b> и <b>class</b>. В качестве примера, откройте командную оболочку и запустите xterm:
+</p>
+<pre>$ xterm
+</pre>
+<p>Затем, посмотрите его используя <code>xprop</code>:
+</p>
+<pre>WM_CLASS(STRING) = "xterm", "XTerm"
+</pre>
+<p>Теперь запустите xterm с другим значением <i>instance</i> используя аргумент <b>-name</b>:
+</p>
+<pre>$ xterm -name vim
+</pre>
+<p>Теперь <i>xprop</i> выведет следующее:
+</p>
+<pre>WM_CLASS(STRING) = "vim", "XTerm"
+</pre>
+<p>В завершение, просто для смеха, создайте ссылку на xtrerm, а затем запустите xterm используя ссылку:
+</p>
+<pre>$ ln -s /usr/bin/xterm barfoo
+$ ./barfoo
+</pre>
+<p>И <i>xprop</i> выведет следующее:
+</p>
+<pre>WM_CLASS(STRING) = "barfoo", "XTerm"
+</pre>
+<h4><span class="mw-headline" id="type"><code>type</code></span></h4>
+<p>Типы окон. <b>type</b> это строка, которая может принимать одно из слудующих значений:
+</p>
+<ul><li> <code>desktop</code></li>
+<li> <code>dock</code></li>
+<li> <code>splash</code></li>
+<li> <code>dialog</code></li>
+<li> <code>menu</code></li>
+<li> <code>toolbar</code></li>
+<li> <code>utility</code></li>
+<li> <code>dropdown_menu</code></li>
+<li> <code>popup_menu</code></li>
+<li> <code>tooltip</code></li>
+<li> <code>notification</code></li>
+<li> <code>combo</code></li>
+<li> <code>dnd</code> (drag &amp; drop)</li>
+<li> <code>normal</code></li></ul>
+<p><i>type</i> окон можно менять, но это может привести к непредсказуемым последствиям, поэтому делать это не рекомендуется.
+</p>
+<h4><span class="mw-headline" id="window"><code>window</code></span></h4>
+<p>Уникальный идентификационный номер (ID) '<i>именно этого окна</i> и никакого другого. Значение 'window' является целым уникальным числом, только для чтения, и  оно присваивается окну при его создании. ID существует на протяжении всей жизни окна, и уничтожается при его закрытии. ID окна, никогда повторно не выделяется в течении одной сессии.
+</p>
+<h4><span class="mw-headline" id="role"><code>role</code></span></h4>
+<p>Иногда устанавливается приложением, но как правило не используется в Awesome. (Другие оконные менеджеры могут использвать это property(свойство) совместно с <i>name</i> и <i>class</i>, для уникальной идентификации окон, чтобы использовать их для сохранения и восстановления после восстановления сессии).
+</p><p>В выводе <i>xprop</i>, свойству <i>role</i> соотвествует значение WM_WINDOW_ROLE, если оно существует.
+</p>
+<h3><span class="mw-headline" id=".D0.94.D0.BE.D0.BF.D0.BE.D0.BB.D0.BD.D0.B8.D1.82.D0.B5.D0.BB.D1.8C.D0.BD.D1.8B.D0.B5_.D1.81.D0.B2.D0.BE.D0.B9.D1.81.D1.82.D0.B2.D0.B0">Дополнительные свойства</span></h3>
+<p>В дополнение к properties окон описанных в документации Lua API, существуют также properties обеспечиваемые библиотекой awful:
+</p>
+<dl><dt> <code>floating</code></dt>
+<dd>  Boolean; изменяет атрибут плавающего окна.</dd>
+<dt> <code>tag</code></dt>
+<dd>  Строка; изменяет tag окна на заданное значение.</dd>
+<dt> <code>switchtotag</code></dt>
+<dd>  Строка; изменяет рабочий стол на заданный tag.</dd>
+<dt> <code>x</code></dt>
+<dt> <code>y</code></dt>
+<dt> <code>width</code></dt>
+<dt> <code>height</code></dt>
+<dd>  Целое; изменяет положение и/или размер окон.</dd>
+<dt> <code>focus</code></dt>
+<dd>  Boolean; когда установленно true, передает фокус на заданное окно. Это свойство всегда определяется последним, независимо от порядка, должно быть описано в массиве <i>properties</i>.</dd></dl>
+<h2><span class="mw-headline" id=".D0.A0.D0.B0.D0.B7.D0.B1.D0.B8.D1.80.D0.B0.D0.B5.D0.BC_rc.lua">Разбираем rc.lua</span></h2>
+<p>Теперь мы имеем базовое понимание <i>rules</i>(правил), и мы можем лучше интерпретировать правила<i>(rule)</i>, установленные по умолчанию в Awesome. Давайте вглянем на них еще раз:
+</p>
+<pre>awful.rules.rules = {
+    -- Все приложения будут соотвествовать следующему правилу
+    { rule = { },
+      properties = { border_width = beautiful.border_width,
+                     border_color = beautiful.border_normal,
+                     focus = true,
+                     keys = clientkeys,
+                     buttons = clientbuttons } },
+    -- Правила для других классов окон
+    { rule = { class = &quot;MPlayer&quot; },
+      properties = { floating = true } },
+    { rule = { class = &quot;pinentry&quot; },
+      properties = { floating = true } },
+    { rule = { class = &quot;gimp&quot; },
+      properties = { floating = true } },
+    -- Устанавливаем Firefox, на tags номер 2 экрана 1.
+    -- { rule = { class = &quot;Firefox&quot; },
+    --   properties = { tag = tags[1][2] } },
+}
+</pre>
+<p>Давайте разберем этот код по порядку. Опять же, повторим, что каждое правило(<i>rule</i>) состоит из двух частей -- часть сравнения и командная чать. Первая сравнительная часть следующая:
+</p>
+<pre>{ rule = { },
+</pre>
+<p>Как уже упоминалось выше, <i>rule</i> с пустым массивом свойств(<i>properties</i>) соотвествует всем окнам. Поэтому, следующая, командная часть будет применена ко всем окнам:
+</p>
+<pre>properties = { border_width = beautiful.border_width,
+                    border_color = beautiful.border_normal,
+                    focus = true,
+                    keys = clientkeys,
+                    buttons = clientbuttons } },</pre>
+<p>Здесь устанавливаются <i>properties</i>(свойства), поэтому массив содержащий значения свойств будет присвоен соотвествующим окнам (в нашем случае всем окнам):
+</p>
+<dl><dt> <code>border_width = beautiful.border_width</code></dt>
+<dt> <code>border_color = beautiful.border_normal</code></dt>
+<dd>  Толщина границы и цвет окон, устанавливаются равные значениям текущей темы, загруженные библиотекой <code>beautiful</code>.</dd>
+<dt> <code>focus = true</code></dt>
+<dd>  Фокус воода передается окну. Это может показаться немного запутанным, пока вы считаете, что эти правила('rule') применяются только при запуске Awesome. Также эти правила применяются и при создании новых окон. Т.к. мы хотим, чтобы вновь открываемые окна, также получали фокус ввода, мы вставляем это 'propery'(свойство) здесь.</dd>
+<dt> <code>keys = clientkeys</code></dt>
+<dt> <code>buttons = clientbuttons</code></dt>
+<dd>  Здесь мы привязываем созданные ранее <code>clientkeys</code> и <code>clientbuttons</code> к окну. Это делает пользовательский интерфейс(UI) всех окон единым.</dd></dl>
+<p>Остальные правила(rule) довольно просты. Как уже упоминалось ранее, досрочный выход из обработки правил(rule) отсутсвует. Все правила(rule) последовательно проверяются для всех окон. Так, что, соотвествие предыдущего правила окну, не означает конец обработки списка правил. Следующее  <code>rule</code>:
+</p>
+<pre>    { rule = { class = &quot;MPlayer&quot; },
+      properties = { floating = true } },
+</pre>
+<p>Для всех окон у которых <code>class</code> содержат "MPlayer", устанавливается плавающий атрибут для окна. Это предотвращает от автоматического измения размера, который может произовдить Awesome.
+</p>
+<pre>    { rule = { class = &quot;pinentry&quot; },
+      properties = { floating = true } },
+</pre>
+<p>Для всех окон у которых <code>class</code> содержит "pinentry" (обычно это утилиты, которые запрашивают пароль), устанавливаем плавающий атрибут для окна.
+</p>
+<pre>    { rule = { class = &quot;gimp&quot; },
+      properties = { floating = true } },
+</pre>
+<p>Для всех окон у которых <code>class</code> содержит "gimp", устанавливаем свойство плавающих окон.
+</p><p>Но... Подождите секунду; это выглядит странным для меня. По соглашению описанному выше, большинство названий в <code>class</code> начинаются с заглавной буквы. Давайте на самом деле запустим GIMP и проверим его с помощью <b>xprop</b>. GIMP фактически открывает 3 окна, поэтому сначала мы проверим главное окно:
+</p>
+<pre>WM_CLASS(STRING) = &quot;gimp&quot;, &quot;Gimp&quot;
+</pre>
+<p>Интересно.  Свойство <code>instance</code> в GIMP - "gimp", но <code>class</code> соответствует "Gimp" (с заглавной).  Другие два окна, имеют те же значения <code>instance</code> и <code>class</code>.  Это означает, что <code>rule</code> указанное выше <i>не будет работать</i>.
+</p><p>Хорошо, давайте исправим его:
+</p>
+<pre>    { rule = { class = &quot;Gimp&quot; },
+      properties = { floating = true } },
+</pre>
+<p>Теперь лучше.
+</p><p>Кстати, оказывается, что GIMP использует свойство <code>role</code> для различия собсвенных окон, поэтому вы может испльзовать в своих правилах(rule):
+</p>
+<pre>Main Image Window:
+WM_WINDOW_ROLE(STRING) = &quot;gimp-image-window&quot;
+
+Toolbox Window:
+WM_WINDOW_ROLE(STRING) = &quot;gimp-toolbox&quot;
+
+Dock Window:
+WM_WINDOW_ROLE(STRING) = &quot;gimp-dock&quot;
+</pre>
+<p>Кстати, обратите внимание, что за исключением названия <code>class</code>, предыдущие три правила идентичны. Поэтому они могут быть объединены в общую запись <code>rule_any</code> следующим образом:
+</p>
+<pre>    { rule_any = { class = {&quot;MPlayer&quot;, &quot;pinentry&quot;, &quot;Gimp&quot;} },
+      properties = { floating = true } },
+</pre>
+<h2><span class="mw-headline" id=".D0.9F.D1.80.D0.B8.D0.BC.D0.B5.D1.80.D1.8B">Примеры</span></h2>
+<p>В этом разделе приводятся некоторые, более сложные примеры, с описанием, как они работают, чтобы обеспечить вам базу для более сложных примеров.
+</p>
+<h3><span class="mw-headline" id=".D0.98.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_except">Использование <tt>except</tt></span></h3>
+<pre>
+{ rule_any = { class = { &quot;psi&quot;, &quot;Psi&quot; } }, except = { instance = &quot;main&quot; },
+  callback = awful.client.setslave },
+</pre>
+<p>Это правило('rule') для клиента Psi IM. Оно указывает, что каждое окно Psi, будет установлено как вторичное, за исключением списка контактов, которое устанавливается главным. Это позволяет списку контактов всегда оставатся видимым и на том же месте, в то время как окна чатов будут открываться и закрываться, при условии, что tag был <a href="/wiki/IM_tips" title="IM tips">правильно настроен</a>.
+</p><p>В этом случае, правило будет воздейстовать на эти три окна:
+</p>
+<table class="wikitable">
+<tr>
+<th> Window type </th>
+<th> Properties
+</th></tr>
+<tr>
+<td> Contact list </td>
+<td> <pre>
+WM_NAME(STRING) = &quot;Psi&quot;
+WM_CLASS(STRING) = &quot;main&quot;, &quot;psi&quot;
+</pre>
+</td></tr>
+<tr>
+<td> Chat windows </td>
+<td> <pre>
+WM_NAME(STRING) = &quot;SomePerson&quot;
+WM_CLASS(STRING) = &quot;chat&quot;, &quot;psi&quot;
+</pre>
+</td></tr>
+<tr>
+<td> History windows </td>
+<td> <pre>
+WM_NAME(STRING) = &quot;SomePerson (someone@somewhere.net)&quot;
+WM_CLASS(STRING) = &quot;psi&quot;, &quot;Psi&quot;
+</pre>
+</td></tr></table>
+<p>Здесь вы можете видеть, что <tt>class</tt> (вторая строка WM_CLASS) равна "psi" для первых двух, но "Psi" с заглавной P для третьего. Так что для того, чтобы соответствовать всем этим окнам, мы должны использовать <tt>rule_any</tt> с обоими вариантами, поэтому правило будет соответствовать любому из указанных названий классов(class).
+</p><p>Однако, мы бы не хотели, чтобы правило соответсвовало списку контактов, поэтому мы определяем значение как <tt>except</tt> и используем <tt>instance</tt> (первая строка WM_CLASS ) для обозначения списка контактов.  Мы используем это значение, так как оно не совпадает с другими окнами, поэтому мы исключаем только список контактов.
+</p><p>Теперь у нас есть правило, которое будет соотвестовать всех окнам Psi, за исключением списка контактов, и которое будет вызывать функцию <tt>awful.client.setslave</tt>. Она устанавливает окна Psi вторичными, за исключением списка контактов, которое остается главным.
+</p>
+<h2><span class="mw-headline" id=".D0.9F.D0.BE.D1.85.D0.BE.D0.B6.D0.B8.D0.B5_.D1.81.D1.82.D1.80.D0.B0.D0.BD.D0.B8.D1.86.D1.8B">Похожие страницы</span></h2>
+<dl><dt> <a rel="nofollow" class="external text" href="http://awesome.naquadah.org/doc/api/modules/awful.rules.html">awful.rules</a></dt>
+<dd>  Документация Lua для модуля awful.rules, которая описывает функциональность правил(rule).</dd></dl>
+<dl><dt> <a href="/wiki/Example_of_applications_rules" title="Example of applications rules">Примеры правил для приложений</a></dt>
+<dd> Несколько правил для основных приложений, в основном помечаются плавающим режимом, в случае необходимости.</dd></dl>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.132 seconds
+Real time usage: 0.162 seconds
+Preprocessor visited node count: 824/1000000
+Preprocessor generated node count: 1700/1000000
+Post‐expand include size: 3596/2097152 bytes
+Template argument size: 2970/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 48/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:1036-0!*!0!!en!5!* and timestamp 20160515131535 and revision id 7297
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Understanding_Rules/ru&amp;oldid=7297">https://awesomewm.org/w/index.php?title=Understanding_Rules/ru&amp;oldid=7297</a>"</div>
+					<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Category</a>: <ul><li><a href="/wiki/Category:Awesome3" title="Category:Awesome3">Awesome3</a></li></ul></div></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Understanding_Rules/ru" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Understanding_Rules/ru&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Understanding_Rules/ru&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Understanding_Rules/ru&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Understanding+Rules%2Fru&amp;returntoquery=printable%3Dyes" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Understanding_Rules/ru" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Understanding_Rules/ru" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Understanding_Rules/ru&amp;oldid=7297" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Understanding_Rules/ru&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 25 January 2015, at 18:16.</li>
+									<li id="viewcount">This page has been accessed 3,122 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;printable=1\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":119});
+}</script></body></html>

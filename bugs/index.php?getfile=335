@@ -1,0 +1,25 @@
+_NET_WM_DESKTOP(CARDINAL) = 3
+WM_STATE(WM_STATE):
+                window state: Normal
+                icon window: 0x0
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x1, 0x1, 0x0, 0x0
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0x4b, 0x0, 0x20, 0x1, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0
+XdndAware(ATOM) = BITMAP
+_NET_WM_STATE(ATOM) = 
+WM_HINTS(WM_HINTS):
+                Client accepts input or input focus: False
+                Initial state is Normal State.
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+                user specified location: 0, 24
+                program specified location: 0, 24
+                program specified size: 1918 by 1174
+                window gravity: NorthWest
+_NET_WM_ICON(CARDINAL) =        Icon (16 x 16):
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS
+WM_CLASS(STRING) = "sun-awt-X11-XFramePeer", "oracle-ide-boot-Launcher"
+WM_CLIENT_LEADER(WINDOW): window id # 0x1200008
+_NET_WM_ICON_NAME(UTF8_STRING) = 0x4f, 0x72, 0x61, 0x63, 0x6c, 0x65, 0x20, 0x53, 0x51, 0x4c, 0x20, 0x44, 0x65, 0x76, 0x65, 0x6c, 0x6f, 0x70, 0x65, 0x72
+WM_ICON_NAME(STRING) = "Oracle SQL Developer"
+_NET_WM_NAME(UTF8_STRING) = 0x4f, 0x72, 0x61, 0x63, 0x6c, 0x65, 0x20, 0x53, 0x51, 0x4c, 0x20, 0x44, 0x65, 0x76, 0x65, 0x6c, 0x6f, 0x70, 0x65, 0x72
+WM_NAME(STRING) = "Oracle SQL Developer"

@@ -1,0 +1,650 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>awesome API documentation</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>awesome</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+<li><a href="#Fields">Fields</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/awful.autofocus.html">awful.autofocus</a></li>
+  <li><a href="../modules/awful.button.html">awful.button</a></li>
+  <li><a href="../modules/awful.client.html">awful.client</a></li>
+  <li><a href="../modules/awful.completion.html">awful.completion</a></li>
+  <li><a href="../modules/awful.dbus.html">awful.dbus</a></li>
+  <li><a href="../modules/awful.ewmh.html">awful.ewmh</a></li>
+  <li><a href="../modules/awful.html">awful</a></li>
+  <li><a href="../modules/awful.key.html">awful.key</a></li>
+  <li><a href="../modules/awful.keygrabber.html">awful.keygrabber</a></li>
+  <li><a href="../modules/awful.layout.html">awful.layout</a></li>
+  <li><a href="../modules/awful.layout.suit.fair.html">awful.layout.suit.fair</a></li>
+  <li><a href="../modules/awful.layout.suit.floating.html">awful.layout.suit.floating</a></li>
+  <li><a href="../modules/awful.layout.suit.html">awful.layout.suit</a></li>
+  <li><a href="../modules/awful.layout.suit.magnifier.html">awful.layout.suit.magnifier</a></li>
+  <li><a href="../modules/awful.layout.suit.max.html">awful.layout.suit.max</a></li>
+  <li><a href="../modules/awful.layout.suit.spiral.html">awful.layout.suit.spiral</a></li>
+  <li><a href="../modules/awful.layout.suit.tile.html">awful.layout.suit.tile</a></li>
+  <li><a href="../modules/awful.menu.html">awful.menu</a></li>
+  <li><a href="../modules/awful.mouse.finder.html">awful.mouse.finder</a></li>
+  <li><a href="../modules/awful.mouse.html">awful.mouse</a></li>
+  <li><a href="../modules/awful.placement.html">awful.placement</a></li>
+  <li><a href="../modules/awful.prompt.html">awful.prompt</a></li>
+  <li><a href="../modules/awful.remote.html">awful.remote</a></li>
+  <li><a href="../modules/awful.rules.html">awful.rules</a></li>
+  <li><a href="../modules/awful.screen.html">awful.screen</a></li>
+  <li><a href="../modules/awful.startup_notification.html">awful.startup_notification</a></li>
+  <li><a href="../modules/awful.tag.html">awful.tag</a></li>
+  <li><a href="../modules/awful.titlebar.html">awful.titlebar</a></li>
+  <li><a href="../modules/awful.tooltip.html">awful.tooltip</a></li>
+  <li><a href="../modules/awful.util.html">awful.util</a></li>
+  <li><a href="../modules/awful.wibox.html">awful.wibox</a></li>
+  <li><a href="../modules/awful.widget.button.html">awful.widget.button</a></li>
+  <li><a href="../modules/awful.widget.common.html">awful.widget.common</a></li>
+  <li><a href="../modules/awful.widget.graph.html">awful.widget.graph</a></li>
+  <li><a href="../modules/awful.widget.html">awful.widget</a></li>
+  <li><a href="../modules/awful.widget.launcher.html">awful.widget.launcher</a></li>
+  <li><a href="../modules/awful.widget.layoutbox.html">awful.widget.layoutbox</a></li>
+  <li><a href="../modules/awful.widget.progressbar.html">awful.widget.progressbar</a></li>
+  <li><a href="../modules/awful.widget.prompt.html">awful.widget.prompt</a></li>
+  <li><a href="../modules/awful.widget.taglist.html">awful.widget.taglist</a></li>
+  <li><a href="../modules/awful.widget.tasklist.html">awful.widget.tasklist</a></li>
+  <li><a href="../modules/awful.widget.textclock.html">awful.widget.textclock</a></li>
+  <li><a href="../modules/beautiful.html">beautiful</a></li>
+  <li><a href="../modules/gears.color.html">gears.color</a></li>
+  <li><a href="../modules/gears.debug.html">gears.debug</a></li>
+  <li><a href="../modules/gears.html">gears</a></li>
+  <li><a href="../modules/gears.object.html">gears.object</a></li>
+  <li><a href="../modules/gears.sort.html">gears.sort</a></li>
+  <li><a href="../modules/gears.surface.html">gears.surface</a></li>
+  <li><a href="../modules/gears.wallpaper.html">gears.wallpaper</a></li>
+  <li><a href="../modules/menubar.html">menubar</a></li>
+  <li><a href="../modules/menubar.menu_gen.html">menubar.menu_gen</a></li>
+  <li><a href="../modules/menubar.utils.html">menubar.utils</a></li>
+  <li><strong>naughty</strong></li>
+  <li><a href="../modules/wibox.drawable.html">wibox.drawable</a></li>
+  <li><a href="../modules/wibox.html">wibox</a></li>
+  <li><a href="../modules/wibox.layout.align.html">wibox.layout.align</a></li>
+  <li><a href="../modules/wibox.layout.base.html">wibox.layout.base</a></li>
+  <li><a href="../modules/wibox.layout.constraint.html">wibox.layout.constraint</a></li>
+  <li><a href="../modules/wibox.layout.fixed.html">wibox.layout.fixed</a></li>
+  <li><a href="../modules/wibox.layout.flex.html">wibox.layout.flex</a></li>
+  <li><a href="../modules/wibox.layout.html">wibox.layout</a></li>
+  <li><a href="../modules/wibox.layout.margin.html">wibox.layout.margin</a></li>
+  <li><a href="../modules/wibox.layout.mirror.html">wibox.layout.mirror</a></li>
+  <li><a href="../modules/wibox.layout.rotate.html">wibox.layout.rotate</a></li>
+  <li><a href="../modules/wibox.widget.background.html">wibox.widget.background</a></li>
+  <li><a href="../modules/wibox.widget.base.html">wibox.widget.base</a></li>
+  <li><a href="../modules/wibox.widget.imagebox.html">wibox.widget.imagebox</a></li>
+  <li><a href="../modules/wibox.widget.html">wibox.widget</a></li>
+  <li><a href="../modules/wibox.widget.systray.html">wibox.widget.systray</a></li>
+  <li><a href="../modules/wibox.widget.textbox.html">wibox.widget.textbox</a></li>
+  <li><a href="../modules/awesome.html">awesome</a></li>
+  <li><a href="../modules/button.html">button</a></li>
+  <li><a href="../modules/client.html">client</a></li>
+  <li><a href="../modules/dbus.html">dbus</a></li>
+  <li><a href="../modules/drawable.html">drawable</a></li>
+  <li><a href="../modules/drawin.html">drawin</a></li>
+  <li><a href="../modules/key.html">key</a></li>
+  <li><a href="../modules/keygrabber.html">keygrabber</a></li>
+  <li><a href="../modules/mouse.html">mouse</a></li>
+  <li><a href="../modules/mousegrabber.html">mousegrabber</a></li>
+  <li><a href="../modules/root.html">root</a></li>
+  <li><a href="../modules/screen.html">screen</a></li>
+  <li><a href="../modules/selection.html">selection</a></li>
+  <li><a href="../modules/tag.html">tag</a></li>
+  <li><a href="../modules/timer.html">timer</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>naughty</code></h1>
+<p></p>
+<p></p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>Copyright</strong>: 2008 koniu</li>
+        <li><strong>Release</strong>: devel</li>
+        <li><strong>Author</strong>: koniu &lt;gkusnierz@gmail.com&gt;</li>
+    </ul>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#suspend">suspend ()</a></td>
+	<td class="summary">Suspend notifications</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#resume">resume ()</a></td>
+	<td class="summary">Resume notifications</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#toggle">toggle ()</a></td>
+	<td class="summary">Toggle notification state</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#destroy">destroy (notification)</a></td>
+	<td class="summary">Destroy notification by notification object</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#notify">notify (text, title, timeout, hover_timeout, screen, position, ontop, height, width, font, icon, icon_size, fg, bg, border_width, border_color, run, preset, replaces_id, callback)</a></td>
+	<td class="summary">Create notification.</td>
+	</tr>
+</table>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#config">config</a></td>
+	<td class="summary">Naughty configuration - a table containing common popup settings.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.icon_dirs">naughty.config.icon_dirs</a></td>
+	<td class="summary">List of directories that will be checked by getIcon()
+   Default: { "/usr/share/pixmaps/", }</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.icon_formats">naughty.config.icon_formats</a></td>
+	<td class="summary">List of formats that will be checked by getIcon()
+   Default: { "png", "gif" }</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.presets">naughty.config.presets</a></td>
+	<td class="summary">Notification Presets - a table containing presets for different purposes
+ Preset is a table of any parameters available to notify(), overriding default
+ values (@see defaults)
+ You have to pass a reference of a preset in your notify() call to use the preset
+ The presets "low", "normal" and "critical" are used for notifications over DBUS</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.defaults">naughty.config.defaults</a></td>
+	<td class="summary">Default values for the params to notify().</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.mapping">naughty.config.mapping</a></td>
+	<td class="summary">DBUS notification to preset mapping
+ The first element is an object containing the filter
+ If the rules in the filter matches the associated preset will be applied
+ The rules object can contain: urgency, category, appname
+ The second element is the preset</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#notifications">notifications</a></td>
+	<td class="summary">Index of notifications per screen and position.</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.padding">naughty.config.padding</a></td>
+	<td class="summary">Space between popups and edge of the workarea.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.spacing">naughty.config.spacing</a></td>
+	<td class="summary">Spacing between popups.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#naughty.config.notify_callback">naughty.config.notify_callback</a></td>
+	<td class="summary">Callback used to modify or reject notifications.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "suspend"></a>
+    <strong>suspend ()</strong>
+    </dt>
+    <dd>
+    Suspend notifications
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "resume"></a>
+    <strong>resume ()</strong>
+    </dt>
+    <dd>
+    Resume notifications
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "toggle"></a>
+    <strong>toggle ()</strong>
+    </dt>
+    <dd>
+    Toggle notification state
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "destroy"></a>
+    <strong>destroy (notification)</strong>
+    </dt>
+    <dd>
+    Destroy notification by notification object
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">notification</span>
+         Notification object to be destroyed
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        True if the popup was successfully destroyed, nil otherwise
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "notify"></a>
+    <strong>notify (text, title, timeout, hover_timeout, screen, position, ontop, height, width, font, icon, icon_size, fg, bg, border_width, border_color, run, preset, replaces_id, callback)</strong>
+    </dt>
+    <dd>
+    Create notification.  args is a dictionary of (optional) arguments.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+         Text of the notification. Default: ''
+        </li>
+        <li><span class="parameter">title</span>
+         Title of the notification. Default: nil
+        </li>
+        <li><span class="parameter">timeout</span>
+         Time in seconds after which popup expires.
+   Set 0 for no timeout. Default: 5
+        </li>
+        <li><span class="parameter">hover_timeout</span>
+         Delay in seconds after which hovered popup disappears.
+   Default: nil
+        </li>
+        <li><span class="parameter">screen</span>
+         Target screen for the notification. Default: 1
+        </li>
+        <li><span class="parameter">position</span>
+         Corner of the workarea displaying the popups.
+   Values: "top_right" (default), "top_left", "bottom_left", "bottom_right".
+        </li>
+        <li><span class="parameter">ontop</span>
+         Boolean forcing popups to display on top. Default: true
+        </li>
+        <li><span class="parameter">height</span>
+         Popup height. Default: nil (auto)
+        </li>
+        <li><span class="parameter">width</span>
+         Popup width. Default: nil (auto)
+        </li>
+        <li><span class="parameter">font</span>
+         Notification font. Default: beautiful.font or awesome.font
+        </li>
+        <li><span class="parameter">icon</span>
+         Path to icon. Default: nil
+        </li>
+        <li><span class="parameter">icon_size</span>
+         Desired icon size in px. Default: nil
+        </li>
+        <li><span class="parameter">fg</span>
+         Foreground color. Default: beautiful.fg_focus or '#ffffff'
+        </li>
+        <li><span class="parameter">bg</span>
+         Background color. Default: beautiful.bg_focus or '#535d6c'
+        </li>
+        <li><span class="parameter">border_width</span>
+         Border width. Default: 1
+        </li>
+        <li><span class="parameter">border_color</span>
+         Border color.
+   Default: beautiful.border_focus or '#535d6c'
+        </li>
+        <li><span class="parameter">run</span>
+         Function to run on left click. Default: nil
+        </li>
+        <li><span class="parameter">preset</span>
+         Table with any of the above parameters. Note: Any parameters
+   specified directly in args will override ones defined in the preset.
+        </li>
+        <li><span class="parameter">replaces_id</span>
+         Replace the notification with the given ID
+        </li>
+        <li><span class="parameter">callback</span>
+         function that will be called with all arguments
+  the notification will only be displayed if the function returns true
+  note: this function is only relevant to notifications sent via dbus
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        The notification object
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">naughty.notify({ title = <span class="string">"Achtung!"</span>, text = <span class="string">"You're idling"</span>, timeout = <span class="number">0</span> })</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2><a name="Tables"></a>Tables</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "config"></a>
+    <strong>config</strong>
+    </dt>
+    <dd>
+    Naughty configuration - a table containing common popup settings.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.icon_dirs"></a>
+    <strong>naughty.config.icon_dirs</strong>
+    </dt>
+    <dd>
+    List of directories that will be checked by getIcon()
+   Default: { "/usr/share/pixmaps/", }
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">/usr/share/pixmaps/</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.icon_formats"></a>
+    <strong>naughty.config.icon_formats</strong>
+    </dt>
+    <dd>
+    List of formats that will be checked by getIcon()
+   Default: { "png", "gif" }
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">png</span>
+
+        </li>
+        <li><span class="parameter">gif</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.presets"></a>
+    <strong>naughty.config.presets</strong>
+    </dt>
+    <dd>
+    Notification Presets - a table containing presets for different purposes
+ Preset is a table of any parameters available to notify(), overriding default
+ values (@see defaults)
+ You have to pass a reference of a preset in your notify() call to use the preset
+ The presets "low", "normal" and "critical" are used for notifications over DBUS
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">low</span>
+         The preset for notifications with low urgency level
+        </li>
+        <li><span class="parameter">normal</span>
+         The default preset for every notification without a preset that will also be used for normal urgency level
+        </li>
+        <li><span class="parameter">critical</span>
+         The preset for notifications with a critical urgency level
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.defaults"></a>
+    <strong>naughty.config.defaults</strong>
+    </dt>
+    <dd>
+    Default values for the params to notify().
+ These can optionally be overridden by specifying a preset
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+
+        </li>
+        <li><span class="parameter">text</span>
+
+        </li>
+        <li><span class="parameter">screen</span>
+
+        </li>
+        <li><span class="parameter">ontop</span>
+
+        </li>
+        <li><span class="parameter">margin</span>
+
+        </li>
+        <li><span class="parameter">border_width</span>
+
+        </li>
+        <li><span class="parameter">position</span>
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../modules/naughty.html#naughty.config.presets">naughty.config.presets</a></li>
+         <li><a href="../modules/naughty.html#notify">naughty.notify</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.mapping"></a>
+    <strong>naughty.config.mapping</strong>
+    </dt>
+    <dd>
+    DBUS notification to preset mapping
+ The first element is an object containing the filter
+ If the rules in the filter matches the associated preset will be applied
+ The rules object can contain: urgency, category, appname
+ The second element is the preset
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">{</span>
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "notifications"></a>
+    <strong>notifications</strong>
+    </dt>
+    <dd>
+    Index of notifications per screen and position.  See config table for valid
+ 'position' values. Each element is a table consisting of:
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">box</span>
+         Wibox object containing the popup
+        </li>
+        <li><span class="parameter">height</span>
+         Popup height
+        </li>
+        <li><span class="parameter">width</span>
+         Popup width
+        </li>
+        <li><span class="parameter">die</span>
+         Function to be executed on timeout
+        </li>
+        <li><span class="parameter">id</span>
+         Unique notification id based on a counter
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2><a name="Fields"></a>Fields</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "naughty.config.padding"></a>
+    <strong>naughty.config.padding</strong>
+    </dt>
+    <dd>
+    Space between popups and edge of the workarea.  Default: 4
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.spacing"></a>
+    <strong>naughty.config.spacing</strong>
+    </dt>
+    <dd>
+    Spacing between popups.  Default: 1
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "naughty.config.notify_callback"></a>
+    <strong>naughty.config.notify_callback</strong>
+    </dt>
+    <dd>
+    Callback used to modify or reject notifications.
+   Default: nil
+   Example:
+      naughty.config.notify_callback = function(args)
+          args.text = 'prefix: ' .. args.text
+          return args
+      end
+
+
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-03-06 15:14:33 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

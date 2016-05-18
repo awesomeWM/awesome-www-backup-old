@@ -1,0 +1,744 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#990 : Bitcoin-qt crashes Awesome</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=990" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1030" title="Unconfirmed | Wine floating windows move to the right&amp;down by themselves | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#990 - Bitcoin-qt crashes Awesome  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a>     	 - Saturday, 21 April 2012, 18:23 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Saturday, 05 May 2012, 08:08 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Awesome crashes when I start bitcoin-qt v0.6.0.6 app (http://bitcoin.org):<br />
+<br />
+E: awesome: signal_fatal:259: dumping backtrace<br />
+awesome(backtrace_get+0x41) [0x424561]<br />
+awesome() [0x40dfdc]<br />
+/lib/x86_64-linux-gnu/libc.so.6() [0x31940324f0]<br />
+/usr/lib/libstartup-notification-1.so.0() [0x30c6205097]<br />
+/usr/lib/libstartup-notification-1.so.0() [0x30c620625c]<br />
+/usr/lib/libstartup-notification-1.so.0(sn_list_foreach+0x2c) [0x30c6204c3c]<br />
+/usr/lib/libstartup-notification-1.so.0(sn_internal_xmessage_process_client_message+0x1c8) [0x30c6206868]<br />
+/usr/lib/libstartup-notification-1.so.0(sn_xcb_display_process_event+0x49) [0x30c6203cf9]<br />
+awesome(event_handle+0x747) [0x411d27]<br />
+awesome() [0x40dcf4]<br />
+/usr/lib/libev.so.4(ev_invoke_pending+0x8f) [0x7f534474366f]<br />
+/usr/lib/libev.so.4(ev_run+0x835) [0x7f53447466f5]<br />
+awesome(main+0xa79) [0x40da49]<br />
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xfd) [0x319401eead]<br />
+awesome() [0x40dbe9]<br />
+<br />
+It doesn&#039;t crash every time but usually after 2-3 restarts of bitcoin client it does. My rc.lua:<a href=" http://pastebin.com/vm5tzfuR"> http://pastebin.com/vm5tzfuR</a> I&#039;m using Debian Wheezy amd64. I tried both repository version 3.4.11 and latest git without any difference.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Saturday, 05 May 2012, 08:08 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Not a bug<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Hm, we don&#039;t have a &quot;Not our
+bug&quot; reason for closing tasks.
+Anyway, bug seems to be elsewhere.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (25)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2958" id="comment2958"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2958">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 21 April 2012, 19:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can you get debug symbols for awesome and libstartup-notification (nope, looks like there is no debian package for that)? Could you run awesome under gdb and get me a &quot;bt full&quot;? Or perhaps run awesome under valgrind?</div></div>
+
+  
+    <em>
+    <a name="comment2959" id="comment2959"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2959">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 21 April 2012, 19:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh and I&#039;d like to see the result of &quot;p *event&quot; in frame 8 (&quot;frame 8&quot; in gdb, if I count right, frame 8 should be event_handle()) and the result of running xlsclients to see which event awesome is handling while it dies.</div></div>
+
+  
+    <em>
+    <a name="comment2960" id="comment2960"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2960">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Wednesday, 25 April 2012, 08:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, sorry for a delay, I expected the bugtracker send me an email on updates but it was set to jabber which probably doesn&#039;t work. Anyway, I&#039;ll do what you ask today. For now some update, I don&#039;t experience crashes on another Debian installation (32 bit though) on Intel video. I do all the tests on a separate X instance to keep things clean and to keep my other apps running so there should be two clients: xfce4-terminal and bitcoin-qt. Though crash occures even without xfce4-terminal.</div></div>
+
+  
+    <em>
+    <a name="comment2961" id="comment2961"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2961">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Wednesday, 25 April 2012, 19:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, I need a little help figuring it out. I&#039;m python guy so I have close to zero experience with C/C++ on GNU/Linux. What exactly should I do to build Awesome with debug symbols? I&#039;d like to install it to the separate directory as well as libstartup-notification. I hope export CMAKE_PREFIX_PATH=/opt/awesome should do it but I doubt debug is enabled by default. Also no gdb knowledge either so please tell me step by step what commands to enter in gdb.</div></div>
+
+  
+    <em>
+    <a name="comment2962" id="comment2962"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2962">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 25 April 2012, 20:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Meh, I can&#039;t find any bitcoin-qt packages for debian. Will try to try on my archlinux box, but that might take a while. Let&#039;s hope that it crashes here, too.<br />
+<br />
+For compiling awesome with debug symbols:<a href=" http://awesome.naquadah.org/wiki/Debugging"> http://awesome.naquadah.org/wiki/Debugging</a><br />
+No clue for libstartup-notification.<br />
+No clue if the export works. The wiki seems to suggest make CMAKE_ARGS=&quot;-DCMAKE_PREFIX_PATH=/opt/awesome&quot;, but I&#039;m not sure on that one.</div></div>
+
+  
+    <em>
+    <a name="comment2963" id="comment2963"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2963">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Thursday, 26 April 2012, 07:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Bitcoin-qt is included in the official package of Bitcoin (tgz, universal 32 and 64-bit binaries without packaging):<a href=" http://bitcoin.org/"> http://bitcoin.org/</a> I tried compiling bitcoin from the git source and it crashed Awesome the same way so there&#039;s no difference. I&#039;ll experiment with a clean VM and Debian netinst amd64 to make sure none of my other programs affects this.</div></div>
+
+  
+    <em>
+    <a name="comment2964" id="comment2964"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2964">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 26 April 2012, 07:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">bitcoin-qt (6.0.6-beta) and startup-notification (0.12-2) from arch, awesome is v3.4-592-gf3f9834 (master branch). Started bitcoin-qt a couple of times and nothing crashed yet.<br />
+<br />
+Could you try running bitcoin-qt under a clean profile? In other words, add a new user and start it from there. This is basically what I did and no crahes here.</div></div>
+
+  
+    <em>
+    <a name="comment2965" id="comment2965"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2965">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Thursday, 26 April 2012, 07:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Did you use my rc.lua? It didn&#039;t crash for me, too, when I used the default rc.lua but with my custom one it did. Ok, I&#039;ll try with the empty profile. Also, I have libstartup-notification0 of version 0.12-1.</div></div>
+
+  
+    <em>
+    <a name="comment2966" id="comment2966"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2966">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=630">Arvydas Sidorenko (Asido)</a> -
+    Thursday, 26 April 2012, 09:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I tried it on Gentoo with yesterday built Awesome from git. The distro is running on [testing] repo. No crashes with my own nor your provided rc.lua</div></div>
+
+  
+    <em>
+    <a name="comment2968" id="comment2968"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2968">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Friday, 27 April 2012, 19:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You&#039;re right, no crash when running on a newly created user. But our culprit seems to be found, it&#039;s Qt. Here&#039;s my ~/.config/Trolltech.conf :<a href=" http://pastebin.com/sfVZ6ide"> http://pastebin.com/sfVZ6ide</a> After copying it to that test user awesome started crashing after launching bitcoin-qt -testnet -server<br />
+I&#039;m using those flags to speedup the launch process because testnet is much smaller and loads faster than the main network.</div></div>
+
+  
+    <em>
+    <a name="comment2969" id="comment2969"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2969">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 08:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Since I&#039;m using GTK+ theme for Qt here are two configs of GTK: ~/.gtkrc-2.0<a href=" http://pastebin.com/i70V2ZrW"> http://pastebin.com/i70V2ZrW</a> and ~/.gtkrc.mine<a href=" http://pastebin.com/6kNcfQVf"> http://pastebin.com/6kNcfQVf</a></div></div>
+
+  
+    <em>
+    <a name="comment2970" id="comment2970"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2970">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 09:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Did some tests, the problem is definitely GTK+ style for Qt. Other styles like Motif, CDE, Cleanlooks etc. doesn&#039;t lead to crash. Choosing GTK+ in qtconfig does. It happens regardless of the actual GTK theme, I choose Debian, Nodoka Silver, Glossy and Clearlooks, Awesome crashed anyway.</div></div>
+
+  
+    <em>
+    <a name="comment2971" id="comment2971"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2971">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=630">Arvydas Sidorenko (Asido)</a> -
+    Monday, 30 April 2012, 10:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">FYI, in my test on gentoo i was using qtcurve set to GTK+.</div></div>
+
+  
+    <em>
+    <a name="comment2972" id="comment2972"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2972">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 12:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I set up a VM with Debian Wheezy amd64 and I can&#039;t reproduce this problem myself. On my main system it still crashes. Maybe it&#039;s a configuration issue but I have no idea which configs may affect this. I managed to compile libstartup-notification and awesome with debug symbols, here is the complete backtrace:<a href=" http://pastebin.com/5bqMzu7C"> http://pastebin.com/5bqMzu7C</a> I see some &lt;optimized out&gt; values but I did exactly as said in<a href=" http://awesome.naquadah.org/wiki/Debugging"> http://awesome.naquadah.org/wiki/Debugging</a></div></div>
+
+  
+    <em>
+    <a name="comment2973" id="comment2973"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2973">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 12:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, and that frame.<br />
+<br />
+(gdb) frame 8<br />
+#8  0x000000000040fa38 in a_xcb_check_cb (loop=&lt;optimized out&gt;, w=&lt;optimized out&gt;, <br />
+    revents=&lt;optimized out&gt;) at /home/eurekafag/svn-soft/awesome/awesome.c:196<br />
+196	            event_handle(event);<br />
+(gdb) p *event<br />
+$2 = {response_type = 161 &#039;\241&#039;, pad0 = 8 &#039;\b&#039;, sequence = 2148, pad = {8388620, 336, 973093437, <br />
+    3816777, 4130262728, 32767, 0}, full_sequence = 2148}<br /></div></div>
+
+  
+    <em>
+    <a name="comment2974" id="comment2974"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2974">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 30 April 2012, 12:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could attach the output of xlsatoms for the same X server that you generate that backtrace with?<br />
+<br />
+If you already closed that server (which I kind of expect...), could you get a new backtrace together with the corresponding xlsatoms output?<br />
+Also, that &quot;p *event&quot; is a good idea. But since I&#039;m lazy, could you also provide &quot;p *(xcb_client_message_event_t*)event&quot;?</div></div>
+
+  
+    <em>
+    <a name="comment2975" id="comment2975"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2975">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 13:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Not only I didn&#039;t close that X server I even keep gdb with crashed awesome running. Here is the xlsatoms output:<a href=" http://pastebin.com/i0FTAAh5"> http://pastebin.com/i0FTAAh5</a><br />
+And that command:<br />
+<br />
+(gdb) p *(xcb_client_message_event_t*)event<br />
+$3 = {response_type = 161 &#039;\241&#039;, format = 8 &#039;\b&#039;, sequence = 2148, window = 8388620, type = 336, <br />
+  data = {data8 = &quot;=:\000:I=:\000\310\316.\366\377\177\000\000\000\000\000&quot;, data16 = {14909, 14848, <br />
+      15689, 58, 52936, 63022, 32767, 0, 0, 0}, data32 = {973093437, 3816777, 4130262728, 32767, 0}}}<br /></div></div>
+
+  
+    <em>
+    <a name="comment2976" id="comment2976"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2976">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 13:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Aww, wrong xserver, forgot to export DISPLAY=:1<br />
+Here&#039;s the right atoms output:<a href=" http://pastebin.com/EY5y1i0C"> http://pastebin.com/EY5y1i0C</a></div></div>
+
+  
+    <em>
+    <a name="comment2977" id="comment2977"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2977">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 30 April 2012, 13:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks, you had me questioning my sanity for a moment there. :-P (THROTTLE sounded weird, _NET_STARTUP_INFO_BEGIN makes way more sense)<br />
+<br />
+So for whatever reason your bitcoin-qt is sending a badly malformed message (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1" title="Not a bug | Sample Task | 100%"  class = "closedtasklink">bug 1</a>&#160;</del>) which libstartup-notification mishandles (<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=2" title="Won&#039;t implement | XComposite support | 100%"  class = "closedtasklink">bug 2</a>&#160;</del>, don&#039;t follow the NULL pointer, for only horror awaits you at its end!).<br />
+<br />
+I will report <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=2" title="Won&#039;t implement | XComposite support | 100%"  class = "closedtasklink">bug 2</a>&#160;</del> upstream, no clue who is responsible for <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1" title="Not a bug | Sample Task | 100%"  class = "closedtasklink">bug 1</a>&#160;</del> (although I&#039;d be surprised if your qt theme sends startup notifications).<br />
+Which exact qt version do you use?</div></div>
+
+  
+    <em>
+    <a name="comment2978" id="comment2978"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2978">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 13:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">According to dpkg it&#039;s 4.7.4-3. Also, I&#039;m using uim but I don&#039;t know if it can interfere with startup.</div></div>
+
+  
+    <em>
+    <a name="comment2979" id="comment2979"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2979">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 13:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hmm, that&#039;s uim. Only if uim is configured, crash occures. If uim is just set up by default everything is fine. I&#039;ll try to find the exact setting which triggers the crash.</div></div>
+
+  
+    <em>
+    <a name="comment2980" id="comment2980"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2980">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Monday, 30 April 2012, 14:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, seems like solved. uim-pref-gtk — Toolbar — Enable menu-based input method switcher [uncheck]. While unchecked no crash occured, did about 15-20 successful launches. While checked after 3-5 starts it crashes. Thanks for your time and efforts!</div></div>
+
+  
+    <em>
+    <a name="comment2981" id="comment2981"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2981">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 30 April 2012, 16:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Reported for libstartup-notification:<a href=" https://bugs.freedesktop.org/show_bug.cgi?id=49305"> https://bugs.freedesktop.org/show_bug.cgi?id=49305</a><br />
+<br />
+Now I just need a good idea how to figure out where that evil ClientMessage is coming from. Qt&#039;s source says &quot;it&#039;s not qt&quot; (it only ever sends a &quot;remove&quot; message), uim&#039;s source code says &quot;it&#039;s not uim&quot; (no _NET_STARTUP_NOTIFICATION_BEGIN).</div></div>
+
+  
+    <em>
+    <a name="comment2982" id="comment2982"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2982">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Wednesday, 02 May 2012, 15:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So likely a memory corruption somewhere in awesome. Try to rerun this with valgrind?</div></div>
+
+  
+    <em>
+    <a name="comment2983" id="comment2983"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#comment2983">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Wednesday, 02 May 2012, 17:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It seems to be unrelated to awesome since the problem is somewhere in between libstartup-notification and uim which is known to be buggy. So I think this bug can be closed.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=990#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="990" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

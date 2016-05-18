@@ -1,0 +1,66 @@
+From d5a90a7d9515dcbc3cfaef1e10a254bcf2444e87 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20=C3=85str=C3=B6m?= <bjoast@gmail.com>
+Date: Thu, 13 Feb 2014 23:06:13 +0100
+Subject: [PATCH] Remove pseudo transparency
+
+True transparency is working in Awesome now.
+This means the pseudo transparency hack is
+no longer needed. This patch removes it.
+---
+ lib/wibox/drawable.lua.in | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
+
+diff --git a/lib/wibox/drawable.lua.in b/lib/wibox/drawable.lua.in
+index a31e618..94f46f1 100644
+--- a/lib/wibox/drawable.lua.in
++++ b/lib/wibox/drawable.lua.in
+@@ -1,13 +1,12 @@
+ ---------------------------------------------------------------------------
+ -- @author Uli Schlachter
+ -- @copyright 2012 Uli Schlachter
+--- @release @AWESOME_VERSION@
++-- @release v3.5.2-17-g94a8c72
+ ---------------------------------------------------------------------------
+ 
+ local drawable = {}
+ local capi = {
+     awesome = awesome,
+-    root = root
+ }
+ local beautiful = require("beautiful")
+ local cairo = require("lgi").cairo
+@@ -28,15 +27,7 @@ local function do_redraw(self)
+ 
+     -- Draw the background
+     cr:save()
+-    -- This is pseudo-transparency: We draw the wallpaper in the background
+-    local wallpaper = surface(capi.root.wallpaper())
+-    if wallpaper then
+-        cr.operator = cairo.Operator.SOURCE
+-        cr:set_source_surface(wallpaper, -x, -y)
+-        cr:paint()
+-    end
+-
+-    cr.operator = cairo.Operator.OVER
++    cr.operator = cairo.Operator.SOURCE
+     cr:set_source(self.background_color)
+     cr:paint()
+     cr:restore()
+@@ -261,14 +252,6 @@ function drawable.new(d, widget_arg)
+     return ret
+ end
+ 
+--- Redraw all drawables when the wallpaper changes
+-capi.awesome.connect_signal("wallpaper_changed", function()
+-    local k
+-    for k in pairs(drawables) do
+-        k()
+-    end
+-end)
+-
+ --- Handling of drawables. A drawable is something that can be drawn to.
+ -- @class table
+ -- @name drawable
+-- 
+1.8.5.3
+

@@ -1,0 +1,85 @@
+diff --git a/objects/client.c b/objects/client.c
+index 33dfa9a..f8f489c 100644
+--- a/objects/client.c
++++ b/objects/client.c
+@@ -1556,6 +1556,11 @@ client_refresh(client_t *c)
+     for (client_titlebar_t bar = CLIENT_TITLEBAR_TOP; bar < CLIENT_TITLEBAR_COUNT; bar++) {
+         if (c->titlebar[bar].drawable == NULL || c->titlebar[bar].drawable->surface == NULL)
+             continue;
++        if (!c->titlebar[bar].drawable->refreshed)
++        {
++            puts("Skipped titlebar due to not refreshed");
++            continue;
++        }
+ 
+         area_t area = titlebar_get_area(c, bar);
+         cairo_surface_flush(c->titlebar[bar].drawable->surface);
+diff --git a/objects/drawable.c b/objects/drawable.c
+index 84a032e..2efd8f5 100644
+--- a/objects/drawable.c
++++ b/objects/drawable.c
+@@ -34,6 +34,7 @@ drawable_allocator(lua_State *L, drawable_refresh_callback *callback, void *data
+     drawable_t *d = drawable_new(L);
+     d->refresh_callback = callback;
+     d->refresh_data = data;
++    d->refreshed = false;
+     d->surface = NULL;
+     return d;
+ }
+@@ -54,6 +55,7 @@ drawable_unset_surface(drawable_t *d)
+         return;
+     cairo_surface_finish(d->surface);
+     cairo_surface_destroy(d->surface);
++    d->refreshed = false;
+     d->surface = NULL;
+ }
+ 
+@@ -62,11 +64,6 @@ drawable_set_surface(drawable_t *d, int didx, cairo_surface_t *surface, area_t g
+ {
+     drawable_unset_surface(d);
+     d->surface = cairo_surface_reference(surface);
+-    /* Make sure the surface doesn't contain garbage by filling it with black */
+-    cairo_t *cr = cairo_create(surface);
+-    cairo_set_operator(cr, CAIRO_OPERATOR_CLEAR);
+-    cairo_paint(cr);
+-    cairo_destroy(cr);
+     drawable_set_geometry(d, didx, geom);
+     luaA_object_emit_signal(globalconf.L, didx, "property::surface", 0);
+ }
+@@ -109,6 +106,7 @@ static int
+ luaA_drawable_refresh(lua_State *L)
+ {
+     drawable_t *drawable = luaA_checkudata(L, 1, &drawable_class);
++    drawable->refreshed = true;
+     (*drawable->refresh_callback)(drawable->refresh_data);
+ 
+     return 0;
+diff --git a/objects/drawable.h b/objects/drawable.h
+index 732fe7e..024ae05 100644
+--- a/objects/drawable.h
++++ b/objects/drawable.h
+@@ -36,6 +36,8 @@ struct drawable_t
+     cairo_surface_t *surface;
+     /** The geometry of the drawable (in root window coordinates). */
+     area_t geometry;
++    /** Surface contents are undefined if this is false. */
++    bool refreshed;
+     /** Callback for refreshing. */
+     drawable_refresh_callback *refresh_callback;
+     /** Data for refresh callback. */
+diff --git a/objects/drawin.c b/objects/drawin.c
+index 66d8f67..5893498 100644
+--- a/objects/drawin.c
++++ b/objects/drawin.c
+@@ -237,6 +237,11 @@ drawin_refresh_pixmap_partial(drawin_t *drawin,
+ {
+     if (!drawin->visible)
+         return;
++    if (!drawin->drawable->refreshed)
++    {
++        puts("Skipped drawin due to not refreshed");
++        return;
++    }
+ 
+     /* Make cairo do all pending drawing */
+     cairo_surface_flush(drawin->drawable->surface);

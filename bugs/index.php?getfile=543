@@ -1,0 +1,11 @@
+--- util.lua	2012-11-10 09:28:30.333168905 +0100
++++ util.lua.new	2012-11-10 09:28:39.823138959 +0100
+@@ -256,7 +256,7 @@
+ -- @return A new table containing all keys from the arguments.
+ function table.join(...)
+     local ret = {}
+-    for i, t in ipairs({...}) do
++    for i, t in pairs({...}) do
+         if t then
+             for k, v in pairs(t) do
+                 if type(k) == "number" then

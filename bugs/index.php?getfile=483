@@ -1,0 +1,155 @@
+diff --git a/lib/wibox/widget/systray.lua.in b/lib/wibox/widget/systray.lua.in
+index a7e5042..efafe9a 100644
+--- a/lib/wibox/widget/systray.lua.in
++++ b/lib/wibox/widget/systray.lua.in
+@@ -6,8 +6,9 @@
+ 
+ local wbase = require("wibox.widget.base")
+ local lbase = require("wibox.layout.base")
++local color = require("gears.color")
+ local beautiful = require("beautiful")
+-local capi = { awesome = awesome }
++local capi = { awesome = awesome, oocairo = oocairo }
+ local setmetatable = setmetatable
+ local error = error
+ 
+@@ -17,11 +18,22 @@ local created_systray = false
+ local horizontal = true
+ local base_size = nil
+ 
+-function draw(box, wibox, cr, width, height)
+-    local x, y, width, height = lbase.rect_to_device_geometry(cr, 0, 0, width, height)
++function draw(box, wibox, cr, orig_width, orig_height)
++    local x, y, width, height = lbase.rect_to_device_geometry(cr, 0, 0, orig_width, orig_height)
+     local num_entries = capi.awesome.systray()
+-    local bg = beautiful.bg_systray or beautiful.bg_normal
++    local bg_color = beautiful.bg_systray
+ 
++    -- Get our background so that we can use this as the systray background
++    local bg_surface = capi.oocairo.surface_create_similar(cr:get_target(), "color-alpha", width, height)
++    local cr2 = capi.oocairo.context_create(bg_surface)
++    cr2:set_source(cr:get_group_target(), -x, -y)
++    cr2:paint()
++    if bg_color then
++        cr2:set_source(color(bg_color))
++        cr2:paint()
++    end
++
++    -- calculate our size
+     local in_dir, ortho, base
+     if horizontal then
+         in_dir, ortho = width, height
+@@ -33,7 +45,10 @@ function draw(box, wibox, cr, width, height)
+     else
+         base = in_dir / num_entries
+     end
+-    capi.awesome.systray(wibox.drawin, x, y, base, horizontal, bg)
++    capi.awesome.systray(wibox.drawin, x, y, base, horizontal, bg_surface)
++
++    -- Be careful and finish the surface instead of waiting for the gc
++    bg_surface:finish()
+ end
+ 
+ function fit(box, width, height)
+diff --git a/systray.c b/systray.c
+index 22a98c9..9a34787 100644
+--- a/systray.c
++++ b/systray.c
+@@ -23,6 +23,8 @@
+ #include <xcb/xcb_icccm.h>
+ #include <xcb/xcb_atom.h>
+ 
++#include <cairo-xcb.h>
++
+ #include "luaa.h"
+ #include "screen.h"
+ #include "systray.h"
+@@ -305,6 +307,50 @@ systray_update(int base_size, bool horizontal)
+     }
+ }
+ 
++static void
++systray_window_background(cairo_surface_t *surface)
++{
++    xcb_pixmap_t pixmap;
++    cairo_surface_t *bg;
++    cairo_t *cr;
++    double x1, y1, width, height;
++    uint32_t config_vals[1];
++
++    /* Get the surface's size. This method isn't bulletproof (e.g. unbounded
++     * recording surfaces or device offsets), but good enough.
++     */
++    cr = cairo_create(surface);
++    cairo_clip_extents(cr, &x1, &y1, &width, &height);
++    cairo_destroy(cr);
++    if (width < 1)
++        width = 1;
++    if (height < 1)
++        height = 1;
++
++    /* Create the pixmap that we will be using as background */
++    pixmap = xcb_generate_id(globalconf.connection);
++    xcb_create_pixmap(globalconf.connection, globalconf.screen->root_depth, pixmap,
++                      globalconf.systray.window, width, height);
++
++    /* Paint surface to the pixmap */
++    bg = cairo_xcb_surface_create(globalconf.connection, pixmap,
++                                  globalconf.default_visual, width, height);
++    cr = cairo_create(bg);
++    cairo_set_source_surface(cr, surface, 0, 0);
++    cairo_set_operator(cr, CAIRO_OPERATOR_SOURCE);
++    cairo_paint(cr);
++    cairo_destroy(cr);
++    cairo_surface_flush(bg);
++    cairo_surface_finish(bg);
++    cairo_surface_destroy(bg);
++
++    /* Now set our pixmap as the background pixmap */
++    config_vals[0] = pixmap;
++    xcb_change_window_attributes(globalconf.connection, globalconf.systray.window,
++                                 XCB_CW_BACK_PIXMAP, config_vals);
++    xcb_free_pixmap(globalconf.connection, pixmap);
++}
++
+ /** Update the systray
+  * \param L The Lua VM state.
+  * \return The number of elements pushed on stack.
+@@ -320,22 +366,14 @@ luaA_systray(lua_State *L)
+ {
+     if(lua_gettop(L) != 0)
+     {
+-        size_t bg_len;
+         drawin_t *w = luaA_checkudata(L, 1, &drawin_class);
+         int x = luaL_checknumber(L, 2);
+         int y = luaL_checknumber(L, 3);
+         int base_size = luaL_checknumber(L, 4);
+         bool horiz = lua_toboolean(L, 5);
+-        const char *bg = luaL_checklstring(L, 6, &bg_len);
+-        color_t bg_color;
++        cairo_surface_t **background = (cairo_surface_t **)luaL_checkudata(L, 6, OOCAIRO_MT_NAME_SURFACE);
+ 
+-        if(color_init_reply(color_init_unchecked(&bg_color, bg, bg_len)))
+-        {
+-            uint32_t config_back[] = { bg_color.pixel };
+-            xcb_change_window_attributes(globalconf.connection,
+-                                         globalconf.systray.window,
+-                                         XCB_CW_BACK_PIXEL, config_back);
+-        }
++        systray_window_background(*background);
+ 
+         if(globalconf.systray.parent == NULL)
+             systray_register();
+diff --git a/themes/sky/theme.lua.in b/themes/sky/theme.lua.in
+index 9717e3f..f435fc2 100644
+--- a/themes/sky/theme.lua.in
++++ b/themes/sky/theme.lua.in
+@@ -9,7 +9,7 @@ theme = {}
+ theme.font          = "sans 8"
+ 
+ theme.bg_focus      = "#e2eeea"
+-theme.bg_normal     = "#729fcf"
++theme.bg_normal     = "#729fcf80"
+ theme.bg_urgent     = "#fce94f"
+ theme.bg_minimize   = "#0067ce"
+ theme.bg_systray    = theme.bg_normal

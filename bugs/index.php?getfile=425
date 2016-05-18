@@ -1,0 +1,125 @@
+xwininfo: Please select the window about which you
+          would like information by clicking the
+          mouse in that window.
+
+xwininfo: Window id: 0xe0000e (has no name)
+
+  Root window id: 0xa7 (the root window) (has no name)
+  Parent window id: 0xa7 (the root window) (has no name)
+     1 child:
+     0x1400d52 "The Kooks - Konk - See The Sun (2008)": ("lxterminal" "Lxterminal")  672x741+0+0  +2+21
+        2 children:
+        0x1400d57 (has no name): ()  657x715+0+26  +2+47
+        0x1400d53 (has no name): ()  1x1+-1+-1  +1+20
+
+  Absolute upper-left X:  0
+  Absolute upper-left Y:  19
+  Relative upper-left X:  0
+  Relative upper-left Y:  19
+  Width: 672
+  Height: 741
+  Depth: 24
+  Visual: 0x23
+  Visual Class: TrueColor
+  Border width: 2
+  Class: InputOutput
+  Colormap: 0x20 (installed)
+  Bit Gravity State: NorthWestGravity
+  Window Gravity State: NorthWestGravity
+  Backing Store State: NotUseful
+  Save Under State: no
+  Map State: IsViewable
+  Override Redirect State: yes
+  Corners:  +0+19  -690+19  -690-4  +0-4
+  -geometry 672x741+0-4
+
+  Bit gravity: NorthWestGravity
+  Window gravity: NorthWestGravity
+  Backing-store hint: NotUseful
+  Backing-planes to be preserved: 0xffffffff
+  Backing pixel: 0
+  Save-unders: No
+
+  Someone wants these events:
+      EnterWindow
+      LeaveWindow
+      StructureNotify
+      SubstructureNotify
+      SubstructureRedirect
+      PropertyChange
+  Do not propagate these events:
+  Override redirection?: Yes
+
+  No window manager hints defined
+  Window manager hints:
+      Process id: (unknown)
+
+  No normal window size hints defined
+  No zoom window size hints defined
+
+  No window shape defined
+  No border shape defined
+
+[kukman@archbook ~]$ xwininfo -frame -all
+
+xwininfo: Please select the window about which you
+          would like information by clicking the
+          mouse in that window.
+
+xwininfo: Window id: 0xe0000a (has no name)
+
+  Root window id: 0xa7 (the root window) (has no name)
+  Parent window id: 0xa7 (the root window) (has no name)
+     1 child:
+     0x1400004 "kukman@archbook:~": ("lxterminal" "Lxterminal")  686x730+0+0  +678+21
+        2 children:
+        0x1400035 (has no name): ()  665x664+3+63  +681+84
+        0x1400005 (has no name): ()  1x1+-1+-1  +677+20
+
+  Absolute upper-left X:  676
+  Absolute upper-left Y:  19
+  Relative upper-left X:  676
+  Relative upper-left Y:  19
+  Width: 686
+  Height: 730
+  Depth: 24
+  Visual: 0x23
+  Visual Class: TrueColor
+  Border width: 2
+  Class: InputOutput
+  Colormap: 0x20 (installed)
+  Bit Gravity State: NorthWestGravity
+  Window Gravity State: NorthWestGravity
+  Backing Store State: NotUseful
+  Save Under State: no
+  Map State: IsViewable
+  Override Redirect State: yes
+  Corners:  +676+19  -0+19  -0-15  +676-15
+  -geometry 686x730-0-15
+
+  Bit gravity: NorthWestGravity
+  Window gravity: NorthWestGravity
+  Backing-store hint: NotUseful
+  Backing-planes to be preserved: 0xffffffff
+  Backing pixel: 0
+  Save-unders: No
+
+  Someone wants these events:
+      EnterWindow
+      LeaveWindow
+      StructureNotify
+      SubstructureNotify
+      SubstructureRedirect
+      PropertyChange
+  Do not propagate these events:
+  Override redirection?: Yes
+
+  No window manager hints defined
+  Window manager hints:
+      Process id: (unknown)
+
+  No normal window size hints defined
+  No zoom window size hints defined
+
+  No window shape defined
+  No border shape defined

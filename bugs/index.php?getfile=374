@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# .xinitrc for dashkal@glyph.darksky.ca
+
+# Source the profile
+[ -f /etc/profile ] && . /etc/profile
+
+# Environment
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# Load resources
+xrdb -merge /home/dashkal/.Xresources
+
+# Default cursor
+#xsetroot -cursor_name left_ptr
+
+# Composisting
+#xcompmgr -n &
+
+# Apps
+numlockx
+#wicd-client &
+xscreensaver -no-splash &
+conky &
+
+# Window Manager
+exec /usr/bin/awesome

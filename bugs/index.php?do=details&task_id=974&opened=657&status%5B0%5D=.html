@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#974 : Window title is replaced by &quot;invalid&quot; if minimized and contains national characters</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=657&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#974 - Window title is replaced by &quot;invalid&quot; if minimized and contains national characters  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a>     	 - Tuesday, 13 March 2012, 16:22 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.11</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">On some setups (awesome 3.4.11 on Gentoo, 3.4.6 on Debian Squeeze), some windows have incosistent title in taskbar when hidden/minimized. Instead of window title (I see this right now in Opera windows, which normally has title &quot;Stíny Plamenů  oficiální stránka - Opera&quot;), only &quot;invalid&quot; in italic is shown.<br />
+<br />
+I suppose this is due to encoding problems, since when the title for opera is without national characters (right now &quot;awesome BTS - awesome: New Task - Opera&quot;), it works as it should.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (13)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2892" id="comment2892"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2892">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 13 March 2012, 17:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could you figure out what exactly the title is set to?<br />
+<br />
+Here is how:<br />
+<br />
+- Figure out the window id. For this, run &quot;xwininfo -root -tree&quot;. This command shows the window names which should help identify the right now. For this example I&#039;ll choose my browser window (luakit):<br />
+$ xwininfo -root -tree | grep luakit<br />
+     0x120004c &quot;luakit&quot;: ()  10x10+-100+-100  +-100+-100<br />
+     0x1200004 &quot;luakit&quot;: (&quot;luakit&quot; &quot;Luakit&quot;)  200x200+0+0  +0+0<br />
+     0x1200001 &quot;luakit&quot;: (&quot;luakit&quot; &quot;Luakit&quot;)  10x10+10+10  +10+10<br />
+        0x120001c &quot;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%" >FS#974</a> : Window title is replaced by &quot;invalid&quot; if minimized and contains nationa...&quot;: (&quot;luakit&quot; &quot;luakit&quot;)  1680x1030+0+0  +0+20<br />
+- I have four different windows with &quot;luakit&quot;, but only one has the &quot;correct&quot; name. If the name isn&#039;t enough for identifying the right window, you can also use the window size (in this case 1680x1030)<br />
+- Now I can minimize luakit and still run &quot;xprop&quot; on it:<br />
+$ xprop -id 0x120001c | grep NAME<br />
+WM_LOCALE_NAME(STRING) = &quot;de_DE.UTF-8&quot;<br />
+WM_ICON_NAME(STRING) = &quot;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%" >FS#974</a> : Window title is replaced by &quot;invalid&quot; if minimized and contains nationa...&quot;<br />
+_NET_WM_ICON_NAME(UTF8_STRING) = &quot;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%" >FS#974</a> : Window title is replaced by \&quot;invalid\&quot; if minimized and contains nationa...&quot;<br />
+WM_NAME(STRING) = &quot;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%" >FS#974</a> : Window title is replaced by &quot;invalid&quot; if minimized and contains nationa...&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974&amp;opened=657&amp;status%5B0%5D=" title="Unconfirmed | Window title is replaced by &quot;invalid&quot; if minimized and contains  | 0%" >FS#974</a> : Window title is replaced by \&quot;invalid\&quot; if minimized and contains nationa...&quot;<br />
+<br />
+(For why I am asking this:<a href=" http://luakit.org/issues/78"> http://luakit.org/issues/78</a> which is a bug in luakit where it produces invalid UTF-8)</div></div>
+
+  
+    <em>
+    <a name="comment2893" id="comment2893"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2893">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Tuesday, 13 March 2012, 17:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve done it and run xprop twice: first on normal window, second on minimized window. The result seems to be the same:<br />
+<br />
+krakonos@muskox ~ $ xprop -id 0x600009 | grep NAME<br />
+OPERA_WINDOW_NAME(STRING) = &quot;o&quot;, &quot;p&quot;, &quot;e&quot;, &quot;r&quot;, &quot;a&quot;, &quot;1&quot;<br />
+WM_ICON_NAME(COMPOUND_TEXT) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+WM_NAME(COMPOUND_TEXT) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF8&quot;<br />
+krakonos@muskox ~ $ xprop -id 0x600009 | grep NAME<br />
+OPERA_WINDOW_NAME(STRING) = &quot;o&quot;, &quot;p&quot;, &quot;e&quot;, &quot;r&quot;, &quot;a&quot;, &quot;1&quot;<br />
+WM_ICON_NAME(COMPOUND_TEXT) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+WM_NAME(COMPOUND_TEXT) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;Stíny Plamenů - oficiální stránka - Opera&quot;<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF8&quot;<br /></div></div>
+
+  
+    <em>
+    <a name="comment2894" id="comment2894"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2894">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Tuesday, 13 March 2012, 17:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hey, I just noticed that you may have wanted the escaped version. Here it is. It&#039;s strange that the third letter is once represented both as \355 and \303.<br />
+<br />
+krakonos@muskox ~ $ LC_ALL=&quot;en_US.ISO-8859-1&quot; xprop -id 0x600009 | grep NAME<br />
+OPERA_WINDOW_NAME(STRING) = &quot;o&quot;, &quot;p&quot;, &quot;e&quot;, &quot;r&quot;, &quot;a&quot;, &quot;1&quot;<br />
+WM_ICON_NAME(COMPOUND_TEXT) = &quot;St\355ny Plamen\033-B\371 - ofici\033-A\341ln\355 str\341nka - Opera&quot;<br />
+WM_NAME(COMPOUND_TEXT) = &quot;St\355ny Plamen\033-B\371 - ofici\033-A\341ln\355 str\341nka - Opera&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;St\303\255ny Plamen\305\257 - ofici\303\241ln\303\255 str\303\241nka - Opera&quot;<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF8&quot;<br />
+krakonos@muskox ~ $ LC_ALL=&quot;en_US.ISO-8859-1&quot; xprop -id 0x600009 | grep NAME<br />
+OPERA_WINDOW_NAME(STRING) = &quot;o&quot;, &quot;p&quot;, &quot;e&quot;, &quot;r&quot;, &quot;a&quot;, &quot;1&quot;<br />
+WM_ICON_NAME(COMPOUND_TEXT) = &quot;St\355ny Plamen\033-B\371 - ofici\033-A\341ln\355 str\341nka - Opera&quot;<br />
+WM_NAME(COMPOUND_TEXT) = &quot;St\355ny Plamen\033-B\371 - ofici\033-A\341ln\355 str\341nka - Opera&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;St\303\255ny Plamen\305\257 - ofici\303\241ln\303\255 str\303\241nka - Opera&quot;<br />
+WM_LOCALE_NAME(STRING) = &quot;en_US.UTF8&quot;<br /></div></div>
+
+  
+    <em>
+    <a name="comment2898" id="comment2898"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2898">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 25 March 2012, 18:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I had no idea about this bug, but just now that changed:<br />
+<br />
+_NET_WM_NAME is used normally, _NET_WM_ICON_NAME is used when the window is minimized. These two properties are encoded in utf8 and should always work fine.<br />
+<br />
+The older properties WM_NAME and WM_ICON_NAME however are encoded in some &quot;locale encoding&quot; and I never figured out what the correct way to handle these is. I guess this bug is about &quot;awesome guesses the local encoding wrongly&quot;.<br />
+Normally this wouldn&#039;t be a problem because we have _NET_WM_NAME in utf8. But in the minimized case, we have to fall back to WM_ICON_NAME and stuff goes wrong. No idea what to do about this yet.</div></div>
+
+  
+    <em>
+    <a name="comment2907" id="comment2907"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2907">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 26 March 2012, 08:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uli: you should dig into some old WM, IIRC there&#039;s a function in Xlib that&#039;s used to translate encoding for things like that. I just can&#039;t recall the name.</div></div>
+
+  
+    <em>
+    <a name="comment2917" id="comment2917"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2917">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 14:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry jd, but old WMs use core fonts and XDrawString(). They don&#039;t need to handle unicode input, instead all their texts is already in the local encoding.</div></div>
+
+  
+    <em>
+    <a name="comment2919" id="comment2919"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2919">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 26 March 2012, 15:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Maybe dig into &quot;xlibi18n&quot; in libx11? :(</div></div>
+
+  
+    <em>
+    <a name="comment2920" id="comment2920"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2920">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Monday, 26 March 2012, 15:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hey, it would seem that I have supplied some misleading information. What I did was to set locale and look at what got out. In fact, I have tried to reproduce it and some new version does not escape stuff enymore (don&#039;t know why). But it got me thinking why.<br />
+<br />
+In fact, the codes are octal character codes in given encoding. The \355 is &quot;í&quot; in ISO-8859-1, which fits to the LC_ALL. The \303 is not a character, I was too hasty in that and did not notice the \255 -- it is in fact a unicode representation of the same letter &quot;í&quot;, which is correct since _NET_WM_NAME is in utf8.<br />
+<br />
+According to this, I would guess you just need to get the correct locale set in system and call something like iconv(3) to convert it into utf8. <br />
+<br />
+Unfortunately, I don&#039;t know much about X stuff, so this may not be entirely correct (since maybe the xprop does some translation for us, I don&#039;t know).</div></div>
+
+  
+    <em>
+    <a name="comment2922" id="comment2922"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2922">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 16:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">jd: Instead I thought about digging into other WMs.<br />
+<br />
+i3: Seems to just ignore the encoding and hope for the best.<br />
+fluxbox: Only uses WM_NAME (XGetWMName), but at least this then does some magic on that string if the property&#039;s type isn&#039;t STRING.<br />
+First it sends the string through XmbTextPropertyToTextList() and then the result of that goes through some magic. I think that magic boils down to iconv_open(&quot;UTF-8&quot;, nl_langinfo(CODESET)), but thanks to various abstraction layers, I&#039;m not sure. If XmbTextPropertyToTextList() fails, it assumes latin-1 and sends the string through iconv, too.<br />
+<br />
+Various bits of magic in src/FbTk/FbString.cc. The WM_NAME query is done in src/Xutil.cc, function Xutil::getWMName().<br />
+<br />
+Now let&#039;s look at draw.c, draw_iso2utf8(). Awesome does the same thing that fluxbox does, but skips XmbTextPropertyToTextList(). Also, awesome is trying to guess whether it has to run stuff through iconv and it also does so for strings which already are in unicode. Bad.</div></div>
+
+  
+    <em>
+    <a name="comment2923" id="comment2923"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2923">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 26 March 2012, 16:31 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, it just occored to me that nl_langinfo(CODESET) will be &quot;utf-8&quot; for me.<br />
+<br />
+@Ladislav: What locale do you use?</div></div>
+
+  
+    <em>
+    <a name="comment2924" id="comment2924"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2924">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Monday, 26 March 2012, 16:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hey, it would seem that I have supplied some misleading information. What I did was to set locale and look at what got out. In fact, I have tried to reproduce it and some new version does not escape stuff enymore (don&#039;t know why). But it got me thinking why.<br />
+<br />
+In fact, the codes are octal character codes in given encoding. The \355 is &quot;í&quot; in ISO-8859-1, which fits to the LC_ALL. The \303 is not a character, I was too hasty in that and did not notice the \255 -- it is in fact a unicode representation of the same letter &quot;í&quot;, which is correct since _NET_WM_NAME is in utf8.<br />
+<br />
+According to this, I would guess you just need to get the correct locale set in system and call something like iconv(3) to convert it into utf8. <br />
+<br />
+Unfortunately, I don&#039;t know much about X stuff, so this may not be entirely correct (since maybe the xprop does some translation for us, I don&#039;t know).</div></div>
+
+  
+    <em>
+    <a name="comment2925" id="comment2925"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2925">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Monday, 26 March 2012, 16:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">On my current setup I have LANG and LC_CTYPE set to en_US.UTF8.<br />
+<br />
+(sorry for double post, I reloaded the page...)</div></div>
+
+  
+    <em>
+    <a name="comment2926" id="comment2926"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#comment2926">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=657">Ladislav Laska (Krakonos)</a> -
+    Monday, 26 March 2012, 23:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hey, it would seem that I have supplied some misleading information. What I did was to set locale and look at what got out. In fact, I have tried to reproduce it and some new version does not escape stuff enymore (don&#039;t know why). But it got me thinking why.<br />
+<br />
+In fact, the codes are octal character codes in given encoding. The \355 is &quot;í&quot; in ISO-8859-1, which fits to the LC_ALL. The \303 is not a character, I was too hasty in that and did not notice the \255 -- it is in fact a unicode representation of the same letter &quot;í&quot;, which is correct since _NET_WM_NAME is in utf8.<br />
+<br />
+According to this, I would guess you just need to get the correct locale set in system and call something like iconv(3) to convert it into utf8. <br />
+<br />
+Unfortunately, I don&#039;t know much about X stuff, so this may not be entirely correct (since maybe the xprop does some translation for us, I don&#039;t know).</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=974#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="974" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

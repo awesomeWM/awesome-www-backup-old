@@ -1,0 +1,53 @@
+From 9ce684304f319c9009556128183d1432fa755897 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20=C3=85str=C3=B6m?= <bjoast@gmail.com>
+Date: Sun, 23 Feb 2014 00:02:57 +0100
+Subject: [PATCH] drawable: Support for true transparency
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This makes the drawable paint the wallpaper in the background
+(i.e. pseudo transparency) only if there is not a composite manager running,
+as reported by the value of awesome.composite_manager_running.
+
+In other words: drawables can now make use of true transparency.
+
+Signed-off-by: Björn Åström <bjoast@gmail.com>
+---
+ lib/wibox/drawable.lua.in | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/lib/wibox/drawable.lua.in b/lib/wibox/drawable.lua.in
+index a31e618..3f73c73 100644
+--- a/lib/wibox/drawable.lua.in
++++ b/lib/wibox/drawable.lua.in
+@@ -28,15 +28,20 @@ local function do_redraw(self)
+ 
+     -- Draw the background
+     cr:save()
+-    -- This is pseudo-transparency: We draw the wallpaper in the background
+-    local wallpaper = surface(capi.root.wallpaper())
+-    if wallpaper then
++
++    if not capi.awesome.composite_manager_running then
++        -- This is pseudo-transparency: We draw the wallpaper in the background
++        local wallpaper = surface(capi.root.wallpaper())
++        if wallpaper then
++            cr.operator = cairo.Operator.SOURCE
++            cr:set_source_surface(wallpaper, -x, -y)
++            cr:paint()
++        end
++        cr.operator = cairo.Operator.OVER
++    else
+         cr.operator = cairo.Operator.SOURCE
+-        cr:set_source_surface(wallpaper, -x, -y)
+-        cr:paint()
+     end
+ 
+-    cr.operator = cairo.Operator.OVER
+     cr:set_source(self.background_color)
+     cr:paint()
+     cr:restore()
+-- 
+1.8.5.3
+

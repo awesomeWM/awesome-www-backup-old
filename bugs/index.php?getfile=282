@@ -1,0 +1,24 @@
+diff --git a/lib/awful/rules.lua.in b/lib/awful/rules.lua.in
+index 420ec44..1568876 100644
+--- a/lib/awful/rules.lua.in
++++ b/lib/awful/rules.lua.in
+@@ -111,8 +111,6 @@ function apply(c)
+     for property, value in pairs(props) do
+         if property == "floating" then
+             aclient.floating.set(c, value)
+-        elseif property == "tag" then
+-            c:tags({ value })
+         elseif property == "switchtotag" and value and props.tag then
+             atag.viewonly(props.tag)
+         elseif property == "height" or property == "width" or
+@@ -128,7 +126,9 @@ function apply(c)
+     end
+ 
+     -- If untagged, stick the client on the current one.
+-    if #c:tags() == 0 then
++    if props.tag then
++        c:tags({ props.tag })
++    else
+         atag.withcurrent(c, startup)
+     end
+ 

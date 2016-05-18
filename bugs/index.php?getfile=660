@@ -1,0 +1,112 @@
+From 8a407290a9680ebca0deb25a4ee7e14c94d74b55 Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+Date: Thu, 26 Dec 2013 14:05:01 +0100
+Subject: [PATCH] menu: allow markup in menu entries
+
+Current API does not allow custom markup (e.g. bold or italic text) in
+menu items because it escapes the text unconditionally.  But in some
+cases it can be very useful to mark some menu entries in a special way
+(e.g. urgent windows in the tasklist menu).
+
+Patch allows to specify the text and (optionally) the hotkey in a more
+powerful way.
+
+Signed-off-by: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+---
+ lib/awful/menu.lua.in | 58 +++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 49 insertions(+), 9 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index ee52b70..4743952 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -483,6 +483,41 @@ function menu:clients(args) -- FIXME crude api
+ end
+ 
+ --------------------------------------------------------------------------------
++--- Constructor for quoted markup containing an optional hotkey
++-- @param text The escaped text with an optional hotkey within &lt;hotkey&gt; tags
++-- @return a pair with the text as first element and the hotkey as the second one
++function menu.markup_hotkey(text)
++    local key
++    text = string.gsub(text, "<hotkey>(%w)</hotkey>",
++		       function (l)
++			   key = string.lower(l)
++			   return "<u>" .. l .. "</u>"
++		       end, 1)
++
++    return { text, key }
++end
++
++--- Constructor for markup and an optional hotkey
++-- @param text The escaped text; the optional hotkey must be highlighted by the caller
++-- @param key The hotkey
++-- @return a pair with the text as first element and the hotkey as the second one
++function menu.markup_escaped(text, key)
++    return { text, key }
++end
++
++--- Constructor for unescaped markup containing an optional hotkey
++-- @param text The escaped text with an optional hotkey prefixed by &amp;
++-- @return a pair with the text as first element and the hotkey as the second one
++function menu.markup_raw(text)
++    local key
++    text = string.gsub(util.escape(text), "&amp;(%w)",
++		       function (l)
++			   key = string.lower(l)
++			   return "<u>" .. l .. "</u>"
++		       end, 1)
++
++    return { text, key }
++end
+ 
+ --- Default awful.menu.entry constructor
+ -- @param parent The parent menu
+@@ -496,14 +531,14 @@ function menu.entry(parent, args)
+     local ret = {}
+     -- Create the item label widget
+     local label = wibox.widget.textbox()
+-    local key = ''
+     label:set_font(args.theme.font)
+-    label:set_markup(string.gsub(
+-        util.escape(args.text), "&amp;(%w)",
+-        function (l)
+-            key = string.lower(l)
+-            return "<u>" .. l .. "</u>"
+-        end, 1))
++
++    if type(args.text) == "string" then
++	args.text = menu.markup_raw(args.text)
++    end
++
++    label:set_markup(args.text[1])
++
+     -- Set icon if needed
+     local icon, iconbox
+     local margin = wibox.layout.margin()
+@@ -571,7 +606,7 @@ function menu.entry(parent, args)
+         icon = iconbox,
+         widget = layout,
+         cmd = args.cmd,
+-        akey = key,
++        akey = args.text[2] or "",
+     })
+ end
+ 
+@@ -580,7 +615,12 @@ end
+ --- Create a menu popup.
+ -- @param args Table containing the menu informations.<br/>
+ -- <ul>
+--- <li> Key items: Table containing the displayed items. Each element is a table by default (when element 'new' is awful.menu.entry) containing: item name, triggered action, submenu table or function, item icon (optional). </li>
++-- <li> Key items: Table containing the displayed items. Each element is a table by default (when element 'new' is awful.menu.entry) containing: item content, triggered action, submenu table or function, item icon (optional). The item content can be
++--   <ul>
++--   <li>a table with two elements: the escaped text and an optional hotkey. The hotkey can/should be highlighted in the text by putting it into a &lt;hotkey&gt; tag.</li>
++--   <li>a single string which will be escaped by the menu module and the hotkey extracted.</li>
++--   </ul>
++-- </li>
+ -- <li> Keys theme.[fg|bg]_[focus|normal], theme.border_color, theme.border_width, theme.submenu_icon, theme.height and theme.width override the default display for your menu and/or of your menu entry, each of them are optional. </li>
+ -- <li> Key auto_expand controls the submenu auto expand behaviour by setting it to true (default) or false. </li>
+ -- </ul>
+-- 
+1.8.4.2
+

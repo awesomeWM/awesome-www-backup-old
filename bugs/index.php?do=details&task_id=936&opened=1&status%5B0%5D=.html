@@ -1,0 +1,443 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#936 : Moving a maximized window fails</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=936&amp;opened=1&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=985&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Provide lua-ev / lgi+glib mainloop integration | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=912&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Add support for actions in naughty | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity2">
+	 FS#936 - Moving a maximized window fails  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a>     	 - Tuesday, 25 October 2011, 08:57 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Wednesday, 26 October 2011, 08:16 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.10</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">From awesome-user list:<br />
+&quot;Hi, when I maximise a window and move it.. it moves as falling to down right corner of screen.. Its like if your x and y axis was being incremented one by one. Doesn&#039;t matter for where I move the mouse, it aways goes to down-right corner at same speed. &quot;<br />
+<br />
+Here happens idem sometimes. Debian Sid, with iceweasel as app for example<br />
+<br />
+Thanks!</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Wednesday, 26 October 2011, 08:16 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Duplicate<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Duplicate of <del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=917&amp;opened
+=1&amp;status%5B0%5D=" title="Fixed |
+maximized clients moves only diagonally
+| 100%"  class =
+"closedtasklink">FS#917</a>&#160;</del>        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (5)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2764" id="comment2764"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#comment2764">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 25 October 2011, 09:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You say it only happens sometimes, so you have no clear list of steps to reproduce this? &quot;If I do this, this and then, then the bug happens&quot;?<br />
+<br />
+I just tried (with git/master) and I can&#039;t resize maximized clients. Any hints at what exactly I have to do to hit this problem?<br />
+<br />
+Does the same happen in earlier versions? If this bug is new in 3.4.10, it could be due to the following commit:<br />
+<br />
+<br />
+commit 44b854977039eac770127dde7c591f779ebf1610<br />
+Author: Gregor Best &lt;<a href="mailto:gbe@ring0.de">gbe@ring0.de</a>&gt;<br />
+Date:   Mon Mar 28 11:21:17 2011 +0200<br />
+<br />
+    awful.mouse: fix interclient border snapping<br />
+    <br />
+    Signed-off-by: Gregor Best &lt;<a href="mailto:gbe@ring0.de">gbe@ring0.de</a>&gt;<br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+<br />
+diff --git a/lib/awful/mouse/init.lua.in b/lib/awful/mouse/init.lua.in<br />
+index 9592488..e25cb0a 100644<br />
+--- a/lib/awful/mouse/init.lua.in<br />
++++ b/lib/awful/mouse/init.lua.in<br />
+@@ -138,6 +138,9 @@ function client.snap(c, snap, x, y, fixed_x, fixed_y)<br />
+         c:struts(struts)<br />
+     end<br />
+ <br />
++    geom.x = geom.x - (2 * c.border_width)<br />
++    geom.y = geom.y - (2 * c.border_width)<br />
++<br />
+     for k, snapper in ipairs(aclient.visible(c.screen)) do<br />
+         if snapper ~= c then<br />
+             geom = snap_outside(geom, snapper:geometry(), snap)<br />
+@@ -150,6 +153,8 @@ function client.snap(c, snap, x, y, fixed_x, fixed_y)<br />
+ <br />
+     geom.width = geom.width - (2 * c.border_width)<br />
+     geom.height = geom.height - (2 * c.border_width)<br />
++    geom.x = geom.x + (2 * c.border_width)<br />
++    geom.y = geom.y + (2 * c.border_width)<br />
+ <br />
+     return geom<br />
+ end<br /></div></div>
+
+  
+    <em>
+    <a name="comment2765" id="comment2765"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#comment2765">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Tuesday, 25 October 2011, 09:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It is not resize, but moving the maximized windows. Step to reproduce:<br />
+<br />
+- start awesome<br />
+- Mod4-Enter (new terminal)<br />
+- Mod4-M (maximize)<br />
+- Mod4-Click-Left and drag to move the window<br />
+<br />
+Thank you!<br />
+PD: Sorry I have no time now recompiling awesome, maybe later :-)</div></div>
+
+  
+    <em>
+    <a name="comment2766" id="comment2766"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#comment2766">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=648">Adam Jimerson (vendion)</a> -
+    Tuesday, 25 October 2011, 12:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Using Awesome 3.4.10 I have the same problem except in my case the terminal moves just fine, but it happens with applications like Google Chrome and Mozilla Firefox.  The problem may be with the mouse control,<br />
+ such as using Mod4+Left mouse click and dragging the window from one monitor to another but using the Mod4+o key-binding the application moves to the other screen with no problems.  I know Awesome is designed to work without a mouse so I don&#039;t consider this a major issue, besides if it works in Git then I would call this issue &quot;Broken by design&quot; ;)<br />
+<br />
+I am not running the Git version due to this box being my work machine so need something that is relatively stable</div></div>
+
+  
+    <em>
+    <a name="comment2767" id="comment2767"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#comment2767">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=649">Daniel Hilst (danielhilst)</a> -
+    Tuesday, 25 October 2011, 16:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hi, I post the message on awesome-list<br />
+I&#039;m using awesome v3.4.10 on a x86_64 archlinux, <br />
+installed from archlinuxfr(http://repo.archlinux.fr/)<br />
+<br />
+The steps to reproduce are exactly as &quot;Javier Barroso&quot; said<br />
+<br />
+I can compile it if needed<br />
+<br />
+[]&#039;s</div></div>
+
+  
+    <em>
+    <a name="comment2768" id="comment2768"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#comment2768">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=227">Javier Barroso (i5513)</a> -
+    Wednesday, 26 October 2011, 21:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I recompile with that changes, but the same behaviour :( (I had to change liblua5.1-dev to liblua5.1-0-dev in build depends)<br />
+<br />
+I can&#039;t compile awesome 3 with<a href=" http://awesome.naquadah.org/wiki/Awesome-3-git-debian"> http://awesome.naquadah.org/wiki/Awesome-3-git-debian</a> instructions, seems like dependencies are not longer valid ?<br />
+<br />
+Thanks for your efforts!</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=936#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="936" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

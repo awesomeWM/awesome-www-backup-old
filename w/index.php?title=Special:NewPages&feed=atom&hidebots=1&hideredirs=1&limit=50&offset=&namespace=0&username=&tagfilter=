@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+		<id>https://awesomewm.org/w/index.php?title=Special:NewPages&amp;feed=atom&amp;hidebots=1&amp;hideredirs=1&amp;limit=50&amp;offset=&amp;namespace=0&amp;username=&amp;tagfilter=</id>
+		<title>awesome - New pages [en]</title>
+		<link rel="self" type="application/atom+xml" href="https://awesomewm.org/w/index.php?title=Special:NewPages&amp;feed=atom&amp;hidebots=1&amp;hideredirs=1&amp;limit=50&amp;offset=&amp;namespace=0&amp;username=&amp;tagfilter="/>
+		<link rel="alternate" type="text/html" href="https://awesomewm.org/wiki/Special:NewPages"/>
+		<updated>2016-05-15T22:57:22Z</updated>
+		<subtitle>From awesome</subtitle>
+		<generator>MediaWiki 1.24.2</generator>
+
+	<entry>
+		<id>https://awesomewm.org/wiki/Tearing</id>
+		<title>Tearing</title>
+		<link rel="alternate" type="text/html" href="https://awesomewm.org/wiki/Tearing"/>
+				<updated>2016-02-29T06:20:13Z</updated>
+		
+		<summary type="html">&lt;p&gt;Henry: &lt;/p&gt;
+&lt;hr /&gt;
+&lt;div&gt;[https://en.wikipedia.org/wiki/Screen_tearing What is screen tearing]&lt;br /&gt;
+&lt;br /&gt;
+You might experience tearing in 3d games and movie playback make sure to enable vsync and install compton.&lt;br /&gt;
+&lt;br /&gt;
+To autostart compton add ''awful.util.spawn_with_shell(&amp;quot;compton --opengl&amp;quot;)'' to the end of your config file. &lt;br /&gt;
+To test it beforehand just type ''compton --opengl'' in a terminal.&lt;/div&gt;</summary>
+		<author><name>Henry</name></author>	</entry>
+
+	<entry>
+		<id>https://awesomewm.org/wiki/Variety</id>
+		<title>Variety</title>
+		<link rel="alternate" type="text/html" href="https://awesomewm.org/wiki/Variety"/>
+				<updated>2016-01-16T21:13:52Z</updated>
+		
+		<summary type="html">&lt;p&gt;EchoLynx: First edition.&lt;/p&gt;
+&lt;hr /&gt;
+&lt;div&gt;[[Variety|http://peterlevi.com/variety/]] is an automatic wallpaper changer. It doesn't currently support awesome, though a patch was [https://code.launchpad.net/~echolynx/variety/variety-with-awesomewm-support just submitted]. The patch does exactly what is suggested below.&lt;br /&gt;
+== Installing Variety ==&lt;br /&gt;
+# Install variety with your package manager.&lt;br /&gt;
+# Run variety once, then close it. Be sure to complete the configuration wizard.&lt;br /&gt;
+# Add the following to ~/.config/variety/scripts/set_wallpaper:&lt;br /&gt;
+ &amp;lt;nowiki&amp;gt;&lt;br /&gt;
+# Awesome Window Manager&lt;br /&gt;
+# Set the path to the wallpaper using awesome-client, which communicates with awesome using D-Bus. Be sure to start variety when you start awesome, such as by adding it to ~/.xinitrc in Arch Linux.&lt;br /&gt;
+&lt;br /&gt;
+# NOTE: This config will change the wallpaper after your current awesome theme sets it. As such, the theme's wallpaper will briefly appear before being replaced with variety's wallpaper.&lt;br /&gt;
+&lt;br /&gt;
+echo &amp;quot;local gears = require(\&amp;quot;gears\&amp;quot;) gears.wallpaper.maximized(\&amp;quot;$1\&amp;quot;, s, true)&amp;quot; | awesome-client&amp;lt;/nowiki&amp;gt;&lt;br /&gt;
+== Start variety with awesome ==&lt;br /&gt;
+Add the following to ~/.xinitrc. Be sure to add it above '''exec awesome'''.&lt;br /&gt;
+ &amp;lt;nowiki&amp;gt;&lt;br /&gt;
+variety &amp;amp;&amp;lt;/nowiki&amp;gt;&lt;/div&gt;</summary>
+		<author><name>EchoLynx</name></author>	</entry>
+
+	<entry>
+		<id>https://awesomewm.org/wiki/On_Screen_Keyboard</id>
+		<title>On Screen Keyboard</title>
+		<link rel="alternate" type="text/html" href="https://awesomewm.org/wiki/On_Screen_Keyboard"/>
+				<updated>2015-12-26T20:20:41Z</updated>
+		
+		<summary type="html">&lt;p&gt;Cmotc: &lt;/p&gt;
+&lt;hr /&gt;
+&lt;div&gt;== Using Awesome with an On-Screen Keyboard ==&lt;br /&gt;
+Getting an On-Screen keyboard to work with Awesome is not exactly easy. Following these instructions will get florence running usably on Awesome.&lt;br /&gt;
+&lt;br /&gt;
+=== First, calibrate to the correct values ===&lt;br /&gt;
+&lt;br /&gt;
+You'll need to get some information in order to resize and position they keyboard correctly. In this configuration, we're going to have the virtual keyboard displayed flush against the right-hand side of the screen and have a margin on the left hand side. Florence doesn't let you set a fixed height and width in the configuration file, instead you have to figure out the dimensions that correspond to the maximum usable zoom setting and set it in a config file. First, copy the example config file&lt;br /&gt;
+&lt;br /&gt;
+    mkdir -p ~/.config/florence&lt;br /&gt;
+    cp /usr/share/doc/florence/examples/florence.conf ~/.config/florence&lt;br /&gt;
+&lt;br /&gt;
+Then launch florence in a terminal using the command.&lt;br /&gt;
+&lt;br /&gt;
+    florence --config --use-config ~/.config/florence/florence.conf&lt;br /&gt;
+&lt;br /&gt;
+which will allow you to edit your personal configuration file using florence's built-in tool. If you prefer, you can edit it using a text editor but the gui config tool is easier for this part. Go to where it says Window and zoom until it takes up the full width of the screen.&lt;br /&gt;
+&lt;br /&gt;
+Finally, add the following lines to your rc.lua file.&lt;br /&gt;
+&lt;br /&gt;
+    { rule = { class = &amp;quot;Florence&amp;quot; },&lt;br /&gt;
+      properties = {&lt;br /&gt;
+      floating = true,&lt;br /&gt;
+      sticky = true,&lt;br /&gt;
+    }, callback = function(c) &lt;br /&gt;
+           for key, value in pairs(c.geometry(c)) do&lt;br /&gt;
+               naughty.notify({ title = &amp;quot;Geometry&amp;quot;,&lt;br /&gt;
+                     text = &amp;quot;X,Y: &amp;quot; .. c.geometry(c).x .. &amp;quot;,&amp;quot; .. c.geometry(c).y .. &amp;quot;W,H: &amp;quot; .. c.geometry(c).width .. &amp;quot;,&amp;quot; .. c.geometry(c).height })&lt;br /&gt;
+           end&lt;br /&gt;
+       end },&lt;br /&gt;
+&lt;br /&gt;
+And restart awesome. The dimensions of your on-screen keyboard will pop up in your naughtyfications. Make a note of them before moving on.&lt;br /&gt;
+&lt;br /&gt;
+=== Then, create a little wrapper around florence. ===&lt;br /&gt;
+&lt;br /&gt;
+Create a file with the following content in /usr/bin/user-florence to launch florence with your config.&lt;br /&gt;
+&lt;br /&gt;
+    #! /bin/sh&lt;br /&gt;
+    awesome_florence(){&lt;br /&gt;
+        if [ -f &amp;quot;$HOME/.config/florence/florence.conf&amp;quot; ]; then&lt;br /&gt;
+            florence --use-config &amp;quot;$HOME/.config/florence/florence.conf&amp;quot;&lt;br /&gt;
+        elif [ -f &amp;quot;/etc/florence.conf&amp;quot; ]; then&lt;br /&gt;
+            florence --use-config &amp;quot;/etc/florence.conf&amp;quot;&lt;br /&gt;
+        else&lt;br /&gt;
+            florence&lt;br /&gt;
+        fi&lt;br /&gt;
+    }&lt;br /&gt;
+    awesome_florence&lt;br /&gt;
+&lt;br /&gt;
+=== Next, configure the necessary constants in rc.lua ===&lt;br /&gt;
+&lt;br /&gt;
+Take the keyboard dimensions you gathered in the first step and plug them into the following variables, which you can place anywhere above the rules section of your rc.lua file. The resolution of the screen I worked this out on was 1360x768, yours will be different if your resolution is different.&lt;br /&gt;
+&lt;br /&gt;
+    geom = screen[mouse.screen].workarea&lt;br /&gt;
+    kb_geoh = 335 -- You'll need to change this value to match with your screen resolution&lt;br /&gt;
+    kb_geow = 1306 -- Same here&lt;br /&gt;
+&lt;br /&gt;
+    kb_geox = geom.width - kb_geow -- This makes sure the virtual keyboard is against the far right&lt;br /&gt;
+    kb_geoy = geom.height - kb_geoh -- and the far bottom&lt;br /&gt;
+    kb_dummy_geox = geom.width - 134 -- for some reason florence spawns this irritating extra window. This is to minimize that irritation.&lt;br /&gt;
+    kb_dummy_geoy = geom.height - 134 -- same here.&lt;br /&gt;
+&lt;br /&gt;
+=== Finally, add the rules ===&lt;br /&gt;
+&lt;br /&gt;
+    { rule = { class = &amp;quot;Florence&amp;quot; },&lt;br /&gt;
+      properties = {&lt;br /&gt;
+      floating = true,&lt;br /&gt;
+      sticky = true,&lt;br /&gt;
+    }, callback = function(c) &lt;br /&gt;
+           for key, value in pairs(c.geometry(c)) do&lt;br /&gt;
+               if c.geometry(c).y &amp;lt; 400 then&lt;br /&gt;
+                   c:geometry({x=kb_dummy_geox, y=kb_dummy_geoy, height=134, width=134})&lt;br /&gt;
+               end&lt;br /&gt;
+           end&lt;br /&gt;
+       end },&lt;br /&gt;
+&lt;br /&gt;
+And you have a usable on screen keyboard for awesome&lt;/div&gt;</summary>
+		<author><name>Cmotc</name></author>	</entry>
+
+	</feed>

@@ -1,0 +1,25 @@
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_DEMANDS_ATTENTION
+_NET_WM_DESKTOP(CARDINAL) = 0
+WM_STATE(WM_STATE):
+		window state: Normal
+		icon window: 0x0
+_NET_WM_PID(CARDINAL) = 10964
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING
+WM_LOCALE_NAME(STRING) = "pl_PL.UTF-8"
+WM_CLASS(STRING) = "urxvt", "URxvt"
+WM_HINTS(WM_HINTS):
+		Client accepts input or input focus: True
+		Initial state is Normal State.
+		window id # of group leader: 0x1400009
+		The urgency hint bit is set
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+		program specified minimum size: 12 by 19
+		program specified resize increment: 8 by 15
+		program specified base size: 4 by 4
+		window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = "bayes"
+WM_COMMAND(STRING) = { "urxvt" }
+_NET_WM_ICON_NAME(UTF8_STRING) = "tdi@bayes:~"
+WM_ICON_NAME(STRING) = "tdi@bayes:~"
+_NET_WM_NAME(UTF8_STRING) = "tdi@bayes:~"
+WM_NAME(STRING) = "tdi@bayes:~"

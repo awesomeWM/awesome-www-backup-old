@@ -1,0 +1,45 @@
+diff --git a/lib/awful/client.lua.in b/lib/awful/client.lua.in
+index 469dbfe..2f404c8 100644
+--- a/lib/awful/client.lua.in
++++ b/lib/awful/client.lua.in
+@@ -216,6 +216,7 @@ end
+ -- @param screen The screen number, or nil for all screens.
+ -- @return A table with all visible and tiled clients.
+ function client.tiled(screen)
++    -- FS#1106
+     local clients = client.visible(screen)
+     local tclients = {}
+     -- Remove floating clients
+@@ -588,6 +589,9 @@ function client.floating.set(c, s)
+         local scr = c.screen
+         if s == true then
+             c:geometry(client.property.get(c, "floating_geometry"))
++            c.fullscreen = false
++            c.maximized_vertical = false
++            c.maximized_horizontal = false
+         end
+         c.screen = scr
+     end
+@@ -637,14 +641,19 @@ end
+ function client.floating.get(c)
+     local c = c or capi.client.focus
+     if c then
++        -- Fullscreen / maximized clients cannot be tiled and thus must be
++        -- considered floating
++        if c.fullscreen
++            or c.maximized_vertical
++            or c.maximized_horizontal then
++            return true
++        end
+         local value = client.property.get(c, "floating")
+         if value ~= nil then
+             return value
+         end
++        -- Apply some more sane defaults
+         if c.type ~= "normal"
+-            or c.fullscreen
+-            or c.maximized_vertical
+-            or c.maximized_horizontal
+             or client.isfixed(c) then
+             return true
+         end

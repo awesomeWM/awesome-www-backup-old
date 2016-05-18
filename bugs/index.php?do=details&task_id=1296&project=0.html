@@ -1,0 +1,920 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1296 : Updated signal causes total relayout</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1296&amp;project=0" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1304&amp;project=0" title="Unconfirmed | naughty does not use icon names | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1295&amp;project=0" title="Assigned | Menubar doesn&#039;t adapt width to different screen widths | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1296 - Updated signal causes total relayout  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1000">Vlad Leberstein (owl)</a>     	 - Saturday, 06 September 2014, 01:28 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Evolution Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 wibox		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5.5</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I would like to implement some animation-heavy widgets but there is a problem. My animation is implemented with the help of &quot;update&quot; signal emitted on timer. Everyting works fine while there are one or two such widgets but when more added, CPU usage grows drastically. The reason is that the &quot;updated&quot; signal causes ALL widgets to redraw themselves and hance do a lot of useless work in most cases. My original intent was to implement separate &quot;redrawn&quot; signal to redraw only the widget which emitted it(and reimplement current layouts like sizers in wxWidget) but I don&#039;t see how to do that without breaking current API. Could you recommend something? Thanks in advance!</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (23)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment4128" id="comment4128"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4128">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Saturday, 06 September 2014, 03:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, you are right. The widget::updated signal is propagated back up, then, when it reach the upper layer, register a callback to be executed during the next event loop cycle. This avoir widgets redrawing themselves multiple time during the same event loop cycle (that&#039;s uselsss). This have the bad side effect of causing exessive redraw. This is a serious issue and indeed prevent advanced animations from being implemented (trust me, I know this,<a href=" https://raw.githubusercontent.com/Elv13/radical/master/screenshot/all.png"> https://raw.githubusercontent.com/Elv13/radical/master/screenshot/all.png</a> ). One early attempt at solving part of this issue was implemented in 3.5.3. It was to prevent useless :fit() calls, but did not improve on the useless :draw() calls. Another &quot;fix&quot; was to lower the CPU overhead of Cairo calls. This was implemented in LGI 1 year ago, but was only recently released (0.8). This actually solve most of the consequences, but not the issue itself. Yet another workaround is to use LUAjit rather than LUA for both LGI and Awesome.<br />
+<br />
+That being said, this is still a serious issue and something that reduce the scope of Awesome to simple presentation and must be solved. My naive guess would be that if :fit() return the same value as the previously used one, then only that sub section need to be registered to be redrawn using the previous geometry parameters. This, in turn, need to support the &quot;1 widget, multiple instances&quot; case where a single widget can be added to multiple wibox.layout. The second corner case is when the :draw() method ignore its region, unset its clip and draw outside of its limits. This is used for things like &quot;grow on hover&quot; effects and the PowerLine arrow used in the screenshot above. Finally, an other bugs that would get worst with this solution is the fact that the layout system doesn&#039;t round its pixel area. Some draw are often called with a starting point midway in a single pixel. The result is then blended with other widgets. This is a bug, but it isn&#039;t this bad with the current &quot;redraw everything everytime&quot; rendering code. This bug would also need to be solved after implementing the region damage code path.<br />
+<br />
+I think it can be done without breaking the current API too much. Historically, Awesome break API all the time, so as long as it is not outragiously different, it can get merged anyway. It will need a good system to track each widget usage from the widget itself, a way for the parent layout to cache the current widget size and a new event loop callback to redraw the regions themselves. Uli (psychon) is probably in a better position to tell us why it wont work, but as far as I know it should be possible.</div></div>
+
+  
+    <em>
+    <a name="comment4147" id="comment4147"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4147">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1000">Vlad Leberstein (owl)</a> -
+    Thursday, 02 October 2014, 21:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for your explanation and sorry for my late response! I&#039;ve investigated a little bit further and now tend to think that Awesome should really borrow the approach to widget system from popular GUI toolkits. These are the ideas which I came across and have partially implemented(but it&#039;s too hackish to show anything right now):<br />
+<br />
+1) Widget&#039;s &quot;layout&quot; and &quot;draw&quot; operations are separated i.e. relayout shouldn&#039;t be triggered by redraw and vice versa. This enables us to make &quot;draw&quot; method optional. E.g. align&#039;s &quot;draw&quot; doesn&#039;t really draw anything - it simply recalculates extents of it&#039;s children. So when there is no &quot;draw&quot; method in any of the widget&#039;s children, we can simpy traverse the tree until child&#039;s descendants with draw implemented are found. Moreover, it may be a good idea to separate layout and render hierarchies completely(like geometry managers in TCL/Tk or sizers in WxWidgets) but I can&#039;t suggest anything specific right now.<br />
+2) Have a &quot;dirty&quot; flag in each widget. I.e. when the widget requests redraw, we determine the path through the widgets hierarchy and set the flag in all the widgets(or at least the ones with &quot;draw&quot; method) on that path. Then drawable performs normal &quot;redraw everything&quot; call but now layouts can make assumptions about what should and what shouldn&#039;t be redrawn.<br />
+<br />
+As for the corner cases you&#039;ve outlined, I&#039;m a little bit confused about why one widget can belong to more then one parent? It doesn&#039;t bring any additional functionality or save lots of resources, but will complicate the design of widgets hierarchy AFAIU so why bother? Also it doesn&#039;t seem quite logical to me that widgets should be allowed to draw outside of their clipping region. I understand the convenience of having such possibility but again, it would significantly complicate partial update mechanics. I imagine that system, where widgets can have multiple unconnected regions is implementable, but AFAIU it would require something like dynamic BVH tree creation to make all unconnected(by widget/layout hierarchy I mean) regions, which occupy the same screen space, automatically redraw themselves when any of them would request redraw. Or the widget hierarchy itself could be reimplemented as a more general graph but I have no idea about how to keep track of z-index of such regions... Anyway, does it really worth it? Am I overlooking something?<br />
+<br />
+Also by &quot;a new event loop callback&quot; do you mean an alternative to drawable:refresh()? I performed some very simple tests(not very accurate though) with my current implementation and I believe that coping updated surafce to XCB isn&#039;t the real bottleneck, is it?<br />
+<br />
+I would greatly appreciate any comments/advices because I don&#039;t have much experience in implementing more or less serious GUI systems and will definitely make use of any info provided. Thanks in advance for your help!<br />
+PS: Sorry for any mistakes - English is not my mother tongue</div></div>
+
+  
+    <em>
+    <a name="comment4148" id="comment4148"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4148">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Friday, 03 October 2014, 01:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The bottleneck is the exponential overhead caused by LGI. This is much better with 0.8, but far from perfect.<br />
+<br />
+So lets break your questions into smaller ones:<br />
+<br />
+&gt; Is having multiple parents worth it?<br />
+<br />
+Yes and no. Awesome always supported that. As far as &quot;why bother&quot;: legacy. While we broke people configs a ton of time, this one would be a little hard to port and some widgets, such as radical bar menus, are very heavy compared to a textbox. The overhead of having 1 copy on each of my 5 screen will be very noticeable when it come to all internal callback those widgets can generate. I would prefer to keep the widget tree linked top-&gt;bottom rather than double-linked.<br />
+<br />
+&gt; Paint outside of the dedicated region.<br />
+<br />
+Well, if you look at other widget toolkits, Qt4 was forbidding that. Because of the same corner case I use it for, Qt5 now allow it. The problem is always the same:<br />
+ * People love shadow, shadow are outside of the widget<br />
+ * Glow<br />
+ * Power line array<br />
+ * grow when mouse::hover<br />
+ * transition animation<br />
+<br />
+Those use case cannot be implemented without allowing the widget to write outside of its rect. As it currently &quot;just work&quot; (and because I use it :P ) I would prefer this to be still supported one way or another. This can be done with &quot;region of influence&quot; rect as a second return value or something. There is a ton of ways to support it better than it currently is. If we want to get someday serious about animation (I do!). This is required.<br />
+<br />
+&gt; How?<br />
+<br />
+Well, other toolkit use damaged area and hierarchical structures, so I guess you are going the right way. Rather than flagging the widget itself, I would flag it&#039;s container with a list of damaged children. It should mostly &quot;solve&quot; the multiple parent problem without additional logic.</div></div>
+
+  
+    <em>
+    <a name="comment4152" id="comment4152"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4152">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 04 October 2014, 12:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Is having multiple parents worth it:<br />
+Even the default config makes use of this. It&#039;s a great feature usability-wise IMO.<br />
+<br />
+Paint outside of the dedicated region:<br />
+This is orthogonal to this bug report. I&#039;ll ignore this for now and at the end of the discussion we can think about this.<br />
+<br />
+How can this be solved?<br />
+Currently we are lazy and when something says &quot;I changed&quot;, everything is repainted. This is what you guys want to avoid.<br />
+<br />
+If we throw away multiple parents:<br />
+A widget now has a unique geometry. Thus it could say &quot;this part of me changed&quot; and layouts would be responsible for correctly transforming this information and passing it on. We&#039;d have to split up the relayout and the redraw phase. For relayouts I&#039;d continue to be lazy and just re-layout everything followed by redrawing everything. It might be possibly to fix this up later on to have less redraws needed.<br />
+The redraw has to be passed around like it is currently so that things like wibox.widget.background continue to work. wibox.layout.base.draw_widget() could be made more intelligent and skip the redraw if the widget does not touch any dirty area.<br />
+<br />
+If we keep &quot;no unique parent per widget&quot;:<br />
+This is complicated. We definitely need to split up the relayout and redraw phases as well, because input handling needs widget positions and currently this is collected during redraw. This just cannot work with partial redraws. Due to lazyness, I&#039;d propose keeping the widget::updated signal which means &quot;I need relayout and redraw&quot;. The wibox could contain a hierachy of widgets and when a specific widget is re-layouted, wibox.layout.base.SOME_FUNCTION throws away its subtree in this hierachy. For layouts I&#039;d add a widget::redraw signal which skips the relayout and only does a redraw. That signal would need to contain some damaged area in widget coordinates.<br />
+Uhm.... When would we need to relayout without redrawing?<br />
+It might be possible to do this without breaking &quot;leaf widgets&quot; that do not try to paint other widgets. We&#039;d split things up into two phases. First wibox.layout.place_widget + a :layout() method could be used to assign geometry to all widgets. In this phase, :fit() can be used the way it is used currently to figure out how much space a widget needs. In the second phase :draw() is called the way it already works currently.<br />
+Uhm... nope. This would break wibox.widget.background. Perhaps two new optional callbacks, before_draw_children() and after_draw_children() and the wibox code does all the drawing based on the already-computed layout?<br />
+<br />
+I just wrote this down without first thinking about this. What do you guys think? Did I forget something? Should I try producing a small proof of concept for this?</div></div>
+
+  
+    <em>
+    <a name="comment4153" id="comment4153"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4153">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 04 October 2014, 14:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, a quick question: How much influence would this have for real-world widgets?<br />
+<br />
+Whenever a widget changes its size, we will need to relayout.<br />
+A textbox will always have to relayout whenever something changes.<br />
+An imagebox will always have to relayout whenever the size of its image changes.<br />
+<br />
+Pretty much everything else builds upon these widgets and thus we will always have to relayout.<br />
+<br />
+So... to make this more useful, we would also need to cache layouts of widget just like we currently cache the results of :fit(). Which makes this more complicated as well, right?</div></div>
+
+  
+    <em>
+    <a name="comment4154" id="comment4154"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4154">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 04 October 2014, 15:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Attached is a quick prototype implementation of this. It only depends on gears.object and lgi.<br />
+<br />
+A widget has this callbacks:<br />
+<br />
+- :fit(wibox, width, height): Returns width and height that the widget wants to have, is called to assign sizes, must not have any side effect<br />
+- :layout(wibox, width, height): Is called when the widget should place its children, must call base.place_widget(wibox, widget, matrix, width, height) for each child. Can use base.fit_widget(wibox, widget, width, height). Matrix transforms from this widget&#039;s coordinate space into the children&#039;s space.<br />
+- :draw(wibox, cr, width, height) (and before_draw_children, after_draw_children): This is called when the widget should be drawn. This should just draw this widget on the given cairo context and doesn&#039;t have to interact with children. The two *_draw_children() do what their name suggests and can be e.g. used to set the cairo context&#039;s foreground color.<br />
+<br />
+Signals:<br />
+- widget::redraw_needed: The various draw methods have to be called again. Only widgets which cover the same space are redrawn.<br />
+- widget::layout_changed: Well, yeah, the layout needs to be changed.<br />
+<br />
+TODO: This still needs some magic to cache sub-layouts. Just like :fit() is cached in base.fit_widget, :layout() should be cached in base.place_widget() and this cache should only be invalidated from the widget::layout_changed signal.<br />
+<br />
+New compared to what we have right now: Layouts don&#039;t need to connect to any signals of their child widget since the wibox code does that for them. (The wibox code has to do this since it needs to figure out which area to redraw and I want to keep the widget hierachy private. But I bet someone will want to export it...)</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=699" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (10 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4155" id="comment4155"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4155">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 04 October 2014, 15:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh and the systray needs some special magic as well since awesome can only place it, not redraw it.</div></div>
+
+  
+    <em>
+    <a name="comment4156" id="comment4156"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4156">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1000">Vlad Leberstein (owl)</a> -
+    Saturday, 04 October 2014, 17:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for all the replies! It&#039;s nice to see the problem gets more attention! <br />
+<br />
+As for the reference implementation, I need some time to fully grok what actually happens. At first glance your suggestion looks quite similar to what I came up with some time ago (except instead of :before_- and :after_draw_children I used draw coroutine :D)and it didn&#039;t work quite well because I couldn&#039;t find a suitable way to handle off-widget drawings(but my impression might be wrong).<br />
+<br />
+Now I&#039;m working on some proof-of-concept implementation too. The basic idea is: each widget consists of one drawing function(which are hierarchical in the same sence as current widget tree) and many regions, which are managed by it. Each widget can claim any screen space to be managed by it(i.e. region) and wibox dynamically creates/updates BVH tree for all the regions to efficiently traverse widgets, affected by &quot;dirty region&quot;.</div></div>
+
+  
+    <em>
+    <a name="comment4157" id="comment4157"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4157">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 05 October 2014, 08:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Another new version. This now introduces a layout cache similar to the fit cache.<br />
+This removes the &quot;wibox&quot; argument for :fit() and :layout() since the result of these functions is cached and thus must not depend on the wibox.<br />
+This also changes the API for :layout() so that it is no longer recursive. Instead, :layout() returns a table that describes all &quot;child widgets&quot; together with their positions and transformations. This table is cached. This change should also make it much easier to test things.<br />
+<br />
+You guys don&#039;t have to look through all the code in there, but it would be nice if you looked at the &quot;fixed&quot; and the &quot;img&quot; widgets in there (lines 269 to 359) and tell me if the API they use looks sensible. The other 250 lines in there just implement this API.<br />
+<br />
+Oh and another new change: The result from :fit() goes through math.ceil(). This should make it harder for introduce non-integer positions for widgets, although this is still easily possible...</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=700" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (10.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4158" id="comment4158"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4158">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 05 October 2014, 08:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry for spamming.<br />
+<br />
+I tested a 45 degree rotation and quite some code broke. Here is the code for the rotation:<br />
+<br />
+local custom = base.make_widget()<br />
+function custom:fit(width, height) return width, height end<br />
+function custom:draw() end<br />
+custom.before_draw_children = custom.draw<br />
+custom.after_draw_children = custom.draw<br />
+function custom:layout()<br />
+    local m = cairo.Matrix.create_translate(30, 30)<br />
+    m:rotate(math.pi / 4)<br />
+    m:translate(0, -30)<br />
+    return {<br />
+        base.place_widget(f, m, 30, 10),<br />
+    }<br />
+end<br />
+<br />
+And here are the needed fixes:<br />
+<br />
+function wibox:damage_area(x, y, width, height)<br />
+    local rect = cairo.RectangleInt({<br />
+        x = math.floor(x),<br />
+        y = math.floor(y),<br />
+        width = math.ceil(width),<br />
+        height = math.ceil(height)<br />
+    })<br />
+    self._dirty_area:union_rectangle(rect)<br />
+end<br />
+<br />
+function wibox:_widget_needs_redraw(widget_state)<br />
+    -- We have to transform this widget&#039;s geometry into global coordinates<br />
+    local m = cairo.Matrix.create_identity()<br />
+    local state = widget_state<br />
+    while state ~= nil do<br />
+        m:multiply(m, state.matrix)<br />
+        state = state.parent<br />
+    end<br />
+<br />
+    -- XXX: How can this be done nicer?<br />
+    local x1, y1 = m:transform_point(0, 0)<br />
+    local x2, y2 = m:transform_point(0, widget_state.height)<br />
+    local x3, y3 = m:transform_point(widget_state.width, widget_state.height)<br />
+    local x4, y4 = m:transform_point(widget_state.width, 0)<br />
+    local x = math.min(x1, x2, x3, x4)<br />
+    local y = math.min(y1, y2, y3, y4)<br />
+    local width = math.max(x1, x2, x3, x4) - x<br />
+    local height = math.max(y1, y2, y3, y4) - y<br />
+<br />
+    self:damage_area(x, y, width, height)<br />
+end</div></div>
+
+  
+    <em>
+    <a name="comment4159" id="comment4159"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4159">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 05 October 2014, 10:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Seems like I can&#039;t get this out of my head...<br />
+<br />
+All of a widget&#039;s callbacks are now optional. Missing draw methods are just skipped. A missing :layout() is the same as returning {} aka &quot;no children&quot;. When :fit() is missing, :layout() is used and the area covered by child widgets is used for the return value.<br />
+(Oh and base.fit_widget() now also forces widgets to return a value between 0 and the given width/height)</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=701" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (11.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4160" id="comment4160"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4160">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 05 October 2014, 12:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yet another new version of this proof of concept. Now, after re-layouting things, only the part of the wibox which really changed are redrawn. I bet this breaks Elv13&#039;s &quot;let&#039;s ignore the widget&#039;s bound and unset the clip&quot;-magic.<br />
+I also fixed things so that the wibox code automatically emits widget::layout_changed on parent widgets when it is emitted on a child. (There is still potential for optimizations: If a widget is visible in n places, these signals will be emitted n times. This gets us exponential behavior for deep widget hierarchies. However, I do not care enough to do anything about this and this should still behave way better than what we had before.)<br />
+<br />
+Oh and since I didn&#039;t mention it yet:<br />
+This code creates a cairo surface, places some widgets on it, forces a redraw of one of these widgets, then forces a relayout for one of the widgets and finally saves the resulting cairo surface to &quot;out.png&quot;. During this, it prints a message each time it calls a widget&#039;s callback to show that just the minimum amount of callbacks are generated.</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=702" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (12.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4166" id="comment4166"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4166">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1000">Vlad Leberstein (owl)</a> -
+    Monday, 13 October 2014, 19:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Psychon, I finally got some time to try your approach and it seems very reasonable to me. But could you please explain, why painting outside of the dedicated widget region is not related to partial redraw system? I believe that they are quite interconnected and I completely forgot to ask about it earlier :(</div></div>
+
+  
+    <em>
+    <a name="comment4167" id="comment4167"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4167">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Tuesday, 14 October 2014, 04:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">We also have to take into account scrolling layout:<br /><a href="
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1218&amp;project=1&amp;order=id&amp;sort=desc&amp;pagenum=3">
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1218&amp;project=1&amp;order=id&amp;sort=desc&amp;pagenum=3</a></div></div>
+
+  
+    <em>
+    <a name="comment4169" id="comment4169"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4169">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 14 October 2014, 09:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The area outside of the &quot;dirty_area&quot; in my code is not redrawn at all. So if a widget unsets the clip and draws a shadow outside of the dirty_area, the shadow won&#039;t be drawn on the background color, but ontop of the previous shadow. So on each redraw the shadow would become darker and darker.<br />
+(but now I wonder what would happen if a layout places a widget outside of its own area. The dirty_area would be updated correctly and I wonder if the clipping would also Do The Right Thing(tm) for the shadows. Could this be a good idea for implementing this? What I mean exactly: The layout returns 10, 10 for :fit(), but places a widget from -5,-5 with size 20, 20 in :layout(). This could actually work, right?)<br />
+<br />
+Elv13: Do you want a clever scrolling layout or something similar to what is implemented in <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1218&amp;project=0" title="Unconfirmed | Scrolling layout | 0%" >FS#1218</a>? IMO a clever scrolling layout would make itself incompatible with the systray and use something like an &quot;invisible wibox&quot; where it draws its child to. In its own :draw() method it would then just copy the right part of that &quot;invisible wibox&quot; over.<br />
+That&#039;s the best implementation I can think of after thinking about it for 0.5 seconds. Something like &quot;real scrolling&quot; where it moves the already-drawn part and redraws the rest might be a lot harder to implement and I&#039;m not sure if it is worth it.</div></div>
+
+  
+    <em>
+    <a name="comment4170" id="comment4170"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4170">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1000">Vlad Leberstein (owl)</a> -
+    Tuesday, 14 October 2014, 13:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Psychon, I understand your approach and its limitations. Thats why I believe we should decide now if widget should be allowed to draw anywhere it wants because the whole GUI implementation heavily depends on this decision. I already described the way multi-region widget system can be implemented IMO, but didn&#039;t have time to do it yet. I&#039;ll try to show the working proof-of-concept at the end of the week.</div></div>
+
+  
+    <em>
+    <a name="comment4171" id="comment4171"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4171">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 14 October 2014, 13:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, glad that I seem to make sense and that you understand me.<br />
+However, I don&#039;t feel like I understand your proposal, sorry. (How do widgets claim arbitrary space on the screen? How important is the BVH tree to your implementation?)<br />
+<br />
+What &quot;feels&quot; importing to me is that layouts/magic like we have them currently are possible:<br />
+<br />
+- The background (through explicitly drawing something) and foreground (by setting the cairo context&#039;s source) can be controlled for other widgets.<br />
+- Widgets can be rotated and scaled (and currently an arbitrary transformation is possible, although that might not be all that important/useful).<br />
+<br />
+Take your time to come up with some proof of concept, perhaps I&#039;ll understand better then. No hurry.</div></div>
+
+  
+    <em>
+    <a name="comment4172" id="comment4172"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4172">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Tuesday, 14 October 2014, 14:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The minus-pixel/over pixel would work, however if region A is painted over by region B, then if region A is repainted, how is region B noticed? (random thought, I didn&#039;t look at the implementation). It currently work because the paint order is very predictable.<br />
+<br />
+As for the scroll, I guess you meant surface, not wibox. In that case the redraw code still need to take into consideration what is visible and what is not, so it can only partially work.</div></div>
+
+  
+    <em>
+    <a name="comment4199" id="comment4199"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4199">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 06 December 2014, 19:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">TL;DR: I&#039;d be interested in suggestions for the API.<br />
+<br />
+Once again, here is a new version (mostly bugfixes). And once again, here is the API that a widget can implement:<br />
+<br />
+- widget:fit(width, height): As before, given a space of width x height, this widget should return its desired width and height<br />
+- widget:draw(wibox, cr, width, height): As before, the widget should draw itself on the cairo context cr in the are from (0, 0) having size (width, height)<br />
+- widget:before_draw_children(wibox, cr, width, height) and widget:after_draw_children(wibox, cr, width, height): These are called before/after children are painted. before_draw_children is basically the same thing as draw and exists just for consistency. Here the widget can e.g. call cr:set_source_rgb(0,1,0) to influence its children. And after_draw_children() could be used for... things. Someone will come up with a use! ;-)<br />
+- widget:layout(width, height): This returns the layout of the children of the widget. This should return a list of widget placements. Such a placement can be generated via base.place_widget(widget, matrix, width, height) where Matrix is a cairo matrix that describes placement and rotation of the widget inside of its parent&#039;s area. Most commonly such a matrix should come from require(&quot;lgi&quot;).cairo.Matrix.create_translate(x, y) to place a widget at (x, y).<br />
+<br />
+In contrast to the current area, none of these callbacks are recursive / should call other widgets. The wibox code does all of that for us.<br />
+If a widget needs to be redrawn, but neither its :fit() nor :layout() changed, then it should emit widget::redraw_needed.<br />
+If a widget&#039;s layout changed, it has to call widget::layout_changed. Only if the result of its :fit() or :layout() actually changes will its :draw() also be called, else it is assumed that no redraw is needed.<br />
+<br />
+A BVH tree is an implementation detail, I&#039;m mostly curious what exactly you mean with &quot;a widget can claim any space on the wibox&quot;. Or rather, how that translates into API.</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=710" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (13.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4209" id="comment4209"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4209">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 11 January 2015, 12:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">It&#039;s time for a new version!<br />
+<br />
+This one adds an API change to make Elv13 (hopefully) happy:<br />
+<br />
+- widget:fit(width, height) now not only returns its desired width and height, but also a third (optional) value: padding! The padding is a table that can contains keys &quot;left&quot;, &quot;right&quot;, &quot;top&quot;, &quot;bottom&quot; (each optional). Each value is the number of pixels that should be additionally included in the clip area when the widget is redrawn. So if you return { bottom = 10 }, the widget will get 10 more pixels to the bottom than what the layout decided for it. And all of this works with any transformation, so you can scale such a widget by factor 1.5 and rotate it by 45° and still the right result (well, it will include 15 pixels of space due to the scaling, so the unit isn&#039;t really &quot;pixels&quot; but &quot;user space units&quot;)<br />
+<br />
+Hopefully this is enough for any kind of glow effect, but don&#039;t forget that other widgets could draw to that space before or after you, so weird results can occur...<br />
+<br />
+(Implementation details: In a widget hierachy, each node knows the padding for its own widget and the padding including all the padding of its children. This is used so that a repaint knows which parts of the hierachy it can skip and to clip each widget to its padding)</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=711" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (14.7 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4210" id="comment4210"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4210">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 11 January 2015, 13:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry, but I think that the padding should be returned from :layout() instead of :fit().<br />
+<br />
+New version attached where layout returns a list of children and the padding for this widget.</div></div>
+
+      <div class="attachments">
+          <a title="wibox2.lua" href="?getfile=712" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            wibox2.lua
+                  </a>
+                  (14.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4239" id="comment4239"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4239">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 16 June 2015, 18:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So I was experimenting with this a bit and have a work-in-progress branch that implements this:<br />
+<br /><a href="
+https://github.com/psychon/awesome/tree/new_widget_system">
+https://github.com/psychon/awesome/tree/new_widget_system</a><br />
+<br />
+Of course the widget API was broken. Also, by default that code draws the redrawn area black for 0.1 seconds before doing the actual redraw so that you can see excessive redraws.<br />
+<br />
+Any comments?<br />
+<br />
+Elv13, it would be nice if you could eventually find some time to experiment with this before it hits master. However, I am relatively busy currently and thus this might take a while.<br />
+<br />
+Also I plan to do some experiments with animations in that branch. I guess I&#039;ll just do that directly in the default config.</div></div>
+
+  
+    <em>
+    <a name="comment4241" id="comment4241"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#comment4241">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Friday, 24 July 2015, 01:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Some more discussion on Github:<a href=" https://github.com/awesomeWM/awesome/issues/338"> https://github.com/awesomeWM/awesome/issues/338</a>, including a rebase of the branch on master.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1296#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1296" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

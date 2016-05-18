@@ -1,0 +1,40 @@
+From ed43c8a938e41924a7fc0f3f70e1ccc1827dd7a1 Mon Sep 17 00:00:00 2001
+From: Perry Hargrave <resixian@gmail.com>
+Date: Thu, 30 Jun 2011 16:53:43 -0700
+Subject: [PATCH] FS#917: Dont move clients with fixed positions
+
+---
+ lib/awful/mouse/init.lua.in |   14 ++++++++++----
+ 1 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/lib/awful/mouse/init.lua.in b/lib/awful/mouse/init.lua.in
+index e25cb0a..b50f236 100644
+--- a/lib/awful/mouse/init.lua.in
++++ b/lib/awful/mouse/init.lua.in
+@@ -148,13 +148,19 @@ function client.snap(c, snap, x, y, fixed_x, fixed_y)
+     end
+ 
+     -- It's easiest to undo changes afterwards if they're not allowed
+-    if fixed_x then geom.x = cur_geom.x end
+-    if fixed_y then geom.y = cur_geom.y end
++    if fixed_x then
++        geom.x = cur_geom.x
++    else
++        geom.x = geom.x + (2 * c.border_width)
++    end
++    if fixed_y then
++        geom.y = cur_geom.y
++    else
++        geom.y = geom.y + (2 * c.border_width)
++    end
+ 
+     geom.width = geom.width - (2 * c.border_width)
+     geom.height = geom.height - (2 * c.border_width)
+-    geom.x = geom.x + (2 * c.border_width)
+-    geom.y = geom.y + (2 * c.border_width)
+ 
+     return geom
+ end
+-- 
+1.7.5.2
+

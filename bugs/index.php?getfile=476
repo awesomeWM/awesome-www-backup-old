@@ -1,0 +1,254 @@
+From b0ca03004810b4fe37a260d49638105e21dcaf45 Mon Sep 17 00:00:00 2001
+From: gac <gac@innocence.strasbourg.4js.com>
+Date: Tue, 21 Feb 2012 00:46:37 +0100
+Subject: [PATCH] awsetbg support --cmdline
+
+---
+ awesome/usr-bin/awsetbg |  165 +++++++++++++++++++++++------------------------
+ 1 files changed, 81 insertions(+), 84 deletions(-)
+
+diff --git a/awesome/usr-bin/awsetbg b/awesome/usr-bin/awsetbg
+index 48dd178..40f3335 100755
+--- a/awesome/usr-bin/awsetbg
++++ b/awesome/usr-bin/awsetbg
+@@ -97,6 +97,8 @@ Options:
+ 
+     -i  Information about selected wallpaper command.
+ 
++    --cmdline  Show the command instead of running it
++
+     -m  # Use montage to create a big image (image should
+           fit screen size). Requires montage(1).
+         # is the number of screen (columns in montage)
+@@ -160,110 +162,101 @@ if [ ! -d  "${CONFIG_DIR}" ]; then
+     touch ${lastwallpaper}
+ fi
+ 
+-unset debug setterfromcommandline
++unset debug setterfromcommandline cmdline
+ # Parse command-line options
+ while [ $# -gt 0 ]; do
+     case "$1" in
++        -h|--help) display_help ; exit 0 ;;
++	--cmdline)
++            cmdline=true ;;
+         -u)
+-            if find_it "$2"; then
+-                grep -v wpsetters $lastwallpaper > ${lastwallpaper}.tmp
+-                echo "wpsetters $2" >> ${lastwallpaper}.tmp
+-                mv ${lastwallpaper}.tmp $lastwallpaper
+-                WPSETTER=$2
+-                setterfromcommandline=true
+-            elif [ -z "$2" ]; then
++            shift
++            if [ -z "$1" ]; then
+                 grep -v wpsetters $lastwallpaper > ${lastwallpaper}.tmp
+                 mv ${lastwallpaper}.tmp $lastwallpaper
+                 message "wpsetter removed from historyfile"
+                 exit 0
+-            else
+-                message "Couldn't find \"$2\" for wallpapersetter"
++            fi
++            if ! find_it "$1"; then
++                message "Couldn't find \"$1\" for wallpapersetter"
+                 display_usage
+                 exit 1
+             fi
+-            shift 2 ;;
++            grep -v wpsetters $lastwallpaper > ${lastwallpaper}.tmp
++            echo "wpsetters $1" >> ${lastwallpaper}.tmp
++            mv ${lastwallpaper}.tmp $lastwallpaper
++            WPSETTER=$1
++            setterfromcommandline=true
++            ;;
+         -U)
+-            if find_it "$2"; then
+-                WPSETTER=$2
+-                setterfromcommandline=true
+-            else
+-                message "Couldn't find \"$2\" for wallpapersetter"
++            shift
++            if ! find_it "$1"; then
++                message "Couldn't find \"$1\" for wallpapersetter"
+                 display_usage
+                 exit 1
+             fi
+-            shift 2 ;;
+-        -i) debug=true
+-            break ;;
+-        -a) option='$aspect'
+-            shift ;;
+-        -f) option='$full'
+-            shift ;;
+-        -c) option='$center'
+-            shift ;;
+-        -t) option='$tile'
+-            shift ;;
+-        -A) option='$aspect'
+-            remember=false
+-            shift ;;
+-        -F) option='$full'
+-            remember=false
+-            shift ;;
+-        -C) option='$center'
+-            remember=false
+-            shift ;;
+-        -T) option='$tile'
+-            remember=false
+-            shift ;;
++            WPSETTER=$1
++            setterfromcommandline=true
++            ;;
++        -i) debug=true       ; break ;;
++        -a) option='$aspect' ;;
++        -f) option='$full'   ;;
++        -c) option='$center' ;;
++        -t) option='$tile'   ;;
++        -A) option='$aspect' ; remember=false   ;;
++        -F) option='$full'   ; remember=false   ;;
++        -C) option='$center' ; remember=false   ;;
++        -T) option='$tile'   ; remember=false   ;;
+         -m)
+             montage=`which montage`
+-            if test ! -z "$montage"; then
++            if test -z "$montage"; then
++                #shift
++                echo "montage not found. Falling back to single image"
++            else
+                 shift
+                 if [ $# -eq 0 ]; then
+                     echo "-m option need a columns argument"
+                     exit # no more args
+-                else
+-                    cols="$1"; shift
+-                    fns=""
+-                    i=$cols
+-                    while [ $i -gt 0 ]; do
+-                        fns="$fns $1"
+-                        i=$(($i - 1))
+-                    done
+-                    shift
+-                    $montage $fns -geometry +0+0 -tile ${cols}x $CONFIG_DIR/montage.png
+-                    wallpaper=$CONFIG_DIR/montage.png
+                 fi
+-            else
++                cols="$1"; shift
++                fns=""
++                i=$cols
++                while [ $i -gt 0 ]; do
++                    fns="$fns $1"
++                    i=$(($i - 1))
++                done
+                 shift
+-                echo "montage not found. Falling back to single image"
++                $montage $fns -geometry +0+0 -tile ${cols}x $CONFIG_DIR/montage.png
++                wallpaper=$CONFIG_DIR/montage.png
+             fi
+             ;;
+-        -r) option2=$option
++        -r) shift
++            option2=$option
+             option=random
+-            wallpaper=$2 # in this case it's a dir
++            wallpaper=$1 # in this case it's a dir
+             break ;;
+-        -R) option2=$option
++        -R) shift
++            option2=$option
+             option=random
+-            wallpaper=$2 # in this case it's a dir
++            wallpaper=$1 # in this case it's a dir
+             remember=false
+             break ;;
+         -l)
+-            if [ -r "$lastwallpaper" ]; then
+-                option=`grep "|${DISPLAY}$"    $lastwallpaper|cut -d'|' -f1`
++            if [ ! -r "$lastwallpaper" ]; then
++                message "No previous wallpaper recorded for display ${DISPLAY}"
++                exit 1
++            fi
++            option=`grep "|${DISPLAY}$"    $lastwallpaper|cut -d'|' -f1`
++            option2=`echo $option|cut -d' ' -f2`
++            option=`echo $option|cut -d' ' -f1`
++            wallpaper=`grep "|${DISPLAY}$" $lastwallpaper|cut -d'|' -f2`
++            if [ -z "$wallpaper" ]; then
++                option=`grep "|${DISPLAY}.0$"    $lastwallpaper|cut -d'|' -f1`
+                 option2=`echo $option|cut -d' ' -f2`
+                 option=`echo $option|cut -d' ' -f1`
+-                wallpaper=`grep "|${DISPLAY}$" $lastwallpaper|cut -d'|' -f2`
+-                if [ -z "$wallpaper" ]; then
+-                    option=`grep "|${DISPLAY}.0$"    $lastwallpaper|cut -d'|' -f1`
+-                    option2=`echo $option|cut -d' ' -f2`
+-                    option=`echo $option|cut -d' ' -f1`
+-                    wallpaper=`grep "|${DISPLAY}.0$" $lastwallpaper|cut -d'|' -f2`
+-                fi
+-                if [ -z "$wallpaper" ]; then
+-                    message "No previous wallpaper recorded for display ${DISPLAY}"
+-                    exit 1
+-                fi
+-            else
++                wallpaper=`grep "|${DISPLAY}.0$" $lastwallpaper|cut -d'|' -f2`
++            fi
++            if [ -z "$wallpaper" ]; then
+                 message "No previous wallpaper recorded for display ${DISPLAY}"
+                 exit 1
+             fi
+@@ -289,11 +282,8 @@ while [ $# -gt 0 ]; do
+                 break
+             fi
+             style="style"
+-            shift ;;
+-        -Z)
+-            style="style"
+-            shift ;;
+-        -h) display_help ; exit 0 ;;
++            ;;
++        -Z) style="style" ;;
+         --)
+             message "$command doesn't recognize -- gnu-longopts."
+             message 'Use $command -h for a help message.'
+@@ -306,19 +296,22 @@ while [ $# -gt 0 ]; do
+         *)
+             if [ "$option" = random ]; then
+                 option='$aspect'
+-            elif [ ! -r "$1" ]; then
+-                message "$1 isn't an existing wallpaper or a valid option."
+-                display_usage
+-                exit 1
+-            elif [ -z "$1" ]; then
+-                message 'No wallpaper to set'
+-                display_usage
+-                exit 1
+             else
++                if [ ! -r "$1" ]; then
++                    message "$1 isn't an existing wallpaper or a valid option."
++                    display_usage
++                    exit 1
++                fi
++                if [ -z "$1" ]; then
++                    message 'No wallpaper to set'
++                    display_usage
++                    exit 1
++                fi
+                 wallpaper=$1
+                 break
+             fi ;;
+     esac
++    shift
+ done
+ 
+ # Find the default wallpapersetter
+@@ -543,6 +536,10 @@ if [ ! -r "$wallpaper" ] && [ $WPSETTER != "xsetroot" ]; then
+     exit 1
+ fi
+ 
++if $cmdline; then
++    echo "$WPSETTER `eval echo $option` \"$wallpaper\""
++    exit 0
++fi
+ 
+ $WPSETTER `eval echo $option` "$wallpaper"
+ if [ $? -ne 0 -a "$WPSETTER" != "display" ] ||
+-- 
+1.7.9.1
+

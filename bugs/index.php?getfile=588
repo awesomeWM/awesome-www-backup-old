@@ -1,0 +1,39 @@
+diff --git a/lib/naughty.lua.in b/lib/naughty.lua.in
+index 1f089bb..4cf2dce 100644
+--- a/lib/naughty.lua.in
++++ b/lib/naughty.lua.in
+@@ -120,6 +120,7 @@ for s = 1, capi.screen.count() do
+     naughty.notifications[s] = {
+         top_left = {},
+         top_right = {},
++        top_center = {},
+         bottom_left = {},
+         bottom_right = {},
+     }
+@@ -151,7 +152,7 @@ end
+ 
+ -- Evaluate desired position of the notification by index - internal
+ -- @param idx Index of the notification
+--- @param position top_right | top_left | bottom_right | bottom_left
++-- @param position top_right | top_left | top_center |  bottom_right | bottom_left
+ -- @param height Popup height
+ -- @param width Popup width (optional)
+ -- @return Absolute position and index in { x = X, y = Y, idx = I } table
+@@ -164,6 +165,8 @@ local function get_offset(screen, position, idx, width, height)
+     -- calculate x
+     if position:match("left") then
+         v.x = ws.x + naughty.config.padding
++    elseif position:match("center") then
++        v.x = ws.x + ( ws.width - (width + config.padding) ) / 2
+     else
+         v.x = ws.x + ws.width - (width + naughty.config.padding)
+     end
+@@ -253,7 +256,7 @@ end
+ --   Default: nil
+ -- @param screen Target screen for the notification. Default: 1
+ -- @param position Corner of the workarea displaying the popups.
+---   Values: "top_right" (default), "top_left", "bottom_left", "bottom_right".
++--   Values: "top_right" (default), "top_left", "top_center", "bottom_left", "bottom_right".
+ -- @param ontop Boolean forcing popups to display on top. Default: true
+ -- @param height Popup height. Default: nil (auto)
+ -- @param width Popup width. Default: nil (auto)

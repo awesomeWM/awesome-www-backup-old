@@ -1,0 +1,24 @@
+From 4319503af8b476668e09f06259edb2a3838dedbd Mon Sep 17 00:00:00 2001
+From: Steven Oliver <oliver.steven@gmail.com>
+Date: Tue, 28 Aug 2012 21:24:23 -0400
+Subject: [PATCH 2/2] Add SHA512 checksums dist script
+
+
+Signed-off-by: Steven Oliver <oliver.steven@gmail.com>
+---
+ build-utils/dist.sh | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/build-utils/dist.sh b/build-utils/dist.sh
+index 7aa290b..f6a967a 100755
+--- a/build-utils/dist.sh
++++ b/build-utils/dist.sh
+@@ -11,3 +11,5 @@ cd dist
+ echo -n $VERSION > awesome-$SVERSION/.version_stamp
+ tar cjf awesome-$SVERSION.tar.bz2 awesome-$SVERSION
+ tar cJf awesome-$SVERSION.tar.xz awesome-$SVERSION
++sha512sum awesome-$SVERSION.tar.bz2 >> awesome-$SVERSION-checksum
++sha512sum awesome-$SVERSION.tar.xz >> awesome-$SVERSION-checksum
+-- 
+1.7.11.4
+

@@ -1,0 +1,17 @@
+diff --git a/lib/awful/client.lua.in b/lib/awful/client.lua.in
+index 469dbfe..90dab3a 100644
+--- a/lib/awful/client.lua.in
++++ b/lib/awful/client.lua.in
+@@ -220,7 +220,11 @@ function client.tiled(screen)
+     local tclients = {}
+     -- Remove floating clients
+     for k, c in pairs(clients) do
+-        if not client.floating.get(c) then
++        if not client.floating.get(c) and not (
++            c.fullscreen
++            or c.maximized_vertical
++            or c.maximized_horizontal
++            or client.isfixed(c)) then
+             table.insert(tclients, c)
+         end
+     end

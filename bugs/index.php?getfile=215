@@ -1,0 +1,44 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index de8812f..bb74f32 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -7,6 +7,9 @@ require("beautiful")
+ -- Notification library
+ require("naughty")
+ 
++-- Initialize beautiful with the default theme
++beautiful()
++
+ -- {{{ Variable definitions
+ -- This is used later as the default terminal and editor to run.
+ terminal = "xterm"
+diff --git a/lib/beautiful.lua.in b/lib/beautiful.lua.in
+index 2bb0437..dbd9657 100644
+--- a/lib/beautiful.lua.in
++++ b/lib/beautiful.lua.in
+@@ -32,6 +32,10 @@ local theme
+ --- Init function, should be runned at the beginning of configuration file.
+ -- @param path The theme file path.
+ function init(path)
++    if not path then
++        -- Init with default theme.
++        init("@AWESOME_THEMES_PATH@/default/theme.lua")
++    end
+     if path then
+         local success
+         success, theme = pcall(function() return dofile(path) end)
+@@ -71,9 +75,9 @@ function get()
+     return theme
+ end
+ 
+-setmetatable(_M, { __index = function(t, k) return theme[k] end })
+-
+--- Init with default theme.
+-init("@AWESOME_THEMES_PATH@/default/theme.lua")
++setmetatable(_M, {
++    __index = function(t, k) return theme[k] end,
++    __call = function(_, path) init(path) end
++})
+ 
+ -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+

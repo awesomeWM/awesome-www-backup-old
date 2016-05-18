@@ -1,0 +1,15 @@
+! urxvt terminal
+URxvt.buffered:		true
+URxvt.depth:            32
+URxvt*background:	rgba:0000/0000/0000/cccc
+URxvt.foreground:	grey
+URxvt.font:xft:DejaVu Sans Mono:pixelsize=11:antialias=true
+URxvt.scrollBar:	false
+URxvt.saveLines:	5000
+URxvt.scrollTtyOutput:  false
+URxvt.scrollWithBuffer: true
+URxvt.secondaryScroll:  true
+
+URxvt.perl-ext-common:  default,matcher
+URxvt.urlLauncher:      /usr/bin/firefox
+URxvt.matcher.button:   1

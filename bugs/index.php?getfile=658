@@ -1,0 +1,62 @@
+From 1da7180b1481f632354483620e217b34a358293e Mon Sep 17 00:00:00 2001
+From: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+Date: Thu, 26 Dec 2013 14:05:01 +0100
+Subject: [PATCH] menu: allow markup in menu entries
+
+Current API does not allow custom markup (e.g. bold or italic text) in
+menu items because it escapes the text unconditionally.  But in some
+cases it can be very useful to mark some menu entries in a special way
+(e.g. urgent windows in the tasklist menu).
+
+Patch allows to call a custom function which fills or replaces the
+standard label.
+
+Signed-off-by: Enrico Scholz <enrico.scholz@informatik.tu-chemnitz.de>
+---
+ lib/awful/menu.lua.in | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index ba92da7..38c9bcb 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -498,12 +498,16 @@ function menu.entry(parent, args)
+     local label = wibox.widget.textbox()
+     local key = ''
+     label:set_font(args.theme.font)
+-    label:set_markup(string.gsub(
+-        util.escape(args.text), "&amp;(%w)",
+-        function (l)
+-            key = string.lower(l)
+-            return "<u>" .. l .. "</u>"
+-        end, 1))
++    if type(args.text) == "function" then
++        label = args.text(label) or label
++    else
++        label:set_markup(string.gsub(
++            util.escape(args.text), "&amp;(%w)",
++            function (l)
++                key = string.lower(l)
++                return "<u>" .. l .. "</u>"
++            end, 1))
++    end
+     -- Set icon if needed
+     local icon, iconbox
+     local margin = wibox.layout.margin()
+@@ -580,7 +584,12 @@ end
+ --- Create a menu popup.
+ -- @param args Table containing the menu informations.<br/>
+ -- <ul>
+--- <li> Key items: Table containing the displayed items. Each element is a table by default (when element 'new' is awful.menu.entry) containing: item name, triggered action, submenu table or function, item icon (optional). </li>
++-- <li> Key items: Table containing the displayed items. Each element is a table by default (when element 'new' is awful.menu.entry) containing: item content, triggered action, submenu table or function, item icon (optional). The item content can be:
++--   <ul>
++--   <li>a function taking a wibox.widget.textbox object as argument and (optionally) returning this textbox object or another widget</li>
++--   <li>a string which will be escaped</li>
++--   </ul>
++-- </li>
+ -- <li> Keys theme.[fg|bg]_[focus|normal], theme.border_color, theme.border_width, theme.submenu_icon, theme.height and theme.width override the default display for your menu and/or of your menu entry, each of them are optional. </li>
+ -- <li> Key auto_expand controls the submenu auto expand behaviour by setting it to true (default) or false. </li>
+ -- </ul>
+-- 
+1.8.4.2
+

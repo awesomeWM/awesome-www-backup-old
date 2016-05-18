@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+#---------------------------------------------------------------------------
+# @ Author: Dr. Erdal Suvar, Stockholm, Sweden.
+# @ Filename: awesome_volume.sh
+# @ Purpose: Change and update the status of the volume in "awesome window manager 3.4 (awesomeWM)"
+# @ Copyright 2010 ErdalSuvar
+# @ History: 	2010/02/16: First relase.
+#---------------------------------------------------------------------------
+
+
+#
+# Setting the volume in awesome windows manager (version 3.x).
+
+# Set the PCM controller to 100%. 
+# The volume is controlled with the Master controller.
+amixer -c 0 -q set PCM 100%
+
+# Set the volume
+case $1 in
++)
+        amixer -c 0 -q set Master 5%+ unmute
+	#echo "1"
+        ;;
+-)
+        amixer -c 0 -q set Master 5%-
+	#echo "2"
+        ;;
+0)		
+	amixer -c 0 -q set Master toggle
+	#echo "3"
+	;;
+esac
+
+# Get the current volume
+mixer="$(amixer get Master | grep -i 'Front Left:')"
+mute="$(echo $mixer | cut -d ' ' -f 7 | sed s/[\[]*// | sed s/[\]]//)"
+if [ ${mute} == "off" ]; then 
+	volume="-1";
+else 
+	volume=`echo ${mixer} | cut -d ' ' -f 4`;
+fi
+
+# Change the image accoring to volume
+#echo "${volume}"
+if [[ ${volume} -lt 0  ]]; then
+	# printf "0 widget_tell Panel volume image /home/suvar/.config/icons/volume_0.png\n" | awesome-client  		# this is for Awesome version 2.x
+	echo "WidVolume[\"image\"] = image(\"/home/suvar/.config/icons/volume_mute.png\") " | awesome-client  	# this is for Awesome version 3.x
+elif [[ ${volume} -lt 5  ]]; then
+	echo "WidVolume[\"image\"] = image(\"/home/suvar/.config/icons/volume_0.png\") " | awesome-client  	
+elif [[ ${volume} -lt 20  ]]; then
+	echo "WidVolume[\"image\"] = image(\"/home/suvar/.config/icons/volume_1.png\") " | awesome-client  	
+elif [[ ${volume} -lt 40  ]]; then
+	echo "WidVolume[\"image\"] = image(\"/home/suvar/.config/icons/volume_2.png\") " | awesome-client  
+else	
+	echo "WidVolume[\"image\"] = image(\"/home/suvar/.config/icons/volume_3.png\") " | awesome-client  
+fi
+

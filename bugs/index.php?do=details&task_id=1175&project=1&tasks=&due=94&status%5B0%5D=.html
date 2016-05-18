@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1175 : Java menu problem with Awesome &gt;=3.5 and xinerama</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1175&amp;project=1&amp;tasks=&amp;due=94&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1205&amp;project=1&amp;tasks=&amp;due=94&amp;status%5B0%5D=" title="Unconfirmed | maximised windows do not stay maximised when they change size | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;tasks=&amp;due=94&amp;status%5B0%5D=">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1138&amp;project=1&amp;tasks=&amp;due=94&amp;status%5B0%5D=" title="Unconfirmed | Taglist/tasklist buttons functions are called twice if the mouse | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1175 - Java menu problem with Awesome &gt;=3.5 and xinerama  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=893">Joss Wright (tealeaf)</a>     	 - Tuesday, 27 August 2013, 18:55 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 11 April 2014, 09:17 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.6			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">8 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=927">Ram-Z (Ram-Z)</a> (2014-10-09)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=986">teddydestodes (teddydestodes)</a> (2014-06-15)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=977">Eugene (p-himik)</a> (2014-05-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=870">Oleg Shparber (trollixx)</a> (2014-04-21)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=919">Renato Alves (unode)</a> (2014-03-09)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=326">Andrea Scarpino (bash)</a> (2014-01-14)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=893">Joss Wright (tealeaf)</a> (2013-09-18)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=896">Quan Guo (guotsuan)</a> (2013-09-03)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Using latest awesome-git checkout, but this is an ongoing problem as of some months now. (Arch Linux: `yaourt -Sa awesome-git`).<br />
+<br />
+In java applications, when running a dual-head (xinerama) setup, there are a variety of strange behaviours with menus in java applications. (Tested with, amongst others, CGoban3 from<a href=" http://www.gokgs.com"> http://www.gokgs.com</a>). This occurs in both Oracle&#039;s latest JRE and OpenJDK 7.<br />
+<br />
+On the first/leftmost monitor, a menu often responds to a click and stays open, but is &#039;offset&#039; by perhaps 20 vertical pixels. (So I can select an item by hovering in the space above it.)<br />
+<br />
+On the second/rightmost monitor, the menu will not stay open, but if I hold down the mouse and move to the equivalent space on the first/leftmost monitor it starts to select items.<br />
+<br />
+In a single-monitor setup Java seems to work fine even without the _JAVA_AWT_WM_NONREPARENTING and wmname hacks. The behaviour described here occurs regardless of whether I&#039;m using _JAVA_AWT_WM_NONREPARENTING/wmname or not. This clearly seems related to the long-running reparenting issue. I thought that wmname, and the OpenJDK, had made this a non-issue, though.<br />
+<br />
+To reproduce:<br />
+<br />
+1) Run awesome in a xinerama dual-monitor setup.<br />
+2) Run a java swing application, such as CGoban3 (www.gokgs.com)<br />
+3) Move window between workspaces and try clicking on menus.<br />
+<br />
+I noticed in Task #972 that someone mentioned &#039;the java menu problem&#039;, but I couldn&#039;t find an actual bug report linked to this, so I opened one.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (9)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3666" id="comment3666"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment3666">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=896">Quan Guo (guotsuan)</a> -
+    Tuesday, 03 September 2013, 00:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Exactly same case here.</div></div>
+
+  
+    <em>
+    <a name="comment3792" id="comment3792"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment3792">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=893">Joss Wright (tealeaf)</a> -
+    Friday, 24 January 2014, 23:07 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I see that this is now listed as &#039;Due in Version: 3.5.3&#039;. Are there any ideas or clues as to the exact problem and how to solve it? (Is there a timeframe for 3.5.3? :))<br />
+<br />
+I&#039;d happily spend some time poking at it if someone gave me a hint where to start.</div></div>
+
+  
+    <em>
+    <a name="comment3793" id="comment3793"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment3793">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 25 January 2014, 08:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@tealeaf: That&#039;s just my &quot;look at it later&quot;-list. That&#039;s no promise that it will actually be fixed until then.<br />
+<br />
+And on why this could happen: No idea. It would be interesting to know where exactly java gets its wrong position from. However, I doubt that anyone actually wants to dive into that code and i don&#039;t know about anything like a debug mode in there.<br />
+So I guess a better strategy would be to find/write some &quot;simple&quot; X11-using program that prints various position-related things, perhaps verifies this with TranslateCoordinates, if possible. At least this could be used to compare things with other WMs (e.g. move windows in top left corner and see if something says (0, 0) or (border, border+titlebar_size).<br />
+<br />
+TL;DR: Nope, no real clue here.</div></div>
+
+  
+    <em>
+    <a name="comment3794" id="comment3794"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment3794">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=893">Joss Wright (tealeaf)</a> -
+    Saturday, 25 January 2014, 19:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That&#039;s fine. Thanks for replying. It&#039;s a long-term annoyance, but it doesn&#039;t really stop anything critical for me. It just means that I have one or two programs (Vassal and CGoban3) that need to be floating, and that still have slightly odd behaviour. (Drag and drop is also strangely broken, but it&#039;s hard to describe exactly how and when. I suggest that Vassal, from vassalengine.org, is one application that definitely shows a number of these odd behaviours.)<br />
+<br />
+I know that this probably isn&#039;t a helpful thing to say, but for reference it seems that i3 doesn&#039;t have these problems. I&#039;ve seen some older discussions of xmonad and Java Swing applications, but I&#039;m not sure if they&#039;ve been fixed or not. I&#039;ll also emphasise that, as far as I know, it&#039;s Swing-based applications not just Java.<br />
+<br />
+Thanks again.</div></div>
+
+  
+    <em>
+    <a name="comment4019" id="comment4019"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment4019">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=870">Oleg Shparber (trollixx)</a> -
+    Monday, 21 April 2014, 04:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same problem for me with OpenJDK in WebStorm (IDEA). I see this problem in a single display setup and with three displays too.</div></div>
+
+  
+    <em>
+    <a name="comment4061" id="comment4061"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment4061">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=977">Eugene (p-himik)</a> -
+    Friday, 16 May 2014, 06:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same problem with Oracle JDK 1.6, 1.7 and 1.8 in IDEA, DbVisualizer and yEd in a single display setup.</div></div>
+
+  
+    <em>
+    <a name="comment4062" id="comment4062"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment4062">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=977">Eugene (p-himik)</a> -
+    Friday, 16 May 2014, 07:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Update: using particular JDK version (Oracle 1.6.0_45) with writing it down in the applications configs (the aforementioned applications has startup scripts that can override path to java) seems to do the thing - no more problems with menus.</div></div>
+
+  
+    <em>
+    <a name="comment4095" id="comment4095"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment4095">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=986">teddydestodes (teddydestodes)</a> -
+    Sunday, 15 June 2014, 01:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Since I am affected by this problem too, i did some poking and noticed that if some foreground menu is open (e.g. the XDG-Menu) everything behaves as expected.<br />
+<br />
+this works on stock rc.lua too.<br />
+<br />
+After making these screenshot I&#039;ve noticed that even MOD4+r does the trick.<br />
+This is sadly no workaround since it grabs the keyboard.<br />
+<br />
+Sadly my c/lua knowledge is far too basic to make any progress beyond that.</div></div>
+
+      <div class="attachments">
+          <a title="faulty.jpg" href="?getfile=691" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            faulty.jpg
+                  </a>
+                  (338.6 KiB)
+          <br />
+          <a title="not-faulty.jpg" href="?getfile=692" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            not-faulty.jpg
+                  </a>
+                  (348.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4096" id="comment4096"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#comment4096">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=986">teddydestodes (teddydestodes)</a> -
+    Sunday, 15 June 2014, 14:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">my fault.<br />
+the screenshots were taken with the &quot;wmname LG3D&quot; hack<br />
+<br />
+without, the menus are on the wrong location (they are positioned absolute instead of relative to the parent window), but the mouse was correctly recognized above them. (see broken.jpg)<br />
+<br />
+after some poking, i found out that moving the window fixes everything, and resizing breaks everything again:<br />
+<br />
+in my case i did it with pycharm (like intelliJ or any other java application)<br />
+<br />
+running pycharm in some non-floating layout: broken<br />
+set pycharm to float without moving: broken<br />
+moving the window: okay again<br />
+resizing the window: broken<br />
+moving it again: okay again<br />
+<br />
+anyways:<br />
+<br />
+setting send_notice = true in objects/client.c:client_resize_do<br />
+<br />
+corrects this behavior, but as psychon pointed out on IRC this is not a desirable fix</div></div>
+
+      <div class="attachments">
+          <a title="okay.jpg" href="?getfile=693" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            okay.jpg
+                  </a>
+                  (99.4 KiB)
+          <br />
+          <a title="broken.jpg" href="?getfile=694" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/jpeg; charset=binary" />
+            &nbsp;&nbsp;
+            broken.jpg
+                  </a>
+                  (98.9 KiB)
+          <br />
+    </div>
+  
+
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1175#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1175" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

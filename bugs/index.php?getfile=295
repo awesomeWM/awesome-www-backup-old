@@ -1,0 +1,31 @@
+From fc5520cfae0209ea2dd60620cdb97d9c40c40af2 Mon Sep 17 00:00:00 2001
+From: Uli Schlachter <psychon@znc.in>
+Date: Sun, 14 Mar 2010 14:49:09 +0100
+Subject: [PATCH] Unmaximize all clients in the manage hook
+
+Clients which maximize themselves on startup regularly confuse users. Work
+around this by un-maximizing everything via awful.rules.
+
+Signed-off-by: Uli Schlachter <psychon@znc.in>
+---
+ awesomerc.lua.in |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 03dcb9c..cada2dd 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -292,7 +292,9 @@ awful.rules.rules = {
+                      border_color = beautiful.border_normal,
+                      focus = true,
+                      keys = clientkeys,
+-                     buttons = clientbuttons } },
++                     buttons = clientbuttons,
++                     maximized_horizontal = false,
++                     maximized_vertical = false } },
+     { rule = { class = "MPlayer" },
+       properties = { floating = true } },
+     { rule = { class = "pinentry" },
+-- 
+1.7.0
+

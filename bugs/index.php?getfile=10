@@ -1,0 +1,171 @@
+ awesome.c   |    6 ++++--
+ config.c    |    4 ++--
+ config.h    |    2 ++
+ event.c     |    4 ++--
+ screen.c    |   14 +++++++-------
+ statusbar.c |    2 +-
+ uicb.c      |    2 +-
+ 7 files changed, 19 insertions(+), 15 deletions(-)
+
+diff --git a/awesome.c b/awesome.c
+index ab7b90c..3a455d9 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -206,7 +206,7 @@ main(int argc, char *argv[])
+     XEvent ev;
+     Display * dpy;
+     int shape_event, randr_event_base;
+-    int screen;
++    int screen, screen_count;
+     event_handler **handler;
+     struct sockaddr_un *addr;
+ 
+@@ -255,7 +255,9 @@ main(int argc, char *argv[])
+     ewmh_init_atoms();
+ 
+     /* init screens struct */
+-    globalconf.screens = p_new(VirtScreen, get_screen_count());
++    screen_count = get_screen_count();
++    globalconf.screens = p_new(VirtScreen, screen_count);
++    globalconf.nscreens = screen_count;
+     focus_add_client(NULL);
+ 
+     /* parse config */
+diff --git a/config.c b/config.c
+index 0452cb1..2b8d8d5 100644
+--- a/config.c
++++ b/config.c
+@@ -769,7 +769,7 @@ config_parse(const char *confpatharg)
+     }
+ 
+     /* get the right screen section */
+-    for(screen = 0; screen < get_screen_count(); screen++)
++    for(screen = 0; screen < globalconf.nscreens; screen++)
+         config_parse_screen(cfg, screen);
+ 
+     /* get general sections */
+@@ -792,7 +792,7 @@ config_parse(const char *confpatharg)
+             rule->isfloating = rules_get_float_from_str(cfg_getstr(cfgsectmp, "float"));
+             rule->screen = cfg_getint(cfgsectmp, "screen");
+             rule->not_master = cfg_getbool(cfgsectmp, "not_master");
+-            if(rule->screen >= get_screen_count())
++            if(rule->screen >= globalconf.nscreens)
+                 rule->screen = 0;
+ 
+             if(i < cfg_size(cfg_rules, "rule") - 1)
+diff --git a/config.h b/config.h
+index 63b2c85..4a90f3e 100644
+--- a/config.h
++++ b/config.h
+@@ -285,6 +285,8 @@ struct AwesomeConf
+     Display *display;
+     /** Logical screens */
+     VirtScreen *screens;
++    /** Number of logical screens */
++    int nscreens;
+     /** Rules list */
+     Rule *rules;
+     /** Keys bindings list */
+diff --git a/event.c b/event.c
+index 878e25f..333781f 100644
+--- a/event.c
++++ b/event.c
+@@ -69,7 +69,7 @@ handle_event_buttonpress(XEvent *e)
+     Statusbar *statusbar;
+     XButtonPressedEvent *ev = &e->xbutton;
+ 
+-    for(screen = 0; screen < get_screen_count(); screen++)
++    for(screen = 0; screen < globalconf.nscreens; screen++)
+         for(statusbar = globalconf.screens[screen].statusbar; statusbar; statusbar = statusbar->next)
+             if(statusbar->window == ev->window)
+                 switch(statusbar->position)
+@@ -264,7 +264,7 @@ handle_event_expose(XEvent *e)
+     Statusbar *statusbar;
+ 
+     if(!ev->count)
+-        for(screen = 0; screen < get_screen_count(); screen++)
++        for(screen = 0; screen < globalconf.nscreens; screen++)
+             for(statusbar = globalconf.screens[screen].statusbar; statusbar; statusbar = statusbar->next)
+                 if(statusbar->window == ev->window)
+                 {
+diff --git a/screen.c b/screen.c
+index 815d576..9680173 100644
+--- a/screen.c
++++ b/screen.c
+@@ -142,7 +142,7 @@ get_screen_bycoord(int x, int y)
+     if(!XineramaIsActive(globalconf.display))
+         return DefaultScreen(globalconf.display);
+ 
+-    for(i = 0; i < get_screen_count(); i++)
++    for(i = 0; i < globalconf.nscreens; i++)
+     {
+         area = get_screen_area(i, NULL, NULL);
+         if((x < 0 || (x >= area.x && x < area.x + area.width))
+@@ -163,7 +163,7 @@ get_screen_count(void)
+     if(XineramaIsActive(globalconf.display))
+         XineramaQueryScreens(globalconf.display, &screen_number);
+     else
+-        return ScreenCount(globalconf.display);
++        screen_number = ScreenCount(globalconf.display);
+ 
+     return screen_number;
+ }
+@@ -283,7 +283,7 @@ move_mouse_pointer_to_screen(int screen)
+ void
+ uicb_screen_focus(int screen, char *arg)
+ {
+-    int new_screen, numscreens = get_screen_count();
++    int new_screen;
+ 
+     if(arg)
+         new_screen = compute_new_value_from_arg(arg, screen);
+@@ -291,8 +291,8 @@ uicb_screen_focus(int screen, char *arg)
+         new_screen = screen + 1;
+ 
+     if (new_screen < 0)
+-        new_screen = numscreens - 1;
+-    if (new_screen > (numscreens - 1))
++        new_screen = globalconf.nscreens - 1;
++    if (new_screen > (globalconf.nscreens - 1))
+         new_screen = 0;
+ 
+     focus(focus_get_current_client(new_screen), True, new_screen);
+@@ -319,10 +319,10 @@ uicb_client_movetoscreen(int screen __attribute__ ((unused)), char *arg)
+     else
+         new_screen = sel->screen + 1;
+ 
+-    if(new_screen >= get_screen_count())
++    if(new_screen >= globalconf.nscreens)
+         new_screen = 0;
+     else if(new_screen < 0)
+-        new_screen = get_screen_count() - 1;
++        new_screen = globalconf.nscreens - 1;
+ 
+     prev_screen = sel->screen;
+     move_client_to_screen(sel, new_screen, True);
+diff --git a/statusbar.c b/statusbar.c
+index 9aaaa79..dd8b048 100644
+--- a/statusbar.c
++++ b/statusbar.c
+@@ -246,7 +246,7 @@ statusbar_refresh()
+     Statusbar *statusbar;
+     Widget *widget;
+ 
+-    for(screen = 0; screen < get_screen_count(); screen++)
++    for(screen = 0; screen < globalconf.nscreens; screen++)
+         for(statusbar = globalconf.screens[screen].statusbar;
+             statusbar;
+             statusbar = statusbar->next)
+diff --git a/uicb.c b/uicb.c
+index 2f717e5..ef89f17 100644
+--- a/uicb.c
++++ b/uicb.c
+@@ -101,7 +101,7 @@ run_uicb(char *cmd)
+         return -1;
+     }
+     screen = atoi(cmd);
+-    if(screen >= get_screen_count() || screen < 0)
++    if(screen >= globalconf.nscreens || screen < 0)
+     {
+         warn("Invalid screen specified: %i\n", screen);
+         return -1;

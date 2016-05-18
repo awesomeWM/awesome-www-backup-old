@@ -1,0 +1,494 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1173 : focus any screen causing triggering signals in x=0,y=0</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1173&amp;project=1&amp;opened=863&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1174&amp;project=1&amp;opened=863&amp;status%5B0%5D=" title="Duplicate | tooltip doesn&#039;t work correctly with wiboxs | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=863&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1156&amp;project=1&amp;opened=863&amp;status%5B0%5D=" title="Won&#039;t fix | move mouse to client screen in clients menu | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1173 - focus any screen causing triggering signals in x=0,y=0  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a>     	 - Friday, 16 August 2013, 20:36 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 04 October 2013, 09:31 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 awful		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 3.5.2			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">[code]<br />
+<br />
+awelp = {s={}}<br />
+<br />
+for s = 1,screen.count()<br />
+<br />
+	awelp[s] = wibox{ x = capi.screen[s].geometry.x, y = capi.screen[s].geometry.y, width = capi.screen[s].geometry.width, height = capi.screen[s].geometry.height, visible = false, ontop = true, opacity = 1, bg = &quot;#00ff00&quot;}<br />
+	awelp.s[s] = wibox{ x = capi.screen[s].geometry.x, y = capi.screen[s].geometry.y, width = 1, height = 1, visible = true, ontop = true, opacity = 1, bg = &quot;#ff0000&quot;}<br />
+	awelp.s[s]:connect_signal(&quot;mouse::enter&quot;, function () awelp[s].visible = not awelp[s].visible keygrabber.run(function(mod, key, event) if key == &#039;Escape&#039; then keygrabber.stop() awelp[s].visible = not awelp[s].visible end end) end)<br />
+<br />
+end<br />
+<br />
+[/code]<br />
+<br />
+focus another screen<br />
+<br />
+the mouse will hover {0,0} coords of the screen this will cause the wibox to show<br />
+<br />
+!!!</div>
+
+         <div class="attachments">
+          <a title="rc.lua.test" href="?getfile=634" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            rc.lua.test
+                  </a>
+                  (18 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Friday, 04 October 2013, 09:31 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+a6466864f945d3a5526a89efcf31375e82969a20
+<br />
+Author: Uli Schlachter
+&lt;psychon@znc.in&gt;<br />
+Date:   Fri Oct 4 11:27:35 2013 +0200<br
+/>
+<br />
+    awful.screen.focus: Don&#039;t move
+mouse to (0, 0) first (<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=1173&amp;proje
+ct=1&amp;opened=863&amp;status%5B0%5D="
+title="Fixed | focus any screen causing
+triggering signals in x=0,y=0 | 100%" 
+class =
+"closedtasklink">FS#1173</a>&#160;</del>
+)<br />
+    <br />
+    Setting mouse.screen moves the
+pointer to the top left corner of that
+screen.<br />
+    However, the very next line would
+then move the pointer elsewhere again.
+Thus,<br />
+    the first one wasn&#039;t needed at
+all.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (6)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3653" id="comment3653"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3653">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 17 August 2013, 10:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, what?<br />
+<br />
+If I understand this correctly, you a have a wibox of size 1x1 placed at 0x0 of each screen(?), right?<br />
+So when the mouse is moved to position 0x0, the mouse enters this wibox, right?<br />
+<br />
+Which makes me wonder: What is the problem? Isn&#039;t all of this obviously expected behavior?</div></div>
+
+  
+    <em>
+    <a name="comment3654" id="comment3654"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3654">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a> -
+    Saturday, 17 August 2013, 10:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">when i focus a screen the mouse enters the wibox even if i didn&#039;t enter it</div></div>
+
+  
+    <em>
+    <a name="comment3655" id="comment3655"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3655">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a> -
+    Saturday, 17 August 2013, 10:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">see the video please<br />
+<br />
+mod4 + o to move client to the next screen or (focus another screen) causing the mouse to enter 0x0<br />
+<br />
+using the config in the OP (default awesome config with a wibox in 0x0)</div></div>
+
+      <div class="attachments">
+          <a title="awesome.mkv" href="?getfile=635" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/application.png" alt="" title="application/octet-stream; charset=binary" />
+            &nbsp;&nbsp;
+            awesome.mkv
+                  </a>
+                  (313.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3656" id="comment3656"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3656">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 17 August 2013, 10:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ah, I totally forgot that awful.screen.focus preserves the relative mouse position these days. Sorry.<br />
+<br />
+Could you edit lib/awful/screen.lua.in or /usr/local/share/awesome/lib/awful/screen.lua and swap lines 64 and 65?<br />
+<br />
+Previously:<br />
+<br />
+   -- move cursor without triggering signals mouse::enter and mouse::leave<br />
+    capi.mouse.screen = _screen<br />
+    capi.mouse.coords(pos, true)<br />
+<br />
+I would like you to test this instead:<br />
+<br />
+   -- move cursor without triggering signals mouse::enter and mouse::leave<br />
+    capi.mouse.coords(pos, true)<br />
+    capi.mouse.screen = _screen</div></div>
+
+  
+    <em>
+    <a name="comment3657" id="comment3657"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3657">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a> -
+    Saturday, 17 August 2013, 10:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">now when i focus next screen the mouse go to 0x0 coords not the same pos in the first screen</div></div>
+
+      <div class="attachments">
+          <a title="awesome.mkv" href="?getfile=636" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/application.png" alt="" title="application/octet-stream; charset=binary" />
+            &nbsp;&nbsp;
+            awesome.mkv
+                  </a>
+                  (535 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3658" id="comment3658"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#comment3658">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=863">Ayman (mony)</a> -
+    Saturday, 17 August 2013, 10:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">fixed !<br />
+<br />
+[code]<br />
+   -- move cursor without triggering signals mouse::enter and mouse::leave<br />
+    capi.mouse.coords({x = pos.x, y = pos.y + capi.screen[_screen].geometry.y}, true)<br />
+    --capi.mouse.screen = _screen<br />
+[/code]<br />
+<br />
+:)<br />
+<br />
+but i think this will work with 2 screens setup only !! right ?<br /></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1173#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1173" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

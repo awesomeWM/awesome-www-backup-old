@@ -1,0 +1,20 @@
+--- menu.lua	2009-12-10 10:17:40.000000000 +0100
++++ menu.lua-3.4.2	2009-12-10 10:17:40.000000000 +0100
+@@ -125,7 +125,7 @@
+         util.spawn(cmd)
+     elseif type(cmd) == "function" then
+         get_parents(menu):hide()
+-        cmd(menu.items[num].label)
++        cmd()
+     end
+ end
+ 
+@@ -245,7 +245,7 @@
+     item.height = label:extents().height + 2
+     item.ontop = true
+ 
+-    return { label=item_info[1], wibox = item, cmd = item_info[2] }
++    return { wibox = item, cmd = item_info[2] }
+ end
+ 
+ --- Build a popup menu with running clients and shows it.

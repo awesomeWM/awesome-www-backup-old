@@ -1,0 +1,26 @@
+From c2a62963cbceda64ca52bc006d1f0293d9ab772b Mon Sep 17 00:00:00 2001
+From: Anton Bobrov <bobrov@vl.ru>
+Date: Fri, 11 Jun 2010 15:12:47 +1100
+Subject: [PATCH] fix focus history loss for clients with noinput hint
+
+---
+ client.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/client.c b/client.c
+index 075df43..e4c38ed 100644
+--- a/client.c
++++ b/client.c
+@@ -447,7 +447,8 @@ client_focus(client_t *c)
+     if(!client_maybevisible(c, c->screen))
+         return;
+ 
+-    if (!c->nofocus)
++    bool takefocus = client_hasproto(c, WM_TAKE_FOCUS);
++    if (!c->nofocus || takefocus)
+         client_focus_update(c);
+ 
+     client_set_focus(c, !c->nofocus);
+-- 
+1.7.1
+

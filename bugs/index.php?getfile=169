@@ -1,0 +1,11 @@
+gnome-settings-daemon &
+gnome-keyring-daemon --start &
+gnome-panel &
+nm-applet &
+gnome-power-manager &
+/usr/lib/gnome-volume-manager/gnome-volume-manager &
+system-config-printer-applet &
+seahorse-agent &
+xcompmgr -c &
+sleep 5
+exec awesome

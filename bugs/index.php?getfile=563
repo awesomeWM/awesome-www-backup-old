@@ -1,0 +1,113 @@
+From b8c680a76bd54d7ee4095fc6e72ea82520872222 Mon Sep 17 00:00:00 2001
+From: Felix Bier <flx.bier@googlemail.com>
+Date: Wed, 2 Jan 2013 18:53:19 +0100
+Subject: [PATCH] Fullscreen / Maximized vs size hints
+
+---
+ lib/awful/client.lua.in          | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/awful/layout/init.lua.in     | 13 ++++++++++++-
+ lib/awful/layout/suit/max.lua.in | 12 ++++++++++++
+ 3 files changed, 63 insertions(+), 1 deletion(-)
+
+diff --git a/lib/awful/client.lua.in b/lib/awful/client.lua.in
+index 469dbfe..dfa31d5 100644
+--- a/lib/awful/client.lua.in
++++ b/lib/awful/client.lua.in
+@@ -227,6 +227,45 @@ function client.tiled(screen)
+     return tclients
+ end
+ 
++--- Get visible and fullscreened clients
++-- @param screen The screen number, or nil for all screens.
++-- @param A table with all visible and fullscreened clients.
++function client.fullscreened(screen)
++    local clients = client.visible(screen)
++    local tclients = {}
++    -- Filter fullscreen clients
++    for _, c in pairs(clients) do
++        if c.fullscreen then
++            table.insert(tclients, c)
++        end
++    end
++    return tclients
++end
++
++function client.maximized_horizontal(screen)
++    local clients = client.visible(screen)
++    local tclients = {}
++    -- Filter fullscreen clients
++    for _, c in pairs(clients) do
++        if c.maximized_horizontal then
++            table.insert(tclients, c)
++        end
++    end
++    return tclients
++end
++
++function client.maximized_vertical(screen)
++    local clients = client.visible(screen)
++    local tclients = {}
++    -- Filter fullscreen clients
++    for _, c in pairs(clients) do
++        if c.maximized_vertical then
++            table.insert(tclients, c)
++        end
++    end
++    return tclients
++end
++
+ --- Get a client by its relative index to the focused window.
+ -- @usage Set i to 1 to get next, -1 to get previous.
+ -- @param i The index.
+diff --git a/lib/awful/layout/init.lua.in b/lib/awful/layout/init.lua.in
+index 387fb86..64cf510 100644
+--- a/lib/awful/layout/init.lua.in
++++ b/lib/awful/layout/init.lua.in
+@@ -80,9 +80,20 @@ function layout.arrange(screen)
+         p.workarea.height = p.workarea.height - ((padding.top or 0) + (padding.bottom or 0))
+     end
+     p.geometry = capi.screen[screen].geometry
+-    p.clients = client.tiled(screen)
+     p.screen = screen
++
++    p.clients = client.tiled(screen)
+     layout.get(screen).arrange(p)
++
++    p.clients = client.fullscreened(screen)
++    layout.suit.max.fullscreen.arrange(p)
++
++    p.clients = client.maximized_horizontal(screen)
++    layout.suit.max.maximize_horizontal(p)
++
++    p.clients = client.maximized_vertical(screen)
++    layout.suit.max.maximize_vertical(p)
++
+     capi.screen[screen]:emit_signal("arrange")
+     arrange_lock = false
+ end
+diff --git a/lib/awful/layout/suit/max.lua.in b/lib/awful/layout/suit/max.lua.in
+index ffa8133..2f4231a 100644
+--- a/lib/awful/layout/suit/max.lua.in
++++ b/lib/awful/layout/suit/max.lua.in
+@@ -32,6 +32,18 @@ local function fmax(p, fs)
+     end
+ end
+ 
++function max.maximize_horizontal(p)
++  for k, c in pairs(p.clients) do
++    c:geometry({width = p.workarea.width - c.border_width * 2})
++  end
++end
++
++function max.maximize_vertical(p)
++  for k, c in pairs(p.clients) do
++    c:geometry({height = p.workarea.height - c.border_width * 2})
++  end
++end
++
+ --- Maximized layout.
+ -- @param screen The screen to arrange.
+ max.name = "max"
+-- 
+1.8.1
+

@@ -1,0 +1,25 @@
+From 7d250a862efd821a2660dc0437ae92d9653ec46b Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Wed, 19 Oct 2011 14:04:43 +0200
+Subject: [PATCH] awful.widget.tasklist: use normal background color as well
+
+---
+ lib/awful/widget/tasklist.lua.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/lib/awful/widget/tasklist.lua.in b/lib/awful/widget/tasklist.lua.in
+index e0135d4..a6c0d34 100644
+--- a/lib/awful/widget/tasklist.lua.in
++++ b/lib/awful/widget/tasklist.lua.in
+@@ -33,7 +33,7 @@ local function tasklist_label(c, args)
+     local fg_minimize = args.fg_minimize or theme.tasklist_fg_minimize or theme.fg_minimize
+     local bg_minimize = args.bg_minimize or theme.tasklist_bg_minimize or theme.bg_minimize
+     local font = args.font or theme.tasklist_font or theme.font or ""
+-    local bg = nil
++    local bg = args.bg_normal or theme.tasklist_bg_normal or theme.bg_normal
+     local text = "<span font_desc='"..font.."'>"
+     local name = ""
+     if c.ontop then name = name .. "⌃" end
+-- 
+1.7.6.3
+

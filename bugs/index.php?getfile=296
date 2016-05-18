@@ -1,0 +1,22 @@
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 9df7fb0..315d7db 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -126,7 +126,7 @@ local function exec(menu, num, mouse_event)
+         util.spawn(cmd)
+     elseif type(cmd) == "function" then
+         get_parents(menu):hide()
+-        cmd()
++        cmd(menu.items[num].label)
+     end
+ end
+ 
+@@ -265,7 +265,7 @@ local function add_item(data, num, item_info)
+     item.height = label:extents().height + 2
+     item.ontop = true
+ 
+-    return { wibox = item, akey= key, cmd = item_info[2] }
++    return { wibox = item, akey = key, cmd = item_info[2], label=item_info[1] }
+ end
+ 
+ --- Build a popup menu with running clients and shows it.

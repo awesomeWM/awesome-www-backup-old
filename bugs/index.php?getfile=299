@@ -1,0 +1,37 @@
+From 6aa37f48670ad9f7b5ef4390fed087f9fdb243e6 Mon Sep 17 00:00:00 2001
+From: Adrian C. (anrxc) <anrxc@sysphere.org>
+Date: Fri, 19 Mar 2010 18:40:27 +0100
+Subject: [PATCH] awful.menu: fix pango markup - FS#750
+
+Commit 9f537bc sanitized support for access keys, allowed the "&" sign
+to be used in menus outside the access key function. But because it
+escaped whole entries, and no matter if they needed it, markup was no
+longer applied. This commit will match only the text inside markup
+tags and send it to awful.util.escape().
+
+Signed-off-by: Adrian C. (anrxc) <anrxc@sysphere.org>
+---
+ lib/awful/menu.lua.in |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/lib/awful/menu.lua.in b/lib/awful/menu.lua.in
+index 6fb714b..9ec101b 100644
+--- a/lib/awful/menu.lua.in
++++ b/lib/awful/menu.lua.in
+@@ -208,10 +208,10 @@ local function add_item(data, num, item_info)
+     -- Create the item label widget
+     local label = widget({ type = "textbox" })
+     local key = ''
+-    label.text = string.gsub(util.escape(item_info[1]), "&amp;(%w)",
+-                             function (l)
++    label.text = string.gsub(item_info[1], "&(%w)([%w%s&]*)",
++                             function (l, s)
+                                  key = string.lower(l)
+-                                 return "<u>"..l.."</u>"
++                                 return "<u>"..l.."</u>"..util.escape(s)
+                              end, 1)
+     -- Set icon if needed
+     local iconbox
+-- 
+1.7.0.2
+

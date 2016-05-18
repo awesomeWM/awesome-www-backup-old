@@ -1,0 +1,958 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#772 : Window flickering and visual artifacts with 3.4.5</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=772" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=850" title="Fixed | When closing client focus is switched to screen where it was | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#772 - Window flickering and visual artifacts with 3.4.5  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a>     	 - Saturday, 22 May 2010, 22:16 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Sunday, 13 June 2010, 09:00 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.4</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">After upgrade to 3.4.5 I expirience (at least) two visual artifacts:<br />
+<br />
+ - really awful flickering when redrawing or even switching windows (I see it with rxvt-unicode especially)<br />
+<br />
+ - strange redrawing wibox artifa?ts (see attached screenshot): there&#039;re &quot;shadows&quot; of previously drawn &quot;taskbar&quot; items, disappearing after several seconds or any window action.<br />
+<br />
+ This was reproduced on two Gentoo Linux ~amd64 boxes, both running the latest packages from Portage tree (Xorg server 1.8, for example, and 2.6.33 kernel) with kernel modesetting enabled (radeon and nouveau). Downgrade to 3.4.4 solves both issues.</div>
+
+         <div class="attachments">
+          <a title="2010-05-23-015759_1440x900_scrot.png" href="?getfile=313" rel="lightbox[bug]">
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/image.png" alt="" title="image/png" />
+            &nbsp;&nbsp;
+            2010-05-23-015759_1440x900_sc...
+                  </a>
+                  (868.6 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Sunday, 13 June 2010, 09:00 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Bug already fixed in latest git, sorry
+for the inconvience. Feel free to reopen
+if needed.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (31)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1984" id="comment1984"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment1984">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Sunday, 23 May 2010, 09:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could you do a git bisect between 3.4.4 and 3.4.5 ? That&#039;d help I guess.</div></div>
+
+  
+    <em>
+    <a name="comment1985" id="comment1985"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment1985">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 23 May 2010, 17:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">For visual artifacts, I always love to blame the X server (or kernel mode setting). Are we really sure this doesn&#039;t have to do anything with it?<br />
+<br />
+What do you mean with &quot;really awful flickering when redrawing windows&quot;? How do you make those windows redraw themselves? I&#039;m 90% sure that awesome doesn&#039;t have anything to do with windows redrawing themselves.<br />
+<br />
+For the taskbar: Do you happen to be using any transparency anywhere? Because that really looks like transparently painting stuff on top of other stuff...<br />
+<br />
+Oh and could you attach your config so we can test this ourselves? (As a matter of fact, this doesnt happen with any config I know ;).</div></div>
+
+  
+    <em>
+    <a name="comment1986" id="comment1986"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment1986">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Sunday, 23 May 2010, 18:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">@Julien<br />
+&gt; Could you do a git bisect between 3.4.4 and 3.4.5<br />
+<br />
+ Yep, I think I could, but not soon I&#039;m afraid (I&#039;m not that much of git expert and awesome-git guy). But of course, if nobody except me is affected, then it&#039;s my duty, I understand (-:E<br />
+<br />
+<br />
+@Uli<br />
+&gt; For visual artifacts, I always love to blame the X server (or kernel mode setting). Are we really sure this doesn&#039;t have to do anything with it?<br />
+<br />
+ Yes, that&#039;s obvious thoughts, but 3.4.4 works fine on the very same system. Checked it several times: 3.4.5 flickers -&gt; downgrade &amp; restart awesome with hotkey -&gt; 3.4.4 behaves fine. Or: run 3.4.4 in one console -&gt; upgrade -&gt; run 3.4.5 in other session -&gt; see the flickering.<br />
+ Of course, 3.4.5 could reveal some bug in Xorg or something.<br />
+<br />
+&gt; For the taskbar: Do you happen to be using any transparency anywhere?<br />
+ Aye, I have pseudotransparency set in theme. But again: for 3.4.4 it worked fine. On the screenshot you could see indeed three urxvt buttons painted above four (three previously painted + one just opened).<br />
+<br />
+&gt; Oh and could you attach your config so we can test this ourselves?<br />
+ Sorry, forgot about it. Browse it here:<a href=" http://code.google.com/p/krigstasks-samling/source/browse?repo=awesome"> http://code.google.com/p/krigstasks-samling/source/browse?repo=awesome</a><br />
+It&#039;s quite a bit of vanilla one, and I&#039;m going to test standard one and report results.<br />
+I&#039;ll attached theme file too, just in case.<br />
+<br />
+ Thanks for feedback, by the way.</div></div>
+
+      <div class="attachments">
+          <a title="theme.lua" href="?getfile=314" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            theme.lua
+                  </a>
+                  (4.9 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment1987" id="comment1987"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment1987">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Sunday, 23 May 2010, 18:26 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh, almost missed<br />
+&gt; What do you mean with &quot;really awful flickering when redrawing windows&quot;? How do you make those windows redraw themselves?<br />
+ I was imprecise, sorry. Flickering takes place when changing focus, now that I came to think about it again. For example, when new window is opened or closed. Or when I switch between windows.<br />
+<br />
+I think I did see something in awesome defore, but can&#039;t really remember what and when... But I may be mistaken or mess with various driver or KMS issues I had in the past.</div></div>
+
+  
+    <em>
+    <a name="comment2013" id="comment2013"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2013">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Thursday, 03 June 2010, 08:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hello again, guys. I get prepared to bisect awesome, but I have a little bit of noobie question: could I compile &amp; install awesome to some non-standard location? I don&#039;t want to bughunt in system-wide awesome (/usr or /usr/local), so I really would prefer to do something like `make install --prefix=~/tmp` or something like that. I dig Makefile, cmake documentation and maillists, but didn&#039;t found anything better than setting up parameters via ccmake or cmake-gui, but it doesn&#039;t look like an easy way to test when bisecting. How could I do it properly?</div></div>
+
+  
+    <em>
+    <a name="comment2014" id="comment2014"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2014">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 03 June 2010, 08:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">You don&#039;t need to install it. Just use the binary you will find in the `build&#039; directory instead of the one you use usually.</div></div>
+
+  
+    <em>
+    <a name="comment2018" id="comment2018"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2018">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Friday, 04 June 2010, 07:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thank you, Julien, I should work it out myself (-:E<br />
+<br />
+I&#039;ve found a cause of my problem. After unsuccessful `bisect`ing and seeing that<br />
+ % git checkout v3.4.5<br />
+ % make clean &amp;&amp; make<br />
+produces quite a usable artifactless binary , I suspected that my Portage settings are to blame (since it compiles everything for me, and with non-default settings). After a couple of re-emerges I found that awesome built with GCC graphite optimizations (CFLAGS=&quot;-floop-interchange -floop-strip-mine -floop-block&quot;) produces artifacts and flickering, while built with common (at least in Gentoo) CFLAGS=&quot;-march=native -O2 -pipe&quot; works fine. But since 3.4.4 behaved well even when graphite-optimized, I&#039;m going to re-bisect and find that particular changeset. I suspect that you could say &#039;Ricering! WONTFIX&#039;, but probably it&#039;d be easy to fix (-:E<br />
+<br />
+Meanwhile I&#039;ll enjoy awesome 3.4.5 without flickering!</div></div>
+
+  
+    <em>
+    <a name="comment2019" id="comment2019"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2019">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 June 2010, 07:44 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If you can redo the bisect with the flags, I&#039;d be happy to learn what&#039;s wrong, and maybe fix it if that&#039;s possible.<br />
+<br />
+You just made me curious. :-)</div></div>
+
+  
+    <em>
+    <a name="comment2021" id="comment2021"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2021">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 June 2010, 16:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Which GCC version is that? I could perhaps try to look into this myself...<br />
+<br />
+(Also: RICERING!!!!)</div></div>
+
+  
+    <em>
+    <a name="comment2022" id="comment2022"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2022">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Friday, 04 June 2010, 16:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Julien, would be glad to try. I just have to figure out how I could define CFLAGS for cmake.<br />
+<br />
+Uli, that is gcc 4.4.3 (Gentoo&#039;s sys-devel/gcc-4.4.3-r2).<br />
+<br />
+&gt; (Also: RICERING!!!!)<br />
+ I just knew that d-:E</div></div>
+
+  
+    <em>
+    <a name="comment2023" id="comment2023"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2023">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 June 2010, 16:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Edit awesomeConfig.cmake</div></div>
+
+  
+    <em>
+    <a name="comment2024" id="comment2024"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2024">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 June 2010, 17:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here:<br />
+gcc version 4.4.4 (Debian 4.4.4-1)<br />
+<br />
+I&#039;ll experiment with CFLAGS=&quot;-floop-interchange -floop-strip-mine -floop-block&quot; CXXFLAGS=&quot;$CFLAGS&quot; when I find the time (hopefully this weekend, but my todo list already grew a beard...)</div></div>
+
+  
+    <em>
+    <a name="comment2025" id="comment2025"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2025">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Friday, 04 June 2010, 18:04 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Julien,<br />
+but wouldn&#039;t it be overwritten after `git bisect`&#039;ing? Actually I thought about env variables, something like <br />
+ $ CFLAGS=&quot;…&quot; make<br />
+<br />
+ Uli,<br />
+is Debian&#039;s gcc compiled with graphite support? Maybe it&#039;s worth for me to experiment further, since you have so much (obviously) to do?</div></div>
+
+  
+    <em>
+    <a name="comment2027" id="comment2027"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2027">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Friday, 04 June 2010, 20:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Now that gets stranger and stranger! Even 3.4.4 seems broken with those CFLAGS. And sometimes without them. It seems like I should forget everything I tried and redo all experimenting from scratch. And probably open Gentoo bug too. Weird issue (-%E</div></div>
+
+  
+    <em>
+    <a name="comment2038" id="comment2038"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2038">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=474">lotus (lotus)</a> -
+    Tuesday, 08 June 2010, 19:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">ok some how i can confirm this posted problem too.<br />
+<br />
+i am using gentoo 64bit with sys-devel/gcc: 4.4.3-r2.<br />
+<br />
+and awesome v3.4-181-g6e6a07b (Closing In)<br />
+ • Build: Jun  7 2010 02:16:59 for x86_64 by gcc version 4.4.3 (@TuX)<br /></div></div>
+
+  
+    <em>
+    <a name="comment2039" id="comment2039"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2039">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Tuesday, 08 June 2010, 19:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Great! Someone has it too (-:E<br />
+<br />
+lotus, could you try what was advised here? I&#039;ve so much controversial results that I&#039;m lost in them.</div></div>
+
+  
+    <em>
+    <a name="comment2041" id="comment2041"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2041">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=474">lotus (lotus)</a> -
+    Wednesday, 09 June 2010, 06:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">ok i tested:<br />
+<br />
+CFLAGS=&quot;-floop-interchange -floop-strip-mine -floop-block&quot; CXXFLAGS=&quot;$CFLAGS&quot;<br />
+it dont compiled, ofc not all CFLAGS works for every CPU :)<br />
+<br />
+<br />
+CFLAGS=&quot;-march=native -O2 -pipe&quot; emerge -1 awesome<br />
+compiled fine, but produce also shame trash, and dont solve the problem</div></div>
+
+  
+    <em>
+    <a name="comment2042" id="comment2042"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2042">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Wednesday, 09 June 2010, 07:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">And what about `git bisect`ing?</div></div>
+
+  
+    <em>
+    <a name="comment2047" id="comment2047"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2047">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 16:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, first I noticed that one can only really influence the flags through editing the *.cmake files... :/<br />
+<br />
+These flag work without problems here (gcc tells you which package you need to install for this to work on debian, nice...)<br />
+-floop-interchange -floop-strip-mine -floop-block<br />
+<br />
+These caused no problems either (not that I expected any, but still...):<br />
+-march=native -O2 -pipe<br />
+<br />
+GCC is gcc 4.4.4 from debian testing.</div></div>
+
+  
+    <em>
+    <a name="comment2059" id="comment2059"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2059">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Saturday, 12 June 2010, 09:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uli,<br />
+results of my experiments are at the very least controversial. It doesn&#039;t seem like a CFLAGS issue to me anymore. Still, bug is present for me, so I&#039;ll try another round of bisecting (probably with building via Portage).<br />
+<br />
+Strange that lotus is Gentoo user too. Probably the clue is in some specific library versions or patches.</div></div>
+
+  
+    <em>
+    <a name="comment2061" id="comment2061"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2061">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Saturday, 12 June 2010, 15:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, well, well!<br />
+<br />
+-------<br />
+ % git bisect good<br />
+650afbb9ad5702df7f80b59ed25201d4056de5a7 is the first bad commit<br />
+commit 650afbb9ad5702df7f80b59ed25201d4056de5a7<br />
+Author: Uli Schlachter &lt;<a href="mailto:psych0n@znc.in">psych0n@znc.in</a>&gt;<br />
+Date:   Sun Apr 25 17:43:29 2010 +0200<br />
+<br />
+    Check for xwininfo before using it<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psych0n@znc.in">psych0n@znc.in</a>&gt;<br />
+    Signed-off-by: Julien Danjou &lt;<a href="mailto:julien@danj0u.info">julien@danj0u.info</a>&gt;<br />
+<br />
+:040000 040000 3833d695168758ddae95ad1a127b61196b949cd7 912d4e890b254e6facbce38764adaf58c030dffd M	utils<br />
+-------<br />
+<br />
+I have little understanding why, but the way suggested by Julien didn&#039;t work for me: any revision I compiled via make and run from my homedir was good or bad depending on what version of awesome was installed system-wide, by Portage. Therefore I used my quick&#039;n&#039;dirty shell script (see it attached) to compile and install every tested revision. It creates temporary tarball, updates metadata in local overlay (where I put renamed copy of 3.4.5 ebuild) and emerges it as a 3.4.999. lotus, you could try it yourself, if you want to confirm my results.</div></div>
+
+      <div class="attachments">
+          <a title="buildawesome.sh" href="?getfile=322" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/application.png" alt="" title="application/x-shellscript" />
+            &nbsp;&nbsp;
+            buildawesome.sh
+                  </a>
+                  (0.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2063" id="comment2063"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2063">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 19:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">/me blames cosmic rays</div></div>
+
+  
+    <em>
+    <a name="comment2065" id="comment2065"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2065">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Saturday, 12 June 2010, 19:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve looked into diff, saw nothing but a awsetbg rewrite and did a little quickhack: replaced in 3.4.5 installation with awsetbg v3.4.4. And everything works all right again!<br />
+<br />
+lotus, try it too.<br />
+<br />
+I use feh as a wallpaper setter. Could there be something wrong with it? Or maybe there were some changes in awsetbg usage in themes?</div></div>
+
+  
+    <em>
+    <a name="comment2066" id="comment2066"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2066">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 19:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Uhm, wtf?<br />
+<br />
+You are saying that a different awsetbg version causes visual artifacts in wibox and flickering when redrawing windows?</div></div>
+
+  
+    <em>
+    <a name="comment2068" id="comment2068"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2068">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Saturday, 12 June 2010, 19:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Looks like it (-:E</div></div>
+
+  
+    <em>
+    <a name="comment2083" id="comment2083"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2083">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Sunday, 13 June 2010, 07:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">awsetbg in 3.4.5 always selects display as walpaper setter. This causes urxvt flickr. Bug already fixed in 3.4 head by:<br />
+<br />
+commit 4ed587206e6f34a7f367653b50e13316a82b3928<br />
+Author:     fabschub &lt;<a href="mailto:fabschub@gmx.de">fabschub@gmx.de</a>&gt;<br />
+AuthorDate: Mon May 17 15:24:36 2010 +0200<br />
+Commit:     Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+CommitDate: Mon May 17 15:57:30 2010 +0200<br />
+<br />
+    awsetbg was missing break<br />
+<br />
+    Signed-off-by: fabschub &lt;<a href="mailto:fabschub@gmx.de">fabschub@gmx.de</a>&gt;<br />
+    Signed-off-by: Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;</div></div>
+
+  
+    <em>
+    <a name="comment2084" id="comment2084"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2084">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 13 June 2010, 08:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So you are saying this bug is fixed for you and it was just caused by a wrong display setter?<br />
+Wow, that&#039;s unexpected...<br />
+<br />
+How did display manage to cause those visual artifacts in the wibox? :/</div></div>
+
+  
+    <em>
+    <a name="comment2085" id="comment2085"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2085">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Sunday, 13 June 2010, 08:10 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I guess reporter uses some sort of transparent wiboxes.<br />
+<br />
+Today I also have bisect beetwen 3.4.4 and 3.4.5 to investigate urxvt clients transparent background flickering. Cause -- the same commit.<br />
+<br />
+Reporter must check his wiboxes with 3.4 head.</div></div>
+
+  
+    <em>
+    <a name="comment2086" id="comment2086"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2086">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=384">Anton Bobrov (baverman)</a> -
+    Sunday, 13 June 2010, 08:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">awsetbg in 3.4.5 always selects display as walpaper setter. This causes urxvt flickr. Bug already fixed in 3.4 head by:<br />
+<br />
+commit 4ed587206e6f34a7f367653b50e13316a82b3928<br />
+Author:     fabschub &lt;<a href="mailto:fabschub@gmx.de">fabschub@gmx.de</a>&gt;<br />
+AuthorDate: Mon May 17 15:24:36 2010 +0200<br />
+Commit:     Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;<br />
+CommitDate: Mon May 17 15:57:30 2010 +0200<br />
+<br />
+    awsetbg was missing break<br />
+<br />
+    Signed-off-by: fabschub &lt;<a href="mailto:fabschub@gmx.de">fabschub@gmx.de</a>&gt;<br />
+    Signed-off-by: Julien Danjou &lt;<a href="mailto:julien@danjou.info">julien@danjou.info</a>&gt;</div></div>
+
+  
+    <em>
+    <a name="comment2091" id="comment2091"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2091">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Sunday, 13 June 2010, 10:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yep, fixed indeed with awsetbg from git (trying the whole awesome was too much fuss: due to API changes, my config stopped working).<br />
+Thanks a lot to all, waiting for 3.4.6 or whatever!</div></div>
+
+  
+    <em>
+    <a name="comment2103" id="comment2103"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#comment2103">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=84">anrxc (anrxc)</a> -
+    Sunday, 13 June 2010, 19:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; Thanks a lot to all, waiting for 3.4.6 or whatever!<br />
+<br />
+Just change your theme wallpaper_cmd, append  -u feh (or whatever you use usually).</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=772#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="772" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

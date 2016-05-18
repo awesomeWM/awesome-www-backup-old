@@ -1,0 +1,5 @@
+X Error of failed request:  BadMatch (invalid parameter attributes)
+  Major opcode of failed request:  150 (RANDR)
+  Minor opcode of failed request:  7 (RRSetScreenSize)
+  Serial number of failed request:  26
+  Current serial number in output stream:  27

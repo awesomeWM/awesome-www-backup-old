@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1252 : Use a single icon for &quot;maximized&quot; (both vertical and horizontal)</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1252&amp;project=1&amp;opened=494&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1264&amp;project=1&amp;opened=494&amp;status%5B0%5D=" title="Fixed | Provide context with request::activate signal / separate signal  | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=494&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1246&amp;project=1&amp;opened=494&amp;status%5B0%5D=" title="Not a bug | Awesome panel gets WM properties inherited from systray applicat | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity2">
+	 FS#1252 - Use a single icon for &quot;maximized&quot; (both vertical and horizontal)  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a>     	 - Monday, 07 April 2014, 18:26 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Saturday, 13 September 2014, 08:26 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Feature Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> (2014-09-02)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">If the client is maximized both vertical and horizontal, a single icon should be used.<br />
+<br />
+This would provide more space for the window title.<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Saturday, 13 September 2014, 08:26 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;commit
+4ee144188eceeb2695a010c5f0c05a1e5028c592
+<br />
+Author: Daniel Hahler
+&lt;git@thequod.de&gt;<br />
+Date:   Tue Sep 2 22:07:53 2014 +0200<br
+/>
+<br />
+    tasklist: add/use a single icon for
+&quot;maximized&quot;<br />
+    <br />
+    This provides more space in the
+tasklist, because it will typically
+only<br />
+    use a single icon for maximized
+clients, instead of three<br />
+    (maximized_vertical,
+maximized_horizontal and floating).<br
+/>
+    <br />
+    Fixes
+https://awesome.naquadah.org/bugs/index.
+php?do=details&amp;task_id=1252<br />        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (7)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3990" id="comment3990"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment3990">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 07 April 2014, 19:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">These aren&#039;t icons, these are unicode characters :-P<br />
+<br />
+Right now we are using U+2B0C and U+2B0D for maximized:<br /><a href="
+http://codepoints.net/U+2B0C">
+http://codepoints.net/U+2B0C</a><br /><a href="
+http://codepoints.net/U+2B0D">
+http://codepoints.net/U+2B0D</a><br />
+<br />
+Sadly, there is no &quot;cross-arrow&quot; in the surrounding of these code points:<br /><a href="
+http://codepoints.net/miscellaneous_symbols_and_arrows">
+http://codepoints.net/miscellaneous_symbols_and_arrows</a><br /><a href="
+http://codepoints.net/search?gc=So&amp;page=12">
+http://codepoints.net/search?gc=So&amp;page=12</a><br />
+<br />
+So... suggestions for some code point to use?</div></div>
+
+  
+    <em>
+    <a name="comment3992" id="comment3992"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment3992">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Monday, 07 April 2014, 21:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This would be neat:<a href=" http://fortawesome.github.io/Font-Awesome/3.2.1/icon/fullscreen/"> http://fortawesome.github.io/Font-Awesome/3.2.1/icon/fullscreen/</a><br />
+<br />
+Can we provide an additional font with awesome? :)<br />
+<br />
+But<a href=" http://codepoints.net/U+2B25"> http://codepoints.net/U+2B25</a> (⬥) might also be OKish.<br />
+<br /><a href="
+http://codepoints.net/U+2610">
+http://codepoints.net/U+2610</a> (☐) seems good.</div></div>
+
+  
+    <em>
+    <a name="comment3993" id="comment3993"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment3993">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 07 April 2014, 21:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Part of the reason for using codepoints (besides that they scale more nicely) is that they fit with the rest of the text. Shipping an own font would torpedo that goal.<br />
+<br />
+For the ballot box code point: Since this is a ballot box and not &quot;just a square&quot;, some fonts might do &quot;funny&quot; things with it. I&#039;d rather use:<a href=" http://codepoints.net/U+25A1"> http://codepoints.net/U+25A1</a><br />
+However, this now doesn&#039;t have anything to do with our maximize characters which might be confusing...</div></div>
+
+  
+    <em>
+    <a name="comment3994" id="comment3994"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment3994">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=655">Emmanuel Lepage Vallee (Elv13)</a> -
+    Tuesday, 08 April 2014, 01:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Another shameless plug for radical.impl.tasklist, it does support &quot;underlays&quot;. Currently, only ontop/sticky/floating are supported, but part of the new tag/tasklist extension system (<a href=" http://i.imgur.com/gbGXuas.png"> http://i.imgur.com/gbGXuas.png</a> ), it is now possible to check them in the right click menu.<br />
+<br /><a href="
+http://i.imgur.com/nIx1Ck8.jpg">
+http://i.imgur.com/nIx1Ck8.jpg</a> (see the KCalc tasklist item)<br />
+<br />
+Those also scale very well, they use pango. As you can see, I also use the same radical module in the tiltebar to display the tags (Minde idea, credit to him, its useless, but it look good) and the alt+tab dialog<a href=" http://i.imgur.com/aP5pEeP.png"> http://i.imgur.com/aP5pEeP.png</a></div></div>
+
+  
+    <em>
+    <a name="comment4125" id="comment4125"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment4125">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Tuesday, 02 September 2014, 20:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I have now used &quot;⨣&quot; (http://codepoints.net/U+2A23).<br />
+<br />
+This might add a bit of confusion, because a &quot;+&quot; icon gets used in the taskbar to make a client &quot;sticky&quot;, while a square (&quot;▪&quot;) is used to indicate sticky clients in the tasklist.<br />
+<br />
+The PR is at<a href=" https://github.com/awesomeWM/awesome/pull/44"> https://github.com/awesomeWM/awesome/pull/44</a><br />
+<br />
+A better codepoint might be found when searching for &quot;cross&quot;:<a href=" http://codepoints.net/search?q=&amp;na=cross"> http://codepoints.net/search?q=&amp;na=cross</a></div></div>
+
+  
+    <em>
+    <a name="comment4126" id="comment4126"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment4126">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Tuesday, 02 September 2014, 20:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This looks better:<a href=" http://codepoints.net/U+1F542"> http://codepoints.net/U+1F542</a> (I&#039;ve amended the PR).<br />
+<br />
+(when submitting the comment with the symbol in it, flyspray crashed: Query {INSERT INTO `flyspray_comments` (task_id, date_added, last_edited_time, user_id, comment_text) VALUES ( ?, ?, ?, ?, ? )} with params {1252,1409689584,1409689584,494,This looks better: [THEUNICODECHAR]<a href=" http://codepoints.net/U+1F542"> http://codepoints.net/U+1F542</a> (I&#039;ve amended the PR).} Failed! (Incorrect string value: &#039;\xF0\x9F\x95\x82 h...&#039; for column &#039;comment_text&#039; at row 1))</div></div>
+
+  
+    <em>
+    <a name="comment4127" id="comment4127"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#comment4127">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 03 September 2014, 07:57 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t have a font with that codepoint and I guess many other people don&#039;t have either. I just get a box with the text &quot;01F542&quot; instead. Sorry. (And Flyspray is known to be buggy)</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1252#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1252" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

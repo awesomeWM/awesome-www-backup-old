@@ -1,0 +1,64 @@
+
+6.179 001:<:0385: 20: Request(12): ConfigureWindow window=0x01600003 values={width=28 height=28}
+6.179 001:<:0386:  4: Request(43): GetInputFocus 
+[notifies, translate coords, paint]
+[3x XSync(), XIQueryPointer while grabbed]
+[paint, XI dance]
+[XI Dance]
+
+6.245 001:<:03bb:  4: Request(37): UngrabServer 
+7.218 001:>:03bb: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=19 height=19 border-width=0 override-redirect=false(0x00)
+7.218 001:>:03bb: Event VisibilityNotify(15) window=0x01600003 state=Unobscured(0x00)
+=> Awesome resized the icon again?
+
+[translate coords, paint]
+7.227 001:<:03cc: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x00000016,0x00000016,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+7.227 001:<:03cd: 20: Request(12): ConfigureWindow window=0x01600003 values={width=22 height=22}
+7.227 001:<:03ce:  4: Request(43): GetInputFocus 
+7.228 001:>:03ce: Event PropertyNotify(28) window=0x01600003 atom=0x28("WM_NORMAL_HINTS") time=0x01d46235 state=NewValue(0x00)
+7.228 001:>:03ce: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=22 height=22 border-width=0 override-redirect=false(0x00)
+7.228 001:>:03ce: Event VisibilityNotify(15) window=0x01600003 state=PartiallyObscured(0x01)
+[sync, translate, paint]
+[3x XSync(), XIQueryPointer while grabbed]
+7.235 001:<:03e7: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x0000001a,0x0000001a,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+7.235 001:<:03e8: 20: Request(12): ConfigureWindow window=0x01600003 values={width=26 height=26}
+7.235 001:<:03e9:  4: Request(43): GetInputFocus 
+7.236 001:>:03e9: Event PropertyNotify(28) window=0x01600003 atom=0x28("WM_NORMAL_HINTS") time=0x01d4623d state=NewValue(0x00)
+7.236 001:>:03e9: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=26 height=26 border-width=0 override-redirect=false(0x00)
+[sync, translate, paint]
+[3x XSync(), XIQueryPointer while grabbed]
+7.244 001:<:0402: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x0000001c,0x0000001c,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+7.244 001:<:0403: 20: Request(12): ConfigureWindow window=0x01600003 values={width=28 height=28}
+7.244 001:<:0404:  4: Request(43): GetInputFocus 
+7.244 001:>:0404: Event PropertyNotify(28) window=0x01600003 atom=0x28("WM_NORMAL_HINTS") time=0x01d46246 state=NewValue(0x00)
+7.244 001:>:0404: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=28 height=28 border-width=0 override-redirect=false(0x00)
+7.244 001:>:0404:32: Reply to GetInputFocus: revert-to=Parent(0x02) focus=0x00e0000d
+[translate, draw]
+[3x XSync(), XIQueryPointer while grabbed]
+[draw]
+[3x XSync(), XIQueryPointer while grabbed]
+7.257 001:<:0432:  4: Request(37): UngrabServer 
+8.142 001:>:0432: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=19 height=19 border-width=0 override-redirect=false(0x00)
+8.142 001:>:0432: Event VisibilityNotify(15) window=0x01600003 state=Unobscured(0x00)
+=> Awesome resized the icon again?
+
+[translate, draw]
+8.150 001:<:0443: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x00000016,0x00000016,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+8.150 001:<:0444: 20: Request(12): ConfigureWindow window=0x01600003 values={width=22 height=22}
+8.150 001:<:0445:  4: Request(43): GetInputFocus 
+8.150 001:>:0445: Event PropertyNotify(28) window=0x01600003 atom=0x28("WM_NORMAL_HINTS") time=0x01d465d0 state=NewValue(0x00)
+8.150 001:>:0445: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=22 height=22 border-width=0 override-redirect=false(0x00)
+8.150 001:>:0445: Event VisibilityNotify(15) window=0x01600003 state=PartiallyObscured(0x01)
+8.150 001:>:0445:32: Reply to GetInputFocus: revert-to=Parent(0x02) focus=0x00e0000d
+[translate, draw]
+[3x XSync(), XIQueryPointer while grabbed]
+8.157 001:<:045e: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x0000001a,0x0000001a,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+8.157 001:<:045f: 20: Request(12): ConfigureWindow window=0x01600003 values={width=26 height=26}
+8.158 001:<:0460:  4: Request(43): GetInputFocus 
+8.158 001:>:0460: Event PropertyNotify(28) window=0x01600003 atom=0x28("WM_NORMAL_HINTS") time=0x01d465d7 state=NewValue(0x00)
+8.158 001:>:0460: Event ConfigureNotify(22) event=0x01600003 window=0x01600003 above-sibling=0x03000003 x=114 y=0 width=26 height=26 border-width=0 override-redirect=false(0x00)
+8.158 001:>:0460:32: Reply to GetInputFocus: revert-to=Parent(0x02) focus=0x00e0000d
+[translate, draw]
+[3x XSync(), XIQueryPointer while grabbed]
+8.166 001:<:0479: 96: Request(18): ChangeProperty mode=Replace(0x00) window=0x01600003 property=0x28("WM_NORMAL_HINTS") type=0x29("WM_SIZE_HINTS") data=0x00000310,0x00000000,0x00000000,0x00000000,0x00000000,0x0000001c,0x0000001c,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000001;
+8.166 001:<:047a: 20: Request(12): ConfigureWindow window=0x01600003 values={width=28 height=28}

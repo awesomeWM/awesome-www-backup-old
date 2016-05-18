@@ -1,0 +1,13 @@
+--- xkbcomp-1.2.4/compat.c	2012-03-23 07:03:05.000000000 +0200
++++ xkbcomp-1.2.3/compat.c	2011-06-21 18:01:55.000000000 +0300
+@@ -281,8 +280,8 @@
+         ACTION1("Using %s definition\n",
+                 (merge == MergeAugment ? "old" : "new"));
+     }
+-    if(newGC->defined && (merge != MergeAugment || !gc->defined))
+-	*gc = *newGC;
++    if (merge != MergeAugment)
++        *gc = *newGC;
+     return True;
+ }
+ 

@@ -1,0 +1,41 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index db1f074..9d003ea 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -332,10 +332,7 @@ root.keys(globalkeys)
+ awful.rules.rules = {
+     -- All clients will match this rule.
+     { rule = { },
+-      properties = { border_width = beautiful.border_width,
+-                     border_color = beautiful.border_normal,
+-                     focus = true,
+-                     keys = clientkeys,
++      properties = { keys = clientkeys,
+                      buttons = clientbuttons } },
+     { rule = { class = "MPlayer" },
+       properties = { floating = true } },
+diff --git a/lib/awful/ewmh.lua.in b/lib/awful/ewmh.lua.in
+index d6edd03..ec7c978 100644
+--- a/lib/awful/ewmh.lua.in
++++ b/lib/awful/ewmh.lua.in
+@@ -112,9 +112,20 @@ local function screen_change(window)
+     end
+ end
+ 
++local function apply_defaults(c)
++    if c.fullscreen then
++        c.border_width = 0
++    else
++        c.border_width = beautiful.border_width
++    end
++    c.border_color = beautiful.border_normal
++    c.focus = true
++end
++
+ client.connect_signal("request::maximized_horizontal", maximized_horizontal)
+ client.connect_signal("request::maximized_vertical", maximized_vertical)
+ client.connect_signal("request::fullscreen", fullscreen)
+ client.connect_signal("property::screen", screen_change)
++client.connect_signal("manage", apply_defaults)
+ 
+ -- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

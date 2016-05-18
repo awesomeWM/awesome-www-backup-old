@@ -1,0 +1,32 @@
+From efa89cfb15ef8449ad041de992698b93cf6f753b Mon Sep 17 00:00:00 2001
+From: uzsolt <udvzsolt@gmail.com>
+Date: Wed, 2 Jan 2013 12:13:45 +0100
+Subject: [PATCH] fix locale problem (decimal separator isn't dot but comma)
+
+If user changes locale with os.setlocale to a "dirty"
+locale (which use comma as decimal separator (not dot), e.g.
+hu_HU) `tonumber` will produce "0,6" instead of "0.6"
+which causes bad comparision.
+
+Signed-off-by: uzsolt <udvzsolt@gmail.com>
+---
+ lib/gears/surface.lua.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/gears/surface.lua.in b/lib/gears/surface.lua.in
+index 7ed624d..7ad9e1f 100644
+--- a/lib/gears/surface.lua.in
++++ b/lib/gears/surface.lua.in
+@@ -11,7 +11,8 @@ local cairo = require("lgi").cairo
+ 
+ -- This checks for '<= 0.5' because there are git versions after 0.6 which still
+ -- identify themselves as 0.6 but already have the needed cairo support
+-if tonumber(string.match(require('lgi.version'), '(%d%.%d)')) <= 0.5 then
++local ver_major,ver_minor = string.match(require('lgi.version'),'(%d)%.(%d)')
++if ( (tonumber(ver_major)<=0) and (tonumber(ver_minor)<=5) ) then
+     error("lgi too old, need at least version 0.6.1")
+ end
+ 
+-- 
+1.8.0.3
+

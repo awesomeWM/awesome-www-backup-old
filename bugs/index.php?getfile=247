@@ -1,0 +1,33 @@
+From 2524d8e78eaf518ed3975c475e3df77917ea3d08 Mon Sep 17 00:00:00 2001
+From: Hiltjo Posthuma <hiltjo@codemadness.org>
+Date: Wed, 18 Nov 2009 13:13:20 +0100
+Subject: [PATCH 1/2] Wibox: check border width
+
+Check border width of wibox. Only a number of >= 0 is allowed. If this number is negative it will use the default.
+
+Signed-off-by: Hiltjo Posthuma <hiltjo@codemadness.org>
+---
+ wibox.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/wibox.c b/wibox.c
+index 6b2b44e..9c5a704 100644
+--- a/wibox.c
++++ b/wibox.c
+@@ -1461,9 +1461,11 @@ static int
+ luaA_wibox_set_border_width(lua_State *L, wibox_t *wibox)
+ {
+     wibox_t *w = luaA_checkudata(L, -3, &wibox_class);
+-    uint32_t border_width = luaL_checknumber(L, -1);
+-    if(border_width != w->border_width)
++    int32_t border_width_check = luaL_checknumber(L, -1);
++
++    if((border_width_check != w->border_width) && (border_width_check >= 0))
+     {
++        uint32_t border_width = (uint32_t)border_width_check;
+         xcb_configure_window(globalconf.connection, w->window, XCB_CONFIG_WINDOW_BORDER_WIDTH,
+                              &border_width);
+         w->border_width = border_width;
+-- 
+1.6.5.2
+

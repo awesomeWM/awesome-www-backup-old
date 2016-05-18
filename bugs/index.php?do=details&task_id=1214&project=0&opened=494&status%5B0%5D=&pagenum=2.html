@@ -1,0 +1,454 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1214 : Fullscreen with LilyTerm, awesome titlebar and specific font (Ubuntu Mono) makes Xorg go nuts</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1214&amp;project=0&amp;opened=494&amp;status%5B0%5D=&amp;pagenum=2" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=494&amp;status%5B0%5D=&amp;pagenum=2">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1306&amp;project=0&amp;opened=494&amp;status%5B0%5D=&amp;pagenum=2" title="Unconfirmed | Postpone/block layout (re)arrangement during applying of awful.r | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity4">
+	 FS#1214 - Fullscreen with LilyTerm, awesome titlebar and specific font (Ubuntu Mono) makes Xorg go nuts  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a>     	 - Friday, 28 February 2014, 15:46 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Friday, 28 February 2014, 16:16 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">High</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I have noticed that when I use a titlebar for the clients/windows in the awesome window manager and &quot;font_name = Ubuntu Mono 12&quot; (size appears to be irrelevant), LilyTerm misbehaves when I make the client fullscreen: the Xorg process goes nuts (CPU and memory), and it seems like the LilyTerm window gets bigger and bigger (according to the scrollbar).<br />
+Nothing is visible in the window (just the background, no cursor etc).<br />
+With latest master (in contrast to 3.5.2) there might be some flickering visible for a short time.<br />
+<br />
+When exiting fullscreen, before you would have to kill awesome, the lilyterm window has a few pages of scrollback, with the prompt being visible at the top and the bottom, and only blank space inbetween.<br />
+<br />
+This is triggered by using &quot;font_name = Ubuntu Mono 12&quot; in LilyTerm, and needs the titlebars to be enabled in awesome.<br />
+<br />
+*It works as expected with titlebars being off, and can be triggered by toggling/enabling the titlebar while in fullscreen mode.*<br />
+<br />
+I am using the default titlebar config for awesome (which is just disabled by default), and toggle it using the following key binding:<br />
+<br />
+    awful.key({ modkey, &quot;Shift&quot;   }, &quot;t&quot;,      awful.titlebar.toggle),<br />
+<br />
+This does not happen with gnome-terminal.<br />
+<br />
+This happens with both size_hints_honor = false and unconfigured (should be true) in awesome&#039;s settings.<br />
+<br />
+I have also reported it also for LilyTerm at:<a href=" https://github.com/Tetralet/LilyTerm/issues/75"> https://github.com/Tetralet/LilyTerm/issues/75</a><br />
+<br />
+awesome v3.5.2-24-ga546367</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Friday, 28 February 2014, 16:16 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Not a bug<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Let&#039;s start with quoting the
+relevant standard that lilyterm is
+violating (ICCCM § 4.2.4):<br />
+<br />
+The response of the client to being
+resized should be to accept the size it
+has been given and to do its best with
+it. Clients must not respond to being
+resized by attempting to resize
+themselves to a better size. If the size
+is impossible to work with, clients are
+free to request to change to the Iconic
+state.<br />
+<br />
+<br />
+The bug comes from
+LilyTerm/src/window.c, function
+window_size_request() which calls
+gtk_window_resize(), something that is
+not allowed from within the size request
+handler.<br />
+<br />
+I do not understand why the code thinks
+that it has to do this. It might be
+possible that awesome is calculating the
+geometry from the size hints
+incorrectly. However, that still
+doesn&#039;t allow LilyTerm to violate
+the standard. (Also, I am too lazy to
+compile LilyTerm and add some printfs to
+test this and the #ifdef hell in the
+code already scares me)        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (4)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3828" id="comment3828"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1214#comment3828">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Friday, 28 February 2014, 15:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">xtrace log: maximized LilyTerm, waited a few seconds, un-maximized it.</div></div>
+
+      <div class="attachments">
+          <a title="xtrace.log.txt.gz" href="?getfile=670" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/application.png" alt="" title="application/x-gzip; charset=binary" />
+            &nbsp;&nbsp;
+            xtrace.log.txt.gz
+                  </a>
+                  (103.8 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3829" id="comment3829"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1214#comment3829">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 28 February 2014, 18:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The attached file (hopefully) models the behavior of LilyTerm. If this is correct, then LilyTerm is even more stupid than I thought:<br />
+<br />
+This has nothing to do with size hints. If some magic settings* are enabled, LilyTerm considers itself to be smarter than everyone else. Whenever it is resized to a different size than it wants to be, it just resizes itself to its prefered size. This has nothing to do with the size of characters etc. I don&#039;t even see how this could be influenced by your Ubuntu Mono font.<br />
+<br />
+*: This is the relevant code. Judge yourself if this is self-explanatory:<br />
+// [Showing/Hiding tabs bar] and [Change the vte font] won&#039;t run the following codes.<br />
+	if (win_data-&gt;keep_vte_size&amp;0xa94a)</div></div>
+
+      <div class="attachments">
+          <a title="basic.c" href="?getfile=671" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-c; charset=us-ascii" />
+            &nbsp;&nbsp;
+            basic.c
+                  </a>
+                  (2.3 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3836" id="comment3836"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1214#comment3836">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Sunday, 02 March 2014, 14:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; I don&#039;t even see how this could be influenced by your Ubuntu Mono font.<br />
+<br />
+From your mail<a href=" http://article.gmane.org/gmane.comp.window-managers.awesome/10504"> http://article.gmane.org/gmane.comp.window-managers.awesome/10504</a>: <br />
+<br />
+&gt;&gt; If no args are given, some default values are used. For the titlebar&#039;s height,<br />
+this is 1.5 times the height of the default font. So calling awful.titlebar()<br />
+without any arguments gives the titlebar a non-zero size.<br />
+<br />
+Maybe that&#039;s (related to) why a specific font might trigger it?</div></div>
+
+  
+    <em>
+    <a name="comment4060" id="comment4060"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1214#comment4060">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Tuesday, 13 May 2014, 20:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The LilyTerm author has provided some information at<a href=" https://github.com/Tetralet/LilyTerm/issues/75#issuecomment-42730673"> https://github.com/Tetralet/LilyTerm/issues/75#issuecomment-42730673</a>:<br />
+<br />
+=====<br />
+Due to the strange resize behavior of GTK2+/GTK3+, LilyTerm must handle the size itself, or it may cause problem.<br />
+<br />
+Please visit follow link for more information:<br /><a href="
+https://lists.debian.org/debian-mentors/2010/10/msg00497.html">
+https://lists.debian.org/debian-mentors/2010/10/msg00497.html</a><br />
+<br />
+Bad news: the size behavior was changed (again) in the recent version of GTK3+... Now it became almost un-fixable.<br />
+<br />
+The LilyTerm resize policy is very sample: LilyTerm is just only trying to keep the size that the vte widget asked for. In your case, (Ubuntu Mono 12 + Awesome), after calling gtk_window_fullscreen(), the vte widget ask for keep the size to 576x314 (82x24), so lilyterm resize itself to 576x314. I have no idea how to fix it... Sorry.<br />
+<br />
+Please use GTK2+ version of LilyTerm instead. Thanks!<br />
+=====</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1214#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1214" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

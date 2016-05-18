@@ -1,0 +1,59 @@
+diff -ur awesome/lib/awful/widget/common.lua awesome.new/lib/awful/widget/common.lua
+--- awesome/lib/awful/widget/common.lua	2014-10-09 23:04:02.000000000 +0100
++++ awesome.new/lib/awful/widget/common.lua	2014-10-10 02:00:09.258301807 +0100
+@@ -74,10 +74,14 @@
+             }
+         end
+ 
+-        local text, bg, bg_image, icon = label(o)
++        local text, bg, bg_image, icon, icon_only = label(o)
+         -- The text might be invalid, so use pcall
+-        if not pcall(tb.set_markup, tb, text) then
+-            tb:set_markup("<i>&lt;Invalid text&gt;</i>")
++        if icon_only then
++            m:set_margins(0)
++        else
++            if not pcall(tb.set_markup, tb, text) then
++                tb:set_markup("<i>&lt;Invalid text&gt;</i>")
++            end
+         end
+         bgb:set_bg(bg)
+         if type(bg_image) == "function" then
+diff -ur awesome/lib/awful/widget/taglist.lua awesome.new/lib/awful/widget/taglist.lua
+--- awesome/lib/awful/widget/taglist.lua	2014-10-09 23:04:02.000000000 +0100
++++ awesome.new/lib/awful/widget/taglist.lua	2014-10-10 02:07:18.275439081 +0100
+@@ -43,7 +43,7 @@
+     local taglist_squares_resize = theme.taglist_squares_resize or args.squares_resize or "true"
+     local taglist_disable_icon = args.taglist_disable_icon or theme.taglist_disable_icon or false
+     local font = args.font or theme.taglist_font or theme.font or ""
+-    local text = "<span font_desc='"..font.."'>"
++    local text = nil
+     local sel = capi.client.focus
+     local bg_color = nil
+     local fg_color = nil
+@@ -98,14 +98,15 @@
+         fg_color = fg_focus
+     end
+     if not tag.getproperty(t, "icon_only") then
++        text = "<span font_desc='"..font.."'>"
+         if fg_color then
+             text = text .. "<span color='"..util.color_strip_alpha(fg_color).."'>" ..
+                 (util.escape(t.name) or "") .. "</span>"
+         else
+             text = text .. (util.escape(t.name) or "")
+         end
++        text = text .. "</span>"
+     end
+-    text = text .. "</span>"
+     if not taglist_disable_icon then
+         if tag.geticon(t) and type(tag.geticon(t)) == "image" then
+             icon = tag.geticon(t)
+@@ -114,7 +115,7 @@
+         end
+     end
+ 
+-    return text, bg_color, bg_image, not taglist_disable_icon and icon or nil
++    return text, bg_color, bg_image, not taglist_disable_icon and icon or nil, tag.getproperty(t, "icon_only")
+ end
+ 
+ local function taglist_update(s, w, buttons, filter, data, style, update_function)

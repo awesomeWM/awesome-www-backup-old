@@ -1,0 +1,762 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#762 : mozplugger freezes desktop (works in wmii)</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=762" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1295" title="Assigned | Menubar doesn&#039;t adapt width to different screen widths | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#762 - mozplugger freezes desktop (works in wmii)  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=478">vijayender (vijayender)</a>     	 - Wednesday, 05 May 2010, 12:45 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Sunday, 25 November 2012, 14:46 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Researching               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.4</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">7 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=758">Dan Forest-Barbier (dpanth3r)</a> (2012-11-25)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=748">Jacob Kanev (jkanev)</a> (2012-10-22)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=676">Dimitri (duckgrindrr)</a> (2012-01-03)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=651">Kyle Blake (klkblake)</a> (2011-11-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> (2010-11-02)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=552">Steve Wattam (ExtremeTomato)</a> (2010-11-01)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=492">Tibor Csögör (tibi)</a> (2010-05-28)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">On opening a pdf with mozplugger say using okular in a chromium-bin,<br />
+it all works fine until you click in the embedded window. Once you have clicked<br />
+the embedded window in the browser, mouse and keyboard deliver no more events.<br />
+If you don&#039;t click the embedded window, you can even scroll the file and hovering<br />
+changes the buttons.<br />
+<br />
+The only way to recover (for me) is to switch to a tty and kill browser.<br />
+<br />
+The same setup works fine in wmii.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (22)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1951" id="comment1951"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment1951">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 07 May 2010, 09:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can anyone else verify the same thing happens to him? Does anyone see sth similar with an easier test case?</div></div>
+
+  
+    <em>
+    <a name="comment2001" id="comment2001"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2001">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=492">Tibor Csögör (tibi)</a> -
+    Friday, 28 May 2010, 10:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can confirm this case.  The same thing happens with Firefox/mozplugger and OpenOffice.org or Acrobat Reader.  I guess this narrows it down to mozplugger.</div></div>
+
+  
+    <em>
+    <a name="comment2048" id="comment2048"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2048">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 16:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Reproducable here with a random pdf and xpdf. Killing xpdf made stuff work again for me (well, vimperator broke...).</div></div>
+
+  
+    <em>
+    <a name="comment2049" id="comment2049"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2049">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 17:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">xtrace on awesome. Around 160.5 I clicked into the mozplugger window, those property notifies where coming in all the time, dunno why. At 172 I had pkill&#039;d xpdf.<br />
+I&#039;d say this looks like a server grab, but xlsclients works while the UI is frozen. :/<br />
+<br />
+160.464 000:&gt;:0f98: Event PropertyNotify(28) window=0x00600034 atom=0x13b(unrecognized atom) time=0x0068c759 state=NewValue(0x00)<br />
+160.504 000:&gt;:0f98: Event PropertyNotify(28) window=0x00600034 atom=0x13b(unrecognized atom) time=0x0068c781 state=NewValue(0x00)<br />
+160.544 000:&gt;:0f98: Event PropertyNotify(28) window=0x00600034 atom=0x13b(unrecognized atom) time=0x0068c7a9 state=NewValue(0x00)<br />
+160.584 000:&gt;:0f98: Event LeaveNotify(8) detail=Nonlinear(0x03) mode=Normal(0x00) flags=same-screen time=0x0068c7bd root=0x00000111 event=0x00200004 child=None(0x00000000) root-x=1497 root-y=141 event-x=1497 event-y=141 state=0<br />
+160.584 000:&gt;:0f98: Event EnterNotify(7) detail=NonlinearVirtual(0x04) mode=Normal(0x00) flags=same-screen time=0x0068c7bd root=0x00000111 event=0x00600034 child=0x006000d2 root-x=1497 root-y=141 event-x=1495 event-y=120 state=0<br />
+160.584 000:&gt;:0f98: Event EnterNotify(7) detail=Nonlinear(0x03) mode=Normal(0x00) flags=same-screen time=0x0068c7bd root=0x00000111 event=0x00c0004f child=None(0x00000000) root-x=1497 root-y=141 event-x=1493 event-y=67 state=0<br />
+160.585 000:&lt;:0f99: 12: Request(42): SetInputFocus revert-to=Parent(0x02) focus=0x00600034 time=CurrentTime(0x00000000)<br />
+160.585 000:&lt;:0f9a: 44: Request(25): SendEvent propagate=false(0x00) destination=0x00600034 event-mask=0 ClientMessage(33) format=0x20 window=0x00600034 type=0x115(&quot;WM_PROTOCOLS&quot;) data=0x24,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00;<br />
+160.585 000:&gt;:0f9a: Event LeaveNotify(8) detail=Inferior(0x02) mode=Normal(0x00) flags=same-screen time=0x0068c7d0 root=0x00000111 event=0x00c0004f child=None(0x00000000) root-x=1478 root-y=143 event-x=1474 event-y=69 state=0<br />
+160.585 000:&gt;:0f9a: Event FocusIn(9) detail=Inferior(0x02) event=0x00600034 mode=Normal(0x00)<br />
+160.585 000:&gt;:0f9a: Event FocusIn(9) detail=Pointer(0x05) event=0x00c0004f mode=Normal(0x00)<br />
+160.585 000:&gt;:0f9a: Event FocusOut(10) detail=Inferior(0x02) event=0x00600034 mode=Normal(0x00)<br />
+160.949 000:&gt;:0f9a: Event LeaveNotify(8) detail=Virtual(0x01) mode=Grab(0x01) flags=focus,same-screen time=0x0068c92a root=0x00000111 event=0x00c0004f child=0x00c00050 root-x=1211 root-y=183 event-x=1207 event-y=109 state=Button1<br />
+160.949 000:&gt;:0f9a: Event EnterNotify(7) detail=Inferior(0x02) mode=Grab(0x01) flags=same-screen time=0x0068c92a root=0x00000111 event=0x00600034 child=None(0x00000000) root-x=1211 root-y=183 event-x=1209 event-y=162 state=Button1<br />
+160.949 000:&gt;:0f9a: Event ButtonPress(4) button=left button(0x01) time=0x0068c92a root=0x00000111 event=0x00600034 child=0x006000d2 root-x=1211 root-y=183 event-x=1209 event-y=162 state=0 same-screen=true(0x01)<br />
+160.949 000:&lt;:0f9b: 12: Request(42): SetInputFocus revert-to=Parent(0x02) focus=0x00600034 time=CurrentTime(0x00000000)<br />
+160.949 000:&lt;:0f9c: 44: Request(25): SendEvent propagate=false(0x00) destination=0x00600034 event-mask=0 ClientMessage(33) format=0x20 window=0x00600034 type=0x115(&quot;WM_PROTOCOLS&quot;) data=0x24,0x01,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00;<br />
+160.949 000:&lt;:0f9d: 24: Request(18): ChangeProperty mode=Replace(0x00) window=0x00000111 property=0xe9(&quot;_NET_CLIENT_LIST_STACKING&quot;) type=0x21(&quot;WINDOW&quot;) data=;<br />
+160.950 000:&lt;:0f9e: 28: Request(18): ChangeProperty mode=Replace(0x00) window=0x00000111 property=0xe9(&quot;_NET_CLIENT_LIST_STACKING&quot;) type=0x21(&quot;WINDOW&quot;) data=0x00600034;<br />
+160.950 000:&lt;:0f9f:  8: Request(35): AllowEvents mode=ReplayPointer(0x02) <br />
+160.950 000:&lt;:0fa0: 20: Request(12): ConfigureWindow window=0x00200004 values={sibling=0x00000000 stack-mode=Above(0x00)}<br />
+160.950 000:&lt;:0fa1: 20: Request(12): ConfigureWindow window=0x00600034 values={sibling=0x00200004 stack-mode=Above(0x00)}<br />
+160.950 000:&gt;:0fa1: Event FocusIn(9) detail=Inferior(0x02) event=0x00600034 mode=Normal(0x00)<br />
+160.950 000:&gt;:0fa1: Event PropertyNotify(28) window=0x00000111 atom=0xe9(&quot;_NET_CLIENT_LIST_STACKING&quot;) time=0x0068c93e state=NewValue(0x00)<br />
+160.950 000:&gt;:0fa1: Event PropertyNotify(28) window=0x00000111 atom=0xe9(&quot;_NET_CLIENT_LIST_STACKING&quot;) time=0x0068c93e state=NewValue(0x00)<br />
+160.950 000:&gt;:0fa1: Event LeaveNotify(8) detail=Inferior(0x02) mode=Ungrab(0x02) flags=focus,same-screen time=0x0068c93e root=0x00000111 event=0x00600034 child=None(0x00000000) root-x=1211 root-y=183 event-x=1209 event-y=162 state=Button1<br />
+160.950 000:&gt;:0fa1: Event EnterNotify(7) detail=Virtual(0x01) mode=Ungrab(0x02) flags=focus,same-screen time=0x0068c93e root=0x00000111 event=0x00c0004f child=0x00c00050 root-x=1211 root-y=183 event-x=1207 event-y=109 state=Button1<br />
+160.950 000:&gt;:0fa1: Event EnterNotify(7) detail=Inferior(0x02) mode=Grab(0x01) flags=focus,same-screen time=0x0068c93e root=0x00000111 event=0x00c0004f child=None(0x00000000) root-x=1211 root-y=183 event-x=1207 event-y=109 state=Button1<br />
+160.950 000:&gt;:0fa1: Event ButtonPress(4) button=left button(0x01) time=0x0068c92a root=0x00000111 event=0x00c0004f child=0x00c00050 root-x=1211 root-y=183 event-x=1207 event-y=109 state=0 same-screen=true(0x01)<br />
+160.950 000:&gt;:0fa0:Error 3=Window: major=12, minor=0, bad=0<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00043</div></div>
+
+  
+    <em>
+    <a name="comment2050" id="comment2050"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2050">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 17:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just noticed that there is no reply to the ConfigureWindow at serial 0fa1...?!<br />
+<br />
+Just for reference, here is the &quot;rest&quot; of the xtrace output (gonna close that terminal now and dont really feel like running this a second time):<br />
+<br />
+160.950 000:&gt;:0fa0:Error 3=Window: major=12, minor=0, bad=0<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00043<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00004<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00049<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00048<br />
+172.980 000:&gt;:0fa1: Event UnmapNotify(18) event=0x00c0004f window=0x00c0004f from-configure=false(0x00)<br />
+172.980 000:&gt;:0fa1: Event LeaveNotify(8) detail=Inferior(0x02) mode=Ungrab(0x02) flags=focus,same-screen time=0x0068f828 root=0x00000111 event=0x00c0004f child=None(0x00000000) root-x=1211 root-y=183 event-x=1207 event-y=109 state=Button1<br />
+172.980 000:&gt;:0fa1: Event LeaveNotify(8) detail=Virtual(0x01) mode=Normal(0x00) flags=focus,same-screen time=0x0068f828 root=0x00000111 event=0x00c0004f child=0x00c00050 root-x=1211 root-y=183 event-x=1207 event-y=109 state=0<br />
+172.980 000:&gt;:0fa1: Event EnterNotify(7) detail=Inferior(0x02) mode=Grab(0x01) flags=focus,same-screen time=0x0068f828 root=0x00000111 event=0x00600034 child=None(0x00000000) root-x=985 root-y=226 event-x=983 event-y=205 state=Button1<br />
+172.980 000:&gt;:0fa1: Event ButtonPress(4) button=left button(0x01) time=0x0068cb0d root=0x00000111 event=0x00600034 child=0x006000d2 root-x=3 root-y=47 event-x=1 event-y=26 state=0 same-screen=true(0x01)<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00c0004f window=0x00c0004f<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00016<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00032<br />
+172.980 000:&gt;:0fa1: Event DestroyNotify(17) event=0x00000111 window=0x00c00033<br />
+172.981 000:&lt;:0fa2: 12: Request(42): SetInputFocus revert-to=Parent(0x02) focus=0x00600034 time=CurrentTime(0x00000000)</div></div>
+
+  
+    <em>
+    <a name="comment2053" id="comment2053"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2053">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 17:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here&#039;s the xtrace on firefox (and the shitload of other apps it starts, xtrace captured 4 different clients).<br />
+<br />
+No idea what exactly happens in there (or at which point the mouse click shows up), but it got to be in there.</div></div>
+
+      <div class="attachments">
+          <a title="t" href="?getfile=321" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            t
+                  </a>
+                  (419.2 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment2054" id="comment2054"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2054">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 11 June 2010, 18:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">By now I figured out that an XEMBED_REQUEST_FOCUS is sent at 002:&lt;:0023 (so client 2 is the embedding window).<br />
+At 001:&gt;:e1af: the embedded window receives this request.<br />
+<br />
+In response to this, client 001 requests its _XEMBED_INFO property. The property value is: Reply to GetProperty: type=0x118(&quot;_XEMBED_INFO&quot;) bytes-after=0x00000000 data=0xce4fce70,0x00000000;<br />
+This value seems quite invalid. JD: Any thoughts on that value?<br />
+<br />
+xpdf then sends an XEMBED_FOCUS_IN with XEMBED_FOCUS_CURRENT. In response to this, the &quot;other&quot; client sends a generated FocusIn event with propagate=false.<br />
+<br />
+After this I can&#039;t figure out what&#039;s going on. Some RENDER painting and... dunno, why does everything lock up?</div></div>
+
+  
+    <em>
+    <a name="comment2057" id="comment2057"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2057">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 12 June 2010, 06:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I wonder if we should ask the mozplugger team for input. They got a bug tracker[1], but I dont feel like creating an account there. Any volunteers? ;)<br />
+<br />
+[1]<a href=" http://mozplugger.mozdev.org/bugs.html"> http://mozplugger.mozdev.org/bugs.html</a></div></div>
+
+  
+    <em>
+    <a name="comment2110" id="comment2110"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2110">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=492">Tibor Csögör (tibi)</a> -
+    Monday, 28 June 2010, 00:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">A workaround for Firefox (tested with version 3.6.4) is to press [TAB] (this activates the URL bar) and then [CTRL]+[T] to open a new tab -&gt; focus handling is back to normal.  Basically anything that switches to a different tab works.</div></div>
+
+  
+    <em>
+    <a name="comment2122" id="comment2122"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2122">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Thursday, 15 July 2010, 22:24 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">For me evil workaround is switch to console and &#039;killall -HUP awesome&#039;<br />
+[TAB] sounds like a cool one but didn&#039;t work for me with soffice since then TAB is processed by embedded soffice and jumps to next entry within it.</div></div>
+
+  
+    <em>
+    <a name="comment2123" id="comment2123"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2123">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Thursday, 15 July 2010, 22:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can volunteer to create an account for you Uli on mozplugger -- or please provide a summary of the bug/issue in mozplugger so I could pass on... to me issue looks to reside in awesome though -- it is the one which gets locked up<br /></div></div>
+
+  
+    <em>
+    <a name="comment2131" id="comment2131"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2131">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 16 July 2010, 08:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Awesome doesn&#039;t lock up (e.g. use notify-send to send a notification, it will work). It&#039;s just that something is grabbing all input and so nothing else gets anything. No idea why that only happens with awesome (anybody tried to reproduce this with dwm?).<br />
+Also, I already sent a mail to the mozplugger list, I think, but didn&#039;t get any reply. I don&#039;t know how they could help anyway, the embedding of subwindows is handled by code outside of mozplugger. :/<br />
+My mail to them basically only linked to this bug report, I don&#039;t have any more useful input.</div></div>
+
+  
+    <em>
+    <a name="comment2137" id="comment2137"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2137">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Friday, 16 July 2010, 21:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If it would be of help:<br />
+<br /><a href="
+http://www.onerussian.com/Linux/bugs/awesome-lockup/awesome-xtrace-3.log">
+http://www.onerussian.com/Linux/bugs/awesome-lockup/awesome-xtrace-3.log</a><br /><a href="
+http://www.onerussian.com/Linux/bugs/awesome-lockup/wmaker-xtrace-1.log">
+http://www.onerussian.com/Linux/bugs/awesome-lockup/wmaker-xtrace-1.log</a><br />
+<br />
+in each case I opened .doc document within mozplugger inside firefox/icewasel.<br />
+Then I clicked ` (which doesn&#039;t lock things up) and immediately clicked mouse inside window which leads to problems on awesome but is fine on wmaker... then I tried Win-1 under awesome and Alt-1 under wmaker to switch to first &quot;tag&quot; (sure thing there were no effect on awesome).<br />
+<br />
+So  look for keycode=0x31 (of `).  I also added human readable time stamps with ts for reference<br />
+Let me know if I could be of any more help</div></div>
+
+  
+    <em>
+    <a name="comment2139" id="comment2139"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2139">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 17 July 2010, 13:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Whatever this bug is, it&#039;s not some kind of grab.<br />
+<br />
+According to this, every grab is released again:<br />
+grep -i Grab * | grep -v &#039;Event EnterNotify&#039; | grep -v &#039;Event LeaveNotify&#039; | grep -v &#039;Event FocusIn&#039; | grep -v &#039;Event FocusOut&#039; | grep -v &#039;: UngrabServer&#039; | grep -v &#039;: GrabServer&#039;<br />
+<br />
+One can find such a line in both outputs:<br />
+Reply to GetInputFocus: revert-to=None(0x00) focus=None(0x00000000)<br />
+<br />
+This might cause this, dunno. Anyone knows how awesome reacts when nothing has the input focus?</div></div>
+
+  
+    <em>
+    <a name="comment2413" id="comment2413"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2413">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Tuesday, 02 November 2010, 17:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">heh heh -- issue persists and we are in limbo space :-/</div></div>
+
+  
+    <em>
+    <a name="comment2414" id="comment2414"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2414">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Tuesday, 02 November 2010, 17:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">one more observation -- if I open (even multiple) tabs with mozplugger content, then, before the evil grab, do killall -HUP awesome, after awesome&#039;s restart everything works smooth.  So it is like something &quot;bad&quot; happens at the beginning of mozplugger embodiment into the window, and restart of awesome &quot;resolves&quot; it for future interactions with that window.<br />
+Similar thing that if I start multiple mozplugged tabs, lock by clicking in the menu of one of them, -HUP awesome, then everything (in all opened tabs) works fine.</div></div>
+
+  
+    <em>
+    <a name="comment2415" id="comment2415"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2415">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=512">Yaroslav Halchenko (yarikoptic)</a> -
+    Wednesday, 03 November 2010, 18:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Moreover KDE shortcuts are handled just fine (I am running awesome as KDEWM with kde4), so I can Alt-F2 and enter &quot;killall -HUP awesome&quot;; which suggests indeed that nothing is per se locked globally but rather gets stuck at awesome (KDE shortcuts superseed awesome&#039;s)</div></div>
+
+  
+    <em>
+    <a name="comment2771" id="comment2771"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment2771">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=211">Thomas Koch (thkoch2001)</a> -
+    Tuesday, 15 November 2011, 12:54 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This bug is also reported for Debian[1] and mozplugger[2]. And I just got hit by it.<br />
+<br />
+[1]<a href=" http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=609215"> http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=609215</a><br />
+[2]<a href=" https://www.mozdev.org/bugs/show_bug.cgi?id=23600"> https://www.mozdev.org/bugs/show_bug.cgi?id=23600</a></div></div>
+
+  
+    <em>
+    <a name="comment3170" id="comment3170"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment3170">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=740">Adrian Wheeldon (ARandomOWL)</a> -
+    Friday, 14 September 2012, 18:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I still have this issue with Awesome 3.4.13, Firefox 15.0.1, epdfviewer, Arch Linux.</div></div>
+
+  
+    <em>
+    <a name="comment3238" id="comment3238"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment3238">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=758">Dan Forest-Barbier (dpanth3r)</a> -
+    Sunday, 25 November 2012, 13:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same here, still getting freezes (have to switch to tty/ssh to kill the embedded pdf reader).<br />
+Debian (sid, AMD64), Awesome 3.4.13-1, Firefox 17.0 (from LinuxMint import repository), evince/xpdf/acroread:i386 all cause the bug.<br />
+<br />
+I think this issue should at least get the “confirmed” status :)</div></div>
+
+  
+    <em>
+    <a name="comment3251" id="comment3251"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment3251">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=592">Tim Y (tdy)</a> -
+    Tuesday, 27 November 2012, 19:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">seems to be fixed in git/master.. arch x86_64, firefox 17, okular/apvlv</div></div>
+
+  
+    <em>
+    <a name="comment3252" id="comment3252"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#comment3252">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=592">Tim Y (tdy)</a> -
+    Tuesday, 27 November 2012, 22:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">as well as 3.5-rc1</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=762#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="762" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

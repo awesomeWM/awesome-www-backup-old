@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#687 : Stop restarting on XRandR event</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=687&amp;opened=283&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=283&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity2">
+	 FS#687 - Stop restarting on XRandR event  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a>     	 - Wednesday, 25 November 2009, 12:06 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Tuesday, 16 October 2012, 15:20 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Feature Request</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 New               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Low</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 4.0			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">20 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> (2015-02-10)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=682">marco (mpfusion)</a> (2013-01-21)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=755">Thomas Blanc (pat_johnson)</a> (2012-11-07)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=708">Justus Piater (piater)</a> (2012-05-08)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=705">Lauri Niskanen (Ape)</a> (2012-05-03)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=679">Alexander Yakushev (Alex.yakushev)</a> (2012-01-23)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=674">Cayenne (cayenne)</a> (2011-12-30)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=140">Konstantin Stepanov (kstep)</a> (2011-12-19)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=665">Stvol (Dulo_T-34)</a> (2011-12-07)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=662">Octo Cat (oct8cat)</a> (2011-12-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=661">Konata Izumi (Kona-chan)</a> (2011-12-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> (2011-12-06)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> (2011-10-19)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=564">Jim Mitchener (jcm)</a> (2011-07-08)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=430">Anton (fluffylime)</a> (2011-06-13)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> (2011-02-22)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> (2011-02-16)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=525">Piotr J. (winhelp)</a> (2010-08-23)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=508">Fabien Givors (CapitaineFab)</a> (2010-07-07)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=276">James Umbanhowar (jumbanho)</a> (2010-06-24)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">awesome should emits proper signals and just change the screens array.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+						<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=586&amp;opened=283&amp;status%5B0%5D=" title="New | Use screen object rather than integer | 30%" >FS#586 - Use screen object rather than integer</a>				<br />
+		
+		<br class="DoNotPrint" />
+
+				<a class="DoNotPrint" href="https://awesomewm.org/bugs/index.php?do=depends&amp;task_id=687">View Dependency Graph</a>
+		<br />
+		<br />
+		
+			 </div>
+
+	 <div id="taskblocks">
+        		<b>This task blocks these from closing</b>
+		<br />
+        						<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=498&amp;opened=283&amp;status%5B0%5D=" title="Unconfirmed | primary output change via xrandr is not recognized | 0%" >FS#498 - primary output change via xrandr is not recognized</a>		<br />
+			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (9)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2852" id="comment2852"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment2852">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=660">eurekafag (eurekafag)</a> -
+    Thursday, 26 January 2012, 19:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Awesome endlessly restarts when I launch Warzone 2100 or any other game (Wesnoth or Braid, for example) in fullscreen with resolution different from the desktop one. If I start the game on any tag except the first, it changes the resolution, Awesome restarts, set the desktop resolution and goes to the first tag. When I switch to the tag where the game is it restarts again and so on. Launching on the first tag is even worse because an infinite loop is created with Awesome changing the resolution to desktop at each restart and the game changing it back to a different one when being focused.<br />
+There&#039;s no way to use fullscreen apps with different resolution at all. I&#039;m using Debian, Awesome 3.4.11 and NVIDIA proprietary driver 290.10. And I guess those 14 more people have this annoying bug, too. Please, consider fixing it anytime soon. I&#039;ve donated €20 already and I would donate even more if you plan to fix it. That&#039;s the only bug which really makes me mad because Awesome is just awesome leaving alone this glitch. Thanks for your efforts.</div></div>
+
+  
+    <em>
+    <a name="comment3003" id="comment3003"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3003">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=708">Justus Piater (piater)</a> -
+    Tuesday, 08 May 2012, 06:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I often attach or detach an external monitor or beamer to my laptop using xrandr, and every time all my tags and window arrangements are messed up. I expect them all to unaffected. I assume that fixing this bug will take care of this. Looking forward to awesome 3.5!<br />
+The only nontrivial behavioral question concerns windows on a screen that is detached using xrandr. For me, these should be moved to the current tag and minimized (to avoid messing with the current window arrangement).  Or they could be moved to their respective tags on the current screen. Perhaps they should keep their minimized/... state.  Or they could be made floating to avoid disturbing the window arrangement. This behavior should clearly be configurable.</div></div>
+
+  
+    <em>
+    <a name="comment3015" id="comment3015"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3015">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=589">dodo (dodo)</a> -
+    Monday, 14 May 2012, 17:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">have here a workaround flying around which saves me a lot of the reorder pain:<a href=" https://github.com/dodo/uzful/blob/master/restore.lua"> https://github.com/dodo/uzful/blob/master/restore.lua</a><br />
+<br />
+(sorry for the bad doc)<br />
+<br />
+ps works only in git/master</div></div>
+
+  
+    <em>
+    <a name="comment3380" id="comment3380"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3380">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=800">Namikaze Minato (Camusensei)</a> -
+    Monday, 21 January 2013, 11:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">dodo, I&#039;m fine with the documentation (of restore.lua) missing, but can you please explain what it exactly does?<br />
+Not everybody has hours of boredom to understand someone else&#039;s code ^^<br />
+<br />
+And if it does what I hope it does, I might be interested as well, hence my question.<br />
+And if I missed the documentation for that file, sorry :/</div></div>
+
+  
+    <em>
+    <a name="comment3741" id="comment3741"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3741">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=604">Edd Barrett (vext01)</a> -
+    Wednesday, 06 November 2013, 22:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">+1 for this fix.<br />
+<br />
+I have a tablet hybrid laptop and I use xrandr extensively to rotate the screen. Every time I do so, awesome restarts. The window layouts are lost and I am taken to desktop 1.<br />
+<br />
+Cheers</div></div>
+
+  
+    <em>
+    <a name="comment3742" id="comment3742"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3742">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=604">Edd Barrett (vext01)</a> -
+    Wednesday, 06 November 2013, 22:47 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">When I say &quot;this fix&quot; I mean -- a fix for awesome, not the restore.lua script.</div></div>
+
+  
+    <em>
+    <a name="comment3966" id="comment3966"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment3966">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Monday, 31 March 2014, 12:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Branch which gets rid of screen indexes *and* adds dynamic screen detection (no screens available when rc.lua is parsed, only added later via a signal):<br />
+<br /><a href="
+http://git.naquadah.org/?p=awesome.git;a=shortlog;h=refs/heads/remove_screen_index">
+http://git.naquadah.org/?p=awesome.git;a=shortlog;h=refs/heads/remove_screen_index</a></div></div>
+
+  
+    <em>
+    <a name="comment4000" id="comment4000"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment4000">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 09 April 2014, 21:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The attached program listens for RANDR events and prints the resulting configuration. Useful for (a) learning about the RandR protocol (b) seeing which events are generated (sadly, lots of state is thrown away instead of just changed) and (c) useful for debugging problems with how awesome handles these events in the future.</div></div>
+
+      <div class="attachments">
+          <a title="print_randr_events.c" href="?getfile=686" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-c; charset=us-ascii" />
+            &nbsp;&nbsp;
+            print_randr_events.c
+                  </a>
+                  (9.4 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment4219" id="comment4219"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#comment4219">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=494">Daniel Hahler (blueyed)</a> -
+    Tuesday, 10 February 2015, 22:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">For reference, the branch is now available via Github only:<br /><a href="
+https://github.com/awesomeWM/awesome/tree/remove_screen_index">
+https://github.com/awesomeWM/awesome/tree/remove_screen_index</a></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=687#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="687" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

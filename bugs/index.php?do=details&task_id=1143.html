@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1143 : NetworkManager applet icon flicker</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1143" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#1143 - NetworkManager applet icon flicker  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a>     	 - Thursday, 25 April 2013, 19:46 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 13 March 2014, 11:46 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5.1</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    0
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">NetworkManager (v0.9.6.4) applet icon in systray is flickering.<br />
+<br />
+If nm-applet is executed with NMA_SIZE_DEBUG=1 env var, one can see endless cycle of<br />
+<br />
+** Message: status_icon_size_changed_cb(): status icon size now 19<br />
+** Message: status_icon_size_changed_cb(): status icon size now 22<br />
+** Message: status_icon_size_changed_cb(): status icon size now 26<br />
+** Message: status_icon_size_changed_cb(): status icon size now 28<br />
+<br />
+debug output, which is printed in handler of &quot;size-changed&quot; signal of gtk3 gtk_status_icon_* object. So it apparently is some kind of race condition. Since I am not expert in X windows internals, I cannot say for sure if it is a fault of awesome, or rather of nm-applet, however this behavior does not occur if awesome&#039;s own systray is disabled and instead &quot;tint2&quot; is used for systray.<br />
+<br />
+xwininfo:<br />
+<br />
+     0x100000b (has no name): ()  1024x19+0+0  +0+0<br />
+        1 child:<br />
+        0x1000004 (has no name): ()  133x19+753+0  +753+0<br />
+           7 children:<br />
+           0x3600003 &quot;NetworkManager Applet&quot;: (&quot;nm-applet&quot; &quot;Nm-applet&quot;)  28x28+114+0  +867+0<br />
+              1 child:<br />
+              0x3600004 (has no name): ()  1x1+-1+-1  +866+-1<br />
+           0x16000c2 &quot;parcellite&quot;: (&quot;parcellite&quot; &quot;Parcellite&quot;)  19x19+95+0  +848+0<br />
+              1 child:<br />
+              0x16000c3 (has no name): ()  1x1+-1+-1  +847+-1<br />
+<br />
+Note that size is 28x28 and not 19x19 as for the rest of tray icons (I left just one).<br />
+<br />
+Output of &quot;xev -id 0x3600003&quot; is attached.</div>
+
+         <div class="attachments">
+          <a title="nm-applet.xev.log" href="?getfile=620" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            nm-applet.xev.log
+                  </a>
+                  (5.3 KiB)
+          <br />
+    </div>
+  
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Thursday, 13 March 2014, 11:46 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Deferred<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Apparently fixed in newer nm-applet
+versions (apparently the nm guys claim
+so and thus they also seem to agree that
+it is their bug)        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (10)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3573" id="comment3573"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3573">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 26 April 2013, 15:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The heck? Awesome cannot set different tray icons to different sizes.<br />
+<br />
+If you want me to guess, NM is fighting with awesome over the size of the tray icon. Since your trace contains the following, could you also attach the xprop output for the tray icon? (xprop -id 0x36000003)<br />
+<br />
+PropertyNotify event, serial 18, synthetic NO, window 0x3600003,<br />
+    atom 0x28 (WM_NORMAL_HINTS), time 77784609, state PropertyNewValue<br />
+<br />
+How quickly does this flicker? Is this xev output generated &quot;as fast as possible&quot; or does it e.g. only go &quot;through its cycle&quot; once a second?<br />
+<br />
+Also, could you perhaps run the NM applet and/or awesome under xtrace (http://xtrace.alioth.debian.org/). I would suggest something like &quot;xtrace --relative-timestamps -o /tmp/result.txt nm-applet&quot;, then wait a little under all of this calms down, pkill -SIGKILL nm-applet and thanks to the timestamps you should be able to extract the relevant (=recent, skipping all of the setup and initialization) part of the trace.</div></div>
+
+  
+    <em>
+    <a name="comment3603" id="comment3603"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3603">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Sunday, 09 June 2013, 20:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">(Hmm, I would expect some e-mail notifications from the bug tracker. So, sorry for taking long to reply)<br />
+<br />
+I attaching the result of xtrace of nm-applet. It is quite small, so I am not truncating it, as maybe there would be some useful info in setup part.<br />
+<br />
+xprop output:<br />
+<br />
+WM_STATE(WM_STATE):<br />
+                window state: Withdrawn<br />
+                icon window: 0x0<br />
+GDK_TIMESTAMP_PROP(GDK_TIMESTAMP_PROP) = 0x61<br />
+_NET_WM_SYNC_REQUEST_COUNTER(CARDINAL) = 23068677<br />
+_XEMBED_INFO(_XEMBED_INFO) = 0x1, 0x1<br />
+_NET_WM_USER_TIME(CARDINAL) = 31002700<br />
+_NET_WM_USER_TIME_WINDOW(WINDOW): window id # 0x1600004<br />
+WM_CLIENT_LEADER(WINDOW): window id # 0x1600001<br />
+_NET_WM_PID(CARDINAL) = 18092<br />
+WM_LOCALE_NAME(STRING) = &quot;uk_UA.UTF-8&quot;<br />
+WM_CLIENT_MACHINE(STRING) = &quot;kyrylo-eeepc&quot;<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+                program specified minimum size: 28 by 28<br />
+                program specified base size: 0 by 0<br />
+                window gravity: NorthWest<br />
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, WM_TAKE_FOCUS, _NET_WM_PING, _NET_WM_SYNC_REQUEST<br />
+WM_CLASS(STRING) = &quot;nm-applet&quot;, &quot;Nm-applet&quot;<br />
+WM_ICON_NAME(STRING) = &quot;NetworkManager Applet&quot;<br />
+_NET_WM_ICON_NAME(UTF8_STRING) = &quot;NetworkManager Applet&quot;<br />
+WM_NAME(STRING) = &quot;NetworkManager Applet&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;NetworkManager Applet&quot;<br />
+<br />
+It looks like the flicker occurs as frequent as nm-applet updates network strength indicator (or connection progress indicator), but I cannot tell for sure. It definitely does not flicker as fast as possible. xev output spits a pack of messages about once a second.<br />
+<br />
+Thanks.</div></div>
+
+      <div class="attachments">
+          <a title="nm-applet-xtrace.txt.gz" href="?getfile=621" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/application.png" alt="" title="application/x-gzip; charset=binary" />
+            &nbsp;&nbsp;
+            nm-applet-xtrace.txt.gz
+                  </a>
+                  (48.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3607" id="comment3607"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3607">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Tuesday, 11 June 2013, 11:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Looks like a bug in Flyspray: I just kept the page with this bug open and did &quot;Reload&quot; a couple of times, which caused duplicate posts.<br />
+<br />
+Edit: I cleaned up. --psychon</div></div>
+
+  
+    <em>
+    <a name="comment3608" id="comment3608"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3608">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Tuesday, 11 June 2013, 13:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The problem seems to be that NM wants it tray icon to have a size of at least 28x28 pixels:<br />
+<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+program specified minimum size: 28 by 28<br />
+program specified base size: 0 by 0<br />
+window gravity: NorthWest<br />
+<br />
+However, your systray seems to have only space for 19 pixels in height (0x100000b (has no name): () 1024x19+0+0 +0+0)<br />
+(Also, awesome ignores WM_NORMAL_HINTS on the systray anyway)<br />
+<br />
+However, NM insists on its icon size and the following happens (I picked out a random time range of the xtrace output (I chose 6.179secs/seq 0385 to 8.166secs/seq 047a):<br />
+<br />
+At 6.179: NM resizes its tray icon to 28x28 pixels.<br />
+At 7.218: The icon is resized to size 19x19 (likely awesome just happened to redraw the wibox and thus the systray icon sizes were enforced again)<br />
+NM reacts by redrawing its icon (and querying the mouse pointer state...?)<br />
+At 7.227: NM resizes its icon to size 22x22 (Hu? This is not 28x28)<br />
+At 7.235: NM resizes its icon to size 26x26 (Still smaller than expected)<br />
+At 7.244: NM resizes its icon to size 28x28 (Finally there!)<br />
+Of course, after each resize, the icon is redrawn and the mouse pointer state is queried.<br />
+At 8.142: Awesome resizes the tray icon to size 19x19.<br />
+As above, NM reacts by sending lots of pointless traffic until it finally settles at size 28x28 at time 8.166. A second later, awesome kicks in again.<br />
+<br />
+Do you happen to have a textclock showing seconds and thus your wibox is redrawn once per second?<br />
+<br />
+For the issue at hand:<br />
+Ok, awesome is ignoring the tray icons minimum size. However, I don&#039;t see what the alternative is (there just is no space for an 28x28 icon) and NM is really stupid.<br />
+Why does it have to redraw its icon 5 times and resize it three times just because awesome resized the window? Each of those causes some flickering. IMHO NM would best give up and go with the 19x19 size that it was given.<br />
+<br />
+I could make awesome enforce the 19x19 size so that NM can no longer resize its icon. However, I think that is a stupid thing to do and it feels like it just works around NM&#039;s behavior...</div></div>
+
+      <div class="attachments">
+          <a title="summary.txt" href="?getfile=625" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            summary.txt
+                  </a>
+                  (6.1 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3610" id="comment3610"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3610">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Wednesday, 12 June 2013, 05:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, I indeed have a clock showing seconds redrawn once a second.<br />
+Another interesting note: after some time, or probably some event, which I cannot detect, the icon settles down to small size which fits nicely along the rest of tray icons and no longer flickers. However, restarting nm-applet sets the flicker again.<br />
+My desire is for you to state whether you believe this to be a bug on nm-applet&#039;s side. If so, I should file a bug there, referring to this bug and your conclusions.<br />
+As for enforcing the size of icon (to the real size of the &quot;tray&quot;): why not? Is there a legitimate use for any application to set it to some other size? As I said before, I am not an expert in X windows.<br />
+Thanks.</div></div>
+
+  
+    <em>
+    <a name="comment3611" id="comment3611"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3611">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 12 June 2013, 10:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I think that there is some bug in nm-applet here. However, I bet that the NM-people will blame awesome for ignoring the minimum size.<br />
+<br />
+Please open a bug report with them and ask them to stop fighting the systray. As you say: Eventually the icon settles down, so I guess this means that NM can work with that small size.</div></div>
+
+  
+    <em>
+    <a name="comment3612" id="comment3612"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3612">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Wednesday, 12 June 2013, 12:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Opened a bug for nm-applet:<a href=" https://bugzilla.gnome.org/show_bug.cgi?id=702087"> https://bugzilla.gnome.org/show_bug.cgi?id=702087</a></div></div>
+
+  
+    <em>
+    <a name="comment3613" id="comment3613"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3613">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Wednesday, 12 June 2013, 14:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">They say it is resolved in nm-applet 0.9.8 <br />
+<br /><a href="
+https://bugzilla.gnome.org/show_bug.cgi?id=698901">
+https://bugzilla.gnome.org/show_bug.cgi?id=698901</a><br />
+<br />
+Shame this version is still masked in gentoo, but at least I can patch locally.</div></div>
+
+  
+    <em>
+    <a name="comment3614" id="comment3614"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3614">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Thursday, 13 June 2013, 07:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Patch to fix the bug has been backported to nm-applet-0.9.6.4-r1 just a couple of days ago.</div></div>
+
+  
+    <em>
+    <a name="comment3721" id="comment3721"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#comment3721">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=859">Kyrylo Shpytsya (kshpytsya)</a> -
+    Thursday, 17 October 2013, 11:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext"><a href=" https://bugzilla.gnome.org/show_bug.cgi?id=710375"> https://bugzilla.gnome.org/show_bug.cgi?id=710375</a></div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1143#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1143" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

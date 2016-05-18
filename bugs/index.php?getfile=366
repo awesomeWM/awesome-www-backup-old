@@ -1,0 +1,28 @@
+diff --git a/lib/awful/autofocus.lua.in b/lib/awful/autofocus.lua.in
+index 486c7f9..bcbb3d9 100644
+--- a/lib/awful/autofocus.lua.in
++++ b/lib/awful/autofocus.lua.in
+@@ -19,13 +19,20 @@ local function check_focus(obj)
+     if not client.focus or not client.focus:isvisible() then
+         local c = aclient.focus.history.get(obj.screen, 0)
+         if c then client.focus = c end
++    end
++end
++
++local function foo(obj)
++    local c = nil
++    if not client.focus or not client.focus:isvisible() then
++        c = aclient.focus.history.get(obj.screen, 0)
+     elseif client.focus and client.focus.screen ~= obj.screen then
+-        local c = aclient.focus.history.get(obj.screen, 0)
+-        if c then client.focus = c end
++        c = aclient.focus.history.get(obj.screen, 0)
+     end
++    if c then client.focus = c end
+ end
+ 
+-atag.attached_connect_signal(nil, "property::selected", check_focus)
++atag.attached_connect_signal(nil, "property::selected", foo)
+ client.connect_signal("unmanage", check_focus)
+ client.connect_signal("untagged", check_focus)
+ client.connect_signal("property::hidden", check_focus)

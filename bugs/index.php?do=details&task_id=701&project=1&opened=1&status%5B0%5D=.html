@@ -1,0 +1,657 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#701 : crash with &quot;unprotected error in call to Lua API (stack overflow (too much signal))&quot;</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=701&amp;project=1&amp;opened=1&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=712&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Fixed | dbus: add ARRAY as possible return value | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=1&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=684&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Not a bug | awful.mouse.client.resize allows resizing behind the clients are | 100%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity4">
+	 FS#701 - crash with &quot;unprotected error in call to Lua API (stack overflow (too much signal))&quot;  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=425">Igor Rudchenko (igor1st)</a>     	 - Thursday, 17 December 2009, 16:58 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Tuesday, 17 August 2010, 15:38 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">High</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.4.2</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">2 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=509">David Serrano (N0_Named_Guy)</a> (2010-07-07)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> (2009-12-24)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">System: Debian testing, amd64.<br />
+<br />
+Crash happens after several days of uptime, so not easily reproduce.<br />
+<br />
+First crash with awesome 3.4.2-2 from Debian happens when I navigate in menu of foobar2000 running under wine:<br />
+<br />
+--------------------------------------------------------------------------------------------------------------<br />
+W: awesome: luaA_panic:679: unprotected error in call to Lua API (stack overflow (too much signal))<br />
+E: awesome: signal_fatal:260: dumping backtrace<br />
+x-window-manager(backtrace_get+0x26) [0x43b6d6]<br />
+x-window-manager [0x40f51c]<br />
+/lib/libpthread.so.0 [0x7fc6cb00c990]<br />
+/lib/libc.so.6(cfree+0x39) [0x7fc6cab186c9]<br />
+x-window-manager [0x410e96]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e7a56]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e7f69]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e978f]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e9e18]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e7647]<br />
+/usr/lib/liblua5.1.so.0(lua_close+0x60) [0x7fc6cb6eeac0]<br />
+x-window-manager(awesome_atexit+0x1d9) [0x40fa59]<br />
+x-window-manager(awesome_restart+0x9) [0x40fab9]<br />
+x-window-manager [0x42648e]<br />
+/usr/lib/liblua5.1.so.0 [0x7fc6cb6e792e]<br />
+/usr/lib/liblua5.1.so.0(lua_error+0x9) [0x7fc6cb6e2eb9]<br />
+/usr/lib/liblua5.1.so.0(luaL_error+0xc2) [0x7fc6cb6f4072]<br />
+x-window-manager(signal_object_emit+0xbe) [0x43be5e]<br />
+x-window-manager(client_unmanage+0x1d0) [0x4154f0]<br />
+x-window-manager [0x41b802]<br />
+x-window-manager [0x40f49d]<br />
+/usr/lib/libev.so.3(ev_invoke_pending+0x61) [0x7fc6cb909481]<br />
+/usr/lib/libev.so.3(ev_loop+0x84c) [0x7fc6cb90e1bc]<br />
+x-window-manager(main+0x8bf) [0x4103af]<br />
+/lib/libc.so.6(__libc_start_main+0xfd) [0x7fc6caac1a8d]<br />
+x-window-manager [0x40f2a9]<br />
+-----------------------------------------------------------------------------------------------------------------------<br />
+<br />
+After that crash I build version 3.4.2-3+git20091210 from git 3.4 84acfc46521e756c4f44754cf7ebd69bc6b70f71. And today I have another crash while open openoffice:<br />
+<br />
+-----------------------------------------------------------------------------------------------------------------------<br />
+W: awesome: luaA_panic:679: unprotected error in call to Lua API (stack overflow (too much signal)), restarting awesome<br />
+*** glibc detected *** x-window-manager: double free or corruption (out): 0x0000000002a7c120 ***<br />
+======= Backtrace: =========<br />
+/lib/libc.so.6[0x7f31f8c6ed56]<br />
+/lib/libc.so.6(cfree+0x6c)[0x7f31f8c739bc]<br />
+x-window-manager[0x410ec6]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9843a56]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9843f69]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f984578f]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9845e18]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9843647]<br />
+/usr/lib/liblua5.1.so.0(lua_close+0x60)[0x7f31f984aac0]<br />
+x-window-manager(awesome_atexit+0x1d9)[0x40fa89]<br />
+x-window-manager(awesome_restart+0x9)[0x40fae9]<br />
+x-window-manager[0x4264de]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f984392e]<br />
+/usr/lib/liblua5.1.so.0(lua_error+0x9)[0x7f31f983eeb9]<br />
+/usr/lib/liblua5.1.so.0(luaL_error+0xc2)[0x7f31f9850072]<br />
+x-window-manager(signal_object_emit+0xbe)[0x43c2ae]<br />
+x-window-manager(client_manage+0x50b)[0x415ccb]<br />
+x-window-manager[0x41b431]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9845e18]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f9843647]<br />
+/usr/lib/liblua5.1.so.0(lua_close+0x60)[0x7f31f984aac0]<br />
+x-window-manager(awesome_atexit+0x1d9)[0x40fa89]<br />
+x-window-manager(awesome_restart+0x9)[0x40fae9]<br />
+x-window-manager[0x4264de]<br />
+/usr/lib/liblua5.1.so.0[0x7f31f984392e]<br />
+/usr/lib/liblua5.1.so.0(lua_error+0x9)[0x7f31f983eeb9]<br />
+/usr/lib/liblua5.1.so.0(luaL_error+0xc2)[0x7f31f9850072]<br />
+x-window-manager(signal_object_emit+0xbe)[0x43c2ae]<br />
+x-window-manager(client_manage+0x50b)[0x415ccb]<br />
+7f31fb582000-7f31fb583000 rw-p 00003000 08:05 5351                       /usr/lib/libxcb-icccm.so.1.0.0<br />
+7f31fb583000-7f31fb585000 r-xp 00000000 08:05 5365                       /usr/lib/libxcb-keysyms.so.1.0.0<br />
+7f31fb585000-7f31fb784000 ---p 00002000 08:05 5365                       /usr/lib/libxcb-keysyms.so.1.0.0<br />
+7f31fb784000-7f31fb785000 rw-p 00001000 08:05 5365                       /usr/lib/libxcb-keysyms.so.1.0.0<br />
+7f31fb785000-7f31fb788000 r-xp 00000000 08:05 35158                      /usr/lib/libxcb-aux.so.0.0.0<br />
+7f31fb788000-7f31fb987000 ---p 00003000 08:05 35158                      /usr/lib/libxcb-aux.so.0.0.0<br />
+7f31fb987000-7f31fb988000 rw-p 00002000 08:05 35158                      /usr/lib/libxcb-aux.so.0.0.0<br />
+7f31fb988000-7f31fb98a000 r-xp 00000000 08:05 5374                       /usr/lib/libxcb-shape.so.0.0.0 (deleted)<br />
+7f31fb98a000-7f31fbb8a000 ---p 00002000 08:05 5374                       /usr/lib/libxcb-shape.so.0.0.0 (deleted)<br />
+7f31fbb8a000-7f31fbb8b000 rw-p 00002000 08:05 5374                       /usr/lib/libxcb-shape.so.0.0.0 (deleted)<br />
+7f31fbb8b000-7f31fbb8d000 r-xp 00000000 08:05 5378                       /usr/lib/libxcb-xinerama.so.0.0.0.dpkg-new (deleted)<br />
+7f31fbb8d000-7f31fbd8c000 ---p 00002000 08:05 5378                       /usr/lib/libxcb-xinerama.so.0.0.0.dpkg-new (deleted)<br />
+7f31fbd8c000-7f31fbd8d000 rw-p 00001000 08:05 5378                       /usr/lib/libxcb-xinerama.so.0.0.0.dpkg-new (deleted)<br />
+7f31fbd8d000-7f31fbd8e000 r-xp 00000000 08:05 5382                       /usr/lib/libxcb-xtest.so.0.0.0 (deleted)<br />
+7f31fbd8e000-7f31fbf8e000 ---p 00001000 08:05 5382                       /usr/lib/libxcb-xtest.so.0.0.0 (deleted)<br />
+7f31fbf8e000-7f31fbf8f000 rw-p 00001000 08:05 5382                       /usr/lib/libxcb-xtest.so.0.0.0 (deleted)<br />
+7f31fbf8f000-7f31fbf98000 r-xp 00000000 08:05 5370                       /usr/lib/libxcb-randr.so.0.1.0 (deleted)<br />
+7f31fbf98000-7f31fc197000 ---p 00009000 08:05 5370                       /usr/lib/libxcb-randr.so.0.1.0 (deleted)<br />
+7f31fc197000-7f31fc198000 rw-p 00008000 08:05 5370                       /usr/lib/libxcb-randr.so.0.1.0 (deleted)<br />
+7f31fc198000-7f31fc25c000 r-xp 00000000 08:01 342                        /lib/libglib-2.0.so.0.2200.3<br />
+7f31fc25c000-7f31fc45b000 ---p 000c4000 08:01 342                        /lib/libglib-2.0.so.0.2200.3<br />
+7f31fc45b000-7f31fc45d000 rw-p 000c3000 08:01 342                        /lib/libglib-2.0.so.0.2200.3<br />
+7f31fc45d000-7f31fc460000 r-xp 00000000 08:05 2994                       /usr/lib/libgmodule-2.0.so.0.2200.3<br />
+7f31fc460000-7f31fc65f000 ---p 00003000 08:05 2994                       /usr/lib/libgmodule-2.0.so.0.2200.3<br />
+7f31fc65f000-7f31fc660000 rw-p 00002000 08:05 2994                       /usr/lib/libgmodule-2.0.so.0.2200.3<br />
+7f31fc660000-7f31fc6a3000 r-xp 00000000 08:05 6163                       /usr/lib/libgobject-2.0.so.0.2200.3<br />
+7f31fc6a3000-7f31fc8a3000 ---p 00043000 08:05 6163                       /usr/lib/libgobject-2.0.so.0.2200.3<br />
+7f31fc8a3000-7f31fc8a5000 rw-p 00043000 08:05 6163                       /usr/lib/libgobject-2.0.so.0.2200.3<br />
+7f31fc8a5000-7f31fc8ee000 r-xp 00000000 08:05 7047                       /usr/lib/libpango-1.0.so.0.2600.1<br />
+7f31fc8ee000-7f31fcaee000 ---p 00049000 08:05 7047                       /usr/lib/libpango-1.0.so.0.2600.1<br />
+7f31fcaee000-7f31fcaf1000 rw-p 00049000 08:05 7047                       /usr/lib/libpango-1.0.so.0.2600.1<br />
+7f31fcaf1000-7f31fcafc000 r-xp 00000000 08:05 7032                       /usr/lib/libpangocairo-1.0.so.0.2600.1<br />
+7f31fcafc000-7f31fccfc000 ---p 0000b000 08:05 7032                       /usr/lib/libpangocairo-1.0.so.0.2600.1<br />
+7f31fccfc000-7f31fccfd000 rw-p 0000b000 08:05 7032                       /usr/lib/libpangocairo-1.0.so.0.2600.1<br />
+7f31fccfd000-7f31fce32000 r-xp 00000000 08:05 19318                      /usr/lib/libX11.so.6.3.0<br />
+7f31fce32000-7f31fd032000 ---p 00135000 08:05 19318                      /usr/lib/libX11.so.6.3.0<br />
+7f31fd032000-7f31fd038000 rw-p 00135000 08:05 19318                      /usr/lib/libX11.so.6.3.0<br />
+7f31fd038000-7f31fd053000 r-xp 00000000 08:05 21909                      /usr/lib/libxcb.so.1.1.0 (deleted)<br />
+7f31fd053000-7f31fd253000 ---p 0001b000 08:05 21909                      /usr/lib/libxcb.so.1.1.0 (deleted)<br />
+7f31fd253000-7f31fd254000 rw-p 0001b000 08:05 21909                      /usr/lib/libxcb.so.1.1.0 (deleted)<br />
+7f31fd254000-7f31fd271000 r-xp 00000000 08:01 1301                       /lib/ld-2.10.2.so<br />
+7f31fd2f4000-7f31fd32c000 rw-p 00000000 00:00 0<br />
+7f31fd32c000-7f31fd37b000 r--p 00000000 08:05 22278                      /usr/share/fonts/truetype/ttf-dejavu/DejaVuSansMono.ttf<br />
+7f31fd37b000-7f31fd382000 r--s 00000000 08:05 18189                      /usr/lib/gconv/gconv-modules.cache<br />
+7f31fd382000-7f31fd41a000 r--p 00000000 08:05 22273                      /usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf<br />
+7f31fd41a000-7f31fd41e000 r--s 00000000 08:06 3230                       /var/cache/fontconfig/6eb3985aa4124903f6ff08ba781cd364-x86-64.cache-2.NEW (deleted)<br />
+7f31fd41e000-7f31fd44c000 r--s 00000000 08:06 2788                       /var/cache/fontconfig/365b55f210c0a22e9a19e35191240f32-x86-64.cache-2<br />
+7f31fd44c000-7f31fd461000 rw-p 00000000 00:00 0<br />
+7f31fd461000-7f31fd46a000 r--s 00000000 08:06 2369                       /var/cache/fontconfig/6d41288fd70b0be22e8c3a91e032eec0-x86-64.cache-2<br />
+7f31fd46a000-7f31fd46b000 r--s 00000000 08:06 4966                       /var/cache/fontconfig/4794a0821666d79190d59a36cb4f44b5-x86-64.cache-2<br />
+7f31fd46b000-7f31fd46d000 r--s 00000000 08:06 2343                       /var/cache/fontconfig/e13b20fdb08344e0e664864cc2ede53d-x86-64.cache-2<br />
+7f31fd46d000-7f31fd470000 rw-p 00000000 00:00 0<br />
+7f31fd470000-7f31fd471000 r--p 0001c000 08:01 1301                       /lib/ld-2.10.2.so<br />
+7f31fd471000-7f31fd472000 rw-p 0001d000 08:01 1301                       /lib/ld-2.10.2.so<br />
+7fffed5e4000-7fffed5f9000 rw-p 00000000 00:00 0                          [stack]<br />
+7fffed5ff000-7fffed600000 r-xp 00000000 00:00 0                          [vdso]<br />
+ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]<br />
+-----------------------------------------------------------------------------------------------------------------------------------------------<br />
+<br />
+Also I notice, that awesome&#039;s memory use grows continuously with uptime. After start it uses only 9-10MB, but for moments of crash it uses more than 30MB memory. May be this not connected with crash, but I suppose that such behavior isn&#039;t normal for WM program.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+						<del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=729&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Lua stack unbalanced | 100%"  class = "closedtasklink">FS#729 - Lua stack unbalanced</a>&#160;</del>				<br />
+		
+		<br class="DoNotPrint" />
+
+				<a class="DoNotPrint" href="https://awesomewm.org/bugs/index.php?do=depends&amp;task_id=701">View Dependency Graph</a>
+		<br />
+		<br />
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a><br />
+      Tuesday, 17 August 2010, 15:38 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Bug seems to be fixed thanks to
+<del>&#160;<a
+href="https://awesomewm.org/bugs/index.p
+hp?do=details&amp;task_id=729&amp;projec
+t=1&amp;opened=1&amp;status%5B0%5D="
+title="Fixed | Lua stack unbalanced |
+100%"  class =
+"closedtasklink">FS#729</a>&#160;</del>.
+Feel free to reopen if needed.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (11)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1682" id="comment1682"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1682">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Wednesday, 23 December 2009, 21:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I get this error regularly in 3.4.x:<br />
+<br />
+W: awesome: luaA_panic:679: unprotected error in call to Lua API (stack overflow (too much signal)), restarting awesome<br />
+<br />
+But I couldn&#039;t debug it properly. Thank you, Igor, for proper report.</div></div>
+
+  
+    <em>
+    <a name="comment1703" id="comment1703"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1703">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=433">Tobias (tobi)</a> -
+    Saturday, 02 January 2010, 18:51 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same here on FreeBSD 8.0-STABLE<br />
+<br />
+W: awesome: luaA_panic:679: unprotected error in call to Lua API (stack overflow (too much signal)), restarting awesome<br />
+<br />
+Couldn&#039;t reproduce it so far</div></div>
+
+  
+    <em>
+    <a name="comment1708" id="comment1708"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1708">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=425">Igor Rudchenko (igor1st)</a> -
+    Sunday, 03 January 2010, 08:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">To reproduce you need more uptime without restart. Signal stack in awesome 3.4 seems to grows continuosly with time - look on awesome&#039;s memory use.<br />
+<br />
+Downgrade awesome to 3.3 resolve this problem - memory use always no more than 10MB, no crash. Julien added in 3.4 signal system to replace hooks. And bug hides somewhere here.</div></div>
+
+  
+    <em>
+    <a name="comment1742" id="comment1742"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1742">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Tuesday, 09 February 2010, 10:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;ve got backtrace too, see it attached. Can&#039;t say it looks much like Igor&#039;s one though. Hope it helps.</div></div>
+
+      <div class="attachments">
+          <a title="awesome_backtrace.log" href="?getfile=284" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            awesome_backtrace.log
+                  </a>
+                  (2.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment1745" id="comment1745"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1745">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 10 February 2010, 22:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There were two commits which fixed some memory leaks on the lua stack. Those bugs could cause something like this. The leak happened on every focus change and every NET_WM_PROPERTIES change, so that would definitely sound like &quot;high uptime&quot;.<br />
+<br />
+I hope that this is fixed in git now and just close this for now, feel free to reopen if this still happens. (FYI, no release of awesome contains this fixes yet, wait for the next one)<br />
+<br /><a href="
+http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=becf3d514ad9404db10615a2aeb6cd826bf9a287">
+http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=becf3d514ad9404db10615a2aeb6cd826bf9a287</a><br /><a href="
+http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=49ee5cea0588ffce52ab8dfeedfc5ba94002708c">
+http://git.naquadah.org/?p=awesome.git;a=commitdiff;h=49ee5cea0588ffce52ab8dfeedfc5ba94002708c</a></div></div>
+
+  
+    <em>
+    <a name="comment1769" id="comment1769"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1769">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=425">Igor Rudchenko (igor1st)</a> -
+    Saturday, 20 February 2010, 22:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">awesome build from master becf3d51.<br />
+<br />
+Memory leaks wasn&#039;t fixed - RSS=36476 now after 9 days.<br />
+<br />
+Crash not repruduced for now, but windows layouts didn&#039;t handles by awesome already - window opens with native size and not respects layout for tag.<br />
+<br />
+So I think this bugs with lua stack isn&#039;t fully fixed.</div></div>
+
+  
+    <em>
+    <a name="comment1787" id="comment1787"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1787">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Thursday, 04 March 2010, 14:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Crash reproduced again on 3.4.4</div></div>
+
+  
+    <em>
+    <a name="comment1788" id="comment1788"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1788">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 04 March 2010, 14:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">What did you do? Why? :(<br />
+<br />
+So with high uptime, this does still happen? And it happens as soon as before?</div></div>
+
+  
+    <em>
+    <a name="comment1791" id="comment1791"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1791">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Sunday, 07 March 2010, 23:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There is no certain cause, so I cannot provide a testcase, sorry )-:E<br />
+<br />
+In general, all goes like in previous versions. Three or four times a day awesome just restarts (and loses all manual adjustments to (custom) rc.lua configuration )-:E<br />
+I cannot say this happens less frequently in 3.4.4 — may be, but I haven&#039;t noticed it.</div></div>
+
+  
+    <em>
+    <a name="comment1961" id="comment1961"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment1961">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=429">Nikolaj Sjujskij (krigstask)</a> -
+    Thursday, 13 May 2010, 12:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Restarted again, in 3.4.5 )-:E</div></div>
+
+  
+    <em>
+    <a name="comment2223" id="comment2223"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#comment2223">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 05 August 2010, 13:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Since <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=729&amp;project=1&amp;opened=1&amp;status%5B0%5D=" title="Fixed | Lua stack unbalanced | 100%"  class = "closedtasklink">FS#729</a>&#160;</del> seems to be fixed, is anyone still seeing this with a recent git version? (Something younger than two days)</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=701#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="701" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

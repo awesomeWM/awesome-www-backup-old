@@ -1,0 +1,23 @@
+xwininfo: Window id: 0xe0008d "Webcam in flash tutorial - Mozilla Firefox"
+
+  Root window id: 0x107 (the root window) (has no name)
+  Parent window id: 0x80024b (has no name)
+     2 children:
+     0xe00092 (has no name): ()  1278x1003+0+0  +1+20
+        1 child:
+        0xe000a6 (has no name): ()  1278x1003+0+0  +1+20
+           1 child:
+           0xe000d1 (has no name): ()  1278x906+0+97  +1+117
+              3 children:
+              0xe0136f (has no name): ()  1278x906+0+0  +1+117
+                 1 child:
+                 0xe01473 (has no name): ()  550x400+190+386  +191+503
+                    1 child:
+                    0xe01474 (has no name): ()  550x400+0+0  +191+503
+                       1 child:
+                       0xe01475 (has no name): ()  550x400+0+0  +191+503
+                          1 child:
+                          0xe01476 (has no name): ()  550x400+0+0  +191+503
+              0xe00827 (has no name): ()  1278x906+0+0  +1+117
+              0xe001f7 (has no name): ()  1278x906+0+0  +1+117
+     0xe0008e (has no name): ()  1x1+-1+-1  +0+19

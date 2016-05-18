@@ -1,0 +1,15 @@
+
+xrandr --output DVI-0 --right-of DisplayPort-0  --output DVI-1 --right-of DVI-0 &
+
+Eterm -O -f lightgreen --cmod-blue 28 --cmod-red 28 --cmod-green 64 &
+Eterm -O -f moccasin --cmod-blue 28 --cmod-red 128 --cmod-green 44 &
+Eterm -O -f khaki --cmod-blue 228 --cmod-red 68 --cmod-green 14 &
+Eterm -O -f "#90a040" --cmod-blue 42 --cmod-red 138 --cmod-green 48 &
+
+# moving clients works with this
+#exec xterm -bg black -fg lightsteelblue /usr/bin/awesome
+
+# and fails with this
+exec /usr/bin/awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
+
+#exec xterm -bg black -fg lightsteelblue

@@ -1,0 +1,125 @@
+
+-- TsT <tst2005@gmail.com> :
+-- This script is a new way to use the awesome object.
+--
+-- By default, the module is in compatibility mode.
+--
+-- Long term Goal
+-- ==============
+--
+-- Do not use variable in the global env.
+-- Put everything in local space (in modules and local variable)
+--
+-- Short term Goal
+-- ===============
+--
+-- move every C API objects from global env to this module
+-- 
+--
+-- How use it
+-- ==========
+--
+--   local capi = require("capi") -- load the module
+--   capi.compat(false) -- turn compatibility off
+--   -- or
+--   capi.compat(true)  -- restore compatibility
+--
+--
+-- See also http://lua-users.org/wiki/OptimisationTips
+
+local _M = {} -- the module
+_M._VERSION = "20120319"
+
+local print  = print -- for debug purpose
+
+local assert = assert
+local modutils = require("modutils") -- utils to hack the package system
+local modregister = assert(modutils.modregister)
+
+-- if keep_compat is true, the compatibility will be kept
+-- true: keep compatiblity by default
+local keep_compat = true
+
+-- See http://awesome.naquadah.org/doc/api/
+local submodules =
+{
+	"awesome",
+--	"awful",     -- not from C API
+--	"beautiful", -- not from C API
+	"button",
+	"client",
+	"dbus",
+	"image",
+	"key",
+	"keygrabber",
+	"mouse",
+	"mousegrabber",
+--	"naughty",   -- not from C API
+	"root",
+	"screen",
+	"selection",
+	"tag",
+	"timer",
+	"wibox",
+	"widget",
+
+	"hooks", -- old
+}
+
+local
+function _install()
+	for i, varname in ipairs(submodules) do
+		local obj = _G[varname]
+		if obj then
+			_M[varname] = obj
+
+			-- allow to get only one submodule with require("capi.SUBMODULE")
+			modregister("capi."..varname, obj)
+		else
+			print("capi: Warning: obj not found during install(): "..varname)
+		end
+	end
+end
+
+local
+function _compat(enable, force)
+	local _G = _G -- FIXME: is it usefull ?
+	for i, varname in ipairs(submodules) do
+		if enable then
+			if force or not _G[varname] then
+				_G[varname] = _M[varname] -- set the global object for compat
+			end
+		else
+			if force or _M[varname] == _G[varname] then
+				_G[varname] = nil -- remove the global object
+				-- modunregister(varname) -- also remove from the package system
+			end
+		end
+	end
+end
+
+_install()
+_compat(keep_compat, false)
+
+-- Exported functions
+_M.compat  = _compat
+
+--[[
+-- Should be usefull for massive import in lua5.2 :
+-- for i,mod in capi.all() do _ENV[mod] = capi[mod] end
+_M.all = function ()
+        local t = submodules
+        local function allnext(t, i)
+                i = i+1
+                local v = t[i]
+                if v ~= nil then
+                        return i,v
+                end
+                return nil
+        end
+        return allnext, t, 0
+end
+]]--
+
+
+return _M -- return the module

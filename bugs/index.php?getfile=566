@@ -1,0 +1,13 @@
+diff --git a/lib/wibox/drawable.lua.in b/lib/wibox/drawable.lua.in
+index 6728f4e..d10e4ef 100644
+--- a/lib/wibox/drawable.lua.in
++++ b/lib/wibox/drawable.lua.in
+@@ -226,7 +226,7 @@ function drawable.new(d, widget_arg)
+         end
+     end
+     drawables[ret.draw] = true
+-    d:connect_signal("property::surface", ret.draw)
++    d:connect_signal("property::surface", ret._do_redraw)
+ 
+     -- Set the default background
+     ret:set_bg(beautiful.bg_normal)

@@ -1,0 +1,8 @@
+-- Fix titlebar geometry for maximized apps
+c:add_signal("property::titlebar", function(c)
+    if c.maximized_vertical then
+        c:geometry({ y=screen[c.screen].workarea.y,
+            height=screen[c.screen].workarea.height
+        })
+    end
+end)

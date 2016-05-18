@@ -1,0 +1,76 @@
+#include <gtk/gtk.h>
+#include <gdk/gdk.h>
+
+static void
+window_size_request (GtkWidget *window, GtkRequisition *requisition, void *data)
+{
+
+	GtkRequisition window_requisition;
+
+	(void) requisition;
+	(void) data;
+
+	gtk_widget_get_child_requisition (window, &window_requisition);
+
+	printf("@ window_size_request(): request_size (before) = %d x %d\n",
+		window_requisition.width, window_requisition.height);
+	// [Showing/Hiding tabs bar] and [Change the vte font] won't run the following codes.
+	{
+		GtkRequisition window_requisition;
+
+		gtk_widget_get_child_requisition (window, &window_requisition);
+		printf("! The requested window (for %p) requisition is %d x %d\n",
+			window, window_requisition.width, window_requisition.height);
+		if ( window_requisition.width>0 && window_requisition.height>0 )
+		{
+			GtkRequisition current_window_requisition;
+			gtk_window_get_size(GTK_WINDOW(window),
+					    &current_window_requisition.width,
+					    &current_window_requisition.height);
+			printf("@ The current window size (for %p) is %d x %d, request size is %d x %d!!\n",
+				window,
+				current_window_requisition.width,
+				current_window_requisition.height,
+				window_requisition.width,
+				window_requisition.height);
+			if ((window_requisition.width != current_window_requisition.width) ||
+			    (window_requisition.height != current_window_requisition.height))
+{
+				printf("@ window_size_request(): Call gtk_window_resize() to resize to %d x %d!\n",
+					window_requisition.width, window_requisition.height);
+				gtk_window_resize(GTK_WINDOW(window),
+						  window_requisition.width,
+						  window_requisition.height);
+}
+			else
+				printf("Skip to call gtk_window_resize for %p ()!!\n", window);
+
+		}
+		else
+			puts("foo");
+	}
+	fflush(stdout);
+}
+
+int
+main (int argc, char *argv[])
+{
+	GtkWindow *window;
+	GdkGeometry geom;
+
+	geom.width_inc = 50;
+	geom.height_inc = 50;
+
+	gtk_init (&argc, &argv);
+	window = (void *) gtk_window_new (GTK_WINDOW_TOPLEVEL);
+
+	gtk_window_set_geometry_hints (window, NULL, &geom, GDK_HINT_RESIZE_INC);
+	gtk_widget_set_size_request (GTK_WIDGET (window), 10, 10);
+
+	g_signal_connect (window, "destroy", G_CALLBACK (gtk_main_quit), NULL);
+	g_signal_connect (window, "size_request", G_CALLBACK(window_size_request), NULL);
+
+	gtk_widget_show (GTK_WIDGET (window));
+	gtk_main ();
+	return 0;
+}

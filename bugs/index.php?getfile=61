@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <regex.h>
+
+
+// Search and Replace SubString
+char * srss (const char * source , const char * from , const char * to) {
+    char * result , *prev, *tmp , *begin;
+
+    int num=0 , ln_from = strlen(from) , ln_to = strlen(to);
+
+    for ( result = strstr(source,from) ; result!=NULL ; result=strstr(result,from) ) {
+        result+=ln_from;
+        num++;
+    }
+
+    result = (char*)malloc(strlen(source)+(ln_to-ln_from)*num+1);
+    if (result==NULL) return result;
+    strcpy(result,"");
+
+    begin = prev = strdup(source);
+    for ( tmp = strstr(prev,from) ; tmp!=NULL ; tmp = strstr(prev,from) ) {
+        tmp[0]='\0';
+        if (prev[0]!='\0') { strcat(result,prev); }
+        strcat(result,to);
+        tmp+=ln_from;
+        prev=tmp;
+    }
+    strcat(result,prev);
+    free(begin); // malloc by strdup
+
+    return result;
+}
+
+// Search and Replace SubString In Place
+void srssip (char **source , const char *from , const char *to) {
+    char *result;
+
+    result = srss(*source,from,to);
+    free(*source);
+    *source = result;
+
+}
+
+char * substring (char *str , int begin , int end) {
+    char *result;
+    int i;
+
+    if (begin==-1) {
+        return NULL;
+    }
+
+    result = (char*)malloc(end-begin+1);
+    for (i=begin ; i<end ; i++) {
+        result[i-begin]=str[i];
+    }
+    result[end-begin]='\0';
+    
+    return result;
+}
+
+int sed (char *regexstr, char *source, char **dest) {
+    regex_t regex;
+    regmatch_t match[10];
+    char *ss,*swap;
+    int i;
+
+    if (regcomp(&regex,regexstr,REG_EXTENDED)!=0) {
+        printf("Error in regular expression!\n");
+        return 1;
+    }
+
+    if (regexec(&regex,source,10,match,0)!=0) {
+        printf("Unknown format!\n");
+        return 1;
+    }    
+
+    swap=(char*)malloc(3);
+    for (i=1 ; i<10 ; i++) {
+        sprintf(swap,"$%d",i);
+        ss = substring(source,match[i].rm_so,match[i].rm_eo);
+        if (ss!=NULL) {
+            srssip(dest,swap,ss);
+            free(ss);
+        }
+    }
+
+    free(swap);
+    
+
+    return 0;
+}
+
+
+int main () {
+    char *dest;
+    int result;
+
+    dest = (char*)malloc(100);
+    strcpy(dest,"Current homepage: $1 --- Firefox version: $2");
+
+    result = sed("(.*) - Mozilla Firefox (.*)","FS#44 : Title rules - Mozilla Firefox 3 Beta 5",&dest); 
+    if (!result) {
+        printf("%s\n",dest);
+    }
+    return result;
+}

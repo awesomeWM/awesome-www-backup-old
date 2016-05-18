@@ -1,0 +1,1320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1069 : awesome &gt;= 3.5 does only recognize 1 screen with xinerama off</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1069&amp;project=0" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1070&amp;project=0" title="Unconfirmed | Squares in tag list cover tag numbers | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1066&amp;project=0" title="Unconfirmed | awfule/tooltip.lua html sanitizing | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity5">
+	 FS#1069 - awesome &gt;= 3.5 does only recognize 1 screen with xinerama off  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=769">John Doe (johndoe)</a>     	 - Sunday, 30 December 2012, 15:58 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a>	 - Thursday, 13 March 2014, 11:27 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Critical</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">3.5</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">9 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=975">David Sveningsson (ext)</a> (2014-05-12)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=765">Dmitry Kovalenko (ragnvald)</a> (2013-03-24)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=636">Siarhei Siamashka (ssvb)</a> (2013-03-09)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=839">Nick Caballero (nickcaballero)</a> (2013-02-26)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> (2013-01-17)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=552">Steve Wattam (ExtremeTomato)</a> (2013-01-12)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> (2013-01-04)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=769">John Doe (johndoe)</a> (2012-12-30)</li>
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=770">Till Matthiesen (entropy)</a> (2012-12-30)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Using ATI graphics card and configured dual head setup with amdcccle with *xinerama disabled*<br />
+Awesome 3.4 everything is all fine, both Monitors show up awesome.<br />
+<br />
+Since 3.5 (and current git) there is always 1 Monitor detected, the other one stays black and gets a black cross as mouse cursor.<br />
+With xinerama on everything works (but i cant use xinerama for several reasons).<br />
+<br />
+screen.count() is always 1. (default configuration file)</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (47)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3287" id="comment3287"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3287">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=769">John Doe (johndoe)</a> -
+    Sunday, 30 December 2012, 16:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Sorry for the missing description. Didnt know how to report the bug and clicked too fast ;) I cont edit this??<br />
+<br />
+Using ATI graphics card and configured dual head setup with amdcccle with *xinerama disabled*<br />
+Awesome 3.4 everything is all fine, both Monitors show up awesome.<br />
+<br />
+Since 3.5 (and current git) there is always 1 Monitor detected, the other one stays black and gets a black cross as mouse cursor.<br />
+With xinerama on everything works (but i cant use xinerama for several reasons).<br />
+<br />
+screen.count() is always 1. (default configuration file)</div></div>
+
+  
+    <em>
+    <a name="comment3288" id="comment3288"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3288">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=770">Till Matthiesen (entropy)</a> -
+    Sunday, 30 December 2012, 19:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">3.5 just hit Arch stable and I can confirm this <br />
+behaviour running two screens in Zaphod mode.<br />
+<br />
+Thank you for your excellent work!<br />
+<br />
+[AMD Radeon HD 4850, FOSS driver]<br /></div></div>
+
+  
+    <em>
+    <a name="comment3289" id="comment3289"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3289">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 30 December 2012, 23:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This was not by accident. This was me removing something which I can&#039;t test, which was buggy and which complicated the code a lot (now there is just a single pixel at coordinates 0x0 instead of one per screen).<br />
+<br />
+The best that I can offer you is &quot;run two instances of awesome&quot;: DISPLAY=0.0 awesome &amp; DISPLAY=:0.1 awesome<br />
+<br />
+Anyway, why do you guys disable xinerama? If the reason is &quot;crappy (closed-source?) graphics driver which has less bugs with zaphod mode&quot;, then I am sorry, but I will have to ignore you. If the reason is &quot;crappy open-source graphic driver&quot;, then I am not really convinced either.</div></div>
+
+  
+    <em>
+    <a name="comment3290" id="comment3290"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3290">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=770">Till Matthiesen (entropy)</a> -
+    Monday, 31 December 2012, 01:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hi Uli,<br />
+<br />
+&#039;one&#039; reason simply is that there are a still certain graphics adapters <br />
+which do not support framebuffer dimensions larger than 2048 pixels.<br />
+<br /><a href="
+https://bugs.freedesktop.org/show_bug.cgi?id=16226">
+https://bugs.freedesktop.org/show_bug.cgi?id=16226</a><br />
+<br />
+I have a similar rig. Since it is also a notebook,<br />
+replacing just the graphics module is next to impossible.<br />
+<br />
+Guten Rutsch!</div></div>
+
+  
+    <em>
+    <a name="comment3291" id="comment3291"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3291">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=770">Till Matthiesen (entropy)</a> -
+    Monday, 31 December 2012, 02:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, the &#039;reason&#039; I gave is invalid and only applies to the maximum texture dimensions.<br /></div></div>
+
+  
+    <em>
+    <a name="comment3292" id="comment3292"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3292">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=769">John Doe (johndoe)</a> -
+    Monday, 31 December 2012, 17:45 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">well:<br />
+- i got a small monitor at far right of my desk and a big widescreen at the far left end<br />
+- fullscreen doesnt work for several applications with this setup. i dont want the apps to cross the border at any time.<br />
+- awesome scews everything up when starting 2 instances: I get graphics bugs (giant naughty notifications flickering one whole screen), keyboard does not work any more.<br />
+<br />
+Its completely independent from any graphics drivers. I tested fglrx, ati, nvidia and nouveau (on 2 machines ;) )<br />
+IMHO: Requiring xinerama for awesome is a design flaw. With this behavior I cant use awesome any more after so many years... :-( I dont have the time to maintain a private fork ... :-/</div></div>
+
+  
+    <em>
+    <a name="comment3303" id="comment3303"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3303">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=769">John Doe (johndoe)</a> -
+    Wednesday, 02 January 2013, 02:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh its in the queue for 3.5.1?! Thank you so much and happy new year! ;)</div></div>
+
+  
+    <em>
+    <a name="comment3312" id="comment3312"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3312">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Friday, 04 January 2013, 01:41 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Zaphod mode is the *only* way to have multiple displays across multiple GPUs without breaking things like direct rendering. It&#039;s not just about &quot;Crappy graphics drivers&quot; <br />
+I have 4 displays hooked up with two video cards using the open source radeon drivers. With xrandr, two heads are totally useless.<br />
+<br />
+Awesome 3.4 was one of the few window managers that actually handled this in a non-stupid way... I hope this gets fixed.</div></div>
+
+  
+    <em>
+    <a name="comment3315" id="comment3315"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3315">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 January 2013, 09:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">What&#039;s the problem with running several awesome instances?</div></div>
+
+  
+    <em>
+    <a name="comment3316" id="comment3316"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3316">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 January 2013, 09:58 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Wow, Xephyr can do zaphod mode: Xephyr -screen 800x600 -screen 800x600 :1<br />
+<br />
+So far I found:<br />
+<br />
+mouse.screen is (obviously) nil if the mouse is on another monitor. This causes an error e.g. in the manage signal in awful.tag (it does c.screen = capi.mouse.screen).<br />
+<br />
+Focus handling goes foobar, because the two instances are forced to share a single keyboard focus and both try to set it where they want.<br />
+<br />
+Switching tags via mouse wheel on the taglist fails, no idea yet why.<br />
+<br />
+But in general, this does work fine. Opening an urxvt instance on each screen works here.</div></div>
+
+  
+    <em>
+    <a name="comment3317" id="comment3317"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3317">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Friday, 04 January 2013, 12:53 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I just switched back to 3.5 to test some of this on the real X server. Things like mod4+enter to open a terminal always show up on display 0:0 no matter where the mouse cursor is. Also, configuration becomes a *pain* since having different widgets/wallpaper/etc on different screens means maintaining 4 (in my case) different rc.lua files. I suppose I could split everything up into global and screen-specific pieces and use require(), but that&#039;s diverging even more from the default rc.lua and will make future updates a headache. :(<br />
+<br />
+I&#039;m getting the same nil error for the mouse as Uli whenever something runs off screen :0, but my scroll wheel works fine on all 4 tag lists.</div></div>
+
+  
+    <em>
+    <a name="comment3318" id="comment3318"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3318">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 January 2013, 13:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">There might be some bug, indeed, there&#039;s no reason that things get launched on 0.0. It&#039;s likely that the screen number is not set correctly by the program launcher that can be fixed.<br />
+<br />
+I don&#039;t think either you&#039;d have to maintain different configuration file, there should be a way to get the X screen number from awesome directly. That might not be exported right now, but this can be easily added.</div></div>
+
+  
+    <em>
+    <a name="comment3321" id="comment3321"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3321">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Friday, 04 January 2013, 14:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Added? This is a feature that existed in awesome 3.4 and worked perfectly. It&#039;s even listed on the main website under features: &quot;Real multihead support (XRandR, Xinerama or Zaphod mode) with per screen desktops (tags);&quot; <br />
+<br />
+:)<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment3322" id="comment3322"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3322">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 04 January 2013, 17:02 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ignore my tag problem, it was a stale rc.lua which only created a single tag.<br />
+<br />
+For the &quot;terminals always open on screen :0&quot;-problem: I guess this is a keyboard focus problem, too. The keyboard focus decides which awesome instance gets to handle the keypress.<br />
+<br />
+<br />
+So summary is: In theory this might work, but it will never work nicely. Sounds like we need zaphod-fun again. :-(</div></div>
+
+  
+    <em>
+    <a name="comment3323" id="comment3323"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3323">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Friday, 04 January 2013, 17:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">This could be fixed by checking the mouse position. This problem is only likely to happen a screen is empty, because the focus policy is give focus back to the root window on window deletion.<br />
+<br />
+So by checking ultimately where the mouse is if the focus in on the root window, one can check on which screen the user wants its window to appears.</div></div>
+
+  
+    <em>
+    <a name="comment3325" id="comment3325"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3325">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=535">Paul Ignatenko (ignatp)</a> -
+    Saturday, 05 January 2013, 06:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m currently running on Catalyst 11.12 -- I have a 6950 with all 3 monitors firing in 3.5 is can I see some configs?</div></div>
+
+  
+    <em>
+    <a name="comment3326" id="comment3326"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3326">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=535">Paul Ignatenko (ignatp)</a> -
+    Saturday, 05 January 2013, 06:43 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">My example &quot;working&quot; xorg.conf on Arch.<br />
+<br /><a href="
+http://pastebin.com/Y6BjxeWW">
+http://pastebin.com/Y6BjxeWW</a><br /></div></div>
+
+  
+    <em>
+    <a name="comment3374" id="comment3374"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3374">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> -
+    Friday, 18 January 2013, 12:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">After playing around on Awesome 3.5 with Xinerama enabled for 2 weeks I downgraded to 3.4 without Xinerama.<br />
+<br />
+Xinerama is both buggy and slow, not to say GL and compositing support. <br />
+It was so slow that when I type code in Eclipse I can see my characters jumped into the screen at a rate less than 1 char per second. It is pain to scroll the editor as well as browser. I just cannot concentrate on working any more.<br />
+<br />
+I hope the multi-screen support back.</div></div>
+
+  
+    <em>
+    <a name="comment3487" id="comment3487"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3487">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=845">Romain D. (Artefact2)</a> -
+    Saturday, 09 March 2013, 21:17 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same problem is also happening for me. I have to use zaphod mode because I have two different cards and I want to use three screens each with hardware acceleration.<br />
+<br />
+I tried running multiple awesome instances (one per screen) in my ~/.xinitrc, and it somewhat works, but the keyboard focus dosen&#039;t properly transfer between screens. It&#039;s kinda hard to explain.</div></div>
+
+  
+    <em>
+    <a name="comment3551" id="comment3551"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3551">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=851">John Conti (jconti)</a> -
+    Monday, 25 March 2013, 23:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Me too. 3.4 works fine, but dual head on 3.5 only gets me a single functional screen.  I like the changes though.  In particular I would like screen switching to get back to working.  Such a nice wm!<br />
+<br />
+,John<br /></div></div>
+
+  
+    <em>
+    <a name="comment3553" id="comment3553"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3553">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 27 March 2013, 18:56 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So known issues: Input focus needs to be handled better, keyboard combinations are always handled by the first awesome instance, anything else? (I cannot reproduce that last problem, spawning terminals works as expected)<br />
+<br />
+I wonder how usable it would be to do &quot;the awesome instance for the screen that contains the mouse pointer always win&quot;. Other instances would not try to mess with the input focus and would ungrab all global keys. Thoughts?<br />
+<br />
+Attached is a patch which implements this for focus handling. How much does this patch help?</div></div>
+
+      <div class="attachments">
+          <a title="focus_hack.patch" href="?getfile=614" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/x-diff; charset=us-ascii" />
+            &nbsp;&nbsp;
+            focus_hack.patch
+                  </a>
+                  (1.6 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3762" id="comment3762"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3762">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=925">Joel Crisp (cydergoth)</a> -
+    Friday, 29 November 2013, 00:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Is it possible to get one instance of Awesome running across :0.1, :0.2 &amp; :0.3? I would prefer that to the three separate instances I and other people are reporting we currently use, so that I don&#039;t have 3 copies of the widgets and I can transfer windows smoothly between the three screens. Xinemrama doesn&#039;t work for me at all, the first monitor is almost good but the other two are just a visual mess. The configuration works on my laptop really well (Intel HDxxxx with LCD and LDVS with xrandr), and I love using Awesome on that. <br />
+<br />
+Other problems I&#039;m seeing with my ZaphodHeads (DVI-1 on HD4770, DP-1 on HD7970, DVI-2 on HD4770 all with the FOSS radeon driver) <br />
+<br />
+* Odd borders around the &quot;maximized&quot; xterm windows on the DVI monitors even tho&#039; the awesome taskbar extends to the correct edge of the screen<br />
+* The focus issue other people are mentioning. For me, if I click the xterm to focus nothing happens, if I click the window title bar to hide and expose the window then the xterm gets focus. <br />
+* In my configuration xrandr sees the 3 screens as three individual screens (only one per monitor) and can&#039;t control the layout at all, but my Xorg.conf (attached) seems to do the layout properly. <br />
+* This is the lua error: W: awesome: luaA_dofunction:78: error while running function stack traceback:         [C]: ?         /usr/share/awesome/lib/awful/tag.lua:565: in function &lt;/usr/share/awesome/lib/awful/tag.lua:554&gt; error: /usr/share/awesome/lib/awful/tag.lua:565: bad argument #-1 to &#039;?&#039; (number expected, got nil)<br />
+<br />
+Copy+paste/highlight+paste seems to work fine across all the screens<br />
+<br />
+Thanks!</div></div>
+
+      <div class="attachments">
+          <a title="radeon.conf" href="?getfile=655" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain; charset=us-ascii" />
+            &nbsp;&nbsp;
+            radeon.conf
+                  </a>
+                  (1.3 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment3950" id="comment3950"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3950">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=925">Joel Crisp (cydergoth)</a> -
+    Thursday, 27 March 2014, 16:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Would it be possible to get a status update or version ETA on this fix? Awesome is pretty much useless for my purposes without proper handling for multiple monitors. Thanks!</div></div>
+
+  
+    <em>
+    <a name="comment3951" id="comment3951"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3951">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 27 March 2014, 16:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Status: Doesn&#039;t work<br />
+ETA: When someone shows up and does the work<br />
+<br />
+Also, please don&#039;t claim that awesome doesn&#039;t handle multiple monitors. It just doesn&#039;t handle the multi-monitor hack that is older than I am and that no one in their right mind would want to use.<br />
+AFAIK the only reason people are forced to use this is limitions in the X server (and perhaps some video hardware). Things would be so much better if Xinerama would just work everywhere...</div></div>
+
+  
+    <em>
+    <a name="comment3952" id="comment3952"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3952">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=925">Joel Crisp (cydergoth)</a> -
+    Thursday, 27 March 2014, 16:25 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Thanks for the update. Unfortunately as various other people and I have pointed out, Xinerama doesn&#039;t work either. ZaphodHeads is really the only option I have. This used to work in 3.4, so I regard it as a regression. How tricky would it be to put the 3.4 hack back in?</div></div>
+
+  
+    <em>
+    <a name="comment3953" id="comment3953"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3953">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 27 March 2014, 17:19 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Most of that &quot;make the C code less ugly&quot; happened in August 2010 (wow, it&#039;s been 3.5 years). A random (not-complete) set of commits that are part of this is the following:<br />
+<br />
+$ git diff --stat 32d9a5b2ab8ab81241b2a0a1b4dffceca4212332^..28de7741cd96f603613a09e14dd7b8707dcda7dd | tail -n 1<br />
+ 34 files changed, 351 insertions(+), 631 deletions(-)<br />
+<br />
+So lots of complexity gone away.<br />
+<br />
+Also, that code had some severe stacking order bug which no one noticed for years. So since this was basically unmaintained (I do use Xinerama), I didn&#039;t see much point in keeping it.</div></div>
+
+  
+    <em>
+    <a name="comment3976" id="comment3976"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3976">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 02 April 2014, 21:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; How tricky would it be to put the 3.4 hack back in?<br />
+<br />
+Meh, this question got me thinking. So far it&#039;s been three days of work and:  36 files changed, 608 insertions(+), 359 deletions(-)  (This only includes a trivial lua change to fix the systray widget, everything else changes C code)<br />
+The branch so far only broke two APIs and a couple more API breaks will be needed (I can already hear people crying. Not my fault, the users wanted it! :-]).<br />
+<br />
+Things &quot;mostly&quot; work. Currently, only the primary screen gets a background set, has tags, set (most) EWMH properties on its root window and all started process appear on it. &quot;Most&quot; other things work already. Oh and we are losing all clients which aren&#039;t on the primary screen across restarts / don&#039;t manage clients which were started before awesome started.<br />
+<br />
+How many people are there who<br />
+(1) read this bug report / receive mail notifications for it and<br />
+(2) could build awesome from some obscure git branch which I would still have to publish and<br />
+(3) actually want to test this mess?</div></div>
+
+  
+    <em>
+    <a name="comment3977" id="comment3977"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3977">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Wednesday, 02 April 2014, 21:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I get e-mail notifications for this and have a box with 3 Zaphod displays that I&#039;ve kept on Awesome 3.4 just to be able to use it without major difficulty. <br />
+<br />
+Probably wouldn&#039;t be too big of a hassle for me to build from git to give it a test run.</div></div>
+
+  
+    <em>
+    <a name="comment3987" id="comment3987"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment3987">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=959">David Olsen (lude)</a> -
+    Saturday, 05 April 2014, 11:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I&#039;m also bitten by this bug and willing to test.</div></div>
+
+  
+    <em>
+    <a name="comment4028" id="comment4028"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4028">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> -
+    Wednesday, 30 April 2014, 08:46 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I am checking on this thread and willing to test on my 4 heads setup.<br />
+I am using the 3.4 version for more than 1 year.<br />
+<br />
+I have just checkout the git repo (by using the awesome-git package from AUR of archlinux).<br />
+I can start 1 instance of awesome fine. <br />
+After I run &quot;DISPLAY=:0.1 awesome &amp;&quot;, the second awesome instance showed up and took all my inputs.<br />
+The input events never send to the first instance of awesome. Therefore it is still not usable.<br />
+<br />
+Do I need to checkout some other branch?</div></div>
+
+  
+    <em>
+    <a name="comment4030" id="comment4030"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4030">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 30 April 2014, 08:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yes, some other branch. And no, it should work without starting two instances.<br />
+<br />
+Here is the (main part of) the mail that I sent to Abort Retry Fail and David Olsen. One of them wrote back and promised to test on monday and then vanished, the other one never replied at all. Yay... Somehow I lost interest after this and I won&#039;t be having much time to look into this any time soon anyway (plus, my laptop&#039;s power supply unit broke and thus currently I am truely unable to work on this anyway).<br />
+<br />
+<br />
+<br />
+Expected issues are a ton of deprecation warnings because I only did the most<br />
+basic changes to the default config and the lua libraries to get things running.<br />
+E.g. tooltips will always appear on the primary screen and lots of other things<br />
+will, too (and they will generate a deprecation warning while doing so). But<br />
+everything that doesn&#039;t generate a deprecation warning should work fine.<br />
+Hopefully. Did I already mention, that I basically didn&#039;t test this code at all?<br />
+<br />
+If you don&#039;t have a heavily customized config (upgrading from 3.4 to 3.5 /<br />
+newer-than-latest-git can be a pain) and I didn&#039;t mess up too badly, it would be<br />
+nice to hear that you are actually using this newer awesome.<br />
+<br />
+Instructions for building this code (yes, I did actually test this, but that<br />
+doesn&#039;t guarantee much and yes, I am assuming that you have the needed build<br />
+dependencies installed):<br />
+<br />
+# Create a directory where we can install awesome to without root. This makes<br />
+# sure that you can clean up again with rm -rf /usr/local/awesome<br />
+sudo mkdir /usr/local/awesome<br />
+sudo chown $USER /usr/local/awesome<br />
+# Get the source code<br />
+git clone<a href=" git://git.naquadah.org/awesome.git"> git://git.naquadah.org/awesome.git</a><br />
+cd awesome<br />
+git checkout origin/zaphod-mode-support<br />
+# Build and install it<br />
+make install CMAKE_ARGS=&quot;-DCMAKE_INSTALL_PREFIX=/usr/local/awesome&quot;<br />
+# Enjoy! Start awesome with the default config.<br />
+/usr/local/awesome/bin/awesome<br />
+<br />
+If I actually fix some of your complaints and you want to update this awesome<br />
+copy: cd awesome &amp;&amp; git pull &amp;&amp; git checkout origin/zaphod-mode-support &amp;&amp; make<br />
+install CMAKE_ARGS=&quot;-DCMAKE_INSTALL_PREFIX=/usr/local/awesome&quot;<br />
+<br />
+And to answer the &quot;how tricky would it be?&quot;-question that someone else asked,<br />
+right now we are at three days of working on this and:<br />
+$ git diff --stat master..zaphod-mode-support | tail -n 1<br />
+ 50 files changed, 878 insertions(+), 510 deletions(-)<br />
+<br />
+P.S.: Update that wasn&#039;t part of the mail and that I am just including for the bug tracker:<br />
+Now it&#039;s:  55 files changed, 921 insertions(+), 582 deletions(-)</div></div>
+
+  
+    <em>
+    <a name="comment4034" id="comment4034"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4034">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Wednesday, 30 April 2014, 14:32 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Odd, I never got that e-mail, but i did get the ones from this bug report. <br />
+<br />
+I&#039;ll see if i can get around to testing that some time this week. Thanks for trying to fix it, Uli. :)</div></div>
+
+  
+    <em>
+    <a name="comment4035" id="comment4035"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4035">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Thursday, 01 May 2014, 00:34 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, it runs, and lights up on all 3 displays, but there&#039;s still definitely focus issues. If I do Mod4+Enter to get a terminal, it always shows up on the upper-left most mouse (:0.2 on my config), likewise if I try to start something with Mod4+R. The Run: prompt appears on the screen with the mouse cursor, but whatever program I start ends up on :0.2 again. <br />
+<br />
+Here&#039;s a screenshot taken with scrot -m<a href=" http://i.imgur.com/A5Y4tVW.png"> http://i.imgur.com/A5Y4tVW.png</a><br />
+<br />
+Note that the screens are in the wrong order because scrot just jams them together left to right like this:<br />
+[:0.0][:0.1][:0.2]<br />
+<br />
+They&#039;re actually laid out like this on my box:<br />
+[:0.2]<br />
+[:0.1][:0.0]<br />
+<br />
+When specifying DISPLAY=:0.0 on the command line, I can get an xterm or other things to appear on monitors other than :0.2, but if you try and Mod4+click to move or resize, the cursor warps back to :0.2 and where you can drag the window is limited by the size and shape of that screen. Various tiling modes work correctly though :)</div></div>
+
+  
+    <em>
+    <a name="comment4036" id="comment4036"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4036">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Thursday, 01 May 2014, 00:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I forgot to mention, this was all using the default rc.lua that came with the git code.</div></div>
+
+  
+    <em>
+    <a name="comment4037" id="comment4037"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4037">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 01 May 2014, 10:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; If I do Mod4+Enter to get a terminal, it always shows up on the upper-left most mouse (:0.2 on my config), likewise if I try to start something with Mod4+R.<br />
+<br />
+Should be fixed with:<br />
+<br />
+commit 64d22d7e39916ef9ee976cd5d10ff52ebb967f65<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Thu May 1 12:08:29 2014 +0200<br />
+<br />
+    awful.util.spawn*: Default to the mouse&#039;s screen again<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+<br />
+&gt; The Run: prompt appears on the screen with the mouse cursor, but whatever program I start ends up on :0.2 again. <br />
+<br />
+I can&#039;t find any code in 3.4 that did something special for the &quot;Run:&quot; prompt. So, due to the above commit, this should now use the mouse&#039;s screen again, too.</div></div>
+
+  
+    <em>
+    <a name="comment4039" id="comment4039"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4039">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Saturday, 03 May 2014, 00:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Yep, that fixed it. Starting programs with key binds and from the Run: prompt works as 3.4 did. <br />
+<br />
+There&#039;s still that issue with the mouse cursor jumping to screen :0.2 and limiting movement to that screen&#039;s size even when you try to move (Mod4+click) or resize (Mod4+rightclick) a window on one of the other screens.</div></div>
+
+  
+    <em>
+    <a name="comment4040" id="comment4040"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4040">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 03 May 2014, 09:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Whoops, sorry. I missed that one.<br />
+<br />
+However, I cannot really reproduce such a behavior here. However, what I did find is the following which might very well cause the bug you are seeing, but I am not sure. Tell me if this didn&#039;t help.<br />
+<br />
+commit f13c6b7e69a045280ad881637597a942c912d060<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Sat May 3 11:12:49 2014 +0200<br />
+<br />
+    mouse.coords(): Correctly handle calls withouts &quot;protocol_screen&quot;<br />
+    <br />
+    Signed-off-by: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+<br />
+(Urgh, why do I always find spelling errors after I push commits, not before?)</div></div>
+
+  
+    <em>
+    <a name="comment4042" id="comment4042"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4042">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Saturday, 03 May 2014, 19:22 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That one didn&#039;t fix it. :/</div></div>
+
+  
+    <em>
+    <a name="comment4045" id="comment4045"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4045">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 03 May 2014, 21:36 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">So... uhm... Is appending this to the config enough to reproduce the problem?<br />
+<br />
+local t = timer({timeout = 3})<br />
+t:connect_signal(&quot;timeout&quot;, function() mouse.coords({ x = 42, y = 42 }) end)<br />
+t:start()<br />
+<br />
+This should warp the mouse pointer to position 42x42 on the screen that is already on. So if you move the mouse to some other screen in this time, it should be warped to 42x42 on that screen.<br />
+<br />
+The idea here is to figure out if I should stare more at the C code or the lua code.<br />
+(BTW I am testing this in Xephyr, so mouse warping doesn&#039;t work here at)</div></div>
+
+  
+    <em>
+    <a name="comment4046" id="comment4046"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4046">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Sunday, 04 May 2014, 11:55 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">When i add that to rc.lua, it warps the mouse to that point on the same screen as it was when it started up. <br />
+<br />
+Likewise, if i just run mouse.coords{x=42,y=42} at the Mod4+x Lua prompt.</div></div>
+
+  
+    <em>
+    <a name="comment4047" id="comment4047"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4047">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Sunday, 04 May 2014, 12:06 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh here&#039;s a weird one... If I do Ctrl+Mod4+j/k it cycles focus between screens, but it also moves the mouse cursor around within the screen it&#039;s already on. It seems to jump a different direction depending on which screen its on.</div></div>
+
+  
+    <em>
+    <a name="comment4053" id="comment4053"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4053">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Sunday, 04 May 2014, 19:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; When i add that to rc.lua, it warps the mouse to that point on the same screen as it was when it started up.<br />
+<br />
+Meh, weird. Dunno. I added some &quot;test if things work correctly&quot;-printf to the C code here and I (almost) get the expected result. (Awesome was handling protocol screens in the reverse order, so :0.0 was actually last in its list of protocol screens and e.g. :0.3 was first (if you have four protocol screens))<br />
+<br />
+&gt; Oh here&#039;s a weird one... If I do Ctrl+Mod4+j/k it cycles focus between screens, but it also moves the mouse cursor around within the screen it&#039;s already on. It seems to jump a different direction depending on which screen its on.<br />
+<br />
+I can help with that one:<br />
+<br />
+commit a01761d983482160aa21e011d6e95bf2a1006969<br />
+Author: Uli Schlachter &lt;<a href="mailto:psychon@znc.in">psychon@znc.in</a>&gt;<br />
+Date:   Sun May 4 21:07:23 2014 +0200<br />
+<br />
+    awful.screen.focus: Support protocol screens</div></div>
+
+  
+    <em>
+    <a name="comment4059" id="comment4059"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4059">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Wednesday, 07 May 2014, 23:35 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Ok, with that patch it fixes Ctrl+Mod4+j/k, and now the mouse gets stuck on :0.0 when moving and resizing, but that seems to be the expected result. :)<br />
+<br /></div></div>
+
+  
+    <em>
+    <a name="comment4064" id="comment4064"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4064">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> -
+    Friday, 23 May 2014, 02:49 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I have checked the latest version of zaphod-mode-support, and it worked great!<br />
+Thank you, Uli Schlachter. <br />
+<br />
+I have not test for long time, but currently it meets all my needs.<br />
+<br />
+I will start to customize the new rc.lua file.<br />
+<br />
+Thank you again</div></div>
+
+  
+    <em>
+    <a name="comment4065" id="comment4065"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4065">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> -
+    Friday, 23 May 2014, 03:12 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Some thing I found strange is that, when dragging a window by mouse (both left and right button), the mouse pointer jumps to the screen next to the current screen.<br />
+Therefore the dragging is not working properly.</div></div>
+
+  
+    <em>
+    <a name="comment4066" id="comment4066"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4066">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=782">Abort Retry Fail (abortretryfail)</a> -
+    Friday, 23 May 2014, 12:00 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Use it for a few days and keep an eye on system memory usage. I noticed earlier this week that this code was making X leak memory. It used a combined total of about 15GB RAM and swap before i killed X.</div></div>
+
+  
+    <em>
+    <a name="comment4068" id="comment4068"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#comment4068">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=797">Jiachen Yang (farseerfc)</a> -
+    Monday, 26 May 2014, 01:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Same memory leakage here, I can&#039;t login back to my awesome session after having it standby for a weekend (with slock locking for more than 50 hours).<br />
+Another issue, the systray only work for the primary screen. There is no icons on the other screens.<br />
+And if I use the default rc.lua with floating layout being the default layout, I noticed the slow performance after restart the awesome. <br />
+Switching to other layout fixed the performance issue, and if I use another default layout there is no such performance problem.<br />
+Don&#039;t know how to track down these problems.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1069#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1069" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

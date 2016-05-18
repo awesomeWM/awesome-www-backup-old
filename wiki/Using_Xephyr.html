@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Using Xephyr - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Using_Xephyr&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Using_Xephyr&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Using_Xephyr" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/w/skins/MonoBook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/w/skins/MonoBook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Using_Xephyr","wgTitle":"Using Xephyr","wgCurRevisionId":6538,"wgRevisionId":6538,"wgArticleId":284,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Using_Xephyr","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Using_Xephyr skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Using Xephyr</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><strong class="selflink">English</strong></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+&#160;&#8226;&#160;<span lang="ru"><a href="/wiki/Using_Xephyr/ru" title="Using Xephyr/ru">русский</a></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p>Here's a brief howto on running nested X servers (X session inside client window of another X session) using Xephyr. This comes handy when testing things without disturbing your normal awesome desktop.
+</p><p>I prefer to run Xephyr and awesome in terminals of their own to see real-time stdout/stderr output.
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Get_Xephyr"><span class="tocnumber">1</span> <span class="toctext">Get Xephyr</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Archlinux"><span class="tocnumber">1.1</span> <span class="toctext">Archlinux</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Gentoo"><span class="tocnumber">1.2</span> <span class="toctext">Gentoo</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Debian.2FUbuntu"><span class="tocnumber">1.3</span> <span class="toctext">Debian/Ubuntu</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Fedora"><span class="tocnumber">1.4</span> <span class="toctext">Fedora</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Run_Xephyr"><span class="tocnumber">2</span> <span class="toctext">Run Xephyr</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="#Run_awesome_in_Xephyr"><span class="tocnumber">3</span> <span class="toctext">Run awesome in Xephyr</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="#More"><span class="tocnumber">4</span> <span class="toctext">More</span></a>
+<ul>
+<li class="toclevel-2 tocsection-9"><a href="#Having_Xephyr_Grab_and_Release_Input"><span class="tocnumber">4.1</span> <span class="toctext">Having Xephyr Grab and Release Input</span></a></li>
+<li class="toclevel-2 tocsection-10"><a href="#Remotely_restart_awesome"><span class="tocnumber">4.2</span> <span class="toctext">Remotely restart awesome</span></a></li>
+<li class="toclevel-2 tocsection-11"><a href="#Script_I_use_to_debug_rc.lua"><span class="tocnumber">4.3</span> <span class="toctext">Script I use to debug rc.lua</span></a></li>
+<li class="toclevel-2 tocsection-12"><a href="#Another_script"><span class="tocnumber">4.4</span> <span class="toctext">Another script</span></a></li>
+<li class="toclevel-2 tocsection-13"><a href="#Yet_another_script"><span class="tocnumber">4.5</span> <span class="toctext">Yet another script</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id="Get_Xephyr">Get Xephyr</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=1" title="Edit section: Get Xephyr">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Archlinux">Archlinux</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=2" title="Edit section: Archlinux">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><i>/usr/bin/Xephyr</i> is provided by <i>xorg-server-xephyr</i> package. Install it using:
+</p>
+<pre>pacman -S xorg-server-xephyr
+</pre>
+<h3><span class="mw-headline" id="Gentoo">Gentoo</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=3" title="Edit section: Gentoo">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><i>/usr/bin/Xephyr</i> is provided by the ebuild x11-base/xorg-server. The USE-Flag <i>kdrive</i> has to be enabled for Xephyr to be built.
+</p>
+<h3><span class="mw-headline" id="Debian.2FUbuntu">Debian/Ubuntu</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=4" title="Edit section: Debian/Ubuntu">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><i>/usr/bin/Xephyr</i> is provided by <i>xserver-xephyr</i> package. You can get it using&#160;:
+</p>
+<pre> # apt-get install xserver-xephyr
+</pre>
+<h3><span class="mw-headline" id="Fedora">Fedora</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=5" title="Edit section: Fedora">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p><i>/usr/bin/Xephyr</i> is provided in the <i>xorg-x11-server-Xephyr</i> package.
+</p>
+<h2><span class="mw-headline" id="Run_Xephyr">Run Xephyr</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=6" title="Edit section: Run Xephyr">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>This runs new X server in X client window:
+</p>
+<pre> $ Xephyr -ac -br -noreset -screen 800x600&#160;:1
+</pre>
+<dl><dt> -ac&#160;</dt>
+<dd> disable access control restrictions</dd>
+<dt> -br&#160;</dt>
+<dd> create root window with black background</dd>
+<dt> -noreset&#160;</dt>
+<dd> don't reset after last client exists</dd>
+<dt> -screen 800x600&#160;</dt>
+<dd> Specify screen characteristics</dd></dl>
+<p>Once running, you can change value of <i>DISPLAY</i> envirnomental variable to <i>:1.0</i> and run X apps inside your slave X:
+</p>
+<pre> $ DISPLAY=:1.0
+ $ xterm
+</pre>
+<p>New xterm window will appear inside slave X.
+</p>
+<h2><span class="mw-headline" id="Run_awesome_in_Xephyr">Run awesome in Xephyr</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=7" title="Edit section: Run awesome in Xephyr">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Set the DISPLAY variable:
+</p>
+<pre> $ DISPLAY=:1.0
+</pre>
+<p>And run awesome in slave X:
+</p>
+<pre> $ awesome -c ~/.config/awesome/rc.lua.new
+</pre>
+<p>This is good to test modifications of <i>rc.lua</i>. In case of errors, you don't spoil your top-level instance of awesome (resulting in blank root window and no keys bound to do something).
+</p><p>You may also create a shell file to allow quick iterations:
+</p>
+<pre> Xephyr -ac -br -noreset -screen 1024x768&#160;:1.0 &amp;
+ ZEPHYR_PID=$!
+ sleep 1
+ DISPLAY=:1.0 awesome -c rc.lua
+ kill $ZEPHYR_PID
+</pre>
+<p>(invoke awesome using the original startup-file, or a copy of this file)
+</p>
+<h2><span class="mw-headline" id="More">More</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=8" title="Edit section: More">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id="Having_Xephyr_Grab_and_Release_Input">Having Xephyr Grab and Release Input</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=9" title="Edit section: Having Xephyr Grab and Release Input">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>One thing you'll quickly notice is that Awesome will not pass keypresses for keybindings down to the Xephyr session. To make this work, the Xephyr session should grab the keyboard. While the Xephyr window has focus, press <b>Control-mod3-shift</b> to have Xephyr grab focus. You will now see that the mouse can't leave the window. If you want Xephyr to let go, press <b>control-shift</b> (note: on some systems it should be RIGHT control-shift). If your modifiers are still not working, then there is some Xephyr wackiness going on. You can use xmodmap and xev to see what the errors are. For me, it was not recognizing the "windows key" as Super_L. I bound it within the Xephyr session using xmodmap:
+</p>
+<pre> $ xmodmap -
+ keycode 133 = Super_L    # Your keycode might be different. See what it is using xev.
+ # Press Control-D here to finish xmodmap input.
+</pre>
+<p>It is also somewhat likely that you are not using the default keymap for your system. You will have to rebind that too.
+</p>
+<pre> $ setxkbmap us dvorak
+</pre>
+<h3><span class="mw-headline" id="Remotely_restart_awesome">Remotely restart awesome</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=10" title="Edit section: Remotely restart awesome">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Get pid of slave awesome and send it <i>SIGHUP</i> signal:
+</p>
+<pre> $ pgrep awesome
+ $ kill -s SIGHUP &lt;pid_of_awesome_in_xephyr&gt;
+</pre>
+<p>Considering that your main awesome always starts before one in xephyr, you can write the command as an one-liner and wrap into a script.
+</p>
+<pre> $ pgrep awesome | tail -1 | xargs kill -s SIGHUP
+</pre>
+<p>Or if you'd rather like to use awesome-client:
+</p>
+<pre> $ export DISPLAY=:1.0
+ $ echo 'awesome.restart()' | awesome-client
+</pre>
+<h3><span class="mw-headline" id="Script_I_use_to_debug_rc.lua">Script I use to debug rc.lua</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=11" title="Edit section: Script I use to debug rc.lua">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<pre>#!/bin/bash
+# script xepyhr-awesome
+# author: dante4d &lt;dante4d@gmail.com&gt;
+Xephyr -ac -br -noreset -screen 800x600&#160;:1 &amp;
+sleep 1
+DISPLAY=:1.0 awesome -c ~/.config/awesome/rc.lua.new
+</pre>
+<h3><span class="mw-headline" id="Another_script">Another script</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=12" title="Edit section: Another script">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<pre>#!/bin/bash
+# Run Awesome in a nested server for tests
+#
+# Requirements: (Debian)
+#
+#  apt-get install xserver-xephyr
+#  apt-get install -t unstable awesome
+#
+# Based on original script by dante4d &lt;dante4d@gmail.com&gt;
+# See: <a rel="nofollow" class="external free" href="http://awesome.naquadah.org/wiki/index.php?title=Using_Xephyr">http://awesome.naquadah.org/wiki/index.php?title=Using_Xephyr</a>
+#
+# URL: <a rel="nofollow" class="external free" href="http://hellekin.cepheide.org/awesome/awesome_test">http://hellekin.cepheide.org/awesome/awesome_test</a>
+#
+# Copyright (c) 2009 Hellekin O. Wolf &lt;hellekin@cepheide.org&gt;
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see &lt;<a rel="nofollow" class="external free" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.
+# 
+
+function usage() 
+{
+  cat &lt;&lt;USAGE
+awesome_test start|stop|restart|run
+
+  start    Start nested Awesome in Xephyr
+  stop     Stop Xephyr
+  restart  Reload nested Awesome configuration
+  run      Run command in nested Awesome
+
+USAGE
+  exit 0
+}
+
+# WARNING: the following two functions expect that you only run one instance
+# of Xephyr and the last launched Awesome runs in it
+
+function awesome_pid() 
+{
+  /bin/pidof awesome | cut -d\  -f1
+}
+ 
+function xephyr_pid()
+
+{
+  /bin/pidof Xephyr | cut -d\  -f1
+}
+
+[ $# -lt 1 ] &amp;&amp; usage
+
+# If rc.lua.new is missing, make a default one.
+RC_LUA=~/.config/awesome/rc.lua.new
+test -f $RC_LUA || /bin/cp /etc/xdg/awesome/rc.lua $RC_LUA
+
+# Just in case we're not running from /usr/bin
+AWESOME=`which awesome`
+XEPHYR=`which Xephyr`
+
+test -x $AWESOME || { echo "Awesome executable not found. Please install Awesome"; exit 1; }
+test -x $XEPHYR || { echo "Xephyr executable not found. Please install Xephyr"; exit 1; }
+
+case "$1" in
+  start)
+    $XEPHYR -ac -br -noreset -screen 800x600&#160;:1 &amp;
+    sleep 1
+    DISPLAY=:1.0 $AWESOME -c $RC_LUA &amp;
+    sleep 1
+    echo Awesome ready for tests. PID is $(awesome_pid)
+   &#160;;;
+  stop)
+    echo -n "Stopping Nested Awesome... "
+    if [ -z $(xephyr_pid) ]; then
+      echo "Not running: not stopped&#160;:)"
+      exit 0
+    else
+      kill $(xephyr_pid)
+      echo "Done."
+    fi
+   &#160;;;
+  restart)
+    echo -n "Restarting Awesome... "
+    kill -s SIGHUP $(awesome_pid)
+   &#160;;;
+  run)
+    shift
+    DISPLAY=:1.0 "$@" &amp;
+   &#160;;;
+  *)
+    usage
+   &#160;;;
+esac
+#
+#{
+#  /bin/pidof Xephyr | cut -d\  -f1
+#}
+#
+#[ $# -lt 1 ] &amp;&amp; usage
+#
+## If rc.lua.new is missing, make a default one.
+#RC_LUA=~/.config/awesome/rc.lua.new
+#test -f $RC_LUA || /bin/cp /etc/xdg/awesome/rc.lua $RC_LUA
+#
+## Just in case we're not running from /usr/bin
+#AWESOME=`which awesome`
+#XEPHYR=`which Xephyr`
+#
+#test -x $AWESOME || { echo "Awesome executable not found. Please install Awesome"; exit 1; }
+#test -x $XEPHYR || { echo "Xephyr executable not found. Please install Xephyr"; exit 1; }
+#
+#case "$1" in
+#  start)
+#    $XEPHYR -ac -br -noreset -screen 800x600&#160;:1 &amp;
+#    sleep 1
+#    DISPLAY=:1.0 $AWESOME -c $RC_LUA &amp;
+#    sleep 1
+#    echo Awesome ready for tests. PID is $(awesome_pid)
+#   &#160;;;
+#  stop)
+#    echo -n "Stopping Nested Awesome... "
+#    if [ -z $(xephyr_pid) ]; then
+#      echo "Not running: not stopped&#160;:)"
+#      exit 0
+#    else
+#      kill $(xephyr_pid)
+#      echo "Done."
+#    fi
+#   &#160;;;
+#  restart)
+#    echo -n "Restarting Awesome... "
+#    kill -s SIGHUP $(awesome_pid)
+#   &#160;;;
+#  run)
+#    shift
+#    DISPLAY=:1.0 "$@" &amp;
+#   &#160;;;
+#  *)
+#    usage
+#   &#160;;;
+# esac
+</pre>
+<p>Then
+</p>
+<pre>awesome_test start|stop|restart|run
+</pre>
+<pre>  start    Start nested Awesome in Xephyr
+  stop     Stop Xephyr
+  restart  Reload nested Awesome configuration
+  run      Run command in nested Awesome
+</pre>
+<h3><span class="mw-headline" id="Yet_another_script">Yet another script</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_Xephyr&amp;action=edit&amp;section=13" title="Edit section: Yet another script">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>This script is loosely based on the above by dante4d. It adds functionality to spawn and control multiple instances of Xephyr with -D as well as using different configuration files with -C or window sizes with -S. You may also use it to change themes but there's no warranty attached to the regular expressions.
+</p><p>You can find the script on GitHub: <a rel="nofollow" class="external free" href="https://github.com/mikar/awmtt">https://github.com/mikar/awmtt</a>
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.152 seconds
+Real time usage: 0.174 seconds
+Preprocessor visited node count: 759/1000000
+Preprocessor generated node count: 1366/1000000
+Post‐expand include size: 3840/2097152 bytes
+Template argument size: 120/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 49/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:284-0!*!0!!en!5!* and timestamp 20160514171746 and revision id 6538
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Using_Xephyr&amp;oldid=6538">https://awesomewm.org/w/index.php?title=Using_Xephyr&amp;oldid=6538</a>"</div>
+					<div id='catlinks' class='catlinks catlinks-allhidden'></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Using_Xephyr" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Using_Xephyr&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Using_Xephyr&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Using_Xephyr&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Using+Xephyr" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Using_Xephyr" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Using_Xephyr" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-print"><a href="/w/index.php?title=Using_Xephyr&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Using_Xephyr&amp;oldid=6538" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Using_Xephyr&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 18 May 2014, at 08:25.</li>
+									<li id="viewcount">This page has been accessed 86,970 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":106});
+}</script></body></html>

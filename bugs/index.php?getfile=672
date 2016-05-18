@@ -1,0 +1,135 @@
+local type = type
+local pairs = pairs
+local setmetatable = setmetatable
+local base = require("wibox.layout.base")
+local widget_base = require("wibox.widget.base")
+local table = table
+
+-- wibox.layout.scroll
+local scroll = { mt = {} } 
+
+--- Draw a scroll layout
+function scroll:draw(wibox, cr, width, height)
+    local pos = 0
+    local max_offset = 0
+
+    for k, v in pairs(self.widgets) do
+        local x, y, w, h, _
+
+        if self.dir == "y" then
+            x, y, w = 0, pos + self._offset, width
+            _, h = base.fit_widget(v, w, height);
+            if (not self._max_offset and k == #self.widgets ) then
+                max_offset = self._offset + (height - (y + h))
+            end
+            pos = pos + h
+        else
+            x, y, h = pos + self._offset, 0, height
+            w, _ = base.fit_widget(v, width, h);
+            if (not self._max_offset and k == #self.widgets) then
+                max_offset = self._offset + (width - (x + w))
+            end
+            pos = pos + w
+        end
+        if (self.dir == "y" and pos - h + self._offset > height) or
+            (self.dir ~= "y" and pos - w + self._offset > width) then
+            if self._max_offset then
+                break
+            end
+        end
+        if self._max_offset then
+            base.draw_widget(wibox, cr, v, x, y, w, h)
+        end
+    end
+    
+    -- In first time we just calculate max offset. Now we can draw widgets.
+    if self.widgets and not self._max_offset then
+        self._max_offset = max_offset
+        self:emit_signal("widget::updated")
+    end
+end
+
+--- Fit this layout into the given area
+function scroll:fit(width, height)
+    if not self.widgets then
+        return 0, 0
+    end
+    return width, height
+end
+
+--- Add a widget to the given scroll layout
+function scroll:add(widget)
+    widget_base.check_widget(widget)
+    table.insert(self.widgets, widget)
+    self._max_offset = nil
+    widget:connect_signal("widget::updated", self._emit_updated)
+    self._emit_updated()
+end
+
+--- Reset a scroll layout. This removes all widgets from the layout.
+function scroll:reset()
+    for k, v in pairs(self.widgets) do
+        v:disconnect_signal("widget::updated", self._emit_updated)
+    end
+    self.widgets = {}
+    self._offset = 0
+    self._max_offset = nil
+    self:emit_signal("widget::updated")
+end
+
+-- Scroll layout content on val pixels. 
+function scroll:scroll(val)
+    self._offset = self._offset + val
+    if self._max_offset and self._offset < self._max_offset then
+        self._offset = self._max_offset
+    elseif self._offset > 0 then
+        self._offset = 0
+    end
+    self:emit_signal("widget::updated")
+end
+
+-- Scroll to first widget.
+function scroll:to_begin()
+    self._offset = 0
+    self:emit_signal("widget::updated")
+end
+
+-- Scroll to last widget.
+function scroll:to_end()
+    self._offset = self._max_offset
+    self:emit_signal("widget::updated")
+end
+
+local function get_layout(dir)
+    local ret = widget_base.make_widget()
+
+    for k, v in pairs(scroll) do
+        if type(v) == "function" then
+            ret[k] = v
+        end
+    end
+
+    ret.dir = dir
+    ret.widgets = {}
+    ret._offset = 0 
+    ret._max_offset = nil
+    ret._emit_updated = function()
+        ret:emit_signal("widget::updated")
+    end
+
+    return ret
+end
+
+--- Returns a new horizontal scroll layout.
+function scroll.horizontal()
+    return get_layout("x")
+end
+
+--- Returns a new vertical scroll layout.
+function scroll.vertical()
+    return get_layout("y")
+end
+
+return setmetatable(scroll, scroll.mt)
+
+-- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80

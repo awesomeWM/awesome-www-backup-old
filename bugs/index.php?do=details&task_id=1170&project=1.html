@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#1170 : java + dialogs = no output</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=1170&amp;project=1" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1171&amp;project=1" title="Unconfirmed | Workspace mouse input blocked by transparent layer of Cairo-dock | 0%"  id = "prev" accesskey = "p">Previous task</a>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+   |     <a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1169&amp;project=1" title="Unconfirmed | UnAwesome mouse bug, triggered by firefox, htop, chromium. | 0%"  id = "next" accesskey = "n">Next task</a>  </span>
+
+  <h2 class="summary severity3">
+	 FS#1170 - java + dialogs = no output  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=808">Oleksii Shevchuk (alxchk)</a>     	 - Saturday, 03 August 2013, 09:39 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=690">Pavel Chernyak (fjfalcon)</a> (2014-04-05)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">The newly created dialogs are blank windows (i.e. white rectangle). Rendering occurs only after resizing window</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (7)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment3643" id="comment3643"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3643">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 03 August 2013, 11:16 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Some more information would be nice. Eg which java program are you using. Because, believe it or not, this works for everyone else.</div></div>
+
+  
+    <em>
+    <a name="comment3644" id="comment3644"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3644">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=808">Oleksii Shevchuk (alxchk)</a> -
+    Saturday, 03 August 2013, 11:27 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Oh. Let&#039;s see..<br />
+<br />
+I use awesome 14722aa6e43, and this happens with every java application with native client, like jxplorer.<br />
+<br />
+It looks like this:<br /><a href="
+http://img268.imageshack.us/img268/2710/787t.png">
+http://img268.imageshack.us/img268/2710/787t.png</a><br />
+<br />
+I have in env:<br />
+&gt; env | grep JAVA   <br />
+JAVA_HOME=/etc/java-config-2/current-system-vm<br />
+JAVAC=/etc/java-config-2/current-system-vm/bin/javac<br />
+_JAVA_AWT_WM_NONREPARENTING=1<br />
+<br />
+&gt; wmname <br />
+LG3D<br />
+<br />
+&gt; java -version <br />
+java version &quot;1.7.0_25&quot;<br />
+Java(TM) SE Runtime Environment (build 1.7.0_25-b15)<br />
+Java HotSpot(TM) 64-Bit Server VM (build 23.25-b01, mixed mode)<br />
+<br />
+&gt; xprop <br />
+_NET_WM_DESKTOP(CARDINAL) = 9<br />
+WM_STATE(WM_STATE):<br />
+		window state: Normal<br />
+		icon window: 0x0<br />
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL<br />
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x26, 0x1e, 0x0, 0x0<br />
+_MOTIF_DRAG_RECEIVER_INFO(_MOTIF_DRAG_RECEIVER_INFO) = 0x6c, 0x0, 0x5, 0x0, 0xcf, 0x0, 0x20, 0x4, 0x0, 0x0, 0x0, 0x0, 0x10, 0x0, 0x0, 0x0<br />
+XdndAware(ATOM) = BITMAP<br />
+_NET_WM_ICON(CARDINAL) = 	Icon (16 x 16):<br />
+	                <br />
+	       ▓▓▓      <br />
+	       ▓░▒      <br />
+	       ▓░░      <br />
+	     ▓▓░░░░     <br />
+	    ▓░░░ ▓▓▓░   <br />
+	    ▓░░░ ▓▒▒▒   <br />
+	    ▓░░░  ░░▒   <br />
+	  ▓▓░  ▓▓▓  ░▓▓ <br />
+	 ▓▒▒░  ▓░▒  ▓░░░<br />
+	 ▓░░░  ▓░▒  ▓░░░<br />
+	     ▓▓░░░▓▓ ░░ <br />
+	    ▓░░  ▓░░░   <br />
+	    ▓░▒░ ▓▒▒    <br />
+	     ░░   ░░░   <br />
+	                <br />
+<br />
+<br />
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_SKIP_TASKBAR<br />
+WM_HINTS(WM_HINTS):<br />
+		Client accepts input or input focus: False<br />
+		window id # of group leader: 0x4200040<br />
+WM_TRANSIENT_FOR(WINDOW): window id # 0x4200040<br />
+_NET_WM_PID(CARDINAL) = 25777<br />
+WM_CLIENT_MACHINE(STRING) = &quot;WinterMute&quot;<br />
+WM_PROTOCOLS(ATOM): protocols  WM_TAKE_FOCUS, WM_DELETE_WINDOW<br />
+WM_CLASS(STRING) = &quot;sun-awt-X11-XDialogPeer&quot;, &quot;com-ca-directory-jxplorer-JXplorer&quot;<br />
+WM_CLIENT_LEADER(WINDOW): window id # 0x4200008<br />
+_NET_WM_ICON_NAME(UTF8_STRING) = &quot;JXplorer Advanced Options&quot;<br />
+WM_ICON_NAME(STRING) = &quot;JXplorer Advanced Options&quot;<br />
+_NET_WM_NAME(UTF8_STRING) = &quot;JXplorer Advanced Options&quot;<br />
+WM_NAME(STRING) = &quot;JXplorer Advanced Options&quot;<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+		user specified location: 1813, 251<br />
+		program specified location: 1813, 251<br />
+		program specified size: 300 by 280<br />
+		window gravity: NorthWest<br />
+<br />
+My workaround in rc.lua:<br />
+client.connect_signal(<br />
+   &quot;manage&quot;, function (c, startup)<br />
+<br />
+    ....<br />
+<br />
+      if c.instance:sub(0,11) == &quot;sun-awt-X11&quot; <br />
+      and awful.client.floating.get(c) then<br />
+	 c.size_hints_honor = false<br />
+	 awful.client.moveresize(0,0,1,1,c)<br />
+	 awful.client.moveresize(0,0,-1,-1,c)<br />
+	 c.size_hints_honor = true<br />
+      else<br />
+	 c.size_hints_honor = false<br />
+      end<br />
+   ....<br /></div></div>
+
+  
+    <em>
+    <a name="comment3645" id="comment3645"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3645">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 03 August 2013, 12:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Could you try without _JAVA_AWT_WM_NONREPARENTING=1? (Awesome 3.5 is reparenting)</div></div>
+
+  
+    <em>
+    <a name="comment3646" id="comment3646"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3646">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=808">Oleksii Shevchuk (alxchk)</a> -
+    Saturday, 03 August 2013, 12:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Looks like no effect</div></div>
+
+  
+    <em>
+    <a name="comment3911" id="comment3911"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3911">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=774">Yauhen Kharuzhy (jekhor)</a> -
+    Sunday, 16 March 2014, 12:03 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I confirm this with latest 3.5 awesome 061751dd9d3a3f08e4efa1739adb4f93e73bee98.</div></div>
+
+  
+    <em>
+    <a name="comment3989" id="comment3989"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment3989">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=690">Pavel Chernyak (fjfalcon)</a> -
+    Saturday, 05 April 2014, 18:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">looks like it&#039;s duplicate to: <br />
+<br /><a href="
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1025&amp;string=java&amp;project=1&amp;type%5B0%5D=&amp;sev%5B0%5D=&amp;pri%5B0%5D=&amp;due%5B0%5D=&amp;reported%5B0%5D=&amp;cat%5B0%5D=&amp;status%5B0%5D=open&amp;percent%5B0%5D=&amp;opened=&amp;dev=&amp;closed=&amp;duedatefrom=&amp;duedateto=&amp;changedfrom=&amp;changedto=&amp;openedfrom=&amp;openedto=&amp;closedfrom=&amp;closedto">
+https://awesome.naquadah.org/bugs/index.php?do=details&amp;task_id=1025&amp;string=java&amp;project=1&amp;type%5B0%5D=&amp;sev%5B0%5D=&amp;pri%5B0%5D=&amp;due%5B0%5D=&amp;reported%5B0%5D=&amp;cat%5B0%5D=&amp;status%5B0%5D=open&amp;percent%5B0%5D=&amp;opened=&amp;dev=&amp;closed=&amp;duedatefrom=&amp;duedateto=&amp;changedfrom=&amp;changedto=&amp;openedfrom=&amp;openedto=&amp;closedfrom=&amp;closedto</a>=</div></div>
+
+  
+    <em>
+    <a name="comment4052" id="comment4052"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#comment4052">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=690">Pavel Chernyak (fjfalcon)</a> -
+    Sunday, 04 May 2014, 17:50 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">you should use jdk from oracle to fix it.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=1170#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="1170" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

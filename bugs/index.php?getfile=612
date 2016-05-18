@@ -1,0 +1,66 @@
+diff --git a/awesomerc.lua.in b/awesomerc.lua.in
+index 54c42fb..a0d125b 100644
+--- a/awesomerc.lua.in
++++ b/awesomerc.lua.in
+@@ -382,7 +382,7 @@ client.connect_signal("manage", function (c, startup)
+         end
+     end
+ 
+-    local titlebars_enabled = false
++    local titlebars_enabled = true
+     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
+         -- buttons for the titlebar
+         local buttons = awful.util.table.join(
+@@ -425,6 +425,9 @@ client.connect_signal("manage", function (c, startup)
+         layout:set_middle(middle_layout)
+ 
+         awful.titlebar(c):set_widget(layout)
++        local d = c:titlebar_top()
++	d:connect_signal("mouse::enter", function(...) print("enter", ...) end)
++	d:connect_signal("mouse::leave", function(...) print("leave", ...) end)
+     end
+ end)
+ 
+diff --git a/event.c b/event.c
+index 6c1eff0..9cd63a8 100644
+--- a/event.c
++++ b/event.c
+@@ -437,13 +437,16 @@ event_handle_leavenotify(xcb_leave_notify_event_t *ev)
+     if(ev->mode != XCB_NOTIFY_MODE_NORMAL)
+         return;
+ 
++    printf("leaving %p at %d %d\n", (void*) ev->event, ev->event_x, ev->event_y);
+     if((c = client_getbyframewin(ev->event)))
+     {
++        puts("client");
+         luaA_object_push(globalconf.L, c);
+         luaA_object_emit_signal(globalconf.L, -1, "mouse::leave", 0);
+         drawable_t *d = client_get_drawable(c, ev->event_x, ev->event_y);
+         if (d)
+         {
++        puts("titelbar");
+             luaA_object_push_item(globalconf.L, -1, d);
+             luaA_object_emit_signal(globalconf.L, -1, "mouse::leave", 0);
+             lua_pop(globalconf.L, 1);
+@@ -474,6 +477,7 @@ event_handle_enternotify(xcb_enter_notify_event_t *ev)
+     if(ev->mode != XCB_NOTIFY_MODE_NORMAL)
+         return;
+ 
++    printf("entering %p at %d %d\n", (void*) ev->event, ev->event_x, ev->event_y);
+     if((drawin = drawin_getbywin(ev->event)))
+     {
+         luaA_object_push(globalconf.L, drawin);
+@@ -484,11 +488,13 @@ event_handle_enternotify(xcb_enter_notify_event_t *ev)
+ 
+     if((c = client_getbyframewin(ev->event)))
+     {
++        puts("client");
+         luaA_object_push(globalconf.L, c);
+         luaA_object_emit_signal(globalconf.L, -1, "mouse::enter", 0);
+         drawable_t *d = client_get_drawable(c, ev->event_x, ev->event_y);
+         if (d)
+         {
++        puts("titelbar");
+             luaA_object_push_item(globalconf.L, -1, d);
+             luaA_object_emit_signal(globalconf.L, -1, "mouse::enter", 0);
+             lua_pop(globalconf.L, 1);

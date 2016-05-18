@@ -1,0 +1,61 @@
+From 8544d2f1459d3becddad6acf74d5639732a89918 Mon Sep 17 00:00:00 2001
+From: Ignas Anikevicius (gns_ank) <anikevicius@gmail.com>
+Date: Tue, 11 Oct 2011 21:19:32 +0100
+Subject: [PATCH 1/2] Saving gama values in pngs to prevent compilation errors
+
+---
+ themes/zenburn/titlebar/close_focus.png            |  Bin 211 -> 214 bytes
+ themes/zenburn/titlebar/floating_focus_active.png  |  Bin 210 -> 213 bytes
+ themes/zenburn/titlebar/maximized_focus_active.png |  Bin 202 -> 205 bytes
+ themes/zenburn/titlebar/ontop_focus_active.png     |  Bin 188 -> 191 bytes
+ themes/zenburn/titlebar/sticky_focus_active.png    |  Bin 199 -> 202 bytes
+ 5 files changed, 0 insertions(+), 0 deletions(-)
+
+diff --git a/themes/zenburn/titlebar/close_focus.png b/themes/zenburn/titlebar/close_focus.png
+index 02565b9e079f2d78f486dc3b8d4953d7a047c88d..e9b41791022f5dd303135cbb80d27c622445baab 100644
+GIT binary patch
+delta 37
+tcmcc2c#Uy_3NK5#qpu?a!^VE@KZ&dp^$fUfb8(9ZnYI2k=bD(24FKES3%~#X
+
+delta 34
+qcmcb{c$sm63KwH>kh>GZx^prwCmI@X-Q<wxRAmiY{$<6)>}&wdp$usN
+
+diff --git a/themes/zenburn/titlebar/floating_focus_active.png b/themes/zenburn/titlebar/floating_focus_active.png
+index 63d900ba70c29dd192fbda129815e4c1d1e78d4b..0f9ee0de4af13f994ba091852ff5b38e2a1cc4f2 100644
+GIT binary patch
+delta 37
+tcmcb_c$IO23NK5#qpu?a!^VE@KZ&dp^$fUfb8(9ZvG{7Gbxq930sz)^3oifw
+
+delta 34
+qcmcc0c!_a>3KwH>kh>GZx^prwCmI@X-Q<wxRMW5s{Vg{!I|~5GybG5A
+
+diff --git a/themes/zenburn/titlebar/maximized_focus_active.png b/themes/zenburn/titlebar/maximized_focus_active.png
+index 834f106d19136b398e1783dc5cc8e2b8e7964095..7e8498a16a00956483601e2918678b933a3fd780 100644
+GIT binary patch
+delta 37
+tcmX@bc$RU33NK5#qpu?a!^VE@KZ&dp^$fUfb8(9ZN$Tlv1y9UK0szrq3VZ+n
+
+delta 34
+qcmX@hc#3g?3KwH>kh>GZx^prwCmI@X-Q<wxR98Fp?Rmt+>?8os$qdr~
+
+diff --git a/themes/zenburn/titlebar/ontop_focus_active.png b/themes/zenburn/titlebar/ontop_focus_active.png
+index 776d586fa41e8a882e7c11732e3e7d659732d981..86e61b7fb67011413cbfd317a72452da9dea01d1 100644
+GIT binary patch
+delta 37
+tcmdnPxSw%?3NK5#qpu?a!^VE@KZ&dp^$fUfb8(9Zsg$|6IZez60RYh|3g`d;
+
+delta 34
+qcmdnbxQB6q3KwH>kh>GZx^prwCmI@X-Q<wxR1*=mYM(hVI|Km1c?%2x
+
+diff --git a/themes/zenburn/titlebar/sticky_focus_active.png b/themes/zenburn/titlebar/sticky_focus_active.png
+index 1726f90f46eb25b6a765398f7ccb625cf01e477b..b10e604143e773beb4ecc87276c8488d3c4fb4bf 100644
+GIT binary patch
+delta 37
+tcmX@kc#3g?3NK5#qpu?a!^VE@KZ&dp^$fUfb8(9Z=}nusK4xM@JOJ6i3<CfF
+
+delta 34
+qcmX@bc${&93KwH>kh>GZx^prwCmI@X-Q<wxRF!o-o%3&Ec02&eP7FQ(
+
+-- 
+1.7.3.4
+

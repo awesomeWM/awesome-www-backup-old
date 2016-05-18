@@ -1,0 +1,93 @@
+From b00a2cb79ab406ea26f1445a4572006dc29977ef Mon Sep 17 00:00:00 2001
+From: dodo <dodo.the.last@gmail.com>
+Date: Mon, 14 May 2012 18:00:13 +0200
+Subject: [PATCH 2/2] awful.widget.graph: set_direction
+
+set the scroll direction of a graph.
+In many cultures the natural order of reading information is from left to right.
+Default direction is still from right to left to not break any existing config.
+---
+ lib/awful/widget/graph.lua.in |   39 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 32 insertions(+), 7 deletions(-)
+
+diff --git a/lib/awful/widget/graph.lua.in b/lib/awful/widget/graph.lua.in
+index 3a8cd56..80c20b7 100644
+--- a/lib/awful/widget/graph.lua.in
++++ b/lib/awful/widget/graph.lua.in
+@@ -9,6 +9,7 @@ local ipairs = ipairs
+ local math = math
+ local table = table
+ local type = type
++local error = error
+ local color = require("gears.color")
+ local base = require("wibox.widget.base")
+ 
+@@ -64,7 +65,7 @@ local data = setmetatable({}, { __mode = "k" })
+ 
+ local properties = { "width", "height", "border_color", "stack",
+                      "stack_colors", "color", "background_color",
+-                     "max_value", "scale" }
++                     "max_value", "scale", "direction" }
+ 
+ function draw(graph, wibox, cr, width, height)
+     local max_value = data[graph].max_value
+@@ -100,7 +101,10 @@ function draw(graph, wibox, cr, width, height)
+ 
+         for i = 0, width - (2 * border_width) do
+             local rel_i = 0
+-            local rel_x = width - border_width - i - 0.5
++            local rel_x = border_width + i
++            if data[graph].direction ~= "left" then
++                rel_x = width - rel_x - 0.5
++            end
+ 
+             if data[graph].stack_colors then
+                 for idx, col in ipairs(data[graph].stack_colors) do
+@@ -135,11 +139,15 @@ function draw(graph, wibox, cr, width, height)
+                 local value = values[#values - i]
+                 if value >= 0 then
+                     value = value / max_value
+-                    cr:move_to(width - border_width - i - 0.5,
+-                               border_width - 0.5 +
+-                                   (height - 2 * border_width) * (1 - value))
+-                    cr:line_to(width - border_width - i - 0.5,
+-                               border_width - 1)
++
++                    local x = border_width + i
++                    if data[graph].direction ~= "left" then
++                        x = width - x
++                    end
++                    cr:move_to(x, border_width - 0.5 +
++                                  (height - 2 * border_width) * (1 - value))
++                    cr:line_to(x, border_width +
++                                  (height - 2 * border_width))
+                 end
+             end
+             cr:set_source(color(data[graph].color or "#ff0000"))
+@@ -198,6 +206,23 @@ local function add_value(graph, value, group)
+     return graph
+ end
+ 
++--- Set the graph scroll direction. Default is to the "left".
++-- Valid directions are "left" or "right".
++-- On an invalid value, this function will throw an error.
++-- @param graph The graph.
++-- @param dir Either the string "left" or "right".
++function set_direction(graph, dir)
++    local allowed = {
++        left  = true,
++        right = true
++    }
++    if not allowed[dir] then
++        error("Invalid direction for graph widget: " .. tostring(dir))
++    end
++    data[graph].direction = dir
++    graph:emit_signal("widget::updated")
++    return graph
++end
+ 
+ --- Set the graph height.
+ -- @param graph The graph.
+-- 
+1.7.10
+

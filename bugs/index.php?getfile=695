@@ -1,0 +1,22 @@
+diff --git a/lib/awful/placement.lua.in b/lib/awful/placement.lua.in
+index d334f7f..4e61ba4 100644
+--- a/lib/awful/placement.lua.in
++++ b/lib/awful/placement.lua.in
+@@ -221,7 +221,7 @@ function placement.center_horizontal(c, p)
+     else
+         s_geometry = capi.screen[screen].geometry
+     end
+-    return c:geometry({ x = s_geometry.x + (s_geometry.width - c_geometry.width) / 2 })
++    return c:geometry({ x = s_geometry.x + (s_geometry.width - c_geometry.width) / 2 - c.border_width })
+ end
+ 
+ --- Place the client centered on the vertical axis with respect to a parent or the clients screen.
+@@ -238,7 +238,7 @@ function placement.center_vertical(c, p)
+     else
+         s_geometry = capi.screen[screen].geometry
+     end
+-    return c:geometry({ y = s_geometry.y + (s_geometry.height - c_geometry.height) / 2 })
++    return c:geometry({ y = s_geometry.y + (s_geometry.height - c_geometry.height) / 2 - c.border_width })
+ end
+ 
+ return placement

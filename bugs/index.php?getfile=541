@@ -1,0 +1,65 @@
+From 2b12f2b6a3f584b0656f8cd4ec63a872f3896146 Mon Sep 17 00:00:00 2001
+From: dodo <dodo.the.last@gmail.com>
+Date: Thu, 25 Oct 2012 18:41:00 +0200
+Subject: [PATCH 2/2] capi.screen[scr]:tags() doesn't exist anymore
+
+awful.tag.gettags(scr) does now the job
+---
+ lib/awful/tag.lua.in |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/lib/awful/tag.lua.in b/lib/awful/tag.lua.in
+index 370afea..cad27d8 100644
+--- a/lib/awful/tag.lua.in
++++ b/lib/awful/tag.lua.in
+@@ -38,7 +38,7 @@ tag.history.limit = 20
+ function tag.move(new_index, target_tag)
+     local target_tag = target_tag or tag.selected()
+     local scr = tag.getscreen(target_tag)
+-    local tmp_tags = capi.screen[scr]:tags()
++    local tmp_tags = tag.gettags(scr)
+ 
+     if (not new_index) or (new_index < 1) or (new_index > #tmp_tags) then
+         return
+@@ -52,7 +52,10 @@ function tag.move(new_index, target_tag)
+     end
+ 
+     table.insert(tmp_tags, new_index, target_tag)
+-    capi.screen[scr]:tags(tmp_tags)
++
++    for _, tmp_tag in ipairs(tmp_tags) do
++        tag.setscreen(tmp_tag, scr)
++    end
+ end
+ 
+ --- Add a tag.
+@@ -99,7 +102,7 @@ function tag.find_fallback(screen, invalids)
+     local scr = screen or capi.mouse.screen
+     local t = invalids or tag.selectedlist(scr)
+ 
+-    for _, v in pairs(capi.screen[scr]:tags()) do
++    for _, v in pairs(tag.gettags(scr)) do
+         if not util.table.hasitem(t, v) then return v end
+     end
+ end
+@@ -118,7 +121,7 @@ function tag.delete(target_tag, fallback_tag)
+     if target_tag == nil then return end
+ 
+     local target_scr = tag.getscreen(target_tag)
+-    local ntags = #capi.screen[target_scr]:tags()
++    local ntags = #tag.gettags(target_scr)
+ 
+     -- We can't use the target tag as a fallback.
+     local fallback_tag = fallback_tag
+@@ -153,7 +156,7 @@ function tag.delete(target_tag, fallback_tag)
+     if tag.selected(target_scr) == nil and ntags > 0 then
+         tag.history.restore()
+         if tag.selected(target_scr) == nil then
+-            capi.screen[target_scr]:tags()[1].selected = true
++            tag.gettags(target_scr)[1].selected = true
+         end
+     end
+ 
+-- 
+1.7.10.4
+

@@ -1,0 +1,16 @@
+diff --git a/lib/awful/titlebar.lua.in b/lib/awful/titlebar.lua.in
+index b6e2ad3..69654fa 100644
+--- a/lib/awful/titlebar.lua.in
++++ b/lib/awful/titlebar.lua.in
+@@ -104,6 +104,11 @@ end
+ -- @return The title widget.
+ function titlebar.widget.titlewidget(c)
+     local ret = textbox()
++    ret.fit = function(box, w, h)
++        local width, height = wibox.widget.textbox.fit(box, w, h);
++        return w, height
++    end
++    ret:set_align(beautiful.titlebar_title_align or "center")
+     local function update()
+         ret:set_text(c.name or "<unknown>")
+     end

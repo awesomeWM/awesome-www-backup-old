@@ -1,0 +1,172 @@
+GNU gdb (GDB) 7.4.1
+Copyright (C) 2012 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i686-pc-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Attaching to process 20414
+Reading symbols from /usr/bin/awesome...(no debugging symbols found)...done.
+
+warning: Could not load shared library symbols for linux-gate.so.1.
+Do you need "set solib-search-path" or "set sysroot"?
+Reading symbols from /usr/lib/libxcb.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb.so.1
+Reading symbols from /usr/lib/libX11.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libX11.so.6
+Reading symbols from /usr/lib/libpangocairo-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpangocairo-1.0.so.0
+Reading symbols from /usr/lib/libpango-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpango-1.0.so.0
+Reading symbols from /usr/lib/libgobject-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgobject-2.0.so.0
+Reading symbols from /usr/lib/libglib-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libglib-2.0.so.0
+Reading symbols from /usr/lib/libxcb-randr.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-randr.so.0
+Reading symbols from /usr/lib/libxcb-xtest.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-xtest.so.0
+Reading symbols from /usr/lib/libxcb-xinerama.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-xinerama.so.0
+Reading symbols from /usr/lib/libxcb-shape.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-shape.so.0
+Reading symbols from /usr/lib/libxcb-util.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-util.so.1
+Reading symbols from /usr/lib/libxcb-keysyms.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-keysyms.so.1
+Reading symbols from /usr/lib/libxcb-icccm.so.4...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-icccm.so.4
+Reading symbols from /usr/lib/libxcb-image.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-image.so.0
+Reading symbols from /usr/lib/libcairo.so.2...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libcairo.so.2
+Reading symbols from /usr/lib/libstartup-notification-1.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libstartup-notification-1.so.0
+Reading symbols from /usr/lib/libImlib2.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libImlib2.so.1
+Reading symbols from /usr/lib/libxdg-basedir.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxdg-basedir.so.1
+Reading symbols from /usr/lib/libev.so.4...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libev.so.4
+Reading symbols from /usr/lib/liblua.so.5.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/liblua.so.5.1
+Reading symbols from /lib/libm.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libm.so.6
+Reading symbols from /usr/lib/libdbus-1.so.3...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libdbus-1.so.3
+Reading symbols from /lib/libc.so.6...(no debugging symbols found)...done.
+Loaded symbols for /lib/libc.so.6
+Reading symbols from /usr/lib/libXau.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXau.so.6
+Reading symbols from /usr/lib/libXdmcp.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXdmcp.so.6
+Reading symbols from /lib/libdl.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/libdl.so.2
+Reading symbols from /usr/lib/libpangoft2-1.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpangoft2-1.0.so.0
+Reading symbols from /usr/lib/libgmodule-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgmodule-2.0.so.0
+Reading symbols from /lib/librt.so.1...(no debugging symbols found)...done.
+Loaded symbols for /lib/librt.so.1
+Reading symbols from /usr/lib/libfreetype.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libfreetype.so.6
+Reading symbols from /usr/lib/libfontconfig.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libfontconfig.so.1
+Reading symbols from /lib/libpthread.so.0...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/libthread_db.so.1".
+Loaded symbols for /lib/libpthread.so.0
+Reading symbols from /usr/lib/libgthread-2.0.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgthread-2.0.so.0
+Reading symbols from /usr/lib/libpcre.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpcre.so.1
+Reading symbols from /usr/lib/libffi.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libffi.so.6
+Reading symbols from /usr/lib/libxcb-shm.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-shm.so.0
+Reading symbols from /usr/lib/libpixman-1.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpixman-1.so.0
+Reading symbols from /usr/lib/libpng15.so.15...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libpng15.so.15
+Reading symbols from /usr/lib/libxcb-render.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libxcb-render.so.0
+Reading symbols from /usr/lib/libXrender.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXrender.so.1
+Reading symbols from /usr/lib/libz.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libz.so.1
+Reading symbols from /usr/lib/libX11-xcb.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libX11-xcb.so.1
+Reading symbols from /usr/lib/libbz2.so.1.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libbz2.so.1.0
+Reading symbols from /usr/lib/libXext.so.6...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libXext.so.6
+Reading symbols from /lib/ld-linux.so.2...(no debugging symbols found)...done.
+Loaded symbols for /lib/ld-linux.so.2
+Reading symbols from /usr/lib/libexpat.so.1...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libexpat.so.1
+Reading symbols from /usr/lib/imlib2/loaders/zlib.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/zlib.so
+Reading symbols from /usr/lib/imlib2/loaders/xpm.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/xpm.so
+Reading symbols from /usr/lib/imlib2/loaders/tiff.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/tiff.so
+Reading symbols from /usr/lib/libtiff.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libtiff.so.5
+Reading symbols from /usr/lib/liblzma.so.5...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/liblzma.so.5
+Reading symbols from /usr/lib/libjpeg.so.8...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libjpeg.so.8
+Reading symbols from /usr/lib/imlib2/loaders/tga.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/tga.so
+Reading symbols from /usr/lib/imlib2/loaders/pnm.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/pnm.so
+Reading symbols from /usr/lib/imlib2/loaders/png.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/png.so
+Reading symbols from /usr/lib/imlib2/loaders/lbm.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/lbm.so
+Reading symbols from /usr/lib/imlib2/loaders/jpeg.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/jpeg.so
+Reading symbols from /usr/lib/imlib2/loaders/id3.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/id3.so
+Reading symbols from /usr/lib/libid3tag.so.0...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libid3tag.so.0
+Reading symbols from /usr/lib/imlib2/loaders/gif.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/gif.so
+Reading symbols from /usr/lib/libgif.so.4...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/libgif.so.4
+Reading symbols from /usr/lib/imlib2/loaders/bz2.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/bz2.so
+Reading symbols from /usr/lib/imlib2/loaders/bmp.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/bmp.so
+Reading symbols from /usr/lib/imlib2/loaders/argb.so...(no debugging symbols found)...done.
+Loaded symbols for /usr/lib/imlib2/loaders/argb.so
+0xb7758424 in __kernel_vsyscall ()
+Traceback (most recent call last):
+  File "/usr/share/gdb/auto-load/usr/lib/libgobject-2.0.so.0.3200.3-gdb.py", line 9, in <module>
+    from gobject import register
+  File "/usr/share/glib-2.0/gdb/gobject.py", line 3, in <module>
+    import gdb.backtrace
+ImportError: No module named backtrace
+(gdb) c
+Continuing.
+
+Program received signal SIGSEGV, Segmentation fault.
+0xb771e7f4 in xcb_setup_roots_length () from /usr/lib/libxcb.so.1
+(gdb) bt full
+#0  0xb771e7f4 in xcb_setup_roots_length () from /usr/lib/libxcb.so.1
+No symbol table info available.
+#1  0x080606e6 in ?? ()
+No symbol table info available.
+#2  0x08061898 in event_handle ()
+No symbol table info available.
+#3  0x08053961 in ?? ()
+No symbol table info available.
+#4  0xb7279901 in ev_invoke_pending () from /usr/lib/libev.so.4
+No symbol table info available.
+#5  0xb727cab3 in ev_run () from /usr/lib/libev.so.4
+No symbol table info available.
+#6  0x08053044 in _start ()
+No symbol table info available.
+(gdb) 

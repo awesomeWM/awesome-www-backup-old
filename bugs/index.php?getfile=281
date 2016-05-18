@@ -1,0 +1,19 @@
+--- client.lua.orig	2009-12-19 17:32:28.000000000 -0330
++++ client.lua	2009-12-22 19:09:13.000000000 -0330
+@@ -435,6 +435,8 @@
+ -- @param c Optional client to toggle, otherwise the focused one is used.
+ function toggletag(target, c)
+     local sel = c or capi.client.focus
++    local refocus = nil
++    if sel == capi.client.focus then refocus = true end
+     -- Check that tag and client screen are identical
+     if sel and sel.screen == target.screen then
+         local tags = sel:tags()
+@@ -453,6 +455,7 @@
+             tags[#tags + 1] = target
+         end
+         sel:tags(tags)
++        if refocus == true then capi.client.focus = sel end
+     end
+ end
+ 

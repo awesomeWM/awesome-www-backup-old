@@ -1,0 +1,348 @@
+/* gcc -Wall -Wextra print_randr_events.c $(pkg-config --cflags --libs xcb-randr) -std=c99 */
+
+#define _POSIX_C_SOURCE 200809L
+
+#include <xcb/randr.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+static xcb_connection_t *c;
+static xcb_screen_t *screen;
+
+static size_t num_crtc_info = 0;
+static struct crtc_info_t **crtc_info = NULL;
+
+struct crtc_info_t {
+	xcb_randr_crtc_t crtc;
+	int16_t x, y;
+	uint16_t width, height;
+
+	size_t num_outputs;
+	struct output_info_t **outputs;
+};
+
+struct output_info_t {
+	xcb_randr_output_t output;
+	char *name;
+	uint32_t mm_width, mm_height;
+};
+
+static void die(const char *c)
+{
+	fputs(c, stderr);
+	exit(1);
+}
+
+static void *alloc(size_t size)
+{
+	void *res = calloc(size, 1);
+	if (!res)
+		die("Out of memory");
+	return res;
+}
+
+static void *resize(void *ptr, size_t size)
+{
+	void *res = realloc(ptr, size);
+	if (!res)
+		die("Out of memory");
+	return res;
+}
+
+static void free_output(struct output_info_t *output)
+{
+	free(output->name);
+	free(output);
+}
+
+static struct crtc_info_t *add_crtc(xcb_randr_crtc_t crtc, int16_t x, int16_t y, uint16_t width, uint16_t height)
+{
+	struct crtc_info_t *info = alloc(sizeof(*info));
+	info->crtc = crtc;
+	info->x = x;
+	info->y = y;
+	info->width = width;
+	info->height = height;
+	info->num_outputs = 0;
+	info->outputs = NULL;
+
+	crtc_info = resize(crtc_info, sizeof(*crtc_info) * (num_crtc_info + 1));
+	crtc_info[num_crtc_info++] = info;
+	return info;
+}
+
+static void remove_crtc(struct crtc_info_t *crtc)
+{
+	for (size_t idx = 0; idx < num_crtc_info; idx++)
+		if (crtc_info[idx] == crtc) {
+			/* Remove from list */
+			num_crtc_info--;
+			memmove(&crtc_info[idx], &crtc_info[idx+1], (num_crtc_info - idx) * sizeof(*crtc_info));
+			/* Could realloc() here... but I'm lazy */
+
+			/* And clean up */
+			for (idx = 0; idx < crtc->num_outputs; idx++)
+				free_output(crtc->outputs[idx]);
+			free(crtc->outputs);
+			free(crtc);
+			return;
+		}
+
+	fprintf(stderr, "ERROR: This cannot happen. Trying to remove a CRTC that is not in the list (0x%08x)\n",
+			crtc->crtc);
+}
+
+static struct crtc_info_t *find_crtc(xcb_randr_crtc_t crtc)
+{
+	for (size_t idx = 0; idx < num_crtc_info; idx++)
+		if (crtc_info[idx]->crtc == crtc)
+			return crtc_info[idx];
+	return NULL;
+}
+
+static void unlink_output(struct crtc_info_t *info, struct output_info_t *output)
+{
+	for (size_t idx = 0; idx < info->num_outputs; idx++)
+		if (info->outputs[idx] == output) {
+			/* Remove from list */
+			info->num_outputs--;
+			memmove(&info->outputs[idx], &info->outputs[idx+1], (info->num_outputs - idx) * sizeof(*crtc_info));
+			/* Could realloc() here... but I'm lazy */
+			return;
+		}
+
+	fprintf(stderr, "ERROR: This cannot happen. Trying to remove a output that is not in the list (0x%08x)\n",
+			output->output);
+}
+
+static void link_output(struct crtc_info_t *info, struct output_info_t *output)
+{
+	info->outputs = resize(info->outputs, sizeof(*info->outputs) * (info->num_outputs + 1));
+	info->outputs[info->num_outputs++] = output;
+}
+
+static void update_output(struct output_info_t *output)
+{
+	xcb_randr_get_output_info_reply_t *output_info = xcb_randr_get_output_info_reply(c,
+			xcb_randr_get_output_info(c, output->output, XCB_CURRENT_TIME),
+			NULL);
+	if (!output_info)
+		die("GetOutputInfo failed");
+	free(output->name);
+
+	output->mm_width = output_info->mm_width;
+	output->mm_height = output_info->mm_height;
+	output->name = strndup((char *) xcb_randr_get_output_info_name(output_info), xcb_randr_get_output_info_name_length(output_info));
+
+	free(output_info);
+}
+
+static struct output_info_t *add_output(struct crtc_info_t *info, xcb_randr_output_t output)
+{
+	struct output_info_t *result = alloc(sizeof(*result));
+
+	result->output = output;
+	result->name = NULL;
+	update_output(result);
+
+	link_output(info, result);
+	return result;
+}
+
+static struct output_info_t *find_output(struct crtc_info_t *info, xcb_randr_output_t output)
+{
+	for (size_t idx = 0; idx < info->num_outputs; idx++)
+		if (info->outputs[idx]->output == output)
+			return info->outputs[idx];
+	return NULL;
+}
+
+static struct output_info_t *find_output_any(xcb_randr_output_t output, struct crtc_info_t **crtc)
+{
+	for (size_t idx = 0; idx < num_crtc_info; idx++) {
+		struct output_info_t *res = find_output(crtc_info[idx], output);
+		if (res) {
+			*crtc = crtc_info[idx];
+			return res;
+		}
+	}
+	return NULL;
+}
+
+static void print_state(FILE *f)
+{
+	fprintf(f, "Current state:\n");
+	for (size_t i = 0; i < num_crtc_info; i++) {
+		struct crtc_info_t *crtc = crtc_info[i];
+		fprintf(f, "  CRTC 0x%08x at (%d, %d) with size (%d, %d) and outputs ",
+				crtc->crtc, crtc->x, crtc->y, crtc->width, crtc->height);
+		for (size_t j = 0; j < crtc->num_outputs; j++) {
+			struct output_info_t *output = crtc->outputs[j];
+			fprintf(f, "[0x%08x with size in mm (%d, %d) and name \"%s\"] ",
+					output->output, output->mm_width, output->mm_height, output->name);
+		}
+		fputc('\n', f);
+	}
+}
+
+static void handle_crtc_change(xcb_randr_crtc_change_t *event)
+{
+	struct crtc_info_t *info = find_crtc(event->crtc);
+	if (event->mode == XCB_NONE) {
+		/* CRTC disabled */
+		if (info)
+			remove_crtc(info);
+
+		printf("CRTC 0x%08x disabled\n", event->crtc);
+	} else {
+		/* CRTC enabled/changed */
+		if (info) {
+			info->x = event->x;
+			info->y = event->y;
+			info->width = event->width;
+			info->height = event->height;
+		} else
+			info = add_crtc(event->crtc, event->x, event->y, event->width, event->height);
+
+		/* Update size from event->x etc, possible need to add CRTC */
+		printf("CRTC 0x%08x now has geometry (%d, %d), (%d, %d)\n",
+				event->crtc, event->x, event->y, event->width, event->height);
+	}
+	print_state(stdout);
+}
+
+static void handle_output_change(xcb_randr_output_change_t *event)
+{
+	struct crtc_info_t *crtc;
+	struct output_info_t *output = find_output_any(event->output, &crtc);
+	if (!output) {
+		if (event->crtc == XCB_NONE) {
+			fprintf(stderr, "ERROR: Unknown output 0x%08x now disconnected\n", event->output);
+			return;
+		}
+		crtc = find_crtc(event->crtc);
+		if (!crtc) {
+			fprintf(stderr, "ERROR: Got output change event for output 0x%08x connected to unknown CRTC 0x%08x\n",
+					event->output, event->crtc);
+			return;
+		}
+		output = add_output(crtc, event->output);
+	} else {
+		if (crtc->crtc != event->crtc)
+			unlink_output(crtc, output);
+		if (event->crtc != XCB_NONE) {
+			struct crtc_info_t *new_crtc = find_crtc(event->crtc);
+			if (!new_crtc) {
+				fprintf(stderr, "ERROR: Output 0x%08x moved to unknown CRTC 0x%08x\n",
+						event->output, event->crtc);
+				free_output(output);
+				return;
+			}
+			link_output(new_crtc, output);
+		} else {
+			free_output(output);
+			output = NULL;
+		}
+	}
+	if (output)
+		update_output(output);
+
+	printf("output 0x%08x on CRTC 0x%08x changed\n", event->output, event->crtc);
+	print_state(stdout);
+}
+
+static void handle_event(xcb_generic_event_t *ev)
+{
+	const xcb_query_extension_reply_t *randr;
+	uint8_t type = ev->response_type & 0x7f;
+	int sent = !!(ev->response_type & 0x80);
+
+	randr = xcb_get_extension_data(c, &xcb_randr_id);
+	if (type == randr->first_event + XCB_RANDR_NOTIFY) {
+		xcb_randr_notify_event_t *event = (void *) ev;
+		switch (event->subCode) {
+		case XCB_RANDR_NOTIFY_CRTC_CHANGE:
+			handle_crtc_change(&event->u.cc);
+			break;
+		case XCB_RANDR_NOTIFY_OUTPUT_CHANGE:
+			handle_output_change(&event->u.oc);
+			break;
+		default:
+			fprintf(stderr, "Unhandled RandR Notify event of subcode %d\n", event->subCode);
+		}
+		return;
+	}
+
+	fprintf(stderr, "Unhandled event of type %d%s\n", type, sent ? " (generated)" : "");
+}
+
+static void query_state(void)
+{
+	xcb_randr_get_screen_resources_reply_t *screen_res_r = xcb_randr_get_screen_resources_reply(c,
+			xcb_randr_get_screen_resources(c, screen->root), NULL);
+	if (!screen_res_r || screen_res_r->num_crtcs < 1)
+		die("Something wrong with GetScreenResources");
+
+	xcb_randr_crtc_t *randr_crtcs = xcb_randr_get_screen_resources_crtcs(screen_res_r);
+	for(int i = 0; i < screen_res_r->num_crtcs; i++) {
+		xcb_randr_get_crtc_info_reply_t *crtc_info = xcb_randr_get_crtc_info_reply(c,
+				xcb_randr_get_crtc_info(c, randr_crtcs[i], screen_res_r->config_timestamp),
+				NULL);
+		/* Only if the CRTC is active */
+		if (crtc_info->mode != XCB_NONE) {
+			struct crtc_info_t *info = add_crtc(randr_crtcs[i], crtc_info->x, crtc_info->y, crtc_info->width, crtc_info->height);
+
+			int outputs = xcb_randr_get_crtc_info_outputs_length(crtc_info);
+			xcb_randr_output_t *randr_outputs = xcb_randr_get_crtc_info_outputs(crtc_info);
+			for(int j = 0; j < outputs; j++) {
+				add_output(info, randr_outputs[i]);
+			}
+		}
+		free(crtc_info);
+	}
+
+	free(screen_res_r);
+}
+
+static void setup_randr(void)
+{
+	const xcb_query_extension_reply_t *query;
+	xcb_randr_query_version_reply_t *version;
+
+	query = xcb_get_extension_data(c, &xcb_randr_id);
+	if (!query || !query->present)
+		die("RandR not present");
+
+	version = xcb_randr_query_version_reply(c,
+			xcb_randr_query_version(c, XCB_RANDR_MAJOR_VERSION, XCB_RANDR_MINOR_VERSION),
+			NULL);
+	if (!version || version->major_version < 1 || (version->major_version == 1 && version->minor_version < 2))
+		die("RandR too old");
+
+	xcb_randr_select_input(c, screen->root, XCB_RANDR_NOTIFY_MASK_CRTC_CHANGE | XCB_RANDR_NOTIFY_MASK_OUTPUT_CHANGE);
+}
+
+int main(void)
+{
+	xcb_generic_event_t *ev;
+
+	c = xcb_connect(NULL, NULL);
+	if (xcb_connection_has_error(c)) {
+		die("Error while connecting");
+	}
+
+	screen = xcb_setup_roots_iterator(xcb_get_setup(c)).data;
+	setup_randr();
+	query_state();
+	print_state(stdout);
+	xcb_flush(c);
+
+	while ((ev = xcb_wait_for_event(c)) != NULL) {
+		handle_event(ev);
+		free(ev);
+	}
+
+	xcb_disconnect(c);
+	return 0;
+}

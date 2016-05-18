@@ -1,0 +1,25 @@
+From c1083a591dc59309fe8594b4cb54f086f819143f Mon Sep 17 00:00:00 2001
+From: dodo <dodo@blacksec.org>
+Date: Wed, 19 Oct 2011 14:03:40 +0200
+Subject: [PATCH] awful.widget.common: avoid giving text all space because it
+ missbehaves in tasklist
+
+---
+ lib/awful/widget/common.lua.in |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/lib/awful/widget/common.lua.in b/lib/awful/widget/common.lua.in
+index f7e008a..9d2d9a8 100644
+--- a/lib/awful/widget/common.lua.in
++++ b/lib/awful/widget/common.lua.in
+@@ -52,7 +52,6 @@ function common.list_update(w, buttons, label, data, objects)
+             l = wibox.layout.fixed.horizontal()
+ 
+             -- All of this is added in a fixed widget
+-            l:fill_space(true)
+             l:add(ib)
+             l:add(m)
+ 
+-- 
+1.7.6.3
+

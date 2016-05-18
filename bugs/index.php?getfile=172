@@ -1,0 +1,24 @@
+diff --git a/awesomeConfig.cmake b/awesomeConfig.cmake
+index 610025e..0c874be 100644
+--- a/awesomeConfig.cmake
++++ b/awesomeConfig.cmake
+@@ -164,6 +164,9 @@ endmacro()
+ # Check for libev
+ a_find_library(LIB_EV ev)
+ 
++# Check for libiconv. If it's not found we assume it's part of the libc.
++find_library(LIB_ICONV iconv)
++
+ # Error check
+ if(NOT LUA51_FOUND AND NOT LUA50_FOUND) # This is a workaround to a cmake bug
+     message(FATAL_ERROR "lua library not found")
+@@ -173,7 +176,8 @@ set(AWESOME_REQUIRED_LIBRARIES
+     ${AWESOME_COMMON_REQUIRED_LIBRARIES}
+     ${AWESOME_REQUIRED_LIBRARIES}
+     ${LIB_EV}
+-    ${LUA_LIBRARIES})
++    ${LUA_LIBRARIES}
++    ${LIB_ICONV})
+ 
+ set(AWESOME_REQUIRED_INCLUDE_DIRS
+     ${AWESOME_COMMON_REQUIRED_INCLUDE_DIRS}

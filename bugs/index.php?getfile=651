@@ -1,0 +1,13 @@
+Screen 0: minimum 8 x 8, current 3200 x 1080, maximum 8192 x 8192
+LVDS-0 connected 1280x800+0+0 (normal left inverted right x axis y axis) 286mm x 179mm
+   1280x800       60.2*+
+DP-0 connected 1920x1080+1280+0 (normal left inverted right x axis y axis) 510mm x 290mm
+   1920x1080      60.0*+
+   1680x1050      60.0  
+   1280x1024      75.0     60.0  
+   1280x960       60.0  
+   1152x864       75.0  
+   1024x768       75.0     60.0  
+   800x600        75.0     60.3     56.2  
+   640x480        75.0     59.9  
+DP-1 disconnected (normal left inverted right x axis y axis)

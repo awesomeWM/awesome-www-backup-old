@@ -1,0 +1,23 @@
+diff --git a/lib/wibox/layout/flex.lua.in b/lib/wibox/layout/flex.lua.in
+index 9fe2a45..731e151 100644
+--- a/lib/wibox/layout/flex.lua.in
++++ b/lib/wibox/layout/flex.lua.in
+@@ -79,6 +79,9 @@ end
+ function flex:fit(orig_width, orig_height)
+     local used_max = 0
+     local used_in_dir = self.dir == "y" and orig_height or orig_width
++    -- Figure out the maximum size we can give out to sub-widgets
++    local sub_height = self.dir == "x" and orig_height or floor(orig_height / #self.widgets)
++    local sub_width  = self.dir == "y" and orig_width  or floor(orig_width  / #self.widgets)
+ 
+     if self._max_widget_size then
+         used_in_dir = math.min(used_in_dir,
+@@ -86,7 +89,7 @@ function flex:fit(orig_width, orig_height)
+     end
+ 
+     for k, v in pairs(self.widgets) do
+-        local w, h = v:fit(orig_width, orig_height)
++        local w, h = v:fit(sub_width, sub_height)
+         local max
+         if self.dir == "y" then
+             max = w

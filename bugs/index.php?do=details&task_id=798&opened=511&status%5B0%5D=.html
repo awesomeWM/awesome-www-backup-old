@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#798 : handling modal windows</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=798&amp;opened=511&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=821&amp;opened=511&amp;status%5B0%5D=" title="Won&#039;t fix | xcompmgr and awesome menus | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=511&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=790&amp;opened=511&amp;status%5B0%5D=" title="Deferred | Handling windows from Java applications | 0%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#798 - handling modal windows  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a>     	 - Friday, 13 August 2010, 14:04 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Unconfirmed               			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/3.4</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-0.png"
+				title="0% complete"
+				alt="0%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> (2010-08-13)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">Now modal windows (_NET_WM_STATE = _NET_WM_STATE_MODAL) have curious handling in awesome... When you click on parent window (WM_TRANSIENT_FOR) it takes focus on short time and then (almost immediately) focus returns to modal window.<br />
+This makes problems in window navigation from keyboard, because you cannot walk over window cycle (using Mod+j, Mid+k in default config) in both direction, and when you have two applications in one tag with opened modal windows - you cannot reach from keyboard window outside windows between these two applications at all.<br />
+Also there is a bug which sometimes allow to give focus to parent window persistently (for long time, but any action will return focus back). Please, try to open any modal window and switch to parent window (Mod+k), most time windows will blink and focus will return to modal window, but after ten attempts I usually can reach to parent window (give focus to it), the same I can reproduce from mouse, but a bit harder. This isn&#039;t proper behavior for modal windows and produce problems in some applications.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+  
+  <div id="actionbuttons">
+	 
+	 
+	 
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (10)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment2227" id="comment2227"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2227">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Friday, 13 August 2010, 15:40 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">One bug per bug report, thanks. :/<br />
+<br />
+From the window manager point of view:<br />
+<br />
+Ok, let&#039;s focus this window here..... WTF? Something is focused this window here instead? No idea who or why did that but ok, I&#039;ll try to live with it.<br />
+<br />
+No idea why you managed to make the focus stick to the &quot;wrong&quot; window. Also, I just tried gvim&#039;s open file dialog. It does have _NET_WM_STATE_MODAL and if I focus the gvim main window it just works. The window gets the focus and nothing tries to fight the WM....</div></div>
+
+  
+    <em>
+    <a name="comment2228" id="comment2228"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2228">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Friday, 13 August 2010, 18:33 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">One bug and one related feature request. All related stuff in one place ;)<br />
+I&#039;ve tried gvim too, it seems like there is a different situation in GTK-stuff: you can focus parent window despite opened modal dialog. As for me, this isn&#039;t right too. But in KDE-stuff situation is more worse: it seems like &quot;clever&quot; KDE detect incorrect behavior with modal window (retrieving focus by parent window) provided by WM and try to repair this by itself - it give focus to modal dialog. So, in result, we cannot walk through windows in one direction and see blinking.</div></div>
+
+  
+    <em>
+    <a name="comment2232" id="comment2232"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2232">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Saturday, 14 August 2010, 11:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Hm. So should we enforce modality in awesome? We could make the &quot;focusable&quot; property of windows that have a modal window pointing at them false, that would fix the Mod+j/k problems. No idea what should be done about trying to focus such a window directly...</div></div>
+
+  
+    <em>
+    <a name="comment2237" id="comment2237"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2237">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Sunday, 15 August 2010, 18:18 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If you think that focusable parent windows can be useful for some users - it&#039;s reasonable to make this configurable from lua. But I can see anything useful, parent window of modal one doesn&#039;t receive events even if it is focused, so I cannot select text or ether in gvim when open dialog exists. Many WM&#039;s not only prevent giving focus to parent window, they also give focus to modal window when you click to parent window... this is proper UX-design.</div></div>
+
+  
+    <em>
+    <a name="comment2252" id="comment2252"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2252">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 18 August 2010, 16:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t think that a focusable parent is useful. I just don&#039;t know what a good fix would be. If we automatically focused the modal window instead of the &quot;parent window&quot;, imagine the following window order:<br />
+<br />
+winA, winB, modal for winB, modal for winC, winC<br />
+<br />
+modal for winC has the focus. Via mod4+j/k (&quot;tabbing&quot;) you can not focus winA since when you try to pass by winB, its modal window gets the focus. Same with winC.</div></div>
+
+  
+    <em>
+    <a name="comment2253" id="comment2253"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2253">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Wednesday, 18 August 2010, 16:37 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I don&#039;t think this is a problem with modal windows, but rather with windows having the WM_TRANSIENT_FOR property. This one are treated differently in the stack code, IIRC.</div></div>
+
+  
+    <em>
+    <a name="comment2254" id="comment2254"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2254">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Wednesday, 18 August 2010, 16:52 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">The gvim &quot;open file&quot; dialog that was mentioned previously has this:<br />
+<br />
+$ xprop | egrep &#039;TRANS|MODA&#039;<br />
+_NET_WM_STATE(ATOM) = _NET_WM_STATE_MODAL<br />
+WM_TRANSIENT_FOR(WINDOW): window id # 0x2a00003<br />
+<br />
+Also, this bug talks about focusing windows. The stack code doesn&#039;t care about the focus (well, for fullscreen clients it does...).</div></div>
+
+  
+    <em>
+    <a name="comment2260" id="comment2260"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2260">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Thursday, 19 August 2010, 09:23 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; winA, winB, modal for winB, modal for winC, winC<br />
+&gt; modal for winC has the focus. Via mod4+j/k (&quot;tabbing&quot;) you can not focus winA since when you try to pass by winB, its modal window gets the focus. Same with winC.<br />
+No-no-no... This is behavior we now have with KDE-applications in awesome.<br />
+See like other WM&#039;s treat in such situation - often they interpret parent window with it&#039;s modal window as one window (for switching in user interface).<br />
+So, in your case if you want to reach winA from winC (modal for winC) at the best you have to do one awful.client.focus.byidx(1) or two awful.client.focus.byidx(-1). And when use click by mouse on any winB (parent or modal), as for me (and this is common rule of UX), it&#039;s right if WM will raise parent window, then raise modal window and give focus to modal window. And in any case don&#039;t separate modal window from it&#039;s parent one while switching (through Mod+j/k, Mod+Tab, etc.), this is one instance for user, this in main idea of modal windows. I even hide modal dialogs from taskbar in my rc.lua.<br /></div></div>
+
+  
+    <em>
+    <a name="comment2261" id="comment2261"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2261">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Thursday, 19 August 2010, 10:14 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; winA, winB, modal for winB, modal for winC, winC<br />
+&gt; modal for winC has the focus. Via mod4+j/k (&quot;tabbing&quot;) you can not focus winA since when you try to pass by winB, its modal window gets the focus. Same with winC.<br />
+No-no-no... This is behavior we now have with KDE-applications in awesome.<br />
+See like other WM&#039;s treat in such situation - often they interpret parent window with it&#039;s modal window as one window (for switching in user interface).<br />
+So, in your case if you want to reach winA from winC (modal for winC) at the best you have to do one awful.client.focus.byidx(1) or two awful.client.focus.byidx(-1). And when use click by mouse on any winB (parent or modal), as for me (and this is common rule of UX), it&#039;s right if WM will raise parent window, then raise modal window and give focus to modal window. And in any case don&#039;t separate modal window from it&#039;s parent one while switching (through Mod+j/k, Mod+Tab, etc.), this is one instance for user, this in main idea of modal windows. I even hide modal dialogs from taskbar in my rc.lua.<br /></div></div>
+
+  
+    <em>
+    <a name="comment2371" id="comment2371"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#comment2371">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=511">Roman Kosenko (kite)</a> -
+    Friday, 17 September 2010, 13:09 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">One more requirement: modal window should be shown in the same tag/screen as parent window.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=798#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="798" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

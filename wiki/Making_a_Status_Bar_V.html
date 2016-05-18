@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Making a Status Bar V - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Making_a_Status_Bar_V" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/w/skins/MonoBook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/w/skins/MonoBook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Making_a_Status_Bar_V","wgTitle":"Making a Status Bar V","wgCurRevisionId":1337,"wgRevisionId":1337,"wgArticleId":31,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":["StatusBars","Awesome2"],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Making_a_Status_Bar_V","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Making_a_Status_Bar_V skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Making a Status Bar V</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Use_the_Source.2C_Luke"><span class="tocnumber">1</span> <span class="toctext">Use the Source, Luke</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Get_the_Source"><span class="tocnumber">1.1</span> <span class="toctext">Get the Source</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#Modify_the_Source"><span class="tocnumber">1.2</span> <span class="toctext">Modify the Source</span></a>
+<ul>
+<li class="toclevel-3 tocsection-4"><a href="#Alternate_Patch"><span class="tocnumber">1.2.1</span> <span class="toctext">Alternate Patch</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2 tocsection-5"><a href="#Compile_the_Source"><span class="tocnumber">1.3</span> <span class="toctext">Compile the Source</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#Use_Your_Newly_Compiled_Conky"><span class="tocnumber">1.4</span> <span class="toctext">Use Your Newly Compiled Conky</span></a></li>
+<li class="toclevel-2 tocsection-7"><a href="#Debian_package"><span class="tocnumber">1.5</span> <span class="toctext">Debian package</span></a></li>
+<li class="toclevel-2 tocsection-8"><a href="#Using_an_init_script"><span class="tocnumber">1.6</span> <span class="toctext">Using an init script</span></a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+<h1><span class="mw-headline" id="Use_the_Source.2C_Luke">Use the Source, Luke</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=1" title="Edit section: Use the Source, Luke">edit</a><span class="mw-editsection-bracket">]</span></span></h1>
+<p>Ok, here's how to get conky working with awesome.
+</p><p>This is what I did on my system (debian lenny/sid) and it works!
+</p>
+<h2><span class="mw-headline" id="Get_the_Source">Get the Source</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=2" title="Edit section: Get the Source">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li> Get the source archive from Conky's <a rel="nofollow" class="external text" href="http://conky.sourceforge.net/">SourceForge</a> site</li></ul>
+<h2><span class="mw-headline" id="Modify_the_Source">Modify the Source</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=3" title="Edit section: Modify the Source">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li> Edit conky.c using your editor of choice</li>
+<li> Find this block (line numbers are for reference only):</li></ul>
+<pre>
+5800:	if (out_to_console) {
+5801:		printf(&quot;%s\n&quot;, s);
+5802:		fflush(stdout);   /* output immediately, don't buffer */
+5803:	}
+</pre>
+<ul><li> Modify this line:</li></ul>
+<pre>5801:		printf(&quot;%s\n&quot;, s);</pre>
+<p>to read:
+</p>
+<pre>5801:		printf(&quot;%s\n\n&quot;, s); //Note the extra newline!</pre>
+<ul><li> Save it</li></ul>
+<h3><span class="mw-headline" id="Alternate_Patch">Alternate Patch</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=4" title="Edit section: Alternate Patch">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<ul><li> Add the following block to the end of conky.c:draw_text()</li></ul>
+<pre>
+    if (out_to_console) {
+        printf(&quot;\n&quot;);
+        fflush(stdout);
+    }
+</pre>
+<h2><span class="mw-headline" id="Compile_the_Source">Compile the Source</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=5" title="Edit section: Compile the Source">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li> Configure your newly modified conky:</li></ul>
+<pre>
+$ ./configure --disable-x11
+</pre>
+<ul><li> Compile it:</li></ul>
+<pre>
+$ make
+</pre>
+<ul><li> Install it:</li></ul>
+<pre>
+$ sudo make install
+</pre>
+<h2><span class="mw-headline" id="Use_Your_Newly_Compiled_Conky">Use Your Newly Compiled Conky</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=6" title="Edit section: Use Your Newly Compiled Conky">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li> Edit ~/.awesomerc, and add the following:  </li></ul>
+<pre>
+statusbar &quot;bottom&quot; {
+    position = &quot;bottom&quot;
+    height = 18
+    width = 0
+    textbox cpulabel {
+    }
+    graph cpugraph {
+        data {
+            max = 100.0
+            style = &quot;bottom&quot;
+            fg = &quot;#006e96&quot;
+        }
+        bg = &quot;#000000&quot;
+        width = 100
+        align = &quot;left&quot;
+    }
+}
+</pre>
+<ul><li> Create/Edit ~/.conkyrc:</li></ul>
+<pre>
+background no
+no_buffers yes
+out_to_console yes
+update_interval 1 
+uppercase no
+use_spacer no
+total_run_times 0
+TEXT
+0 widget_tell cpulabel cpu:
+0 widget_tell cpugraph ${cpu cpu0}
+</pre>
+<ul><li> Edit ~/.xinitrc:</li></ul>
+<pre>
+conky | awesome-client &amp;
+exec awesome
+</pre>
+<ul><li> Restart and enjoy!</li></ul>
+<p>--<a href="/wiki/User:Cciulla" title="User:Cciulla">Cciulla</a> 02:54, 4 March 2008 (CET)
+</p><p><br />
+</p>
+<h2><span class="mw-headline" id="Debian_package">Debian package</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=7" title="Edit section: Debian package">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Download a debian package of the patched (working) conky 1.5.1 <a rel="nofollow" class="external text" href="http://liksom.info/conky_1.5.1-1_i386.deb">here</a>, tested with current 32bit i386 etch, lenny and sid, just download and do the usual
+</p>
+<pre>
+wget http://liksom.info/conky_1.5.1-1_i386.deb
+sudo dpkg -i conky_1.5.1-1_i386.deb
+</pre>
+<p>--<a href="/w/index.php?title=User:Snauth&amp;action=edit&amp;redlink=1" class="new" title="User:Snauth (page does not exist)">Snauth</a> 09:46, 2 May 2008 (UTC)
+</p><p>Now Lenny has conky 1.6.0 and sid version 1.6.1-1. To patch the current version of Debian install devscripts and fakeroot, add the appropriate deb-src to /etc/apt/sources.list and follow this steps (tested with Sid):
+</p>
+<pre>
+apt-get source conky
+sudo aptitude build-dep conky
+cd conky-1.6.1
+patch -p1
+--- a/debian/rules    2008-10-19 17:13:03.000000000 +0200
++++ b/debian/rules  2008-10-19 17:09:52.701443644 +0200
+@@ -52,7 +52,7 @@
+ 	  --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) \
+ 	  --prefix=/usr --sysconfdir=/etc \
+ 	  --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info \
+-	  --enable-debug --enable-rss $(EXTRA_CONF_ARGS)
++	  --enable-debug --enable-rss --disable-x11 $(EXTRA_CONF_ARGS)
+ 	
+ 	touch debian/configure-stamp
+ 
+^D
+cat &gt;debian/patches/conky_in_awesome
+--- a/src/conky.c     2008-08-14 19:10:43.000000000 +0200
++++ b/src/conky.c   2008-10-19 17:10:03.702070526 +0200
+@@ -6672,7 +6672,7 @@
+ 
+ 	width_of_s = get_string_width(s);
+ 	if ((output_methods &amp; TO_STDOUT) &amp;&amp; draw_mode == FG) {
+-		printf(&quot;%s\n&quot;, s);
++		printf(&quot;%s\n\n&quot;, s);
+ 		fflush(stdout);	/* output immediately, don't buffer */
+ 	}
+ 	memset(tmpstring1, 0, text_buffer_size);
+^D
+echo conky_in_awesome &gt;&gt; debian/patches/series
+dch -l awesome &quot;Patched to work with awesome&quot;
+dpkg-buildpackage
+sudo debi
+</pre>
+<p>^D means "Hit control+D". Currently, I don't have a place to upload the final conky_1.6.1-1awesome1_i386.deb, so you have to manually apply this steps. If somebody can upload it somewhere, we could change this manual thing to something similar to what Snauth described.
+</p><p>--<a href="/w/index.php?title=User:Cibervicho&amp;action=edit&amp;redlink=1" class="new" title="User:Cibervicho (page does not exist)">Vicho</a> 15:34, 19 October 2008 (UTC)
+</p>
+<h2><span class="mw-headline" id="Using_an_init_script">Using an init script</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit&amp;section=8" title="Edit section: Using an init script">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>I want to run "conky | awesome-client" with more control over the process(es) (for some reason they zombify when my pc hibernates) therefore I start/stop it with this init script:
+</p>
+<pre>
+#! /bin/sh
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/bin/conky.sh
+NAME=conky
+DESC=conky
+USER=your_user_name
+
+#test -x $DAEMON || exit 0
+
+set -e
+
+case &quot;$1&quot; in
+  start)
+        echo -n &quot;Starting $DESC: &quot;
+        start-stop-daemon --background --start --chuid $USER --exec $DAEMON
+       &#160;;;      
+  stop)
+        echo -n &quot;Stopping $DESC: &quot;
+        kill `ps uxc -A | grep -i $NAME | awk '{print $2}'`
+       &#160;;;
+esac
+
+exit 0
+</pre>
+<p>This calls this little shell script conky.sh (necessary to force start-stop-daemon to redirect to awesome-client):
+</p>
+<pre>
+#!/bin/sh
+exec /usr/local/bin/conky | /usr/bin/awesome-client
+</pre>
+<p>--<a href="/w/index.php?title=User:Snauth&amp;action=edit&amp;redlink=1" class="new" title="User:Snauth (page does not exist)">Snauth</a> 09:46, 2 May 2008 (UTC)
+</p>
+<!-- 
+NewPP limit report
+CPU time usage: 0.020 seconds
+Real time usage: 0.025 seconds
+Preprocessor visited node count: 144/1000000
+Preprocessor generated node count: 316/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:31-0!*!0!!en!*!* and timestamp 20160515131751 and revision id 1337
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Making_a_Status_Bar_V&amp;oldid=1337">https://awesomewm.org/w/index.php?title=Making_a_Status_Bar_V&amp;oldid=1337</a>"</div>
+					<div id='catlinks' class='catlinks'><div id="mw-normal-catlinks" class="mw-normal-catlinks"><a href="/wiki/Special:Categories" title="Special:Categories">Categories</a>: <ul><li><a href="/wiki/Category:StatusBars" title="Category:StatusBars">StatusBars</a></li><li><a href="/wiki/Category:Awesome2" title="Category:Awesome2">Awesome2</a></li></ul></div></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Making_a_Status_Bar_V" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk"><a href="/wiki/Talk:Making_a_Status_Bar_V" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Making+a+Status+Bar+V" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Making_a_Status_Bar_V" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Making_a_Status_Bar_V" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-print"><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;oldid=1337" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Making_a_Status_Bar_V&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 19 October 2008, at 17:45.</li>
+									<li id="viewcount">This page has been accessed 9,090 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":111});
+}</script></body></html>

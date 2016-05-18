@@ -1,0 +1,481 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#341 : wine windows loose keyboard focus</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=341&amp;opened=190&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">   <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=343&amp;opened=190&amp;status%5B0%5D=" title="Fixed | unable to set a border on wiboxes | 100%"  id = "prev" accesskey = "p" class = "closedtasklink">Previous task</a>&#160;</del>     |     <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=190&amp;status%5B0%5D=">Tasklist</a>
+   |     <del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=387&amp;opened=190&amp;status%5B0%5D=" title="Implemented | setting and getting selection buffer | 50%"  id = "next" accesskey = "n" class = "closedtasklink">Next task</a>&#160;</del>  </span>
+
+  <h2 class="summary severity3">
+	 FS#341 - wine windows loose keyboard focus  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a>     	 - Tuesday, 07 October 2008, 18:33 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a>	 - Saturday, 25 April 2009, 18:00 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Core		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">Linux</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=40">Michael Kaminsky (kaminsky)</a> (2008-12-08)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">If you focus away from a wine window it looses keyboard input when refocused. For keyboard to work again, I need to click the client.<br />
+<br />
+To reproduce:<br />
+1. run a wine app (eg. notepad)<br />
+2. the client is managed, focused and accepts input<br />
+2. focus away<br />
+3. focus back without clicking the client (sloppy, tag change)<br />
+4. the client is focused but accepts no input until clicked<br />
+<br />
+Tested with Notepad, Foobar2000 and Ableton Live.<br />
+Experienced throughout awesome 3.0rc6 - 3.0+git20081006 with both custom and default configs.<br />
+Wine version 1.1.4 and 1.1.5<br />
+<br />
+<br /></div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a><br />
+      Saturday, 25 April 2009, 18:00 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Seems to be working now, see the last
+comment.        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (7)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (0/0)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment791" id="comment791"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment791">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Tuesday, 14 October 2008, 11:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <ul class="comment_changes">
+      <li>Field changed: Percent Complete (100% &rarr; 0%)</li>
+    </ul>
+    <div class="commenttext">Still the same behavior after recent commits. Same condition tests fine with openbox. I&#039;m all ready to help do some debugging if necessary.</div></div>
+
+  
+    <em>
+    <a name="comment792" id="comment792"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment792">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Tuesday, 14 October 2008, 11:29 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Can you paste me the result of xprop on one of the guilty window?</div></div>
+
+  
+    <em>
+    <a name="comment793" id="comment793"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment793">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Tuesday, 14 October 2008, 12:21 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">xprop:<br />
+<br />
+WM_STATE(WM_STATE):<br />
+		window state: Normal<br />
+		icon window: 0x0<br />
+_AWESOME_TAGS(STRING) = &quot;000000000010&quot;<br />
+_NET_WM_STATE(ATOM) = <br />
+_NET_WM_NAME(UTF8_STRING) = 0x55, 0x6e, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x64, 0x20, 0x2d, 0x20, 0x4e, 0x6f, 0x74, 0x65, 0x70, 0x61, 0x64<br />
+WM_ICON_NAME(STRING) = &quot;Untitled - Notepad&quot;<br />
+WM_NAME(STRING) = &quot;Untitled - Notepad&quot;<br />
+WM_HINTS(WM_HINTS):<br />
+		Client accepts input or input focus: True<br />
+		Initial state is Normal State.<br />
+		bitmap id # to use for icon: 0x1400059<br />
+		bitmap id # of mask for icon: 0x1400058<br />
+		window id # of group leader: 0x1c00005<br />
+_MOTIF_WM_HINTS(_MOTIF_WM_HINTS) = 0x3, 0x3e, 0x7e, 0x33f5ec, 0x7e6cd688<br />
+_NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_NORMAL<br />
+WM_NORMAL_HINTS(WM_SIZE_HINTS):<br />
+		program specified location: 0, 35<br />
+		window gravity: Static<br />
+XdndAware(ATOM) = ATOM<br />
+_NET_WM_PID(CARDINAL) = 29194<br />
+WM_LOCALE_NAME(STRING) = &quot;en_GB.UTF-8&quot;<br />
+WM_CLIENT_MACHINE(STRING) = &quot;booo&quot;<br />
+WM_CLASS(STRING) = &quot;notepad.exe&quot;, &quot;Wine&quot;<br />
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING, WM_TAKE_FOCUS<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+xwininfo: Window id: 0x1c00005 &quot;Untitled - Notepad&quot;<br />
+<br />
+  Absolute upper-left X:  0<br />
+  Absolute upper-left Y:  35<br />
+  Relative upper-left X:  0<br />
+  Relative upper-left Y:  35<br />
+  Width: 1020<br />
+  Height: 729<br />
+  Depth: 24<br />
+  Visual Class: TrueColor<br />
+  Border width: 2<br />
+  Class: InputOutput<br />
+  Colormap: 0x1400001 (not installed)<br />
+  Bit Gravity State: NorthWestGravity<br />
+  Window Gravity State: NorthWestGravity<br />
+  Backing Store State: NotUseful<br />
+  Save Under State: no<br />
+  Map State: IsViewable<br />
+  Override Redirect State: no<br />
+  Corners:  +0+35  -0+35  -0-0  +0-0<br />
+  -geometry 1020x729+0-0</div></div>
+
+  
+    <em>
+    <a name="comment794" id="comment794"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment794">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Tuesday, 14 October 2008, 12:30 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">If you give focus using your keyboard (i.e. mod+j/k) does it work?<br />
+<br />
+Or do you really need to *click* with the mouse to have keyboard input working again?</div></div>
+
+  
+    <em>
+    <a name="comment795" id="comment795"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment795">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Tuesday, 14 October 2008, 12:39 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Nope, re-focusing with keyboard gets the window highlighted, but no keyboard input. From what I&#039;ve experienced so far, clicking the client is the only way to use it again.</div></div>
+
+  
+    <em>
+    <a name="comment965" id="comment965"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment965">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=235">Mariusz Ceier (_nobody_)</a> -
+    Sunday, 21 December 2008, 19:13 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">As for temporary solution you can enable &quot;Allow window manager to manage Wine windows&quot; option, in Graphics tab, using winecfg.<br />
+It should help ( It did for me )<br /></div></div>
+
+  
+    <em>
+    <a name="comment1209" id="comment1209"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#comment1209">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Saturday, 25 April 2009, 17:59 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I had that enabled and still didnt work, it does now however (still wine 1.1.5).<br />
+Since I can&#039;t reproduce this any longer I&#039;m closing the bug.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=341#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (0)</th>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="341" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (0)</th>
+        </tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

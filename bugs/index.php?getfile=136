@@ -1,0 +1,369 @@
+From 851cb60470fe656bce55377a9f0531234598a345 Mon Sep 17 00:00:00 2001
+From: Michael Hofmann <mh21@piware.de>
+Date: Sat, 6 Dec 2008 23:38:11 +0100
+Subject: [PATCH] Split border calculations from titlebar_geometry_* into client_geometry_*.
+
+---
+ client.c            |   20 ++++++++++++--------
+ client.h            |   35 +++++++++++++++++++++++++++++++++++
+ layouts/fair.c      |    2 --
+ layouts/fibonacci.c |    4 ----
+ layouts/magnifier.c |    8 --------
+ layouts/max.c       |    6 ------
+ layouts/tile.c      |   26 ++++++++++++--------------
+ mouse.c             |    6 +++---
+ titlebar.h          |   22 ++--------------------
+ 9 files changed, 64 insertions(+), 65 deletions(-)
+
+diff --git a/client.c b/client.c
+index 2add23c..0e46215 100644
+--- a/client.c
++++ b/client.c
+@@ -572,8 +572,12 @@ client_resize(client_t *c, area_t geometry, bool hints)
+     area_t area;
+     layout_t *layout = layout_get_current(c->screen);
+ 
+-    if(c->titlebar && !c->ismoving && c->titlebar->isvisible && !client_isfloating(c) && layout != layout_floating)
+-        geometry = titlebar_geometry_remove(c->titlebar, c->border, geometry);
++    if /* TODO: floating clients use coordinates without decorations? */
++       (!client_isfloating(c) &&
++        layout != layout_floating &&
++        /* TODO: why? */
++        !c->ismoving)
++        geometry = client_geometry_trim(c->titlebar, c->border, geometry);
+ 
+     if(hints)
+         geometry = client_geometry_hints(c, geometry);
+@@ -1210,16 +1214,16 @@ luaA_client_handlegeom(lua_State *L, bool full)
+                 geometry.height = luaA_getopt_number(L, 2, "height", (*c)->geometry.height);
+             }
+             if(full)
+-                geometry = titlebar_geometry_remove((*c)->titlebar,
+-                                                    (*c)->border,
+-                                                    geometry);
++                geometry = client_geometry_trim((*c)->titlebar,
++                                                (*c)->border,
++                                                geometry);
+             client_resize(*c, geometry, (*c)->honorsizehints);
+         }
+ 
+     if(full)
+-        return luaA_pusharea(L, titlebar_geometry_add((*c)->titlebar,
+-                                                      (*c)->border,
+-                                                      (*c)->geometry));
++        return luaA_pusharea(L, client_geometry_expand((*c)->titlebar,
++                                                       (*c)->border,
++                                                       (*c)->geometry));
+ 
+     return luaA_pusharea(L, (*c)->geometry);
+ }
+diff --git a/client.h b/client.h
+index e495675..1a671ce 100644
+--- a/client.h
++++ b/client.h
+@@ -24,6 +24,7 @@
+ 
+ #include "mouse.h"
+ #include "stack.h"
++#include "titlebar.h"
+ 
+ static void
+ client_delete(client_t **c)
+@@ -153,5 +154,39 @@ client_hasstrut(client_t *c)
+             || c->strut.bottom_end_x);
+ }
+ 
++/** Remove the titlebar geometry and border width from a geometry.
++ * \param t The titlebar.
++ * \param border The client border size.
++ * \param geometry The geometry.
++ * \return A new geometry smaller if the titlebar is visible.
++ */
++static inline area_t
++client_geometry_trim(wibox_t *t, int border, area_t geometry)
++{
++    geometry.width -= 2 * border;
++    geometry.height -= 2 * border;
++
++    geometry = titlebar_geometry_remove(t, border, geometry);
++
++    return geometry;
++}
++
++/** Add the titlebar geometry and border to a geometry.
++ * \param t The titlebar
++ * \param border The client border size.
++ * \param geometry The geometry
++ * \return A new geometry bigger if the titlebar is visible.
++ */
++static inline area_t
++client_geometry_expand(wibox_t *t, int border, area_t geometry)
++{
++    geometry.width += 2 * border;
++    geometry.height += 2 * border;
++
++    geometry = titlebar_geometry_add(t, border, geometry);
++
++    return geometry;
++}
++
+ #endif
+ // vim: filetype=c:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:encoding=utf-8:textwidth=80
+diff --git a/layouts/fair.c b/layouts/fair.c
+index e238e96..a1def46 100644
+--- a/layouts/fair.c
++++ b/layouts/fair.c
+@@ -71,8 +71,6 @@ layout_fair(int screen, const orientation_t orientation)
+                     geometry.x = area.x + strip * geometry.width;
+                     geometry.y = area.y + cell * geometry.height;
+                 }
+-                geometry.width -= 2 * c->border;
+-                geometry.height -= 2 * c->border;
+ 
+                 client_resize(c, geometry, c->honorsizehints);
+ 
+diff --git a/layouts/fibonacci.c b/layouts/fibonacci.c
+index 577c192..7dc34ec 100644
+--- a/layouts/fibonacci.c
++++ b/layouts/fibonacci.c
+@@ -79,11 +79,7 @@ layout_fibonacci(int screen, int shape)
+                     geometry.y = area.y;
+                 i++;
+             }
+-            geometry.width -= 2 * c->border;
+-            geometry.height -= 2 * c->border;
+             client_resize(c, geometry, c->honorsizehints);
+-            geometry.width += 2 * c->border;
+-            geometry.height += 2 * c->border;
+         }
+ }
+ 
+diff --git a/layouts/magnifier.c b/layouts/magnifier.c
+index 4fba8f5..feace98 100644
+--- a/layouts/magnifier.c
++++ b/layouts/magnifier.c
+@@ -69,12 +69,8 @@ layout_magnifier(int screen)
+         geometry.y = area.y + (area.height - geometry.height) / 2;
+     }
+     else
+-    {
+        /* No other clients. */
+         geometry = area;
+-        geometry.width -= 2 * focus->border;
+-        geometry.height -= 2 * focus->border;
+-    }
+     client_resize(focus, geometry, focus->honorsizehints);
+     client_raise(focus);
+ 
+@@ -92,11 +88,7 @@ layout_magnifier(int screen)
+         c = client_list_prev_cycle(&globalconf.clients, c))
+         if(IS_TILED(c, screen) && c != focus)
+         {
+-            geometry.height -= 2 * c->border;
+-            geometry.width -= 2 * c->border;
+             client_resize(c, geometry, c->honorsizehints);
+-            geometry.height += 2 * c->border;
+-            geometry.width += 2 * c->border;
+             geometry.y += geometry.height;
+         }
+ 
+diff --git a/layouts/max.c b/layouts/max.c
+index b2805c8..0f1fe2b 100644
+--- a/layouts/max.c
++++ b/layouts/max.c
+@@ -38,13 +38,7 @@ layout_fmax(int screen, bool fs)
+ 
+     for(c = globalconf.clients; c; c = c->next)
+         if(IS_TILED(c, screen))
+-        {
+-            area.width -= 2 * c->border;
+-            area.height -= 2 * c->border;
+             client_resize(c, area, false);
+-            area.width += 2 * c->border;
+-            area.height += 2 * c->border;
+-        }
+ 
+     if(IS_TILED(globalconf.screens[phys_screen].client_focus, screen))
+         client_raise(globalconf.screens[phys_screen].client_focus);
+diff --git a/layouts/tile.c b/layouts/tile.c
+index b4d4c1e..814a26a 100644
+--- a/layouts/tile.c
++++ b/layouts/tile.c
+@@ -108,8 +108,8 @@ _tile(int screen, const position_t position)
+                 break;
+             }
+ 
+-            geometry.width = mw - 2 * c->border;
+-            geometry.height =  mh - 2 * c->border;
++            geometry.width = mw;
++            geometry.height =  mh;
+ 
+             client_resize(c, geometry, c->honorsizehints);
+         }
+@@ -130,12 +130,11 @@ _tile(int screen, const position_t position)
+             if(position == Right || position == Left)
+             {
+                 if(otherwin <= real_ncol)
+-                    geometry.height = wah - 2 * c->border;
++                    geometry.height = wah;
+                 else
+-                    geometry.height = (wah / (win_by_col + adj_win_by_col)) -
+-                                      2 * c->border;
++                    geometry.height = wah / (win_by_col + adj_win_by_col);
+ 
+-                geometry.width = (waw - mw) / real_ncol - 2 * c->border;
++                geometry.width = (waw - mw) / real_ncol;
+ 
+                 if(otherwin <= real_ncol ||
+                    (i - curtags[0]->nmaster + small_ncol * adj_win_by_col)
+@@ -146,9 +145,9 @@ _tile(int screen, const position_t position)
+                                  ((i - curtags[0]->nmaster +
+                                    small_ncol * adj_win_by_col) %
+                                   (win_by_col + adj_win_by_col)) *
+-                                 (geometry.height + 2 * c->border);
++                                 geometry.height;
+ 
+-                geometry.x = wax + current_col * (geometry.width + 2 * c->border);
++                geometry.x = wax + current_col * geometry.width;
+ 
+                 if(position == Right)
+                     geometry.x += mw;
+@@ -156,12 +155,11 @@ _tile(int screen, const position_t position)
+             else
+             {
+                 if(otherwin <= real_ncol)
+-                    geometry.width = waw - 2 * c->border;
++                    geometry.width = waw;
+                 else
+-                    geometry.width = (waw / (win_by_col + adj_win_by_col)) -
+-                                     2 * c->border;
++                    geometry.width = (waw / (win_by_col + adj_win_by_col));
+ 
+-                geometry.height = (wah - mh) / real_ncol - 2 * c->border;
++                geometry.height = (wah - mh) / real_ncol;
+ 
+                 if(otherwin <= real_ncol ||
+                    (i - curtags[0]->nmaster + small_ncol * adj_win_by_col)
+@@ -172,9 +170,9 @@ _tile(int screen, const position_t position)
+                                  ((i - curtags[0]->nmaster +
+                                    small_ncol * adj_win_by_col) %
+                                   (win_by_col + adj_win_by_col)) *
+-                                 (geometry.width + 2 * c->border);
++                                 geometry.width;
+ 
+-                geometry.y = way + current_col * (geometry.height + 2 * c->border);
++                geometry.y = way + current_col * geometry.height;
+ 
+                 if(position == Bottom)
+                     geometry.y += mh;
+diff --git a/mouse.c b/mouse.c
+index b769966..a01fb97 100644
+--- a/mouse.c
++++ b/mouse.c
+@@ -150,7 +150,7 @@ mouse_snapclient(client_t *c, area_t geometry, int snap)
+                         &globalconf.screens[c->screen].padding,
+                         false);
+ 
+-    geometry = titlebar_geometry_add(c->titlebar, c->border, geometry);
++    geometry = client_geometry_expand(c->titlebar, c->border, geometry);
+ 
+     geometry =
+         mouse_snapclienttogeometry_inside(geometry, screen_geometry, snap);
+@@ -162,14 +162,14 @@ mouse_snapclient(client_t *c, area_t geometry, int snap)
+         if(snapper != c && client_isvisible(snapper, c->screen))
+         {
+             snapper_geometry = snapper->geometry;
+-            snapper_geometry = titlebar_geometry_add(snapper->titlebar, snapper->border, snapper_geometry);
++            snapper_geometry = client_geometry_expand(snapper->titlebar, snapper->border, snapper_geometry);
+             geometry =
+                 mouse_snapclienttogeometry_outside(geometry,
+                                                    snapper_geometry,
+                                                    snap);
+         }
+ 
+-    return titlebar_geometry_remove(c->titlebar, c->border, geometry);
++    return client_geometry_trim(c->titlebar, c->border, geometry);
+ }
+ 
+ /** Set coordinates to a corner of an area.
+diff --git a/titlebar.h b/titlebar.h
+index 8294e3f..75a04e9 100644
+--- a/titlebar.h
++++ b/titlebar.h
+@@ -42,35 +42,26 @@ int luaA_titlebar_newindex(lua_State *, wibox_t *, awesome_token_t);
+ static inline area_t
+ titlebar_geometry_add(wibox_t *t, int border, area_t geometry)
+ {
+-    if(t)
++    if(t && t->isvisible)
+         switch(t->position)
+         {
+           case Top:
+             geometry.y -= t->sw.geometry.height + 2 * t->sw.border.width - border;
+             geometry.height += t->sw.geometry.height + 2 * t->sw.border.width - border;
+-            geometry.width += 2 * border;
+             break;
+           case Bottom:
+             geometry.height += t->sw.geometry.height + 2 * t->sw.border.width - border;
+-            geometry.width += 2 * border;
+             break;
+           case Left:
+             geometry.x -= t->sw.geometry.width + 2 * t->sw.border.width - border;
+             geometry.width += t->sw.geometry.width + 2 * t->sw.border.width - border;
+-            geometry.height += 2 * border;
+             break;
+           case Right:
+             geometry.width += t->sw.geometry.width + 2 * t->sw.border.width - border;
+-            geometry.height += 2 * border;
+             break;
+           default:
+             break;
+         }
+-    else
+-    {
+-        geometry.width += 2 * border;
+-        geometry.height += 2 * border;
+-    }
+ 
+     return geometry;
+ }
+@@ -84,35 +75,26 @@ titlebar_geometry_add(wibox_t *t, int border, area_t geometry)
+ static inline area_t
+ titlebar_geometry_remove(wibox_t *t, int border, area_t geometry)
+ {
+-    if(t)
++    if(t && t->isvisible)
+         switch(t->position)
+         {
+           case Top:
+             geometry.y += t->sw.geometry.height + 2 * t->sw.border.width - border;
+             geometry.height -= t->sw.geometry.height + 2 * t->sw.border.width - border;
+-            geometry.width -= 2 * border;
+             break;
+           case Bottom:
+             geometry.height -= t->sw.geometry.height + 2 * t->sw.border.width - border;
+-            geometry.width -= 2 * border;
+             break;
+           case Left:
+             geometry.x += t->sw.geometry.width + 2 * t->sw.border.width - border;
+             geometry.width -= t->sw.geometry.width + 2 * t->sw.border.width - border;
+-            geometry.height -= 2 * border;
+             break;
+           case Right:
+             geometry.width -= t->sw.geometry.width + 2 * t->sw.border.width - border;
+-            geometry.height -= 2 * border;
+             break;
+           default:
+             break;
+         }
+-    else
+-    {
+-        geometry.width -= 2 * border;
+-        geometry.height -= 2 * border;
+-    }
+ 
+     return geometry;
+ }
+-- 
+1.5.6.3
+

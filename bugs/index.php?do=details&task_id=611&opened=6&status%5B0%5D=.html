@@ -1,0 +1,587 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-AU" xml:lang="en-AU">
+  <head>
+    <title>FS#611 : beautiful race condition when setting wallpapers</title>
+
+    <meta name="description" content="Flyspray, a Bug Tracking System written in PHP." />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+
+    <link rel="icon" type="image/png" href="https://awesomewm.org/bugs/themes/Bluey/favicon.ico" />
+    <link rel="index" id="indexlink" type="text/html" href="https://awesomewm.org/bugs/" />
+        <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/theme.css" rel="stylesheet" type="text/css" />
+    <link media="print"  href="https://awesomewm.org/bugs/themes/Bluey/theme_print.css" rel="stylesheet" type="text/css" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 1.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss1&amp;project=1" />
+    <link rel="alternate" type="application/rss+xml" title="Flyspray RSS 2.0 Feed"
+          href="https://awesomewm.org/bugs/feed.php?feed_type=rss2&amp;project=1" />
+	<link rel="alternate" type="application/atom+xml" title="Flyspray Atom 0.3 Feed"
+	      href="https://awesomewm.org/bugs/feed.php?feed_type=atom&amp;project=1" />
+
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/prototype/prototype.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/script.aculo.us/scriptaculous.js"></script>
+            <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/details.js"></script>
+                <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/tabs.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/functions.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar_stripped.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/calendar-setup_stripped.js"> </script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/jscalendar/lang/calendar-en.js"></script>
+    <script type="text/javascript" src="https://awesomewm.org/bugs/javascript/lightbox/js/lightbox.js"></script>
+    <link rel="stylesheet" href="https://awesomewm.org/bugs/javascript/lightbox/css/lightbox.css" type="text/css" media="screen" />
+    <!--[if IE]>
+    <link media="screen" href="https://awesomewm.org/bugs/themes/Bluey/ie.css" rel="stylesheet" type="text/css" />
+    <![endif]-->
+      </head>
+  <body onload="perms = new Perms('permissions');">
+
+  <div id="container">
+    <!-- Remove this to remove the logo -->
+    <h1 id="title"><a href="https://awesomewm.org/bugs/">awesome</a></h1>
+
+    <div id="menu">
+
+<form id="login" action="https://awesomewm.org/bugs/index.php?do=authenticate" method="post">
+<div>
+  <label for="lbl_user_name">Username</label>
+  <input class="text" type="text" id="lbl_user_name" name="user_name" size="17" maxlength="30" />
+
+  <label for="lbl_password">Password</label>
+  <input class="password" type="password" id="lbl_password" name="password" size="17" maxlength="30" />
+
+  <label for="lbl_remember">Remember me</label>
+  <input type="checkbox" id="lbl_remember" name="remember_login" />
+  
+  <input type="hidden" name="return_to" value="/bugs/index.php?do=details&amp;task_id=611&amp;opened=6&amp;status%5B0%5D=" />
+
+  <button accesskey="l" type="submit">Login!</button>
+
+  <span id="links">
+            <a id="forgotlink" href="https://awesomewm.org/bugs/index.php?do=lostpw">Lost password?</a>
+      </span>
+</div>
+</form>
+</div>
+
+<div id="pm-menu">
+
+<div id="projectselector">
+    <form id="projectselectorform" action="https://awesomewm.org/bugs/index.php" method="get">
+       <div>
+        <select name="project" onChange="document.getElementById('projectselectorform').submit()">
+          <option value="0">All Projects</option>        </select>
+        <button type="submit">Switch</button>
+        <input type="hidden" name="do" value="details" />
+        <input type="hidden" value="1" name="switch" />
+              </div>
+    </form>
+</div>
+
+<ul id="pm-menu-list">
+    <li class="first">
+      <a id="toplevellink" href="https://awesomewm.org/bugs/index.php?do=toplevel&amp;project=1">Overview</a>
+    </li>
+
+    <li>
+    <a id="homelink"
+        href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index">Tasklist</a>
+    </li>
+
+    
+    
+        <li>
+    <a id="roadmaplink"
+        href="https://awesomewm.org/bugs/index.php?do=roadmap&amp;project=1">Roadmap</a>
+    </li>
+    
+    
+    </ul>
+</div>
+
+    
+    <div id="content">
+      <div id="showtask">
+        <form action="https://awesomewm.org/bugs/index.php" method="get">
+          <div>
+            <button type="submit">Show Task #</button>
+            <input id="taskid" name="show_task" class="text" type="text" size="10" accesskey="t" />
+          </div>
+        </form>
+      </div>
+
+      <div class="clear"></div>
+            <div id="intromessage">Welcome to awesome bug tracking system.</div>
+      <div id="taskdetails">
+<span id="navigation">       <a href="https://awesomewm.org/bugs/index.php?project=1&amp;do=index&amp;opened=6&amp;status%5B0%5D=">Tasklist</a>
+    </span>
+
+  <h2 class="summary severity3">
+	 FS#611 - beautiful race condition when setting wallpapers  </h2>
+
+  <div id="fineprint">
+	 Attached to Project:
+	 <a href="/bugs/index.php?project=1">awesome</a>
+	 <br />
+	 Opened by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a>     	 - Monday, 31 August 2009, 02:37 GMT 	 	 <br />
+	 Last edited by  <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a>	 - Thursday, 29 October 2009, 23:56 GMT 	   </div>
+
+  <table><tr><td id="taskfieldscell">
+  <div id="taskfields">
+	 <table>
+		<tr>
+		  <th id="tasktype">Task Type</th>
+		  <td headers="tasktype">Bug Report</td>
+		</tr>
+		<tr>
+		  <th id="category">Category</th>
+		  <td headers="category">
+			 			 Lua libraries &#8594;
+			 			 beautiful		  </td>
+		</tr>
+		<tr>
+		  <th id="status">Status</th>
+		  <td headers="status">
+			 			 Closed			 		  </td>
+		</tr>
+		<tr>
+		  <th id="assignedto">Assigned To</th>
+		  <td headers="assignedto">
+			 			 No-one			 		  </td>
+		</tr>
+		<tr>
+		  <th id="os">Operating System</th>
+		  <td headers="os">All</td>
+		</tr>
+		<tr>
+		  <th id="severity">Severity</th>
+		  <td headers="severity">Medium</td>
+		</tr>
+		<tr>
+		  <th id="priority">Priority</th>
+		  <td headers="priority">Normal</td>
+		</tr>
+		<tr>
+		  <th id="reportedver">Reported Version</th>
+		  <td headers="reportedver">git/master</td>
+		</tr>
+		<tr>
+		  <th id="dueversion">Due in Version</th>
+		  <td headers="dueversion">
+			 			 Undecided			 		  </td>
+		</tr>
+		<tr>
+		  <th id="duedate">Due Date</th>
+		  <td headers="duedate">
+			 Undecided		  </td>
+		</tr>
+		<tr>
+		  <th id="percent">Percent Complete</th>
+		  <td headers="percent">
+			 <img src="https://awesomewm.org/bugs/themes/Bluey/percent-100.png"
+				title="100% complete"
+				alt="100%" />
+		  </td>
+		</tr>
+        <tr class="votes">
+		  <th id="votes">Votes</th>
+		  <td headers="votes">
+                    <a href="javascript:showhidestuff('showvotes')">1 </a>
+          <div id="showvotes" class="hide">
+              <ul class="reports">
+                              <li><a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=6">Nelson A. de Oliveira (naoliv)</a> (2009-09-15)</li>
+                            </ul>
+          </div>
+                              </td>
+        </tr>
+        <tr>
+		  <th id="private">Private</th>
+		  <td headers="private">
+                        No            
+                      </td>
+        </tr>
+        	 </table>
+  </div>
+
+  </td><td>
+
+  <div id="taskdetailsfull">
+	 <h3 class="taskdesc">Details</h3>
+     <div id="taskdetailstext">I&#039;m having a pretty strange issue in which awesome &quot;ignores&quot; my wallpaper_cmd, or more precisely, changes it back to the default as soon as it loads. I do get all colors/fonts/etc from my custom theme.lua.<br />
+<br />
+To reproduce it with default config:<br />
+1. make a copy of the default theme and replace the wallpaper_cmd with something else than the default (eg &quot;xsetroot -solid red&quot;)<br />
+2. make a copy of the default rc.lua and near the top add<br />
+beautiful.init(path_to_modified_theme)<br />
+3. load the config and watch the red for a split second and then back to the default bg<br />
+<br />
+I&#039;ve added io.stderr:write(theme) at the beginning of beautiful.init() and the output has the commands in right order - first the default then the custom.<br />
+<br />
+Adding beautiful.init(path_to_modified_theme) to the end of the rc.lua changes nothing. but once awesome is running, I can run beautiful.init(path_to_modified_theme) from the prompt or awesome-client and the background is set correctly.<br />
+<br />
+I must be doing something wrong.</div>
+
+       
+  </div>
+
+  </td></tr></table>
+
+  <div id="taskinfo">
+	 <div id="taskdeps">
+		<b>This task depends upon</b>
+		<br />
+		
+		<br class="DoNotPrint" />
+
+		
+			 </div>
+
+	 <div id="taskblocks">
+        			 </div>
+  </div>
+
+    <div id="taskclosed">
+      Closed by&nbsp;&nbsp;<a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a><br />
+      Thursday, 29 October 2009, 23:56 GMT <br />
+      <strong>Reason for closing:</strong> &nbsp;Fixed<br />
+            <strong>Additional comments about closing:</strong> &nbsp;Fixed by:
+67e53469563882526ebf2b36c401266ba40a935b
+<br />
+<br />
+Revert &quot;beautiful: init default
+theme by default&quot; and
+&quot;awesomerc: stop handling
+beautiful&quot;<br />
+<br />
+This reverts commit
+42c47eeccee804c138a8d7baed01e893196e7873
+.<br />
+This reverts commit
+4823a1254108b3bd5ec086861080ba97018a3868
+.<br />
+Signed-off-by: Julien Danjou
+&lt;julien@danjou.info&gt;<br />
+<br />
+thanks        </div>
+  
+  <div id="actionbuttons">
+	 
+	 
+	 	   </div>
+</div>
+<ul id="submenu">
+    <li id="commentstab">
+  <a href="#comments">Comments (11)</a>
+  </li>
+  
+  <li id="relatedtab">
+  <a href="#related">Related Tasks (1/1)</a>
+  </li>
+
+  
+  </ul>
+<div id="comments" class="tab">
+    <em>
+    <a name="comment1368" id="comment1368"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1368">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 31 August 2009, 08:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">That&#039;s totally normal: xsetroot does not set a wallpaper, it just paint the default root window with a color. It should not work also in command line. So it&#039;s not a beautiful bug as it is.</div></div>
+
+  
+    <em>
+    <a name="comment1369" id="comment1369"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1369">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Monday, 31 August 2009, 14:28 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">jd, this is really lame, it happens regardless if its xsetroot or awsetbg some.jpg, from your response it looks like you didnt even bother tryint to reproduce even tho there&#039;s clear info on how to do it.</div></div>
+
+  
+    <em>
+    <a name="comment1370" id="comment1370"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1370">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 31 August 2009, 15:01 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Of course I did not try to reproduce, since you say yourself that beautiful does it job:<br />
+&quot;the output has the commands in right order - first the default then the custom&quot;<br />
+<br />
+I do not say the bug does not exist, I just say this is not a beautiful bug, so not our bug. Beautiful calls the provided command. If they fails to change the wallpaper, we cannot do anything about that.<br />
+<br />
+FWIW I tried to reproduce (I&#039;m nice) and it works perfectly. awsetbg uses Esetroot here to set the display, and then xsetroot works like a charm (so another call to awsetbg does anyway). Maybe your WPSETTER used by awsetbg is different than mine and cannot change a second time the wallpaper and/or disallow changes by xsetroot, I really don&#039;t know.<br />
+<br />
+But this is definitively not a bug in awesome.</div></div>
+
+  
+    <em>
+    <a name="comment1371" id="comment1371"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1371">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Monday, 31 August 2009, 15:38 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">&gt; I do not say the bug does not exist, I just say this is not a beautiful bug, so not our bug<br />
+<br />
+Whether this is our bug or not, I&#039;m having issues since you forced loading of the default theme in beautiful (which I&#039;m personally surprised with and I heard the word &#039;gnome&#039; on the irc channel :p).<br />
+<br />
+&gt; If they fails to change the wallpaper<br />
+<br />
+It does change the wallpaper but its overwritten by the default one.<br />
+<br />
+&gt; Maybe your WPSETTER used by awsetbg is different than mine and cannot change a second time the wallpaper and/or disallow changes by xsetroot, I really don&#039;t know.<br />
+<br />
+Once again, this has nothing to do with xsetroot, it was just a simplistic example. <br />
+<br />
+The fact is that the same WPSETTER (feh in my case) is started by awsetbg twice - first with the default background, and then with one in my custom theme but somehow the custom bg is set first (i can see it for a split sec) and the default one overwrites it. <br />
+<br />
+I suspect there is some form of &quot;race condition&quot; and perhaps you&#039;re not seeing it for whatever reason but maybe on other systems (like here) there would be problematic effects of spawning of two commands nearly in parallel - first on require(&quot;beautiful&quot;) and shortly after on beautiful.init(custom_theme) in rc.lua -  whilst not knowing which one will finish first.<br />
+<br />
+Having said that, I will try to investigate a bit more later so please dont kill this bug just yet.</div></div>
+
+  
+    <em>
+    <a name="comment1372" id="comment1372"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1372">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Monday, 31 August 2009, 15:48 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Okay, now that you say &quot;race condition&quot;, that sounds more like our bug to me.<br />
+<br />
+In that case we should probably add some sort of wait() in beautiful when setting the wallpaper.</div></div>
+
+  
+    <em>
+    <a name="comment1380" id="comment1380"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1380">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Wednesday, 02 September 2009, 23:08 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can&#039;t think of a way of tackling this without hassle. To be honest, I&#039;d just revert 4823a1254108b3bd5ec086861080ba97018a3868 and 42c47eeccee804c138a8d7baed01e893196e7873. I see no advantage to these commits apart from the fact that awesomerc.lua.in can be loaded straight as a config file without worrying about @blabla@.<br />
+<br />
+Another disadvantage of implicit theme loading is when someone sets their X background in their display manager and just wants to leave it at that - they&#039;ll see flicker (at the best). In plain words it&#039;s just too obtrusive - I want choice.<br />
+<br />
+On the contrary, it was better prior to those commits when the user could instantly see how to load a theme, where the default one is etc. The educational value of the default rc is important imo.<br />
+<br />
+Worst case scenario maybe we could put the default theme setting function in some kind of startup signal so that we can do sth like:<br />
+awesome.remove_signal(&quot;startup&quot;, beautiful.load_default_theme)<br />
+I have to admit I have no clear idea of how this could work.</div></div>
+
+  
+    <em>
+    <a name="comment1381" id="comment1381"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1381">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 03 September 2009, 08:11 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Simplifying the default rc.lua is a mid-term goal and is also very important. That commit is part of that.<br />
+Providing configuration example and documentation is another goal, both are not incompatible.<br />
+<br />
+To me, the easy fix is to disable the wallpaper in the default theme. And that would make him less intrusive.</div></div>
+
+  
+    <em>
+    <a name="comment1382" id="comment1382"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1382">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=190">koniu (koniu)</a> -
+    Thursday, 03 September 2009, 12:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">I can&#039;t see how removing two lines of obvious, intuitive code contributes to simplifying anything. Like I said before I think it has an opposite effect forcing users to wonder &#039;how do I change these ugly colors&#039; and have to resort to api docs just for that.<br />
+<br />
+As for the &#039;easy fix&#039; of disabling it in the def theme - do it each time I update and rebuild, etc? Less intrusive?<br />
+<br />
+Anyway, I think I brought up enough arguments for this really simple matter and further discussion doesn&#039;t make much sense - the problem remains and is up to you. However, if you&#039;re just gonna close this ticket please acknowledge that I think leaving users no choice but to hack built-in libs is a disappointing direction for awesome and there&#039;s a couple of people who share this viewpoint.</div></div>
+
+  
+    <em>
+    <a name="comment1383" id="comment1383"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1383">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 03 September 2009, 13:05 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Well, you don&#039;t fix the missing of documentation by adding more code to a default configuration. Loading module asserting that they they have a sane default behaviour is something normal. Loading the default theme by default is done that way.<br />
+<br />
+Asking to revert a commit to fix a problem you have is definitively not a constructive solution. There *is* a bug as you pointed out, and there&#039;s probably 2 differents bugs actually:<br />
+<br />
+1. When loading 2 themes one after the other, the wallpaper_cmd execution is put in background so their order of execution is undefined;<br />
+2. When loading beautiful, it changes the default background with the one from the default theme.<br />
+<br />
+While I admit the controversed commit has provocated 2., 1. is independant and exists since a while.<br />
+<br />
+So far nobody (nor me) has proposed a fix, but that does not mean going backward is the *right* solution.<br />
+<br />
+I really don&#039;t have a simple fix for 1. For 2., I can suggest to totally drop beautiful usage from the default configuration and let use awful default color, which should produce the same result. Untested, but it should work and fix 2.</div></div>
+
+  
+    <em>
+    <a name="comment1384" id="comment1384"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1384">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=289">Uli Schlachter (psychon)</a> -
+    Thursday, 03 September 2009, 13:15 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">Here he go, now someone has proposed even two fixes.<br />
+<br />
+First one adds an explicit beautiful() call for loading the default theme, second one just doesn&#039;t apply the wallpaper from the default theme.<br />
+<br />
+Alternatively we could (idea 3:) create an ugly 1sec timer for executing the wallpaper command and abort the timer if a new theme is loaded in this time.<br />
+<br />
+Anyone likes either of these ideas?</div></div>
+
+      <div class="attachments">
+          <a title="aw-idea1.patch" href="?getfile=215" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            aw-idea1.patch
+                  </a>
+                  (1.3 KiB)
+          <br />
+          <a title="aw-idea2.patch" href="?getfile=216" >
+                <img src="https://awesomewm.org/bugs/themes/Bluey/mime/text.png" alt="" title="text/plain" />
+            &nbsp;&nbsp;
+            aw-idea2.patch
+                  </a>
+                  (2 KiB)
+          <br />
+    </div>
+  
+
+    <em>
+    <a name="comment1385" id="comment1385"
+      href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#comment1385">
+      <img src="https://awesomewm.org/bugs/themes/Bluey/comment.png"
+        title="Link to this comment" alt="" />
+    </a>
+    Comment by <a href="https://awesomewm.org/bugs/index.php?do=user&amp;area=users&amp;id=1">Julien Danjou (jd)</a> -
+    Thursday, 03 September 2009, 13:42 GMT   </em>
+
+  <span class="DoNotPrint">
+    
+      </span>
+  <div class="comment">
+    <div class="commenttext">idea1 and 2 are both OK IMHO, but does not fix point 1 I described (except that I think idea2 patch is not working).<br />
+<br />
+And it&#039;s better for you if I ignore idea 3. :-)<br />
+<br />
+As quickly discussed on IRC, I think there&#039;s a bigger problem behind all of that, being beautiful required to be loaded and required() by many awful stuff.</div></div>
+
+  
+  
+  </div>
+<div id="related" class="tab">
+  <table>    <tr><td>
+    <form method="post" action="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=611#related" >
+        <table id="tasks_related" class="userlist">
+        <tr>
+          <th>
+            <a href="javascript:ToggleSelected('tasks_related')">
+              <img title="Toggle Selected" alt="Toggle Selected" src="https://awesomewm.org/bugs/themes/Bluey/kaboodleloop.png" width="16" height="16" />
+            </a>
+          </th>
+          <th>Tasks related to this task (1)</th>
+        </tr>
+                <tr>
+          <td class="ttcolumn">
+            <input type="checkbox" name="related_id[]" disabled="disabled" value="8" /></td>
+          <td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=622&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Awesome keeps loading default theme | 100%"  class = "closedtasklink">FS#622 - Awesome keeps loading default theme</a>&#160;</del></td>
+        </tr>
+                <tr>
+          <td colspan="2">
+            <input type="hidden" name="action" value="remove_related" />
+            <input type="hidden" name="task_id" value="611" />
+            <button type="submit">Remove</button>
+          </td>
+        </tr>
+        </table>
+    </form>
+    </td><td>
+    
+    <table id="duplicate_tasks" class="userlist">
+        <tr>
+          <th>Duplicate tasks of this task (1)</th>
+        </tr>
+                <tr><td><del>&#160;<a href="https://awesomewm.org/bugs/index.php?do=details&amp;task_id=622&amp;opened=6&amp;status%5B0%5D=" title="Duplicate | Awesome keeps loading default theme | 100%"  class = "closedtasklink">FS#622 - Awesome keeps loading default theme</a>&#160;</del></td></tr>
+            </table>
+    </td></tr>
+  </table>
+
+  </div>
+<div id="history" class="tab">
+  <h3>Loading...</h3>
+</div>
+    </div>
+    <p id="footer">
+       <!-- Please don't remove this line - it helps promote Flyspray -->
+       <a href="http://flyspray.org/" class="offsite">Powered by Flyspray</a>
+    </p>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+E: awesome: signal_fatal:222:dumping backtrace
+/usr/bin/awesome(backtrace_get+0x2x) [0x80fcdc]
+/usr/bin/awesome() [0x805400f]
+linux_gate.so.1(__kernel_signature+0) [0xb77b6400]
+/usr/lib/libxcb.so.1(xcb_setup_roots_length+0x4) [0xb77797f4]
+/usr/bin/awesome() [0x805e728]
+/usr/bin/awesome() [0x8053b0d]
+/usr/lib/libev.so.4(ev_invoke_pending+0x51) [0xb72d301]
+/usr/lib/libev.so.4(ev_run+0xf3) [0xb72d6ab3]
+/usr/bin/awesome() [0x8054233]

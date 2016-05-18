@@ -1,0 +1,19 @@
+--- client.lua.old	2010-07-17 10:50:21.000000000 -0230
++++ client.lua.new	2010-07-17 11:15:01.000000000 -0230
+@@ -436,6 +436,8 @@
+ function toggletag(target, c)
+     local sel = c or capi.client.focus
+     -- Check that tag and client screen are identical
++    local refocus = nil
++    if sel == capi.client.focus then refocus = true end
+     if sel and sel.screen == target.screen then
+         local tags = sel:tags()
+         local index = nil;
+@@ -453,6 +455,7 @@
+             tags[#tags + 1] = target
+         end
+         sel:tags(tags)
++       if refocus == true then capi.client.focus = sel end
+     end
+ end
+ 

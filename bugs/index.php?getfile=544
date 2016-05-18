@@ -1,0 +1,36 @@
+--- util.lua	2012-11-10 09:28:30.333168905 +0100
++++ util.lua.new	2012-11-10 09:28:39.823138959 +0100
+@@ -256,7 +256,7 @@
+ -- @return A new table containing all keys from the arguments.
+ function table.join(...)
+     local ret = {}
+-    for i, t in ipairs({...}) do
++    for i, t in pairs({...}) do
+         if t then
+             for k, v in pairs(t) do
+                 if type(k) == "number" then
+From be39500e1a8746948aa1561452da7e88955cb8f7 Mon Sep 17 00:00:00 2001
+From: uzsolt <udvzsolt@gmail.com>
+Date: Sun, 11 Nov 2012 15:01:02 +0100
+Subject: [PATCH] fix awful.util.table.join if first arg is null (#1052)
+
+---
+ lib/awful/util.lua.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/awful/util.lua.in b/lib/awful/util.lua.in
+index ee11d62..e730cd7 100644
+--- a/lib/awful/util.lua.in
++++ b/lib/awful/util.lua.in
+@@ -336,7 +336,7 @@ end
+ -- @return A new table containing all keys from the arguments.
+ function util.table.join(...)
+     local ret = {}
+-    for i, t in ipairs({...}) do
++    for i, t in pairs({...}) do
+         if t then
+             for k, v in pairs(t) do
+                 if type(k) == "number" then
+-- 
+1.8.0
+

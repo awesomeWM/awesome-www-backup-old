@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8" />
+<title>Использование D-Bus - awesome</title>
+<meta name="generator" content="MediaWiki 1.24.2" />
+<link rel="alternate" type="application/x-wiki" title="Edit" href="/w/index.php?title=Using_DBus/ru&amp;action=edit" />
+<link rel="edit" title="Edit" href="/w/index.php?title=Using_DBus/ru&amp;action=edit" />
+<link rel="shortcut icon" href="/images/icons/aw_16.png" />
+<link rel="search" type="application/opensearchdescription+xml" href="/w/opensearch_desc.php" title="awesome (en)" />
+<link rel="EditURI" type="application/rsd+xml" href="https://awesomewm.org/w/api.php?action=rsd" />
+<link rel="alternate" hreflang="x-default" href="/wiki/Using_DBus/ru" />
+<link rel="copyright" href="https://creativecommons.org/licenses/by/3.0/" />
+<link rel="alternate" type="application/atom+xml" title="awesome Atom feed" href="/w/index.php?title=Special:RecentChanges&amp;feed=atom" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.skinning.content.externallinks%7Cmediawiki.skinning.interface%7Cmediawiki.ui.button%7Cskins.monobook.styles&amp;only=styles&amp;skin=monobook&amp;*" />
+<!--[if IE 6]><link rel="stylesheet" href="/w/skins/MonoBook/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/w/skins/MonoBook/IE70Fixes.css?303" media="screen" /><![endif]--><meta name="ResourceLoaderDynamicStyles" content="" />
+<link rel="stylesheet" href="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=monobook&amp;*" />
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}
+/* cache key: awesome:resourceloader:filter:minify-css:7:ad506c29508072131b881ff3f2f9d363 */</style>
+<script src="https://awesomewm.org/w/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=monobook&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Using_DBus/ru","wgTitle":"Using DBus/ru","wgCurRevisionId":7088,"wgRevisionId":7088,"wgArticleId":1188,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Using_DBus/ru","wgIsProbablyEditable":true,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"monobook","stubthreshold":0,"thumbsize":5,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"watchrollback":0,
+"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\"});},{},{});
+/* cache key: awesome:resourceloader:filter:minify-js:7:ab52f6eb1652fbc58fa39bdfdc3926f5 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Using_DBus_ru skin-monobook action-view">
+<div id="globalWrapper">
+		<div id="column-content">
+			<div id="content" class="mw-body" role="main">
+				<a id="top"></a>
+									<div id="siteNotice"><div id="localNotice" lang="en" dir="ltr"><p><b>This wiki will shut down!</b>
+</p><p>Please note that this wiki will be made read-only and eventually be taken offline.
+</p><p>A replacement is being discussed at <a rel="nofollow" class="external free" href="https://github.com/awesomeWM/awesome-www/issues/7">https://github.com/awesomeWM/awesome-www/issues/7</a>. We'd be happy to have more input for that discussion and volunteers who help us migrate the content of this wiki to its replacement.
+</p></div></div>
+				<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Использование D-Bus</span></h1>
+
+				<div id="bodyContent" class="mw-body-content">
+					<div id="siteSub">From awesome</div>
+					<div id="contentSub"></div>
+										<div id="jump-to-nav" class="mw-jump">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>
+
+					<!-- start content -->
+					<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div class="LanguageLinks">
+<table width="100%">
+<tr valign="top" style="background: #EEF3E2">
+<td style="width: 25px; padding-left: 0.5em;"><img alt="Languages" src="/w/images/thumb/Geographylogo.png/25px-Geographylogo.png" width="25" height="25" srcset="/w/images/thumb/Geographylogo.png/38px-Geographylogo.png 1.5x, /w/images/Geographylogo.png 2x" /></td>
+<td style="width: 10px; white-space: nowrap; padding: 4px 1em 0 0.5em; border-right: 1px solid #aaaaaa;"><b>Languages:</b>&#160;</td><td style="padding: 1px 1em 0; background: #F6F9ED;">
+<p><b><strong class="selflink">English</strong></b>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+</p>
+</td></tr></table></div>
+<p><br />
+Я думаю ни для кого не будет секретом, что у Awesome есть "узкое место", если мы запускаем внешний скрипт, который например должен считать данные из файла, или интернета и вернуть результат в виджет или саму систему, то мы периодически можем наблюдать явление "фриза", т.е. когда система перестает реагировать на нажатия клавиш и мыши до получения результата обработки (правда активный клиент при этом продолжает работать). Чаще всего это происходит при использовании <i>io.popen</i> или <i>awful.util.pread</i>
+</p><p>У меня такая ситуация случалась не однократно, например, при прослушивании музыки в moc/mocp при смене трека у меня вызывается внешний скрипт который получает данные о треке и загружает обложку альбома, если она есть и отображает их. Но периодически (т.к. скрипт тестировался на ноутбуке) система "зависала". Долго не мог понять почему же это происходит, а затем выяснил, что если в этот момент диск сильно нагружен чем нибудь, то данные на чтение ставятся в очередь и в результате, т.к. вывод результата зависит от ответа, система "подвисала". Проблему удалось частично решить через "костыли" в виде вешнего скрипта, который через <i>echo $result | awesome-client -</i> пересылал данные. 
+</p><p>Или другой вариант, есть виджеты отображающие свободное место на диске (например раздела /), работающие чаще всего через <i>df -h</i>, но если у нас есть на диске раздел ntfs, то периодически он может "отваливаться", и в этот момент система перестает реагировать. Одним из решений является сохранение вывода команды в файл, а затем его чтение оттуда. Но опять же это тот еще "костыль". Согласитесь, очень неприятно, когда для простейших действий приходится изобретать костыли. 
+</p><p>А тем временем, в Awesome, существует такая замечательная вещь как DBus, которая позволяет осуществлять взаимодействие различных компонентов системы и приложений. 
+</p>
+<div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#.D0.A7.D1.82.D0.BE_.D1.82.D0.B0.D0.BA.D0.BE.D0.B5_DBus"><span class="tocnumber">1</span> <span class="toctext">Что такое DBus</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#.D0.9F.D1.80.D0.B0.D0.BA.D1.82.D0.B8.D1.87.D0.B5.D1.81.D0.BA.D0.B0.D1.8F_.D1.80.D0.B5.D0.B0.D0.BB.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D1.8F"><span class="tocnumber">2</span> <span class="toctext">Практическая реализация</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#.D0.A0.D0.B0.D0.B1.D0.BE.D1.82.D0.B0_.D1.81_.D1.84.D0.B0.D0.B9.D0.BB.D0.BE.D0.B2.D0.BE.D0.B9_.D1.81.D0.B8.D1.81.D1.82.D0.B5.D0.BC.D0.BE.D0.B9"><span class="tocnumber">2.1</span> <span class="toctext">Работа с файловой системой</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#.D0.92.D0.B7.D0.B0.D0.B8.D0.BC.D0.BE.D0.B4.D0.B5.D0.B9.D1.81.D1.82.D0.B2.D0.B8.D0.B5_.D1.81_mocp"><span class="tocnumber">2.2</span> <span class="toctext">Взаимодействие с mocp</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-5"><a href="#.D0.9F.D0.BE.D1.81.D1.8B.D0.BB.D0.BA.D0.B0_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.B0_.D0.B8.D0.B7_Awesome"><span class="tocnumber">3</span> <span class="toctext">Посылка сигнала из Awesome</span></a></li>
+<li class="toclevel-1 tocsection-6"><a href="#.D0.9F.D0.BE.D0.B8.D1.81.D0.BA_.D0.BD.D1.83.D0.B6.D0.BD.D1.8B.D1.85_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.BE.D0.B2_.D0.BF.D1.80.D0.B8.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D0.B9"><span class="tocnumber">4</span> <span class="toctext">Поиск нужных сигналов приложений</span></a></li>
+<li class="toclevel-1 tocsection-7"><a href="#.D0.9E.D1.82.D1.81.D0.BB.D0.B5.D0.B6.D0.B8.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.BE.D0.B2_.D0.B8.D0.B7_.D1.81.D0.BA.D1.80.D0.B8.D0.BF.D1.82.D0.BE.D0.B2"><span class="tocnumber">5</span> <span class="toctext">Отслеживание сигналов из скриптов</span></a></li>
+<li class="toclevel-1 tocsection-8"><a href="#.D0.A1.D1.81.D1.8B.D0.BB.D0.BA.D0.B8_.D0.BF.D0.BE_.D1.82.D0.B5.D0.BC.D0.B5"><span class="tocnumber">6</span> <span class="toctext">Ссылки по теме</span></a></li>
+</ul>
+</div>
+
+<h2><span class="mw-headline" id=".D0.A7.D1.82.D0.BE_.D1.82.D0.B0.D0.BA.D0.BE.D0.B5_DBus">Что такое DBus</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=1" title="Edit section: Что такое DBus">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p><a rel="nofollow" class="external text" href="https://www.linux.org.ru/wiki/en/D-Bus">D-Bus</a> — это система межпроцессного взаимодействия, которая предоставляет приложениям несколько шин для передачи сообщений. Она обеспечивает беспроблемную связь десктопных приложений между собой и связь между десктопными приложениями и системными сервисами. Поддерживается не только широковещательная рассылка сообщений (сигналов), но и удалённый вызов методов.
+</p><p>Т.е. возможно из Awesome или вашего виджета послать запрос на обработку каких либо данных, а получить результат обработки через шину DBus, и наконец вызвать функцию обработчик этого события. И при этом никаких "зависаний", ведь мы не заставляем Awesome ожидать результат.
+</p><p>Для работы с Dbus можно использовать стандартные утилиты 'dbus-send' - для отправки сигналов в приложения из скриптов или оболочки, и 'dbus-monitor' - которая позволяет отслеживать все сигналы посылаемые между приложениями и/или системой. Если же вы хотите получить более полные данные о том какие приложения зарегистрированы в dbus, какие методы они могут вам предоставить, можно воспользоваться сторонней утилитой из комплекта KDE 'qdbus' - это консольная утилита имеющая минимальные зависимости и занимающая чуть менее 1Мб.
+</p><p>Если вы запустите dbus-monitor, то будете отслеживать все сигналы пересылаемые приложениями и системой. Но если вас интересует какой либо конкретный сигнал, то можно отфильтровать вывод:
+</p>
+<pre>
+dbus-monitor &quot;interface='ru.gentoo.kbdd' &quot;
+</pre>
+<p>В данном случае мы будем получать сигналы о смене раскладки клавиатуры посылаемые kbdd. За более подробными сведениями обращайтесь <a rel="nofollow" class="external text" href="https://www.linux.org.ru/wiki/en/D-Bus">Dbus LOR</a>.  В принципе dbus-monitor удобно использовать для отладки ваших скриптов. 
+</p><p>Но нас то интересует возможность взаимодействия наших скриптов и Awesome.
+</p><p>Для посылки сигнала в Awesome вы можете использовать следующий код:
+</p>
+<pre>
+dbus-send --session --dest=org.naquadah.awesome.awful /ru/console/mocp ru.console.mocp.songChanged
+</pre>
+<p>Разберем, что здесь и к чему. 
+--session - указывает на то что используется сессионная (а не системная) шина передачи данных. Т.е. сессионная шина это пользовательская шина, к которой подключаются запущенные от имени пользователя приложения, в то время как системная шина чаще всего не имеет своего пользователя (сервисы HAL, сетевой стек, bluetooth и т.д.)
+--dest=org.naquadah.awesome.awful - здесь мы указываем кто будет являться получателем нашего сигнала, в данном случае это Awesome
+/ru/console/mocp - уникальное имя объекта (обычно имя сервиса, путь к объекту и интерфейс), в нашем случае создаем его сами.
+ru.console.mocp.songChanged - используемый метод, по сути вызываемая функция которая и порождает сигнал, в случае если используется прилоежние.
+</p><p>Также аналогично можно использовать и посылку сигналов из Awesome различным приложениям, например, чтобы переключить трек в различных плеерах, поменять статус в Pidgin и т.д. При этом преимуществом данного способа будет то, что не требуется запускать копию терминала, и передавать ему команду для обработки, что пусть и не сильно, но нагружает ресурсы системы, на создание терминала, обработку команды в нем, а потом и уничтожение этого терминала.  Об этом способе и примерах поговорим чуть позже. 
+</p><p>Как видите все достаточно просто. Но ведь этого недостаточно. Одно дело послать сообщение, что отработала такая то функция, а другое передать еще и результат в сигнале. Такая возможность есть, вы можете через Dbus сигналы передавать данные для ваших виджетов или функций.
+Например тот же kbdd передает помимо самого сигнала еще и выбранную раскладку ( в виде числа, а в другой функции и ее название, поэкспериментируйте). Если же вы используете другой менеджер раскладки, то и там та же ситуация. Наиболее тяжелый сигнал в KDE, там передается очень много информации, в том числе и двоичной. 
+</p><p>Поддерживаемые типы данных: string, byte, boolean, int16, uint16, int32, uint32, int64, uint64, dooble, object_path
+</p>
+<h2><span class="mw-headline" id=".D0.9F.D1.80.D0.B0.D0.BA.D1.82.D0.B8.D1.87.D0.B5.D1.81.D0.BA.D0.B0.D1.8F_.D1.80.D0.B5.D0.B0.D0.BB.D0.B8.D0.B7.D0.B0.D1.86.D0.B8.D1.8F">Практическая реализация</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=2" title="Edit section: Практическая реализация">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<h3><span class="mw-headline" id=".D0.A0.D0.B0.D0.B1.D0.BE.D1.82.D0.B0_.D1.81_.D1.84.D0.B0.D0.B9.D0.BB.D0.BE.D0.B2.D0.BE.D0.B9_.D1.81.D0.B8.D1.81.D1.82.D0.B5.D0.BC.D0.BE.D0.B9">Работа с файловой системой</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=3" title="Edit section: Работа с файловой системой">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>Все изменения мы будем вносить только в rc.lua. 
+</p><p>Сначала создадим виджет который будет отображать информацию:
+</p>
+<pre>
+--Awesome 3.4
+fs_root = widget({type = &quot;textbox&quot;})
+fs_root.text = &quot;Занято:&quot;
+--Awesome 3.5
+fs_root = wibox.widget.textbox()
+fs_root:set_text(&quot;Занято:&quot;)
+</pre>
+<p>Затем создадим таймер, который будет запрашивать данные:
+</p>
+<pre>
+fs_timer = timer ({timeout = 600}) --раз в 10 минут
+fs_timer:add_singal (&quot;timeout&quot;, function () awful.util.spawn_with_shell(&quot;dbus-send --session --dest=org.naquadah.awesome.awful /ru/console/df ru.console.df.fsValue string:$(df -h --output='pcent' /home | sed '1d;s/ //g' )&quot; ) end )
+fs_timer:start()
+</pre>
+<p>если вы испльзуете Awesome 3.5, то просто замените add_singal на connect_signal
+</p><p>И обновляем значение, при получении сигнала:
+</p>
+<pre>
+dbus.request_name(&quot;session&quot;, &quot;ru.console.df&quot;)
+dbus.add_match(&quot;session&quot;, &quot;interface='ru.console.df', member='fsValue' &quot; )
+dbus.add_singal(&quot;ru.console.df&quot;, function (...)
+      local data = {...}
+      local dbustext = data[2]
+      fs_root.text = &quot;Занято: &quot; .. dbustext     --для 3.5 fs_root:set_text(&quot;Занято:&quot; .. dbustext)
+   end )
+</pre>
+<p>Все, перезапускаем Awesome!
+</p><p>Преимуществом данного способа будет то, что Awesome  не будет ждать (и соответственно висеть) пока обрабатывается вызванный код.
+</p><p>В случае если вы вызываете одну и ту же команду с разными параметрами, можно вернуть вторым значением этот параметр, и соответсвенно в самом Awesome его проверить и вызывать нужный обработчик. На нашем примере чуть чуть модифицируем функцию таймера:
+</p>
+<pre>
+path = '/home'
+fs_timer:add_singal (&quot;timeout&quot;, function () awful.util.spawn_with_shell(&quot;dbus-send --session --dest=org.naquadah.awesome.awful /ru/console/df ru.console.df.fsValue string:$(df -h --output='pcent' &quot; ..path.. &quot; | sed '1d;s/ //g' )&quot; string:&quot;..path) end )
+
+dbus.request_name(&quot;session&quot;, &quot;ru.console.df&quot;)
+dbus.add_match(&quot;session&quot;, &quot;interface='ru.console.df', member='fsValue' &quot; )
+dbus.add_singal(&quot;ru.console.df&quot;, function (...)
+      local data = {...}
+      local dbustext = data[2]
+      local dbuspath = data[3] 
+      if dbustext == '/' then
+        fs_root.text = &quot;Занято: &quot; .. dbustext          --для 3.5 fs_root:set_text(&quot;Занято:&quot; .. dbustext)
+      elseif dbustext == '/home' then
+        fs_home.text = &quot;Занято: &quot; .. dbustext        --для 3.5 fs_home:set_text(&quot;Занято:&quot; .. dbustext) 
+      end
+   end )
+</pre>
+<h3><span class="mw-headline" id=".D0.92.D0.B7.D0.B0.D0.B8.D0.BC.D0.BE.D0.B4.D0.B5.D0.B9.D1.81.D1.82.D0.B2.D0.B8.D0.B5_.D1.81_mocp">Взаимодействие с mocp</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=4" title="Edit section: Взаимодействие с mocp">edit</a><span class="mw-editsection-bracket">]</span></span></h3>
+<p>К сожалению сам mocp не поддерживает dbus, но он может вызывать внешнюю команду при смене трека (и не только, за подробоностями к документации).
+</p><p>В конфиге для mocp я добавил свой обработчик:
+</p>
+<pre>
+OnSongChange = &quot;/home/user/script/changesong.sh&#160;%f&#160;%a&#160;%t&#160;%d&#160;%r&#160;%n&quot;
+&lt;pre&gt;
+Здесь мы передаем все необходимые значения: путь к файлу, исполнитель, название, время, альбом, для того, чтобы потом не дергать mocp еще раз, чтобы получить эти данные, как указано в изначальных версиях [https://awesome.naquadah.org/wiki/Coverart_display/ru этих скриптов].
+
+Затем, создаем скрипт (changesong.sh) для получения обложки и формирования текста:
+&lt;pre&gt;
+#!/bin/bash
+# changesong.sh
+
+#файл с обложкой по умолчанию
+DEFAULT_COVER=&quot;/home/user/Images/no-cover.jpg&quot;
+
+[ -n &quot;$1&quot; ] &amp;&amp; FULLDIR=`dirname &quot;$1&quot;`
+
+[ -n &quot;$FULLDIR&quot; ] &amp;&amp; COVERS=`ls &quot;$FULLDIR&quot; | grep &quot;\.jpg\|\.png\|\.gif&quot;`
+
+if [ -z &quot;$COVERS&quot; ]; then
+	COVERS=&quot;$DEFAULT_COVER&quot;
+else
+	TRYCOVERS=`echo &quot;$COVERS&quot; | grep -i &quot;cover\|front\|folder\|albumart&quot; | head -n 1`
+
+	if [ -z &quot;$TRYCOVERS&quot; ]; then
+		TRYCOVERS=`echo &quot;$COVERS&quot; | head -n 1`
+		if [ -z &quot;$TRYCOVERS&quot; ]; then
+			TRYCOVERS=&quot;$DEFAULT_COVER&quot;
+		else
+			TRYCOVERS=&quot;$FULLDIR/$TRYCOVERS&quot;
+		fi
+	else
+		TRYCOVERS=&quot;$FULLDIR/$TRYCOVERS&quot;
+	fi
+
+	COVERS=&quot;$TRYCOVERS&quot;
+fi
+
+MTITLE= &quot;
+
+	Исполнитель:	$2
+	Название:	$3
+	Альбом: 	$5
+	Трек:	$6
+	Время:  	$4&quot;
+
+dbus-send --session --dest=org.naquadah.awesome.awful /ru/console/mocp ru.console.mocp.songChanged \
+		  string:&quot;$MTITLE&quot; \
+		  string:&quot;$COVERS&quot;
+#обязательно помещаем переменную в кавычки, т.к. иначе некорректно передается строка (особенность bash)
+</pre>
+<p>Даем скрипту права на исполнение:
+</p>
+<pre>
+chmod +x changesong.sh
+</pre>
+<p>Добавляем обработчик в Awesome:
+</p>
+<pre>
+dbus.request_name(&quot;session&quot;, &quot;ru.console.mocp&quot;
+dbus.add_match(&quot;session&quot;, &quot;interface='ru.console.mocp', member='songChanged' &quot;)
+dbus.add_signal(&quot;ru.console.mocp&quot;, function(...)
+    local data = {...}
+    coverart_nf = naughty.notify({icon = data[3], icon_size = 100, text = data[2], position = &quot;bottom_left&quot;})
+    end )
+</pre>
+<p>Хотя результат и будет тем же самым, что и в изначальном варианте, но разница будет в том, что система не зависнет если жесткий диск будет занят, плюс мы используем один скрипт вместо 2х в первоначальной версии. Также в скрипте мы не производим проверку на состояние mocp (переключение состояния пауза/воспроизведения) и запущенно ли вообще приложение, если вам это необходимо, добавьте соотвествующий код.
+</p>
+<h2><span class="mw-headline" id=".D0.9F.D0.BE.D1.81.D1.8B.D0.BB.D0.BA.D0.B0_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.B0_.D0.B8.D0.B7_Awesome">Посылка сигнала из Awesome</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=5" title="Edit section: Посылка сигнала из Awesome">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Стандартный Awesome к сожалению не имеет функции для отправки сигналов dbus, по крайней мере на wiki нет ни слова об этой возможности. Поэтому приходится использовать отправку сигналов через shell, например это можно сделать следующим образом (на примере переключателя клавиатуры kbdd):
+</p>
+<pre>
+--виджет клавиатуры
+kbdwidget = widget({type = &quot;textbox&quot;, name = &quot;kbdwidget&quot;})
+kbdwidget.border_color = beautiful.fg_normal
+kbdwidget.border_width = 1
+kbdwidget.text = '&lt;span color=&quot;#F8EC5D&quot;&gt;&lt;b&gt; Eng &lt;/b&gt;&lt;/span&gt;'
+next_layout=1
+function changeKeyboardLayout(keyboard_layout)
+    awful.util.spawn( &quot;dbus-send --type=method_call --session --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:&quot;.. keyboard_layout )
+end
+dbus.request_name(&quot;session&quot;, &quot;ru.gentoo.kbdd&quot;) 
+dbus.add_match(&quot;session&quot;, &quot;interface='ru.gentoo.kbdd',member='layoutChanged'&quot;) 
+dbus.add_signal(&quot;ru.gentoo.kbdd&quot;, function(...) 
+        local data = {...} 
+        local layout = data[2] 
+        lts = {[0] = '&lt;span color=&quot;#F8EC5D&quot;&gt;&lt;b&gt; Eng &lt;/b&gt;&lt;/span&gt;', [1] = '&lt;span color=&quot;#FF3000&quot;&gt;&lt;b&gt; Рус &lt;/b&gt;&lt;/span&gt;'} 
+         kbdwidget.text = &quot; &quot;..lts[layout]..&quot; &quot; 
+         if layout == 1
+             then next_layout = 0
+         else
+             next_layout = 1
+        end 
+    end
+                ) 
+kbdwidget:buttons(awful.util.table.join(awful.button({}, 1, function ()
+                changeKeyboardLayout(next_layout)
+        end)))
+</pre>
+<p>Здесь мы через нажатие на виджет левой кнопкой мыши меняем раскладку клавиатуры, посылая сообщение об этом через dbus. Также необходимо добавить в автозагрузку сам kbdd, иначе ничего не будет работать.
+</p><p>Также необходимо добавить в автозагрузку сам kbdd, иначе ничего не будет работать. Кстати если у вас не работают виджеты в русской раскладке(например после изменения раскладки на русскую при нажатии на виджет не меняется раскладка на английскую) прочтите статью <a rel="nofollow" class="external text" href="https://awesome.naquadah.org/wiki/Some_problems/ru">известные проблемы.</a>
+</p>
+<h2><span class="mw-headline" id=".D0.9F.D0.BE.D0.B8.D1.81.D0.BA_.D0.BD.D1.83.D0.B6.D0.BD.D1.8B.D1.85_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.BE.D0.B2_.D0.BF.D1.80.D0.B8.D0.BB.D0.BE.D0.B6.D0.B5.D0.BD.D0.B8.D0.B9">Поиск нужных сигналов приложений</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=6" title="Edit section: Поиск нужных сигналов приложений">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Большинством приложений можно напрямую управлять через dbus, т.е. можно переключать треки, переводить приложения в полноэкранный режим, менять статусы и т.д. Для получения списка всех возможных сигналов и методов запустите приложение (без этого не произойдет регистрации доступных событий), после чего запустите qdbus, найдите нужный интерфейс, например:
+</p>
+<pre>
+qdbus | grep clementine
+Получим следующий вывод:
+ org.mpris.MediaPlayer2.clementine
+ org.mpris.clementine
+Затем, запустим:
+qdbus org.mpris.clementine 
+Получим следующиее:
+/
+/Player
+/TrackList
+/org
+/org/mpris
+/org/mpris/MediaPlayer2
+А затем вызовем:
+qdbus org.mpris.clementine /Player
+</pre>
+<p>И получим все возможные методы и сигналы для данного приложения. Например, нас интересует переключение на следующий трек, метод для этого выглядит следующим образом:
+</p>
+<pre>
+method void org.freedesktop.MediaPlayer.Next()
+</pre>
+<p>В данном случае метод не требует каких либо параметров, поэтому просто вызываем его:
+</p>
+<pre>
+dbus-send --type=method_call --session --dest=org.mpris.clementine /Player org.freedesktop.MediaPlayer.Next
+</pre>
+<p>Собственно, все. Дальше экспериментируйте и ищите сами. 
+</p>
+<h2><span class="mw-headline" id=".D0.9E.D1.82.D1.81.D0.BB.D0.B5.D0.B6.D0.B8.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5_.D1.81.D0.B8.D0.B3.D0.BD.D0.B0.D0.BB.D0.BE.D0.B2_.D0.B8.D0.B7_.D1.81.D0.BA.D1.80.D0.B8.D0.BF.D1.82.D0.BE.D0.B2">Отслеживание сигналов из скриптов</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=7" title="Edit section: Отслеживание сигналов из скриптов">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<p>Если вы хотите выполнить более сложные задания, чем вызов отдельных методов, то вы можете написать скрипт командной оболочки, содержащий dbus-send команды, или используйте язык более высокого уровня, для упрощения задачи. Существуют D-Bus привязки для Python, Ruby и Java языков.
+</p><p>В следующем примере, будет показан скрипт на Python, который меняет статус в Pidgin на “Away from keyboard”, при активизации скринсейвера. Здесь имеются два аспекта D-Bus: скрипт ждет сигнала от скринсейвера, и затем он вызывает метод в Pidgin.  
+</p><p>Сразу оговорюсь, скрипт не мой, ссылка на оригинал приведена ниже, но не описать эту возможность взаимодействия я просто не мог.
+<a rel="nofollow" class="external text" href="http://rus-linux.net/MyLDP/algol/Control-Your-Linux-Desktop-with-D-Bus.html">pidgin_screensaver.py</a>
+</p>
+<pre>
+#!/usr/bin/env python def pidgin_status_func(state): 
+obj = bus.get_object(&quot;im.pidgin.purple.PurpleService&quot;, 
+&quot;/im/pidgin/purple/PurpleObject&quot;) 
+pidgin = dbus.Interface(obj, &quot;im.pidgin.purple.PurpleInterface&quot;) 
+status = pidgin.PurpleSavedstatusFind(&quot;afk&quot;) 
+if status == 0: 
+status = pidgin.PurpleSavedstatusNew(&quot;afk&quot;, 5) 
+if state: 
+pidgin.PurpleSavedstatusSetMessage(status, 
+&quot;Away from keyboard&quot;) 
+pidgin.PurpleSavedstatusActivate(status) 
+
+import dbus, gobject 
+from dbus.mainloop.glib import DBusGMainLoop 
+
+dbus.mainloop.glib.DBusGMainLoop(set_as_default=True) 
+bus = dbus.SessionBus() 
+
+bus.add_signal_receiver(pidgin_status_func, 
+dbus_interface=&quot;org.gnome.ScreenSaver&quot;, 
+signal_name=&quot;ActiveChanged&quot;) 
+
+loop = gobject.MainLoop() 
+loop.run() 
+</pre>
+<p>Давайте разберем этот скрипт. Функция pidgin_status_func устанавливает ваш статус в Pidgin. Она получает объект im/pidgin/purple/PurpleObject и интерфейс im.pidgin.purple.PurpleInterface из сессионной шины. Далее, вызывается метод интерфейса. Он создает новый “saved status” тип, после проверки существования типа статус с именем “afk” (“afk” означает “Away From Keyboard”, и 5 - это вид “away” статуса).
+</p><p>Далее функция проверяет переменную state, которая является аргументом функции pidgin_status_func (я объясню, что означает этот аргумент далее). Если аргумент правдив, то сообщению нового статуса “afk” присваивается значение “Away from keyboard”, и статус активируется. В результате Pidgin показывает ваш статус как “afk", с сообщением “Away from keyboard”.
+</p><p>Теперь мы должны вызвать эту функцию вместе с активизацией скринсейвера. Поэтому, запускаем dbus.mainloop и соединяемся к сессионной шине. Далее добавляем приемник сигнала, который слушает сигнал ActiveChanged от интерфейса org.gnome.ScreenSaver. Если/когда сигнал срабатывает, он вызывает функцию pidgin_status_func. Так как сигнал ActiveChanged имеет булев аргумент, обозначающий текущее состояние заставки (1 - активная, 0 - не активная), то мы используем только один аргумент (state) в функции pidgin_status_func. Для постоянного прослушивания запускаем бесконечный цикл, работающий пока работает скрипт.
+</p><p>Вообще, у многих приложений есть интерфейс dbus, поэтому возможности по их управлению очень обширны, и ограничены только Вашей фантазией и желанием!
+</p>
+<h2><span class="mw-headline" id=".D0.A1.D1.81.D1.8B.D0.BB.D0.BA.D0.B8_.D0.BF.D0.BE_.D1.82.D0.B5.D0.BC.D0.B5">Ссылки по теме</span><span class="mw-editsection"><span class="mw-editsection-bracket">[</span><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit&amp;section=8" title="Edit section: Ссылки по теме">edit</a><span class="mw-editsection-bracket">]</span></span></h2>
+<ul><li> <a rel="nofollow" class="external text" href="http://habrahabr.ru/post/235231/">Обсуждение темы на Habr'е</a></li>
+<li> <a rel="nofollow" class="external text" href="http://www.opennet.ru/base/sys/dbus_intro.txt.html">Введение в DBus OpenNET</a></li>
+<li> <a rel="nofollow" class="external text" href="http://dbus.freedesktop.org/doc/dbus-tutorial.html">D-Bus Tutorial</a></li>
+<li> <a rel="nofollow" class="external text" href="https://www.linux.org.ru/wiki/en/D-Bus">LOR</a></li>
+<li> <a rel="nofollow" class="external text" href="http://rus-linux.net/MyLDP/algol/Control-Your-Linux-Desktop-with-D-Bus.html">Управление Linux десктопом через D-Bus</a></li></ul>
+
+<!-- 
+NewPP limit report
+CPU time usage: 0.140 seconds
+Real time usage: 0.166 seconds
+Preprocessor visited node count: 858/1000000
+Preprocessor generated node count: 1632/1000000
+Post‐expand include size: 3686/2097152 bytes
+Template argument size: 114/2097152 bytes
+Highest expansion depth: 6/40
+Expensive parser function count: 49/100
+-->
+
+<!-- Saved in parser cache with key awesome:pcache:idhash:1188-0!*!*!!en!5!* and timestamp 20160514160940 and revision id 7088
+ -->
+</div><div class="printfooter">
+Retrieved from "<a dir="ltr" href="https://awesomewm.org/w/index.php?title=Using_DBus/ru&amp;oldid=7088">https://awesomewm.org/w/index.php?title=Using_DBus/ru&amp;oldid=7088</a>"</div>
+					<div id='catlinks' class='catlinks catlinks-allhidden'></div>					<!-- end content -->
+										<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		<div id="column-one">
+			<h2>Navigation menu</h2>
+					<div id="p-cactions" class="portlet" role="navigation">
+			<h3>Views</h3>
+
+			<div class="pBody">
+				<ul>
+				<li id="ca-nstab-main" class="selected"><a href="/wiki/Using_DBus/ru" title="View the content page [c]" accesskey="c">Page</a></li>
+				<li id="ca-talk" class="new"><a href="/w/index.php?title=Talk:Using_DBus/ru&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></li>
+				<li id="ca-edit"><a href="/w/index.php?title=Using_DBus/ru&amp;action=edit" title="You can edit this page. Please use the preview button before saving [e]" accesskey="e">Edit</a></li>
+				<li id="ca-history"><a href="/w/index.php?title=Using_DBus/ru&amp;action=history" rel="archives" title="Past revisions of this page [h]" accesskey="h">History</a></li>
+				</ul>
+							</div>
+		</div>
+				<div class="portlet" id="p-personal" role="navigation">
+				<h3>Personal tools</h3>
+
+				<div class="pBody">
+					<ul>
+													<li id="pt-anonuserpage"><a href="/wiki/User:95.90.224.24" class="new" title="The user page for the IP address you are editing as [.]" accesskey=".">95.90.224.24</a></li>
+													<li id="pt-anontalk"><a href="/wiki/User_talk:95.90.224.24" class="new" title="Discussion about edits from this IP address [n]" accesskey="n">Talk for this IP address</a></li>
+													<li id="pt-login"><a href="/w/index.php?title=Special:UserLogin&amp;returnto=Using+DBus%2Fru" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li>
+											</ul>
+				</div>
+			</div>
+			<div class="portlet" id="p-logo" role="banner">
+				<a href="/wiki/Main_Page" style="background-image: url(/images/icons/aw_64.png);" title="Visit the main page"></a>
+			</div>
+				<div class="generated-sidebar portlet" id="p-navigation" role="navigation">
+		<h3>Navigation</h3>
+		<div class='pBody'>
+							<ul>
+											<li id="n-mainpage-description"><a href="/wiki/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+											<li id="n-Homepage"><a href="http://awesome.naquadah.org" rel="nofollow">Homepage</a></li>
+											<li id="n-recentchanges"><a href="/wiki/Special:RecentChanges" title="A list of recent changes in the wiki [r]" accesskey="r">Recent changes</a></li>
+											<li id="n-randompage"><a href="/wiki/Special:Random" title="Load a random page [x]" accesskey="x">Random page</a></li>
+											<li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>
+									</ul>
+					</div>
+		</div>
+			<div id="p-search" class="portlet" role="search">
+			<h3><label for="searchInput">Search</label></h3>
+
+			<div id="searchBody" class="pBody">
+				<form action="/w/index.php" id="searchform">
+					<input type='hidden' name="title" value="Special:Search"/>
+					<input type="search" name="search" placeholder="Search" title="Search awesome [f]" accesskey="f" id="searchInput" />
+					<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton" />&#160;
+						<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton" />
+				</form>
+
+							</div>
+		</div>
+			<div class="portlet" id="p-tb" role="navigation">
+			<h3>Tools</h3>
+
+			<div class="pBody">
+				<ul>
+											<li id="t-whatlinkshere"><a href="/wiki/Special:WhatLinksHere/Using_DBus/ru" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+											<li id="t-recentchangeslinked"><a href="/wiki/Special:RecentChangesLinked/Using_DBus/ru" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+											<li id="t-specialpages"><a href="/wiki/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+											<li id="t-print"><a href="/w/index.php?title=Using_DBus/ru&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+											<li id="t-permalink"><a href="/w/index.php?title=Using_DBus/ru&amp;oldid=7088" title="Permanent link to this revision of the page">Permanent link</a></li>
+											<li id="t-info"><a href="/w/index.php?title=Using_DBus/ru&amp;action=info">Page information</a></li>
+									</ul>
+							</div>
+		</div>
+			</div><!-- end of the left (by default at least) column -->
+		<div class="visualClear"></div>
+					<div id="footer" role="contentinfo">
+						<div id="f-copyrightico">
+									<a href="https://creativecommons.org/licenses/by/3.0/"><img src="https://i.creativecommons.org/l/by/3.0/88x31.png" alt="Attribution 3.0 Unported" width="88" height="31" /></a>
+							</div>
+					<div id="f-poweredbyico">
+									<a href="//www.mediawiki.org/"><img src="/w/resources/assets/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31" /></a>
+							</div>
+					<ul id="f-list">
+									<li id="lastmod"> This page was last modified on 27 October 2014, at 21:44.</li>
+									<li id="viewcount">This page has been accessed 2,013 times.</li>
+									<li id="copyright">Content is available under <a class="external" rel="nofollow" href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a> unless otherwise noted.</li>
+									<li id="privacy"><a href="/wiki/awesome:Privacy_policy" title="awesome:Privacy policy">Privacy policy</a></li>
+									<li id="about"><a href="/wiki/awesome:About" title="awesome:About">About awesome</a></li>
+									<li id="disclaimer"><a href="/wiki/awesome:General_disclaimer" title="awesome:General disclaimer">Disclaimers</a></li>
+							</ul>
+		</div>
+		</div>
+		<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.toc","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script>if(window.mw){
+document.write("\u003Cscript src=\"https://awesomewm.org/w/load.php?debug=false\u0026amp;lang=en\u0026amp;modules=site\u0026amp;only=scripts\u0026amp;skin=monobook\u0026amp;*\"\u003E\u003C/script\u003E");
+}</script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":104});
+}</script></body></html>

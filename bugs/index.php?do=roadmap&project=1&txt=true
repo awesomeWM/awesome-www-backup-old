@@ -1,0 +1,78 @@
+=== awesome ===
+
+Roadmap for version 3.5.6
+
+45% of 13 tasks completed. 8 open tasks:
+
+        FS#764 - Maximized window state becomes confused when moved between screens
+
+        FS#983 - Lua 5.2 support
+
+        FS#1070 - Squares in tag list cover tag numbers
+
+        FS#1135 - Properly support window gravity
+
+        FS#1138 - Taglist/tasklist buttons functions are called twice if the mouse move or there is a delay
+
+        FS#1175 - Java menu problem with Awesome &gt;=3.5 and xinerama
+
+        FS#1205 - maximised windows do not stay maximised when they change size
+
+        FS#1271 - Placment rule for xcalc only obeyed some times
+
+    
+
+Roadmap for version 3.6
+
+55% of 11 tasks completed. 5 open tasks:
+
+        FS#1144 - Floating windows resized improperly 
+
+        FS#1230 - Yet another task-/taglist rewrite
+
+        FS#1237 - Don&#039;t use pango markup for specifying colors
+
+        FS#1275 - Unwanted accidental screen changes caused by bogus xcb_generic_event
+
+        FS#1306 - Postpone/block layout (re)arrangement during applying of awful.rules / manage signal
+
+    
+
+Roadmap for version 4.0
+
+61% of 30 tasks completed. 14 open tasks:
+
+        FS#498 - primary output change via xrandr is not recognized
+
+        FS#568 - Remove resize from imagebox
+
+        FS#571 - Remove c:swap()
+
+        FS#574 - sticky windows mess up focus history
+
+        FS#586 - Use screen object rather than integer
+
+        FS#592 - Add auto-documentation
+
+        FS#614 - Split/merge awful and beautiful
+
+        FS#687 - Stop restarting on XRandR event
+
+        FS#909 - tag-switching keycodes broken on OS X
+
+        FS#954 - No way to handle client resize with mouse in custom layout module
+
+        FS#1001 - A client should be considered to be on the screen on which it takes the most space
+
+        FS#1054 - Remove timer objects
+
+        FS#1066 - awfule/tooltip.lua html sanitizing
+
+        FS#1257 - Follow XDG icon theme specification
+
+    
+
+Roadmap for version 3.5.7
+
+0% of 0 tasks completed. 
+

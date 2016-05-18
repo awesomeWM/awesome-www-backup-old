@@ -1,0 +1,21 @@
+diff --git a/awesome.c b/awesome.c
+index 6baa023..8319bc8 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -180,9 +180,16 @@ scan(void)
+     }
+ }
+ 
++static int lua_stack_items = 0;
+ static void
+ a_refresh_cb(EV_P_ ev_prepare *w, int revents)
+ {
++    if (lua_stack_items != lua_gettop(globalconf.L)) {
++        time_t t;
++        time(&t);
++        printf("Stack messed up? Expected %d, got %d (%s", lua_stack_items, lua_gettop(globalconf.L), ctime(&t));
++        lua_stack_items = lua_gettop(globalconf.L);
++    }
+     awesome_refresh();
+ }
+ 

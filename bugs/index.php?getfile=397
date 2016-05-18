@@ -1,0 +1,28 @@
+diff --git a/awesome.c b/awesome.c
+index f2beade..e435868 100644
+--- a/awesome.c
++++ b/awesome.c
+@@ -475,8 +475,22 @@ main(int argc, char **argv)
+ 
+     /* Process all errors in the queue if any. There can be no events yet, so if
+      * this function returns something, it must be an error. */
+-    if (xcb_poll_for_event(globalconf.connection) != NULL)
++    xcb_generic_event_t *ev = xcb_poll_for_event(globalconf.connection);
++    if (ev != NULL) {
++        do {
++            printf("Received event/error %d, seq %x, full_seq %x",
++                    (int) ev->response_type, (int) ev->sequence, (int) ev->full_sequence);
++            if (ev->response_type == 0)
++            {
++                xcb_generic_error_t *err = (void *) ev;
++                printf(", error code %d, min, %d, maj %d",
++                        err->error_code, err->minor_code, err->major_code);
++            }
++            puts("");
++            ev = xcb_poll_for_event(globalconf.connection);
++        } while (ev != NULL);
+         fatal("another window manager is already running");
++    }
+ 
+     /* Prefetch the maximum request length */
+     xcb_prefetch_maximum_request_length(globalconf.connection);

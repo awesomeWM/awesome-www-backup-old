@@ -1,0 +1,50 @@
+
+
+X.Org X Server 1.12.3
+Release Date: 2012-07-09
+X Protocol Version 11, Revision 0
+Build Operating System: Linux 3.4.4-3-ARCH i686 
+Current Operating System: Linux remilia 3.4.4-2-ARCH #1 SMP PREEMPT Sun Jun 24 17:28:37 UTC 2012 i686
+Kernel command line: root=/dev/disk/by-uuid/b307f2d5-a59e-42fb-95b3-cf331e302c9e ro fastboot
+Build Date: 09 July 2012  04:03:16PM
+ 
+Current version of pixman: 0.26.2
+	Before reporting problems, check http://wiki.x.org
+	to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+	(++) from command line, (!!) notice, (II) informational,
+	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(==) Log file: "/var/log/Xorg.0.log", Time: Sat Jul 14 16:36:06 2012
+(==) Using config directory: "/etc/X11/xorg.conf.d"
+(II) [KMS] Kernel modesetting enabled.
+The XKEYBOARD keymap compiler (xkbcomp) reports:
+> Warning:          Symbol map for key <KPDL> redefined
+>                   Using last definition for conflicting fields
+Errors from xkbcomp are not fatal to the X server
+The XKEYBOARD keymap compiler (xkbcomp) reports:
+> Warning:          Symbol map for key <KPDL> redefined
+>                   Using last definition for conflicting fields
+Errors from xkbcomp are not fatal to the X server
+E: awesome: signal_fatal:222: dumping backtrace
+awesome(backtrace_get+0x41) [0x8089cc1]
+awesome() [0x805408f]
+linux-gate.so.1(__kernel_sigreturn+0) [0xb7705400]
+/usr/lib/libxcb.so.1(xcb_setup_roots_length+0x4) [0xb76cc7f4]
+awesome(event_handle+0xc10) [0x8063d70]
+awesome() [0x8053d4d]
+/usr/lib/libev.so.4(ev_invoke_pending+0x51) [0xb7227901]
+/usr/lib/libev.so.4(ev_run+0x6f3) [0xb722aab3]
+awesome(main+0xa42) [0x8053b12]
+/lib/libc.so.6(__libc_start_main+0xf5) [0xb6fc4605]
+awesome() [0x8053c35]
+xinit: connection to X server lost
+
+waiting for X server to shut down devmon: ignored HUP
+===========================================
+
+
+(termite:6069): Gdk-WARNING **: termite: Fatal IO error 11 (Resource temporarily unavailable) on X server :0.
+
+Server terminated successfully (0). Closing log file.
+devmon: stopped
+

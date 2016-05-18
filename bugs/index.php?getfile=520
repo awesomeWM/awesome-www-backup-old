@@ -1,0 +1,22 @@
+From c113344a82e90d3b1a7ba1e7953cb67ebe07b6a9 Mon Sep 17 00:00:00 2001
+From: "Ignas Anikevicius (gns_ank)" <anikevicius@gmail.com>
+Date: Mon, 20 Aug 2012 19:28:04 +0100
+Subject: [PATCH] Add Hidden=true to fix #1031
+
+Signed-off-by: Ignas Anikevicius (gns_ank) <anikevicius@gmail.com>
+---
+ awesome.desktop | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/awesome.desktop b/awesome.desktop
+index 8a7f354..0fe4f58 100644
+--- a/awesome.desktop
++++ b/awesome.desktop
+@@ -5,3 +5,4 @@ Comment=Highly configurable framework window manager
+ TryExec=awesome
+ Exec=awesome
+ Type=Application
++Hidden=true
+-- 
+1.7.11.5
+
